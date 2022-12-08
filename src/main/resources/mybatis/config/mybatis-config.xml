@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.gdu.tagmusic.domain.ActiveLogDTO" alias="ActiveLogDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.BoardDTO" alias="BoardDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.ChatDTO" alias="ChatDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.CouponDTO" alias="CouponDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.ItemDTO" alias="ItemDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.MusicCommentDTO" alias="MusicCommentDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.MusicDTO" alias="MusicDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.MusicLikeDTO" alias="MusicLikeDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.MyMusicDTO" alias="MyMusicDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.PaymentDTO" alias="PaymentDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.PlaylistDTO" alias="PlaylistDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.UserDTO" alias="UserDTO" />
+	</typeAliases>
+
+</configuration>

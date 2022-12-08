@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<meta charset="UTF-8">
+<title>Tag Music</title>
+<!-- static 폴더 이후의 위치를 적으면 된다. -->
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+</head>
+<body>
+
+	<a th:href="@{/user/login}">로그인</a>
+	<div>
+		<a th:href>이승준</a>
+	</div>
+	<div>
+		<a th:href>이정익</a>
+	</div>
+	<div>
+		<a th:href>조용선</a>
+	</div>
+	<div>
+		<a th:href>정은지</a>
+	</div>
+	
+</body>
+</html>
