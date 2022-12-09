@@ -6,26 +6,20 @@
 
 <mapper namespace="com.gdu.tagmusic.mapper.UserMapper">
 	
-	<!-- 아이디 중복체크, 이메일 중복체크, 로그인, 로그인 유지를 위한 로그인, 마이페이지 가기 전 비번 확인 -->
+	<!-- 아이디 중복체크1, 이메일 중복체크, 로그인, 로그인 유지를 이용한 로그인, 마이페이지 가기 전 비번 확인, 네이버로그인으로 가입한 회원인지 확인, 아이디 찾기, 비밀번호 찾기 -->
 	<select id="selectUserByMap" parameterType="Map" resultType="UserDTO">
-		SELECT USER_NO, EMAIL, PW, ,ARTIST, NAME, GENDER, PROFILE_IMAGE, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE, AGREE_CODE
+		SELECT USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE 
 		  FROM USERS
 		 <where>
 			 <if test="email != null">
-			 	EMAIL = #{email}
+			 	AND EMAIL = #{email}
 			 </if>
 			 <if test="pw != null">
 			 	AND PW = #{pw}
 			 </if>
-			 <if test="email != null">
-			 	AND EMAIL = #{email}
-			 </if>
 			 <if test="sessionId != null">
 			 	AND SESSION_ID = #{sessionId}
 			 	AND SESSION_LIMIT_DATE > SYSDATE
-			 </if>
-			 <if test="artist != null">
-			 	AND ARTIST = #{artist}
 			 </if>
 			 <if test="name != null">
 			 	AND NAME = #{name}

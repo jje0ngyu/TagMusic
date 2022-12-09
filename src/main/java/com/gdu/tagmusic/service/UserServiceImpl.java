@@ -60,7 +60,6 @@ public class UserServiceImpl implements UserService {
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		
 		String url = request.getParameter("url");
-		System.out.println("url:" + url);
 		String email = request.getParameter("email");
 		String pw = request.getParameter("pw");
 		pw = securityUtil.sha256(pw);
@@ -68,7 +67,7 @@ public class UserServiceImpl implements UserService {
 		map.put("email", email);
 		map.put("pw", pw);
 		UserDTO loginUser = userMapper.selectUserByMap(map);
-		
+		System.out.println("loginUser" + loginUser);
 		// id, pw가 일치하는 회원이 있다 : session에 loginUser 저장하기 + 로그인 기록 남기기 
 		if(loginUser != null) {
 			

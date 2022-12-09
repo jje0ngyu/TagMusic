@@ -30,7 +30,12 @@
 			</div>
 			<div class="header_btn">
 				<input type="button" value="알람">
-				<a th:href="@{/user/login/form}">로그인</a>
+				<span th:if="${loginUser == null}">
+					<a th:href="@{/user/login/form}">로그인</a>
+				</span>
+				<span th:if="${loginUser != null}">
+					<a th:href="">로그아웃</a>
+				</span>
 			</div>
 			
 		</div>
