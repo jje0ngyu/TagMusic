@@ -5,8 +5,42 @@
 <title th:text="${title}"></title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
+<link rel="stylesheet" th:href="@{/css/layout.css}">
 </head>
 <body>
+
+
+	<div th:fragment="header_layout" >
+	
+		<div class="header">
+		<div class="header_menu">
+			<div class="header_left_menu">
+				<div class="header_search_area">
+					<input type="text" id="" name="" placeholder="검색" class="header_search">
+					<input type="button" class="header_search_btn" value="검색">
+				</div>
+				
+				<div class="header_rank">랭킹
+					<ol>
+						<li>1</li>
+						<li>2</li>
+						<li>3</li>
+					</ol>
+				</div>
+			</div>
+			<div class="header_btn">
+				<input type="button" value="알람">
+				<a th:href="@{/user/login/form}">로그인</a>
+			</div>
+			
+		</div>
+		
+	</div>
+		
+	</div>
+
+
+
 
 </body>
 </html>

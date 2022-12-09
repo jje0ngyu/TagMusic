@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script th:src="@{/js/moment-with-locales.js}"></script>
+<link rel="stylesheet" th:href="@{/css/layout.css}">
+</head>
+<body>
+
+	<div th:fragment="side_layout">
+		<div class="menu">
+			
+			<div class="menu_logo">로고</div>
+			
+			<div class="menu_body">
+				<div class="body_menus">홈</div>
+				<div class="body_menus">플레이리스트</div>
+				<div class="body_menus">좋아요</div>
+				<div class="body_menus">최근들은</div>
+				<div class="body_menus">많이들은</div>
+				<div class="body_menus">이용권</div>
+				<div class="body_menus">고객센터</div>
+			</div>		
+			<div class="footer_menu">발영역
+				<div>사업주</div>
+				<div>사업번호</div>
+				<div>전화번호</div>
+				<div>주소</div>
+			</div>			
+		</div>
+	
+	</div>
+
+</body>
+</html>
