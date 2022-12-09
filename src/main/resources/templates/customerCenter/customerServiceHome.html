@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('태그뮤직>고객센터')}"></head>
+<meta charset="UTF-8">
+<title>고객센터>태그뮤직</title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<link rel="stylesheet" th:href="@{/css/customerService.css}">
+ <script type="text/javascript">
+ 
+ 
+ 
+ 
+ 
+ 
+</script>
+<body>
+
+
+
+<div class="mainbox" >
+
+	<div class="maintitle">태그뮤직 고객센터</div>
+	
+	<div class="top_bar">
+	    <ul>
+	        <li class="click">
+	            <a th:href="@{/customerService/home}">홈</a>
+	        </li>
+	        <li>
+	            <a th:href="@{/customerService/notice}">공지사항</a>
+	        </li>
+	        <li>
+	            <a th:href="@{/customerService/FAQ}">자주 하는 질문</a>
+	        </li>
+	        <li>
+	            <a th:href="@{/customerService/chat}">1:1문의하기</a>
+	        </li>
+	    </ul>
+		
+	</div>
+
+</div>
+
+</body>
+</html>
