@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class UserDTO {
+public class SleepUserDTO {
 
 	private int userNo;
 	private String email;
@@ -29,9 +29,8 @@ public class UserDTO {
 	private String detailAddress;
 	private String extraAddress;
 	private String snsType;
-	private String sessionId;
-	private Date sessionLimitDate;
 	private Date joinDate;
+	private Date sleepDate;		// 휴면 전환일
 	private Date pwModifyDate;
 	private Date infoModifyDate;
 	private int agreeCode;
