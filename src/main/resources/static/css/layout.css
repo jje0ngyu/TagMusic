@@ -120,11 +120,12 @@
 	*/
 	.content {
 	margin-left: 200px;
-	margin: 50px auto;
-	background-color: #ECECEC;
-	width : 1250px;
-	height : 900px;
-	text-align: center;
+    margin-top: 50px;
+    /* margin: 50px auto; */
+    /* background-color: #ECECEC; */
+    width: 100%;
+    height: 900px;
+    text-align: center;
 
 	}
 	

@@ -12,7 +12,9 @@
  }
  
  .mainbox{
-	margin: 50px 60px;
+	margin: 50px auto;
+    width: 1250px;
+    background-color: #ECECEC;
  }
  
  .top_bar{

@@ -15,31 +15,49 @@
 </script>
 <body>
 
-
-
-<div class="mainbox" >
-
-	<div class="maintitle">태그뮤직 고객센터</div>
-	
-	<div class="top_bar">
-	    <ul>
-	        <li>
-	            <a th:href="@{/customerService/home}">홈</a>
-	        </li>
-	        <li>
-	            <a th:href="@{/customerService/notice}">공지사항</a>
-	        </li>
-	        <li>
-	            <a th:href="@{/customerService/FAQ}">자주 하는 질문</a>
-	        </li>
-	        <li class="click">
-	            <a th:href="@{/customerService/chat}">1:1문의하기</a>
-	        </li>
-	    </ul>
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+	<div class="session">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
+		<div class="content">
 		
+		
+		<div class="mainbox" >
+
+			<div class="maintitle">태그뮤직 고객센터</div>
+			
+			<div class="top_bar">
+			    <ul>
+			        <li>
+			            <a th:href="@{/customerService/home}">홈</a>
+			        </li>
+			        <li>
+			            <a th:href="@{/customerService/notice}">공지사항</a>
+			        </li>
+			        <li>
+			            <a th:href="@{/customerService/FAQ}">자주 하는 질문</a>
+			        </li>
+			        <li class="click">
+			            <a th:href="@{/customerService/chat}">1:1문의하기</a>
+			        </li>
+			    </ul>
+				
+			</div>
+
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		</div>
 	</div>
 
-</div>
+
+
+
 
 </body>
 </html>
