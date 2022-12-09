@@ -25,10 +25,10 @@ public class RequestLoggingAspect {
 
 	
 	// 포인트컷 설정
-	@Pointcut("within(com.gdu.semi.controller..*)")  
+	@Pointcut("within(com.gdu.tagmusic.controller..*)")  
 	public void setPointCut() { } 
 	
-	@Around("com.gdu.semi.aop.RequestLoggingAspect.setPointCut()")  
+	@Around("com.gdu.tagmusic.aop.RequestLoggingAspect.setPointCut()")  
 	public Object executeLogging(ProceedingJoinPoint joinPoint) throws Throwable { 
 		
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
