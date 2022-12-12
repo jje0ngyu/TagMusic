@@ -19,10 +19,10 @@
 	<div class="session">
 		<div th:replace="~{layout/side.html::side_layout}"></div>
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
-		<div class="content">
+		<div class="container">
 		
 		
-		<div class="mainbox" >
+		<div class="mainbox">
 
 			<div class="maintitle">태그뮤직 고객센터</div>
 			
@@ -41,17 +41,38 @@
 			            <a th:href="@{/customerService/chat}">1:1문의하기</a>
 			        </li>
 			    </ul>
-				
 			</div>
+			
+			<div>
+			
+			
+				<table>
+					<tbody>
+						<tr>
+							<!-- 유저가 문의를 보낸 경우 -->
+							<td></td>
+							<!-- 관리자가 답변을 한 경우 -->
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			
+			</div>
+			
+			<div>
+				<form action="@{/chat/add}" method="post">
+					<input type="hidden" name="userID" th:value="${session.UserDTO.id}">
+					<div>
+						<input type="text" name="content" placeholder="문의내용" required>
+					</div>
+					<button>보내기</button>	
+				</form>
+			</div>
+			
+
 
 		</div>
-		
-		
-		
-		
-		
-		
-		
+
 		</div>
 	</div>
 

@@ -11,6 +11,13 @@
      margin: 0;
  }
  
+ .container{
+ 	margin-left: 250px;
+ 	margin-top: 50px;
+ 	width: 100%;
+ 	padding-right : 350px;
+ }
+ 
  .mainbox{
 	margin: 50px auto;
     width: 1250px;
@@ -46,3 +53,46 @@
  .click{
  	background-color : gray;
  }
+ 
+ .subvene{
+    width: 300px;
+    display: flex;
+    /* flex 관련 속성 */
+    flex-direction: row;            /* row, row-reverse, column, column-reverse */
+    flex-wrap: wrap;                /* nowrap, wrap */
+    justify-content: space-between; /* space-around, space-between */
+ }
+ 
+ .subvene>div{
+ 	margin : 10px;
+    height: 50px;
+    border: 1px solid black;
+    text-align: center;
+    line-height: 50px;
+ }
+ 
+ .que_box{
+ 	height: 70px;
+    position: relative;
+    padding: 16px 0 16px;
+    border-top: 1px solid #d4d5ce;
+    border-right: 1px solid #c3c5bc;
+    border-bottom: 1px solid #a8aaa2;
+    border-left: 1px solid #c3c5bc;
+}
+.section_FAQ h4{
+	padding: 26px 0 11px;
+}
+.que_box{
+	line-height : 35px;
+}
+
+.que_box h6{
+	display : inline;
+}
+.que_box form{
+	display : inline;
+}
+.que_box input{
+	width: 300px;
+}
