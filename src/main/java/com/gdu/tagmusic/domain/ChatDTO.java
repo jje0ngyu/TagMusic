@@ -16,7 +16,7 @@ public class ChatDTO {
 	private int chatNo;
 	private int userNo; // 이건 어떻게 쓰는거지
 	private Date chatDate;
-	private int ip; 
+	private String ip; 
 	private String content;
 	private int state;
 	private int depth;

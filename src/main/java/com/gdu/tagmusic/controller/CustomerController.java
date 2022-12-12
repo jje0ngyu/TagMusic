@@ -1,9 +1,11 @@
 package com.gdu.tagmusic.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -36,7 +38,9 @@ public class CustomerController {
 	// 고객센터에서 1:1문의하기를 클릭했을 때
 	// 보안 -- 리스트를 들렸다가 나와야될 것 같음
 	@GetMapping("/customerService/chat")
-	public String customerServiceChat() {
+	public String customerServiceChat(HttpServletRequest request, HttpServletResponse response) {
+		//bbsService.findBbsList(request, model);
+		customerService.findChatList(request, response);
 		return "customerCenter/customerServiceChat";
 	}
 	

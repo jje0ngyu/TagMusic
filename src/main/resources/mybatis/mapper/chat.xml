@@ -7,12 +7,21 @@
 
 <mapper namespace="com.gdu.tagmusic.mapper.ChatMapper">
 	
-	<select id="selectAllchatCount">
-		SELECT 
+	
+	<!-- 댓글 삽입하는 쿼리 -->
+	<insert id="insertChat"  parameterType="ChatDTO">
+		INSERT INTO CHAT_ADMIN
+  		  (CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER)
+		VALUES
+   		 (CHAT_SEQ.NEXTVAL, #{userNo}, SYSDATE, #{ip}, #{content}, 1, 0, CHAT_SEQ.CURRVAL, 0)
+	</insert>
+	
+	<select id="selectChatList" parameterType="int" resultType="">
+	
+	
 	
 	
 	</select>
-	
 	
 	
 	

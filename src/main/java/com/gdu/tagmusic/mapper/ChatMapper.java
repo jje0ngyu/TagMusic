@@ -1,9 +1,12 @@
 package com.gdu.tagmusic.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
+import java.util.List;
 
-@Mapper
-public class ChatMapper {
+import com.gdu.tagmusic.domain.ChatDTO;
 
-		
+public interface ChatMapper {
+	
+	public int insertChat(ChatDTO chat);
+	public List<ChatDTO> selectChatList(int userNo);
+	
 }
