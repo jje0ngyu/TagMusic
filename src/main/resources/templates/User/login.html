@@ -91,7 +91,7 @@
 		<div class="login_box">
 			<div class="login_title">로그인</div>
 			<form id="frm_login" th:action="@{/user/login}" method="post">
-				<input type="text" name="url" th:value="${url}">
+				<input type="hidden" name="url" th:value="${url}">
 				<div class="login_email">
 					<input type="text" name="email" id="email" placeholder="이메일 주소">
 				</div>
@@ -118,7 +118,7 @@
 			
 			<div class="login_box_bottom">
 				<p class="box_text">TagMusic 회원이 아닌가요?</p>
-				<a href="">지금 가입하세요.</a>
+				<a th:href="@{/user/join/agree}">지금 가입하세요.</a>
 			</div>
 			
 		</div>

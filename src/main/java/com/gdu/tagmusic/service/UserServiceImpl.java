@@ -76,6 +76,8 @@ public class UserServiceImpl implements UserService {
 			
 			// 로그인 처리를 위해서 session에 로그인 된 사용자 정보를 올려둠
 			request.getSession().setAttribute("loginUser", loginUser);
+			
+			System.out.println("응답" + request.getSession());
 			/*
 			// 로그인 기록 남기기
 			int updateResult = userMapper.updateAccessLog(email);
@@ -102,7 +104,7 @@ public class UserServiceImpl implements UserService {
 				
 				out.println("<script>");
 				out.println("alert('일치하는 회원 정보가 없습니다.');");
-				out.println("location.href='" + request.getContextPath() + "';");
+				/* out.println("location.href='" + request.getContextPath() + "';"); */
 				out.println("</script>");
 				out.close();
 				
