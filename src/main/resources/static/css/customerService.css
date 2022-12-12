@@ -1,0 +1,98 @@
+@charset "UTF-8";
+
+/*
+	display : hidden 자리차지함, 안보임
+	display : none; 자리차지안하고 그냥 없어짐
+*/
+
+
+ * {
+     padding: 0;
+     margin: 0;
+ }
+ 
+ .container{
+ 	margin-left: 250px;
+ 	margin-top: 50px;
+ 	width: 100%;
+ 	padding-right : 350px;
+ }
+ 
+ .mainbox{
+	margin: 50px auto;
+    width: 1250px;
+    background-color: #ECECEC;
+ }
+ 
+ .top_bar{
+ 	margin-top : 10px;
+ }
+
+ ul{
+
+     list-style: none; /*글머리기호없애기*/
+     border-top: 1px solid black;
+     border-bottom: 1px solid black;
+     display: flex; /*메뉴들의 수평 레이아웃 배치*/
+ }
+
+ ul>li{
+     width: 80px; /*너비*/
+     height: 30px; /*높이*/
+     text-align: center; /*가로 가운데 정렬*/
+     line-height: 30px; /*세로 가운데 정렬*/
+ }
+ 
+ ul>li>a{
+ 	 font-size : 10px;
+     display: block;
+     width: 100%;
+     height: 100%;
+ }
+ 
+ .click{
+ 	background-color : gray;
+ }
+ 
+ .subvene{
+    width: 300px;
+    display: flex;
+    /* flex 관련 속성 */
+    flex-direction: row;            /* row, row-reverse, column, column-reverse */
+    flex-wrap: wrap;                /* nowrap, wrap */
+    justify-content: space-between; /* space-around, space-between */
+ }
+ 
+ .subvene>div{
+ 	margin : 10px;
+    height: 50px;
+    border: 1px solid black;
+    text-align: center;
+    line-height: 50px;
+ }
+ 
+ .que_box{
+ 	height: 70px;
+    position: relative;
+    padding: 16px 0 16px;
+    border-top: 1px solid #d4d5ce;
+    border-right: 1px solid #c3c5bc;
+    border-bottom: 1px solid #a8aaa2;
+    border-left: 1px solid #c3c5bc;
+}
+.section_FAQ h4{
+	padding: 26px 0 11px;
+}
+.que_box{
+	line-height : 35px;
+}
+
+.que_box h6{
+	display : inline;
+}
+.que_box form{
+	display : inline;
+}
+.que_box input{
+	width: 300px;
+}
