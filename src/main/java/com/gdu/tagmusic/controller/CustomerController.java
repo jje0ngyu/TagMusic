@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.gdu.tagmusic.service.CustomerService;
 
@@ -42,7 +43,7 @@ public class CustomerController {
 	@PostMapping("/chat/add")
 	public String add(HttpServletRequest request) {
 		customerService.addChat(request);
-		return "redirect:/customerCenter/customerServiceChat"
+		return "redirect:/customerCenter/customerServiceChat";
 	}
 
 	

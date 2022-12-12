@@ -1,5 +1,7 @@
 package com.gdu.tagmusic.service;
 
+import java.util.Optional;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
@@ -18,11 +20,15 @@ public class CustomerServiceImpl implements CustomerService {
 	public int addChat(HttpServletRequest request) {
 		
 		
-		// 아이디 암호화를 왜 하는거지??ㄴ
+		// 파라미터에서 뽑으면 String임
+		Optional<String> opt = Optional.ofNullable(request.getParameter("userNO"));
 		
-		String userid =  request.getParameter("userID");
+		int userNo =  Integer.parseInt(opt.orElse("0"));
 		String title =  securityUtil.preventXSS(request.getParameter("title"));
 		String ip = request.getRemoteAddr();
+		
+		
+		
 		
 		
 		

@@ -61,7 +61,7 @@
 			
 			<div>
 				<form action="@{/chat/add}" method="post">
-					<input type="hidden" name="userID" th:value="${session.UserDTO.id}">
+					<input type="hidden" name="userNO" th:value="${session.UserDTO.userNo}">
 					<div>
 						<input type="text" name="content" placeholder="문의내용" required>
 					</div>
