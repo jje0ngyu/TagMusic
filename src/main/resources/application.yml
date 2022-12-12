@@ -18,9 +18,20 @@ spring:
       jdbc-url: jdbc:oracle:thin:@localhost:1521:xe
       username: TAGMUSIC
       password: 1111
+# mail
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: jeongyj9407@gmail.com
+    password: ppirtmbekexnptpt
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 # mybatis
 mybatis:
   config-location: mybatis/config/mybatis-config.xml
   mapper-locations: mybatis/mapper/*.xml
-
