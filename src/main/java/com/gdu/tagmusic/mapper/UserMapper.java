@@ -13,4 +13,6 @@ public interface UserMapper {
 	public UserDTO selectUserByMap(Map<String, Object> map);
 	public int updateSessionInfo(UserDTO user);
 	
+	// 회원가입
+	public int insertUser(UserDTO user);
 }

@@ -1,5 +1,7 @@
 package com.gdu.tagmusic.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.tagmusic.service.UserService;
 
@@ -42,6 +45,22 @@ public class UserController {
 		model.addAttribute("location", location);
 		model.addAttribute("promotion", promotion);
 		return "user/join";
+	}
+	// 회원가입 - 이메일 중복체크
+	@ResponseBody
+	@GetMapping(value="/user/checkReduceEmail", produces="application/json")
+	public Map<String, Object> checkReduceEmail(String email){
+		return userService.isReduceEmail(email);
+	}
+	// 회원가입 - 이메일 인증코드
+	@ResponseBody
+	@GetMapping(value="/user/sendAuthCode", produces="application/json")
+	public Map<String, Object> sendAuthCode(String email){
+		return userService.sendAuthCode(email);
+	}
+	@PostMapping("/user/join")
+	public void join(HttpServletRequest request, HttpServletResponse response) {
+		userService.join(request, response);
 	}
 	
 	// 마이페이지
