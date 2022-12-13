@@ -1,6 +1,8 @@
 
 package com.gdu.tagmusic.service;
 
-public interface PaymentService {
+import java.util.Map;
 
+public interface PaymentService {
+	public Map<String, Object> getPassList();
 }
