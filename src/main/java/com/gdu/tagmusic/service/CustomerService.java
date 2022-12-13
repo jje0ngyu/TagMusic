@@ -9,6 +9,6 @@ import org.springframework.ui.Model;
 
 public interface CustomerService {
 	public int addChat(HttpServletRequest request);
-	public void findChatList(HttpServletRequest request, HttpServletResponse response);
+	public void findChatList(HttpServletRequest request, HttpServletResponse response, Model model);
 	
 }

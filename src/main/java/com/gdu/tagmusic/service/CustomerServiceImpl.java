@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.gdu.tagmusic.domain.ChatDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.ChatMapper;
@@ -46,24 +47,19 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 	
 	@Override
-	public void findChatList(HttpServletRequest request, HttpServletResponse response) {
+	public void findChatList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		
 		
 		HttpSession session = request.getSession();
-		int userNo = ((UserDTO)session.getAttribute("loginUser")).getUserNo();
+		Optional<Integer> opt = Optional.ofNullable(((UserDTO)session.getAttribute("loginUser")).getUserNo());
 		
 		
-		if(request.getParameter("userNO")!=null) {
+		if(opt.isPresent()) {
 			
+			int userNo = opt.get();
 	
-			List<ChatDTO> chatList = ChatMapper.selectChatList(userNo);
-			
-			
-			
-			
-			
-			
-			
+			List<ChatDTO> chatList = chatMapper.selectChatList(userNo);
+			model.addAttribute("chatList", chatList);
 			
 		}else{
 			
@@ -82,18 +78,7 @@ public class CustomerServiceImpl implements CustomerService {
 			}catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-
-			
-			
 		}
-		
-		
-		
-
-
-		
-		
 	}
 
 }

@@ -16,6 +16,9 @@
    		 (CHAT_SEQ.NEXTVAL, #{userNo}, SYSDATE, #{ip}, #{content}, 1, 0, CHAT_SEQ.CURRVAL, 0)
 	</insert>
 	
+	
+	
+	<!-- 로그인한 유저의 게시판만 조회하는 쿼리 -->
 	<select id="selectChatList" parameterType="int" resultType="">
 	
 	
