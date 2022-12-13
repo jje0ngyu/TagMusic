@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.tagmusic.mapper.HomeMapper">
+	
+	<!--  # 게시글 총 개수 -->
+	<select id="selectMusicCnt" resultType="int">
+		SELECT COUNT(MUSIC_NO) 
+		FROM MUSIC
+	</select>
+	
+	<!--  # 전체 음악리스트 조회 -->
+	<!-- - page 처리 : 가상칼럼사용 -->
+	<select id="selectMusicList" parameterType="map" resultType="MusicDTO">
+		SELECT A.MUSIC_NO, A.EMAIL, A.MUSIC_TITLE, A.MUSIC_CONTENT, A.MUSIC_ALBUM, A.MUSIC_GENRE, A.MUSIC_UPLOAD_DATE, A.MUSIC_MODIFY_DATE, A.IP, A.IMG_ORIGIN, A.IMG_FILESYSTEM, A.MUSIC_ORIGIN, A.MUSIC_FILESYSTEM, A.DOWNLOAD_CNT, A.IMAGE_PATH, A.MUSIC_PATH
+			FROM (SELECT ROW_NUMBER() OVER(ORDER BY MUSIC_NO DESC) AS ROW_NUM, MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE,
+				MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMAGE_PATH, MUSIC_PATH
+				FROM MUSIC) A
+		WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

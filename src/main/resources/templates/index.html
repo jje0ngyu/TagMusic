@@ -5,6 +5,83 @@
 <title></title>
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script th:inline="javascript">
+	
+	
+		$(document).ready(function() {
+			
+			fn_updatedMusic();
+		});
+				
+			
+			
+			
+	
+		
+		
+		// # 구현 : main페이지 최신목록 조회
+		
+		function fn_updatedMusic() {
+			
+			$.ajax({
+				type: 'get',
+				url: '/music/list/updated',
+				data : 'page=' + $('#page').val(),
+				
+				dataType: 'json',
+				success: function(resData) {
+					
+					// tr -> main item , td -> 나머지 3개
+					
+					
+					// 1. music데이터 뿌리기 : 태그를 완성하여 main_item_area 에 추가
+					$.each(resData.musicList, function(index, music) {
+						$('<div class="main_item">')
+						.append($('<a class="item_image" href="/music/detail/?musicNo=' + music.musicNo +'">').text(music.musicImage))
+						.append($('<a class="item_title" href="/music/detail/?musicNo=' + music.musicNo +'">').text(music.musicTitle))
+						.append($('<a class="item_title" href="/music/detail/?musicNo=' + music.musicNo +'">').text(music.musicTitle))
+						.appendTo('.main_item_area');
+					});
+					
+					// 2. 페이징 처리
+					$('#main_item_area').empty();
+					var pageUtil = resData.pageUtil;
+					var paging = '';
+					
+					
+					// 1) 왼쪽버튼
+					if(pageUtil.beginPage != 1) {
+						paging += '<span class="" data-page="' + (pageUtil.beginPage -1) +  +'">◀</span>';
+					}
+					
+					
+					// 2) 가운데
+					for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+						if(p == $('#page').val()){
+							paging += '<strong>' + p + '</strong>';
+						} else {
+							paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
+						}
+					}
+					
+					// ?????????????????????????????????????????????????????????/
+					// 페이징처리
+					// 아티스트 어디서 받아올건지
+					
+					
+				
+					// 3) 오른쪽 버튼
+					if(pageUtil.endPage != pageUtil.totalPage){
+						paging += '<span class="" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+					}
+					$('#main_item_area').append(paging);
+					
+				}
+			});
+			
+		}
+	
+	</script>
 </head>
 <body>
 	
@@ -15,8 +92,47 @@
 		
 		
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
-		<div class="content">여기서부터 내용을 작성하시오</div>
+		<div class="content">
+		
+		<!--  # 메인페이지 -->
+		<div class="main">
+			<!--  # 최신리스트 -->
+			<div class="main_list">
+				<div class="main_header">
+					<div class="list_title">최신리스트</div>
+					<input type="button" value="전체조회">
+				</div>
+				
+				<!-- 구현 : 최신음악리스트4 -->
+				<!-- 
+					musicImage, artist : 별도의 테이블에서 값을 구해온다
+					musictitle : music테이블에서 조회
+				 -->
+				 
+				 <!--  * 페이지파라미터 : 최초는 1 -->
+				<input type="hidden" id="page" value="1">
+				
+				<div class="main_item_area">
+					<div class="main_item" th:each="music:${musicList}">
+					
+						<div class="item_image" th:text="${musicImage}">이미지</div>
+						<div class="item_title" th:text="${music.musicTitle}">제목</div>
+						<div class="item_artist" th:text="${artist}">아티스트</div>
+					</div>
+					
+					
+				</div>
+			</div>
+			<!--  # 믹스리스트 -->
+			<div class="main_list">믹스리스트
+			
+			</div>
+		</div>
+		
+		</div>
 	</div>
+	
+
 
 
 
