@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/mypage.css}">
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script>
+	$(function(){
+		fn_modifyArtist();
+		
+	});
+	
+	// 닉네임 정보수정
+	function fn_modifyArtist(){
+		$('#info_artist').click(function(){
+			
+		});
+		
+	}
+</script>
+</head>
+<body>
+	<nav th:replace="~{layout/mypageNav.html::mypageFragment}"></nav>
+	<div class="contain">
+		<div>
+			<h1>개인정보 관리</h1>
+			<span>멜론에 등록된 개인정보 정보를 확인할 수 있습니다. 최신 정보로 관리해주세요.</span>
+		</div>
+		
+		<div class="info_box">
+			<div class="info artist" id="info_artist">닉네임</div>
+			<div class="info name">이름/나이 확인</div>
+			<div class="info mobile">연락처</div>
+			<div class="info marketing">이벤트/마케팅 혜택알림</div>
+			<div class="info retire">테그뮤직 탈퇴</div>
+		</div>
+		<div class="modify_box">
+			<div class="modify_artist">
+				<div>
+					댓글, 좋아요, 팬맺기 등<br/> 태그뮤직 서비스 이용 시 노출되는<br/> 닉네임입니다.
+				</div>
+				<div class="input_artist">
+					<input type="text" id="artist" placeholder="닉네임 입력">
+				</div>
+				<div class="msg_artist">
+					닉네임을 입력해 주세요. 닉네임은 2~15자로 한글, 영문, 숫자, 특수문자(-, _, .)만 사용가능합니다.
+				</div>
+				<div>
+					한글 및 영문, 숫자, 일부 특수문자(-,_,.) 만 사용 가능하며, 최대 15자까지만 등록 가능합니다.
+				</div>
+				<div>
+					* 닉네임을 변경하면 이전 작성한 글의 닉네임도 같이 변경 됩니다.
+				</div>
+				<div>
+					<input type="button" value="취소">
+					<input type="button" value="변경">
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -13,12 +13,14 @@
 		fn_pwCheck();
 		fn_pwCheckAgain();
 		fn_nameCheck();
+		fn_fileCheck();
 		fn_mobileCheck();
 		fn_birthyear();
 		fn_birthmonth();
 		fn_birthdate();
 		fn_emailCheck();
 		fn_join();
+		fn_cancel();
 	});
 	
 	// 전역변수 (각종 검사를 통과하였는지 점검하는 플래그 변수)
@@ -186,6 +188,17 @@
 		
 	}  // fn_nameCheck
 	
+	// 파일 체크
+	function fn_fileCheck(){
+		$('#profileImage').change(function(){
+			let maxSize = 1024 * 1024 * 50; // 50MB
+			if(this.size > maxSize){
+				alert('50MB 이하의 파일만 첨부할 수 있습니다.');
+				$(this).val(''); // 첨부파일 없애기
+				return;
+			}
+		});
+	}
 	// 5. 휴대전화
 	function fn_mobileCheck(){
 		
@@ -308,8 +321,16 @@
 		});  // submit
 		
 	}  // fn_join
+	
+	// 목록
+	function fn_cancel(){
+		$('#btn_cancel').click(function(){
+			location.href = '/';
+		}); 
+	}
 </script>
-<link rel="stylesheet" th:href="@{/css/agree.css}" />
+<link rel="stylesheet" th:href="@{/css/join.css}" />
+
 </head>
 <body>
 
@@ -370,11 +391,6 @@
 				<div>
 					<input type="text" name="artist" id="artist">
 				</div>
-			</div>
-			<!-- 프로필 사진 -->
-			<div>
-				<label for="profile_image">프로필 사진</label>
-				
 			</div>
 			<!-- 성별 -->
 			<div>
@@ -484,7 +500,7 @@
 			<!-- 버튼 -->
 			<div>
 				<button>가입하기</button>
-				<input type="button" value="취소하기" onclick="location.href='${contextPath}'">
+				<input type="button" value="취소하기" id="btn_cancel">
 			</div>
 		
 		</form>
