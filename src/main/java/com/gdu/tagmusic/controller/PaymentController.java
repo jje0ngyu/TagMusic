@@ -2,6 +2,8 @@ package com.gdu.tagmusic.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +27,14 @@ public class PaymentController {
 	@ResponseBody
 	@PostMapping(value="/pass/list", produces="application/json; charset=UTF-8")
 	public Map<String, Object> passList(){
-		System.out.println("컨트롤러");
 		return paymentService.getPassList();
 	}
 	
-	
-	//@PostMapping("/payment/thirtyDay")
-	//public 
+	@ResponseBody
+	@PostMapping(value="/payment/thirtyDay", produces="application/json; charset=UTF-8")
+	public Map<String, Object> paymentResult(HttpServletRequest request){
+		return paymentService.buyPass(request); 
+	}
 }
 
 

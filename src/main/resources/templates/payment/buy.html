@@ -53,10 +53,16 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
+	
+	
+	
+	
 	fn_passList();
+	
+	
+	
  });
 function fn_passList(){
-	console.log('하이');
 	$.ajax({
 		type: 'post',
 		url: '/pass/list',
@@ -65,7 +71,7 @@ function fn_passList(){
 			var txt = '';
 			$.each(resData.passList, function(i, pass){
 				txt += '<h2>'+pass.passName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+pass.passPrice+' 원!</h2>';
-				txt += '<input type="button" value="카카오페이로 결제하기" data-ticket="TagMusic-'+pass.passName+'" data-pg="kakaopay" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
+				txt += '<input type="button" value="카카오페이로 결제하기" data-ticket="TagMusic-'+pass.passName+'" data-passno="'+pass.passNo+'" data-pg="kakaopay" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
 				if(pass.passName == "30일이용권"){
 					txt += '<input type="button" value="선물하기" id="btn_gift">';
 				}
@@ -77,50 +83,71 @@ function fn_passList(){
 		}
 	});
 }
+
 function fn_buyTicket(e){
+	var musicAmount = $(e).data('amount');
+	var paymentPg = $(e).data('pg');
+	var ticketName = $(e).data('ticket');
+	var passNo = $(e).data('passno');
+	var userName = $('#userName').data('name');
+	var userEmail = $('#userEmail').data('email');
+	var userMobile = $('#userMobile').data('mobile');
+	var userAddr = '';		
+	userAddr += $('#userAddr1').data('addr');
+	userAddr += $('#userAddr2').data('addr');
+	userAddr += $('#userAddr3').data('addr');
+	userAddr += $('#userAddr4').data('addr');
+	var userPostcode = $('#postcode').data('postcode');
 		
-		var musicAmount = $(e).data('amount');
-		var paymentPg = $(e).data('pg');
-		var ticketName = $(e).data('ticket');
-		console.log(ticketName);
-			
-		var IMP = window.IMP; // 생략가능
+	var IMP = window.IMP; // 생략가능
+		
+	if(paymentPg == 'kakaopay'){
 		IMP.init('imp66111374');
-		var merchant_uid = 'TagMusic_' + new Date().getTime();
-		IMP.request_pay({ 
-			pg: paymentPg,
+	}
+	var merchant_uid = 'TagMusic_' + new Date().getTime();
+	console.log(musicAmount + userEmail +userMobile );
+	IMP.request_pay({ 
+		pg: paymentPg,
 		pay_method: 'card',
 		merchant_uid: merchant_uid,
 		name: ticketName, 
 		//name: '노래제목:'+firstCartMusicName+' 외'+ (muprice-1) +'곡',
 		amount: musicAmount,
-		buyer_email: 'iamport@siot.do',// 구매자
-		buyer_name: '홍길동',
-		buyer_tel: '010-1234-5678',
-		buyer_addr: '서울특별시 강남구 삼성동',
-		buyer_postcode: '123-456',
+		buyer_email: userEmail,// 구매자
+		buyer_name: userName,
+		buyer_tel: userMobile,
+		buyer_addr: '서울시',
+		buyer_postcode: '123-111',
 		m_redirect_url: 'https://www.yourdomain.com/payments/complete'
-	}, 
-	function (rsp) {
-		console.log(rsp);
-		if (rsp.success) {
-			$.ajax({
-				type: 'post',
-				url: '/payment/thirtyDay',
-				data: ''
-			});
-			var msg = '결제가 완료되었습니다.';
-			msg += '고유ID : ' + rsp.imp_uid;
-			msg += '상점 거래ID : ' + rsp.merchant_uid;
-			msg += '결제 금액 : ' + rsp.paid_amount;
-			msg += '카드 승인번호 : ' + rsp.apply_num;
-		} else {
+		}, function (rsp) {
+			alert(rsp.success);
+			if (rsp.success) {
+			alert('성공했어');
+				 $.ajax({
+					type: 'post',
+					url: '/payment/thirtyDay',
+					data: 'email=' + userEmail + '&price=' + musicAmount + '&passNo=' + passNo,
+					dataType: 'json',
+					success: function(resData){
+						var msg = '';
+						console.log(resData);
+						if(resData.result == 1){
+							msg += '결제성공';
+						} else {
+							msg += '결제실패';
+						}
+						alert(msg);
+					}
+					
+				}); 
+			} else {
 			var msg = '';
 			msg += rsp.error_msg;
+			alert(msg)
 		}
-			alert(msg);
-		});
+	});
 	
+
 }
 
 
@@ -146,6 +173,14 @@ function fn_buyTicket(e){
 					</li>
 				</ul>
 			</nav>
+			<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
+			<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
+			<input type="hidden" id="userMobile" th:data-mobile="${session.loginUser.mobile}">
+			<input type="hidden" id="userAddr1" th:data-addr="${session.loginUser.roadAddress}">
+			<input type="hidden" id="userAddr2" th:data-addr="${session.loginUser.jibunAddress}">
+			<input type="hidden" id="userAddr3" th:data-addr="${session.loginUser.detailAddress}">
+			<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
+			<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
 			<div id="buyPageDiv">
 			</div>
 		</div>
