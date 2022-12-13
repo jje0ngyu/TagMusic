@@ -38,9 +38,13 @@ public class CustomerController {
 	// 고객센터에서 1:1문의하기를 클릭했을 때
 	// 보안 -- 리스트를 들렸다가 나와야될 것 같음
 	@GetMapping("/customerService/chat")
-	public String customerServiceChat(HttpServletRequest request, HttpServletResponse response, Model model) {
-		//bbsService.findBbsList(request, model);
+	public void customerServiceChat(HttpServletRequest request, HttpServletResponse response, Model model) {
 		customerService.findChatList(request, response, model);
+		//return "customerCenter/customerServiceChat";
+	}
+	
+	@GetMapping("/customerService/customerServiceChat")
+	public String customerServiceCustomerServiceChat(HttpServletRequest request, HttpServletResponse response, Model model) {
 		return "customerCenter/customerServiceChat";
 	}
 	

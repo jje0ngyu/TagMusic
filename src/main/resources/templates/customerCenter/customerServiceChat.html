@@ -43,7 +43,7 @@
 			    </ul>
 			</div>
 			
-			<div>
+			<div class="chat_box">
 				<table>
 					<tbody>
 						<tr>
@@ -59,7 +59,7 @@
 			
 			<div>
 				<form action="@{/chat/add}" method="post">
-					<input type="hidden" name="userNO" th:value="${session.UserDTO.userNo}">
+					<input type="hidden" name="userNO" th:value="${session.loginUser.userNo}">
 					<div>
 						<input type="text" name="content" placeholder="문의내용" required>
 					</div>

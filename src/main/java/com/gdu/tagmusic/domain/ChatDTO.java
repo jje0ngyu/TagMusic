@@ -22,6 +22,6 @@ public class ChatDTO {
 	private int depth;
 	private int groupNO;
 	private int groupOrder;
-	
+	private UserDTO userDTO;
 
 }

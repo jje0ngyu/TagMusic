@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.gdu.tagmusic.domain.ChatDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.ChatMapper;
@@ -49,19 +48,37 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public void findChatList(HttpServletRequest request, HttpServletResponse response, Model model) {
 		
-		
-		HttpSession session = request.getSession();
-		Optional<Integer> opt = Optional.ofNullable(((UserDTO)session.getAttribute("loginUser")).getUserNo());
-		
-		
-		if(opt.isPresent()) {
+		try {
 			
-			int userNo = opt.get();
-	
+			HttpSession session = request.getSession();
+			Optional<Integer> opt = Optional.ofNullable(((UserDTO)session.getAttribute("loginUser")).getUserNo());
+			int userNo = opt.orElse(0);
+				
+			if(userNo != 0) {
+				
 			List<ChatDTO> chatList = chatMapper.selectChatList(userNo);
 			model.addAttribute("chatList", chatList);
+				
+			}
 			
-		}else{
+			try {
+				
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			out.println("<script>");
+			out.println("alert('이용가능.');");
+			out.println("location.href='" + request.getContextPath() + "/customerService/customerServiceChat';");
+			out.println("</script>");	
+			
+			out.close();
+				
+			}catch (IOException e2) {
+				e2.printStackTrace();
+			}
+			
+			
+		}catch (NullPointerException e) {
 			
 			try {
 				
@@ -70,15 +87,26 @@ public class CustomerServiceImpl implements CustomerService {
 			
 			out.println("<script>");
 			out.println("alert('회원만 이용가능한 페이지 입니다.');");
-			out.println("history.back();");
+			out.println("location.href='" + request.getContextPath() + "/user/login/form';");
 			out.println("</script>");	
 			
 			out.close();
 				
-			}catch (IOException e) {
-				e.printStackTrace();
+			}catch (IOException e2) {
+				e2.printStackTrace();
 			}
-		}
-	}
+			
+			
+	
+		
+		
+		
+		
 
+			 
+
+		}
 }
+}
+
+

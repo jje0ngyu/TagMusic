@@ -96,3 +96,6 @@
 .que_box input{
 	width: 300px;
 }
+.chat_box {
+	height: 500px; /*높이*/
+}
