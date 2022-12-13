@@ -8,15 +8,48 @@
 <script>
 	$(function(){
 		fn_modifyArtist();
-		
+		fn_modifyName();
+		fn_modifyMobile();
+		fn_backlayer();
+		fn_retire();
 	});
 	
-	// 닉네임 정보수정
+	// 닉네임 수정
 	function fn_modifyArtist(){
 		$('#info_artist').click(function(){
-			
+			$('.modify_artist').removeClass('blind');
 		});
-		
+	}
+	
+	// 이름 수정
+	function fn_modifyName(){
+		$('#info_name').click(function(){
+			$('.modify_name').removeClass('blind');
+		});
+	}
+	// 연락처 수정
+	function fn_modifyMobile(){
+		$('#info_mobile').click(function(){
+			$('.modify_mobile').removeClass('blind');
+		});
+	}
+	function fn_backlayer(){
+		$('.info').click(function(){
+			$('.box_backlayer').removeClass('blind');
+			$('.modify_box').removeClass('blind');
+		});
+		$('.box_backlayer').click(function(){
+			$('.box_backlayer').addClass('blind');
+			$('.modify_box').addClass('blind');
+			$('.modify_artist').addClass('blind');
+			$('.modify_name').addClass('blind');
+			$('.modify_mobile').addClass('blind');
+		})
+	}
+	function fn_retire(){
+		$('#retire').click(function(){
+			loacation.href='/user/retire';
+		});
 	}
 </script>
 </head>
@@ -30,14 +63,15 @@
 		
 		<div class="info_box">
 			<div class="info artist" id="info_artist">닉네임</div>
-			<div class="info name">이름/나이 확인</div>
-			<div class="info mobile">연락처</div>
-			<div class="info marketing">이벤트/마케팅 혜택알림</div>
-			<div class="info retire">테그뮤직 탈퇴</div>
+			<div class="info name" id="info_name">이름/나이 확인</div>
+			<div class="info mobile" id="info_mobile">연락처</div>
+			<div class="info marketting" id="info_marketting">이벤트/마케팅 혜택알림</div>
+			<div class="info" id="retire">테그뮤직 탈퇴</div>
 		</div>
-		<div class="modify_box">
-			<div class="modify_artist">
-				<div>
+		<div class="box_backlayer blind"></div>
+		<div class="modify_box blind">
+			<div class="modify_artist blind">
+				<div class="info_title">
 					댓글, 좋아요, 팬맺기 등<br/> 태그뮤직 서비스 이용 시 노출되는<br/> 닉네임입니다.
 				</div>
 				<div class="input_artist">
@@ -53,8 +87,52 @@
 					* 닉네임을 변경하면 이전 작성한 글의 닉네임도 같이 변경 됩니다.
 				</div>
 				<div>
-					<input type="button" value="취소">
-					<input type="button" value="변경">
+					<input class="btn cancel" type="button" value="취소">
+					<input class="btn correct" type="button" value="변경">
+				</div>
+			</div>
+			<div class="modify_name blind">
+				<div class="info_title">
+					등록된 본인인증 정보를<br/> 확인해주세요.
+				</div>
+				<div>
+					<input type="text" id="name" placeholder="이름 입력">
+				</div>
+				<div class="msg_name">
+				</div>
+				<div>
+					* 본인인증 정보는 서비스 이용을 위한 나이확인 및 본인확인 용도로 활용됩니다. 본인인증을 통해 이름/나이 정보를 업데이트해 주세요.
+					<br/>
+					* 한번 등록된 정보는 삭제하거나 타인의 정보로 변경할 수 없으니 반드시 회원님의 정보로 본인인증해 주세요.
+				</div>
+				<div>
+					<input class="btn cancel" type="button" value="취소">
+					<input class="btn correct" type="button" value="변경">
+				</div>
+			</div>
+			<div class="modify_mobile blind">
+				<div class="info_title">
+					멜론에 등록된 연락처를<br/>확인해 주세요.
+				</div>
+				<div>
+					<span class="txt_mobile">이메일</span>
+					<input type="text">이메일주소
+				</div>
+				<div>
+					<span class="txt_mobile">휴대폰번호</span>
+					<input type="text"> 010-****-1111
+				</div>
+				<div>
+					<div>
+						사용중인 연락처로 등록되어 있나요?
+					</div>
+					<div>
+						연락처 정보가 변경되었다면, 현재 사용중인 정보로 변경해 주세요.
+					</div>
+					<div>
+						<input class="btn cancel" type="button" value="취소">
+						<input class="btn correct" type="button" value="변경">
+					</div>
 				</div>
 			</div>
 		</div>
