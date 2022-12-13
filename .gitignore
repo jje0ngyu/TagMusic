@@ -33,6 +33,5 @@ build/
 .vscode/
 
 ### yam, properties ###
-.yml
-.yaml
-.properties
+application.yml
+*.properties
