@@ -52,6 +52,7 @@
 	display : flex;
 	padding : 5px;
 	width : 250x;
+	border-radius: 15px;
 	}
 	
 	
@@ -125,6 +126,7 @@
 	width : 1250px;
 	height : 900px;
 	text-align: center;
+	padding-left: 200px;
 
 	}
 	
