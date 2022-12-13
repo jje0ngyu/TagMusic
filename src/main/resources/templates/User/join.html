@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script>
+	
+	$(function(){
+		fn_fn_emailRegEx();
+		fn_emailCheck();
+		fn_pwCheck();
+		fn_pwCheckAgain();
+		fn_nameCheck();
+		fn_mobileCheck();
+		fn_birthyear();
+		fn_birthmonth();
+		fn_birthdate();
+		fn_join();
+	});
+	
+	// 전역변수 (각종 검사를 통과하였는지 점검하는 플래그 변수)
+	var pwPass = false;
+	var rePwPass = false;
+	var namePass = false;
+	var mobilePass = false;
+	var authCodePass = false;
+	
+	function fn_emailRegEx(){
+		$('#email').keyup(function(){
+			let emailValue = $(this).val();
+			// 정규식 (4~60자, 숫자+소문자+대문자+특수문자(-,_) 조합)
+			// 최소 입력 aaaa@a.aa
+			let regEmail = /^[0-9a-zA-Z][0-9a-zA-Z-_]{3,19}@[a-z]{1,10}[\.][a-z\.]{2,18}$/;
+			if(regEmail.test(emailValue) == false) {
+				$('#msg_email_ab').removeClass('blind');
+			} else {
+				$('#msg_email').addClass('blind');
+			}
+		});
+	}
+	
+	// 1. 이메일
+	//    1) 입력된 이메일이 회원 정보에 있는지 체크하는 ajax
+	//    2) 입력된 이메일로 인증번호를 보내는 ajax
+	function fn_emailCheck(){
+		
+		$('#btn_getAuthCode').click(function(){
+			
+			// 인증코드를 입력할 수 있는 상태로 변경함
+			$('#authCode').prop('readonly', false);
+			
+			// resolve : 성공하면 수행할 function
+			// reject  : 실패하면 수행할 function
+			new Promise(function(resolve, reject) {
+		
+				let regEmail = /^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+(\.[a-zA-Z]{2,}){1,2}$/;
+				
+				// 입력한 이메일
+				let emailValue = $('#email').val();
+				
+				// 정규식 검사
+				if(regEmail.test(emailValue) == false){
+					reject(1);  // catch의 function으로 넘기는 인수 : 1(이메일 형식이 잘못된 경우)
+					
+					authCodePass = false;
+					return;
+				}
+				
+				// 이메일 중복 체크
+				$.ajax({
+					/* 요청 */
+					type: 'get',
+					url: '${contextPath}/user/checkReduceEmail',
+					data: 'email=' + $('#email').val(),
+					/* 응답 */
+					dataType: 'json',
+					success: function(resData){
+						// 기존 회원 정보에 등록된 이메일이라면 실패 처리
+						if(resData.isUser){
+							reject(2);   // catch의 function으로 넘기는 인수 : 2(다른 회원이 사용중인 이메일이라서 등록이 불가능한 경우)
+						} else {
+							resolve();   // Promise 객체의 then 메소드에 바인딩되는 함수
+						}
+					}
+				});  // ajax
+				
+			}).then(function(){
+				
+				// 인증번호 보내는 ajax
+				$.ajax({
+					/* 요청 */
+					type: 'get',
+					url: '${contextPath}/user/sendAuthCode',
+					data: 'email=' + $('#email').val(),
+					/* 응답 */
+					dataType: 'json',
+					success: function(resData){
+						alert('인증코드를 발송했습니다. 이메일을 확인하세요.');
+						// 발송한 인증코드와 사용자가 입력한 인증코드 비교
+						$('#btn_verifyAuthCode').click(function(){
+							if(resData.authCode == $('#authCode').val()){
+								alert('인증되었습니다.');
+								authCodePass = true;
+							} else {
+								alert('인증에 실패했습니다.');
+								authCodePass = false;
+							}
+						});
+					},
+					error: function(jqXHR){
+						alert('인증번호 발송이 실패했습니다.');
+						authCodePass = false;
+					}
+				});  // ajax
+				
+			}).catch(function(code){  // 인수 1 또는 2를 전달받기 위한 파라미터 code 선언
+
+				switch(code){
+				case 1:
+					$('#msg_email').text('이메일 형식이 올바르지 않습니다.');
+					break;
+				case 2:
+					$('#msg_email').text('이미 사용중인 이메일입니다.');
+					break;
+				}
+			
+				authCodePass = false;
+			
+				// 입력된 이메일에 문제가 있는 경우 인증코드 입력을 막음
+				$('#authCode').prop('readonly', true);
+				
+			});  // new Promise
+			
+		});  // click
+		
+	}  // fn_emailCheck
+	
+	
+</script>
+</head>
+<body>
+
+	<div>
+	
+		<h1>TagMusic (로고)</h1>
+	
+		<div>* 표시는 필수 입력사항입니다.</div>
+		
+		<form id="frm_join" action="${contextPath}/user/join" method="post">
+		
+			<!-- 약관 동의 여부 -->
+			<input type="hidden" name="location" value="${location}">
+			<input type="hidden" name="promotion" value="${promotion}">
+		
+			<!-- 이메일 -->
+			<div>
+				<label for="email">이메일*</label>
+					<div>
+						<input type="text" name="email" id="email">
+						<input type="button" value="인증번호받기" id="btn_getAuthCode">
+					</div>
+				<span id="msg_email"></span>
+				<div>
+					<input type="text" id="authCode" placeholder="인증코드 입력">
+					<input type="button" value="인증하기" id="btn_verifyAuthCode">
+				</div>
+			</div>
+			<!-- 비밀번호 -->
+			<div>
+				<label for="pw">비밀번호*</label>
+				<div>
+					<input type="password" name="pw" id="pw">
+				</div>
+				<span id="msg_pw"></span>
+			</div>
+			
+			<!-- 비밀번호 재확인 -->
+			<div>
+				<label for="re_pw">비밀번호 확인*</label>
+				<div>
+					<input type="password" id="re_pw">
+				</div>
+				<span id="msg_re_pw"></span>
+			</div>
+			
+			<!-- 이름 -->
+			<div>
+				<label for="name">이름*</label>
+				<div>
+					<input type="text" name="name" id="name">
+				</div>
+			</div>
+			
+			<!-- 성별 -->
+			<div>
+				<span>성별*</span>
+				<div>
+					<select name="gender">
+						<option value="">--선택해주세요--</option>
+						<option value="No">선택 안함</option>
+						<option value="M">남자</option>
+						<option value="F">여자</option>
+					</select>
+				</div>
+			</div>
+		
+			<!-- 휴대전화 -->
+			<div>
+				<label for="mobile">휴대전화*</label>
+				<div>
+					<input type="text" name="mobile" id="mobile">
+				</div>
+				<span id="msg_mobile"></span>
+			</div>
+		
+			<!-- 생년월일 -->
+			<div>
+				<label for="birthyear">생년월일*</label>
+				<div>
+					<select name="birthyear" id="birthyear"></select>
+					<select name="birthmonth" id="birthmonth"></select>
+					<select name="birthdate" id="birthdate"></select>				
+				</div>
+			</div>
+			
+			<!-- 주소 -->
+			<div>
+				<input type="text" onclick="fn_execDaumPostcode()" name="postcode" id="postcode" placeholder="우편번호" readonly="readonly">
+				<input type="button" onclick="fn_execDaumPostcode()" value="우편번호 찾기"><br>
+				<input type="text" name="roadAddress" id="roadAddress" placeholder="도로명주소"  readonly="readonly">
+				<input type="text" name="jibunAddress" id="jibunAddress" placeholder="지번주소"  readonly="readonly"><br>
+				<span id="guide" style="color:#999;display:none"></span>
+				<input type="text" name="detailAddress" id="detailAddress" placeholder="상세주소">
+				<input type="text" name="extraAddress" id="extraAddress" placeholder="참고항목" readonly="readonly">
+				<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+				<script>
+				    //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+				    function fn_execDaumPostcode() {
+				        new daum.Postcode({
+				            oncomplete: function(data) {
+				                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+				
+				                // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+				                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+				                var roadAddr = data.roadAddress; // 도로명 주소 변수
+				                var extraRoadAddr = ''; // 참고 항목 변수
+				
+				                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+				                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+				                if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+				                    extraRoadAddr += data.bname;
+				                }
+				                // 건물명이 있고, 공동주택일 경우 추가한다.
+				                if(data.buildingName !== '' && data.apartment === 'Y'){
+				                   extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+				                }
+				                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+				                if(extraRoadAddr !== ''){
+				                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+				                }
+				
+				                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+				                document.getElementById('postcode').value = data.zonecode;
+				                document.getElementById("roadAddress").value = roadAddr;
+				                document.getElementById("jibunAddress").value = data.jibunAddress;
+				                
+				                // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+				                if(roadAddr !== ''){
+				                    document.getElementById("extraAddress").value = extraRoadAddr;
+				                } else {
+				                    document.getElementById("extraAddress").value = '';
+				                }
+				
+				                var guideTextBox = document.getElementById("guide");
+				                // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+				                if(data.autoRoadAddress) {
+				                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+				                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+				                    guideTextBox.style.display = 'block';
+				
+				                } else if(data.autoJibunAddress) {
+				                    var expJibunAddr = data.autoJibunAddress;
+				                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+				                    guideTextBox.style.display = 'block';
+				                } else {
+				                    guideTextBox.innerHTML = '';
+				                    guideTextBox.style.display = 'none';
+				                }
+				            }
+				        }).open();
+				    }
+				</script>
+			</div>
+			
+			
+			
+			<hr>
+			
+			<!-- 버튼 -->
+			<div>
+				<button>가입하기</button>
+				<input type="button" value="취소하기" onclick="location.href='${contextPath}'">
+			</div>
+		
+		</form>
+	
+	</div>
+</body>
+</html>

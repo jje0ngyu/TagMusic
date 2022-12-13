@@ -1,11 +1,128 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('Tag Music')}"></head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script>
+	
+	$(function(){
+		fn_inputEmail();
+		fn_inputPw();
+		fn_login();
+	});
+	
+	function fn_inputEmail(){
+		/* 
+			① 아이디 공백 검사
+			아이디 input 박스 밑에 색깔 그림자를 넣어, 오류난 위치 사용자에게 알려주기
+			오류 예시
+				1) @ 와 . 이 없을 경우
+					- 메시지창 : "잘못된 이메일 형식"
+					- 코드 진행 금지
+				2) @ 와 . 이 있으면 데이터 검사 진행
+					- 메시지창 : "이 이메일 주소를 사용하는 계정을 찾을 수 없음"
+					- 새로운 계정 등록 (회원가입) 유도
+		*/
+		// 이메일 정규식 검사
+		$('#email').keyup(function(){
+			let emailValue = $(this).val();
+			// 정규식 (4~60자, 숫자+소문자+대문자+특수문자(-,_) 조합)
+			// 최소 입력 aaaa@a.aa
+			let regEmail = /^[0-9a-zA-Z][0-9a-zA-Z-_]{3,19}@[a-z]{1,10}[\.][a-z\.]{2,18}$/;
+			if(regEmail.test(emailValue) == false) {
+				$('.msg_email').removeClass('blind');
+			} else {
+				$('.msg_email').addClass('blind');
+			}
+		});
+		
+		// 확인 메시지
+		$('#email').blur(function(){
+			if($('#email').val() == '') {
+				$('.msg_email').removeClass('blind');
+			}
+		});
+	}
+	
+	function fn_inputPw(){
+		$('#pw').keyup(function(){
+			let emailValue = $(this).val();
+			// 정규식 (4~60자, 숫자+소문자+대문자+특수문자(-_!@#$%^&*) 조합)
+			let regEmail = /^[0-9a-zA-Z-_!@#$%^&*]{4,60}$/;
+			if(regEmail.test(emailValue) == false) {
+				$('.msg_pw').removeClass('blind');
+			} else {
+				$('.msg_pw').addClass('blind');
+			}
+		});
+		
+		// 확인 메시지
+		$('#pw').blur(function(){
+			if($('#pw').val() == '') {
+				$('.msg_pw').removeClass('blind');
+			}
+		});
+	}
+	
+	function fn_login(){
+		$('#frm_login').submit(function(event){
+			
+			// 아이디, 비밀번호 공백 검사
+			if($('#email').val() == '' || $('#pw').val() == ''){
+				alert('이메일과 비밀번호를 모두 입력하세요.');
+				event.preventDefault();
+				return;
+			}
+		});
+			
+	}
+	
+</script>
+<style>
+	.blind {
+		display: none;
+	}
+</style>
 </head>
 <body>
 
+	<div>
+		<div class="login_box">
+			<div class="login_title">로그인</div>
+			<form id="frm_login" th:action="@{/user/login}" method="post">
+				<input type="hidden" name="url" th:value="${url}">
+				<div class="login_email">
+					<input type="text" name="email" id="email" placeholder="이메일 주소">
+				</div>
+				<div>
+					<input type="text" class="msg_email msg_check blind" value="정확한 이메일 주소를 입력하세요.">
+				</div>
+				<div>
+					<input type="password" name="pw" id="pw" placeholder="비밀번호">
+				</div>
+				<div>
+					<!-- 패스워드 보여주기도 구현해 볼 것 -->
+					<input type="text" class="msg_pw msg_check blind" value="비밀번호는 4~60자 사이여야 합니다.">
+				</div>
+				<div>
+					<button class="btn_login">로그인</button>
+				</div>
+				<div>
+					<label for="remember_email">
+						<input type="checkbox" id="remember_email">로그인 정보 저장
+					</label>
+					<a href="">도움이 필요하신가요?</a>
+				</div>
+			</form>
+			
+			<div class="login_box_bottom">
+				<p class="box_text">TagMusic 회원이 아닌가요?</p>
+				<a th:href="@{/user/join/agree}">지금 가입하세요.</a>
+			</div>
+			
+		</div>
+	</div>
 
 </body>
 </html>
