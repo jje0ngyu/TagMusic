@@ -2,7 +2,9 @@ package com.gdu.tagmusic.service;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
 	private ChatMapper chatMapper;
 	
 	@Override
-	public int addChat(HttpServletRequest request) {
+	public Map<String, Object> addChat(HttpServletRequest request) {
 		
 		
 		// 파라미터에서 뽑으면 String임
@@ -42,7 +44,10 @@ public class CustomerServiceImpl implements CustomerService {
 		chat.setContent(content);
 		chat.setIp(ip);
 		
-		return chatMapper.insertChat(chat);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("insertChat", chatMapper.insertChat(chat)==1);
+		return map; 
 	}
 	
 	@Override
@@ -58,7 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
 				
 			List<ChatDTO> chatList = chatMapper.selectChatList(userNo);
 			model.addAttribute("chatList", chatList);
-				
+					
 			}
 			
 			try {
@@ -67,7 +72,6 @@ public class CustomerServiceImpl implements CustomerService {
 			PrintWriter out = response.getWriter();
 			
 			out.println("<script>");
-			out.println("alert('이용가능.');");
 			out.println("location.href='" + request.getContextPath() + "/customerService/customerServiceChat';");
 			out.println("</script>");	
 			
@@ -78,7 +82,7 @@ public class CustomerServiceImpl implements CustomerService {
 			}
 			
 			
-		}catch (NullPointerException e) {
+		}catch (NullPointerException e) {  // userNo가 null일 때 이 예외코드로 넘어옴 = 비회원 접근 시 로그인페이지로 이동
 			
 			try {
 				
@@ -95,15 +99,7 @@ public class CustomerServiceImpl implements CustomerService {
 			}catch (IOException e2) {
 				e2.printStackTrace();
 			}
-			
-			
-	
-		
-		
-		
-		
-
-			 
+ 
 
 		}
 }

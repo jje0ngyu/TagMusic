@@ -46,11 +46,11 @@
 		<result column="DEPTH" property="depth"/>
 		<result column="GROUP_NO" property="groupNO"/>
 		<result column="GROUP_ORDER" property="groupOrder"/>
-		<collection resultMap="UserMap" property="UserDTO"></collection>
+		<collection resultMap="UserMap" property="userDTO"></collection>
 	</resultMap>
 	
 	<!-- 댓글 삽입하는 쿼리 -->
-	<insert id="insertChat"  parameterType="ChatDTO">
+	<insert id="insertChat" parameterType="ChatDTO">
 	
 		INSERT INTO CHAT_ADMIN
   		  (CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER)

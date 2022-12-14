@@ -5,10 +5,49 @@
 <title>고객센터>태그뮤직</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
- <script type="text/javascript">
+<script type="text/javascript">
  
- 
- 
+	$(function(){
+		fn_addChat();
+		fn_ChatList();
+		
+		
+		
+		
+	});
+	
+	
+	
+	function fn_addChat(){
+		$('#btn_addChat').click(function(){
+			if($('#content').val() == ''){
+				alert('댓글 내용을 입력하세요');
+				return;
+			}
+			$.ajax({
+				type: 'post',
+				url: '/chat/add',
+				data: $('#frm_add_chat').serialize(),
+				dataType: 'json',
+				success: function(resData){  // resData = {"isAdd", true}
+					if(resData.insertChat){
+						// 채팅목록을 가져오는 함수필요
+						alert('등록.');
+					}
+				
+				
+				
+					
+				}
+			});
+		});
+	}
+	
+	function fn_ChatList(){
+		
+		
+		
+	}; 
  
  
  
@@ -46,24 +85,24 @@
 			<div class="chat_box">
 				<table>
 					<tbody>
-						<tr>
-							<!-- 유저가 문의를 보낸 경우 -->
-							<td></td>
-							<!-- 관리자가 답변을 한 경우 -->
-							<td></td>
-						</tr>
+					
+
+						
+						
+						
+						
 					</tbody>
 				</table>
 			
 			</div>
 			
 			<div>
-				<form action="@{/chat/add}" method="post">
+				<form th:action="@{/chat/add}" method="post" id="frm_add_chat">
 					<input type="hidden" name="userNO" th:value="${session.loginUser.userNo}">
 					<div>
-						<input type="text" name="content" placeholder="문의내용" required>
+						<input type="text" name="content" id="content" placeholder="문의내용">
 					</div>
-					<button>보내기</button>	
+					<input type="button" value="보내기" id="btn_addChat">
 				</form>
 			</div>
 			

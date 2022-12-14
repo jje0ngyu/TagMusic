@@ -1,5 +1,7 @@
 package com.gdu.tagmusic.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.tagmusic.service.CustomerService;
 
@@ -36,22 +39,23 @@ public class CustomerController {
 	}
 	
 	// 고객센터에서 1:1문의하기를 클릭했을 때
-	// 보안 -- 리스트를 들렸다가 나와야될 것 같음
+	// 리스트를 들리고 나와야함
 	@GetMapping("/customerService/chat")
 	public void customerServiceChat(HttpServletRequest request, HttpServletResponse response, Model model) {
 		customerService.findChatList(request, response, model);
 		//return "customerCenter/customerServiceChat";
 	}
 	
+	// 1:1 문의 단순 페이지이동 -- CustomerServiceImpl에서 findChatList 사용함
 	@GetMapping("/customerService/customerServiceChat")
 	public String customerServiceCustomerServiceChat(HttpServletRequest request, HttpServletResponse response, Model model) {
 		return "customerCenter/customerServiceChat";
 	}
 	
-	@PostMapping("/chat/add")
-	public String add(HttpServletRequest request) {
-		customerService.addChat(request);
-		return "redirect:/customerCenter/customerServiceChat";
+	@ResponseBody
+	@PostMapping(value="/chat/add", produces="application/json")
+	public Map<String, Object> add(HttpServletRequest request) {
+		return customerService.addChat(request); /// 인설트의 여부가 여기에 담겨있음. 1이면 true, 0이면 false
 	}
 
 	
