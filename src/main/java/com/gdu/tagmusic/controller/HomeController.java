@@ -23,9 +23,10 @@ public class HomeController {
 	public String index() {
 		return "index";
 	}
-	
-	// # service : main페이지 최신리스트 조회	------------------------------
-	// 1) 최신리스트 조회하기
+
+	// # main화면 최신리스트 조회
+	// - ajax처리 : @responsebody, produces 속성으로 json처리
+
 	@ResponseBody
 	@GetMapping(value="/music/list/updated", produces="application/json")
 	public Map<String, Object> updatedMusicList(HttpServletRequest request) {	
@@ -41,6 +42,7 @@ public class HomeController {
 	
 			
 	
+
 	// # 전체음악리스트 조회, 페이지 이동	-------------------------------------
 	@GetMapping("/music/list")
 	public String MusicAll() {
@@ -50,5 +52,6 @@ public class HomeController {
 	
 
 
-	
+
+
 }
