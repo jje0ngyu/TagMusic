@@ -5,10 +5,14 @@
 <title th:text="${title}"></title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
+<<<<<<< HEAD
 <link rel="stylesheet" th:href="@{/css/layout.css}">
 <link rel="stylesheet" th:href="@{/css/main.css}">
 <link rel="stylesheet" th:href="@{/css/list.css}">
 
+=======
+<link rel="stylesheet" href="/css/layout.css" th:href="@{/css/layout.css}">
+>>>>>>> b09f63cee0bc3372b2b1e6fddef0109ee8f8fbb3
 </head>
 <body>
 
@@ -33,7 +37,14 @@
 			</div>
 			<div class="header_btn">
 				<input type="button" value="알람">
-				<a th:href="@{/user/login/form}">로그인</a>
+				<span th:if="${session.loginUser == null}">
+					<input th:value="${session.loginUser}" />
+					<a th:href="@{/user/login/form}">로그인</a>
+				</span>
+				<span th:if="${session.loginUser != null}">
+					<a th:href="@{/user/info}"><span th:text="${session.loginUser.artist}"></span></a> 님
+				</span>
+				<span th:utext="${loginUser}"></span>
 			</div>
 			
 		</div>
