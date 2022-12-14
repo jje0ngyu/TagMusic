@@ -3,13 +3,18 @@
 <head th:replace="~{layout/header::head('Tag Music')}"></head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/login.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script>
 	
 	$(function(){
 		fn_inputEmail();
 		fn_inputPw();
 		fn_login();
+		fn_displayRememberEmail();
+		fn_kakaoLogin();
 	});
 	
 	function fn_inputEmail(){
@@ -29,7 +34,7 @@
 			let emailValue = $(this).val();
 			// 정규식 (4~60자, 숫자+소문자+대문자+특수문자(-,_) 조합)
 			// 최소 입력 aaaa@a.aa
-			let regEmail = /^[0-9a-zA-Z][0-9a-zA-Z-_]{3,19}@[a-z]{1,10}[\.][a-z\.]{2,18}$/;
+			let regEmail = /^[0-9a-zA-Z][0-9a-zA-Z-_]{3,29}@[a-z]{1,10}[\.][a-z\.]{2,18}$/;
 			if(regEmail.test(emailValue) == false) {
 				$('.msg_email').removeClass('blind');
 			} else {
@@ -74,10 +79,50 @@
 				event.preventDefault();
 				return;
 			}
+			
+			// 아이디 기억을 체크하면 rememberId 쿠키에 입력된 아이디를 저장
+			if($('#rememberEmail').is(':checked')){
+				$.cookie('rememberEmail', $('#email').val());
+			} else {
+				$.cookie('rememberEmail', '');
+			}
 		});
 			
 	}
-	
+	function fn_displayRememberEmail(){
+		// rememberEmail 쿠키에 저장된 아이디를 가져와서 표시
+		let rememberEmail = $.cookie('rememberEmail');
+		if(rememberEmail == ''){
+			$('#email').val('');
+			$('#rememberEmail').prop('checked', false);
+		} else {
+			$('#email').val(rememberEmail);
+			$('#rememberEmail').prop('checked', true);
+		}
+		
+	}
+
+	function fn_kakaoLogin(){
+		$('#kakaoLogin').click(function(){
+			Kakao.init('8890a67c089173194979845f9389950d');
+			Kakao.Auth.login({
+				success: function (response) {
+					Kakao.API.request({
+						url: '/v2/user/me',
+						success: function (response) {
+							console.log(response)
+						},
+						fail: function (error) {
+							console.log(error)
+						},
+					})
+				},
+				fail: function (error) {
+					
+				},
+			})
+		});
+	}
 </script>
 <style>
 	.blind {
@@ -86,41 +131,63 @@
 </style>
 </head>
 <body>
-
-	<div>
+	<img th:src="@{/images/background_login.jpg}" class="background_login">
+	<div class="backgroung_layer">
 		<div class="login_box">
-			<div class="login_title">로그인</div>
-			<form id="frm_login" th:action="@{/user/login}" method="post">
-				<input type="hidden" name="url" th:value="${url}">
-				<div class="login_email">
-					<input type="text" name="email" id="email" placeholder="이메일 주소">
+			<div class="login_container">
+				<div class="login_title">로그인</div>
+				<form id="frm_login" th:action="@{/user/login}" method="post">
+					<input type="hidden" name="url" th:value="${url}">
+					<div class="login_email">
+						<input type="text" name="email" id="email" class="login_input_box" placeholder="이메일 주소">
+					</div>
+					<div>
+						<input type="text" class="msg_email msg_check blind" value="정확한 이메일 주소를 입력하세요.">
+					</div>
+					<div>
+						<input type="password" name="pw" id="pw" class="login_input_box" placeholder="비밀번호">
+					</div>
+					<div>
+						<!-- 패스워드 보여주기도 구현해 볼 것 -->
+						<input type="text" class="msg_pw msg_check blind" value="비밀번호는 4~60자 사이여야 합니다.">
+					</div>
+					<div>
+						<button class="btn_login">로그인</button>
+					</div>
+					<div class="btn_login_bottom">
+						<div class="login_box_left">
+							<label for="rememberEmail">
+								<div class="remember_box"></div>
+									<input type="checkbox" id="rememberEmail">
+								<div class="msg_login_box">
+									로그인 정보 저장
+								</div>
+							</label>
+							<label for="keepLogin">
+								<input type="checkbox" name="keepLogin" id="keepLogin">
+								로그인 유지
+							</label>
+						</div>
+						<div class="login_box_right">
+							<a class="msg_login_box msg_help" href="">도움이 필요하신가요?</a>
+						</div>
+					</div>
+				</form>
+				<!-- 간편 로그인 -->
+				<div class="loginAPI">
+					<div id="kakaoLogin">
+						<img th:src="@{/images/kakao_login_medium_wide.png}">
+					</div>
 				</div>
-				<div>
-					<input type="text" class="msg_email msg_check blind" value="정확한 이메일 주소를 입력하세요.">
+				<div class="login_box_bottom">
+					<div class="login_box_left">
+						<p class="msg_login_box">TagMusic 회원이 아닌가요?</p>
+					</div>
+					<div class="login_box_right">
+						<a th:href="@{/user/join/agree}">지금 가입하세요.</a>
+					</div>
 				</div>
-				<div>
-					<input type="password" name="pw" id="pw" placeholder="비밀번호">
-				</div>
-				<div>
-					<!-- 패스워드 보여주기도 구현해 볼 것 -->
-					<input type="text" class="msg_pw msg_check blind" value="비밀번호는 4~60자 사이여야 합니다.">
-				</div>
-				<div>
-					<button class="btn_login">로그인</button>
-				</div>
-				<div>
-					<label for="remember_email">
-						<input type="checkbox" id="remember_email">로그인 정보 저장
-					</label>
-					<a href="">도움이 필요하신가요?</a>
-				</div>
-			</form>
-			
-			<div class="login_box_bottom">
-				<p class="box_text">TagMusic 회원이 아닌가요?</p>
-				<a th:href="@{/user/join/agree}">지금 가입하세요.</a>
 			</div>
-			
 		</div>
 	</div>
 

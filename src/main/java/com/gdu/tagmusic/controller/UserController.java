@@ -1,5 +1,7 @@
 package com.gdu.tagmusic.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.tagmusic.service.UserService;
 
@@ -28,7 +32,11 @@ public class UserController {
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		userService.login(request, response);
 	}
-	
+	// 로그인 - 카카오
+	@GetMapping("/user/login/kakao")
+	public void kakaoLogin() {
+		
+	}
 
 	// 회원가입
 	@GetMapping("/user/join/agree")
@@ -43,10 +51,46 @@ public class UserController {
 		model.addAttribute("promotion", promotion);
 		return "user/join";
 	}
+	// 회원가입 - 이메일 중복체크
+	@ResponseBody
+	@GetMapping(value="/user/checkReduceEmail", produces="application/json")
+	public Map<String, Object> checkReduceEmail(String email){
+		return userService.isReduceEmail(email);
+	}
+	// 회원가입 - 이메일 인증코드
+	@ResponseBody
+	@GetMapping(value="/user/sendAuthCode", produces="application/json")
+	public Map<String, Object> sendAuthCode(String email){
+		return userService.sendAuthCode(email);
+	}
+	// 회원가입
+	@PostMapping("/user/join")
+	public void join(HttpServletRequest request, HttpServletResponse response) {
+		userService.join(request, response);
+	}
 	
 	// 마이페이지
 	@GetMapping("/user/mypage")
 	public String requiredLogin_mypage() {
 		return "user/mypage";
 	}
+	// 마이페이지 - 개인정보 관리
+	@GetMapping("/user/mypage/info")
+	public String myinfo() {
+		return "user/myinfo";
+	}
+	// 마이페이지 - 개인정보 수정
+	@GetMapping("/user/info/modify")
+	public Map<String, Object> modifyMyinfo() {
+		return null;
+	}
+	
+	// 로그아웃
+	@GetMapping("/user/logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		userService.logout(request, response);
+		return "redirect:/";
+	}
+	
+	// 회원탈퇴
 }

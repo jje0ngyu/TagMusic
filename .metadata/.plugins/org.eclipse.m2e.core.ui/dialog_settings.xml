@@ -2,8 +2,7 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
-			<item value="C:\4team\Final_Project"/>
-			<item value="C:\4team"/>
+			<item value="C:\final_project\tagmusic"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>
