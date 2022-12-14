@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+.page_title {
+	
+	font-size: 45px;
+	font-weight: 900;
+	margin-bottom: 50px;
+	
+}
+
+.list_page {
+	
+	margin : 100px 0;
+	padding : 30px;
+	display: block;
+	
+	
+}
+
+.list_page_header {
+	
+
+	/* position: absolute;
+	top: 150px; left: 240px; */
+	margin-left: 0;
+	margin-bottom: 10px;
+	
+
+	
+	
+}
+
+.btn_all {
+	
+	float: left;
+	margin-bottom: 10px;
+	
+	
+	
+	
+	
+}
+
+table {
+    width: 100%;
+    border-top: 1px solid #444444;
+    border-collapse: collapse;
+}
+  th, td {
+    border-bottom: 1px solid #444444;
+    padding: 10px;
+}

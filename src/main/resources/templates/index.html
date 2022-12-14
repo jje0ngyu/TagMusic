@@ -5,6 +5,115 @@
 <title></title>
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+	<script th:inline="javascript">
+	
+	
+		$(document).ready(function() {
+			
+			fn_updatedMusic();	// 구현 : main페이지 최신리스트
+			fn_pageMove();		// 기능 : main페이지 페이지 이동버튼
+		 // fn_thumbnail();		// 기능 : 썸네일 가져오기			-> fn_updatedMusic ajax에서 사용
+			
+			fn_listPage();		// 구현 : 전체조회 페이지 이동
+		});
+				
+		// # 구현 : main페이지 최신리스트
+		
+		function fn_updatedMusic() {
+			
+			// 1. ajax : form태그 필요없음, 화면에 바로 띄어야 하니 바로 ajax 처리
+			$.ajax({
+				type: 'get',
+				url: '/music/list/updated',
+				data : 'page=' + $('#page').val(),	
+				
+				dataType: 'json',
+				success: function(resData) {
+				// resData : musicList, pageUtil, artist
+					
+					// 2. 갱신 : 기존데이터 삭제후 추가
+					$('#updatedMusicList').empty();
+			
+			
+					// 3. 페이징 처리
+					
+					var pageUtil = resData.pageUtil;
+					var page = $('#page').val();
+					
+					
+					// 1) 왼쪽버튼 : 해당 버튼이 가장 처음일 경우 제일 마지막으로 간다
+					if(pageUtil.page > 1) {
+						$('#updatedMusicList').append($('<span class="enable_listLink" data-page="' +(pageUtil.page -1) + '">').text('◀'));
+						
+					}
+					
+					
+					
+					// 2) 가운데 페이징
+					// var mainItem = $('<div class="main_item">')
+					$.each(resData.musicList, function(index, music) {
+						
+						//.append($('<img class="item_image" src="=fn_thumbnail();' + music.musicNo + '" title="' + music.imgOrigin + '">'))
+						
+						$('<div class="main_item">')
+						.append($('<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" title="' + music.imgOrigin + '">'))	
+						.append($('<input class="thumbnail_musicNo" type="hidden" value="' + music.musicNo + '">'))			// 썸네일을 가져오기 위한 musicNo 전달용 hidden
+						//.append(fn_thumbnail())
+						.append($('<a class="item_title" href="/music/detail?musicNo=' + music.musicNo +'">').text(music.musicTitle))
+						.append($('<a class="item_title" href="/music/detail?musicNo=' + music.musicNo +'">').text(music.activeLogDTO.userDTO.artist))
+						.appendTo($('#updatedMusicList'));
+					}); 
+					
+					// 3) 오른쪽 버튼
+					if(pageUtil.page != pageUtil.totalPage) {
+						$('#updatedMusicList').append($('<span class="enable_listLink" data-page="' + (pageUtil.page + 1) + '">').text('▶'));						
+					}	
+				}
+			});	
+		}
+		
+		// # 기능 : 썸네일 가져오기
+		function fn_thumbnail() {
+			
+			$('.item_image').load(function () {
+				$.ajax({
+					type: 'get',
+					url: '/music/thumbnail',
+					data : 'musicNo=' + $('.thumbnail_musicNo').val(),	
+					
+					dataType: 'json',
+					success: function(resData) {		
+						$('<img class="item_image" src="/music/thumbnail?musicNo=' + resData.music.musicNo + '" title="' + music.imgOrigin + '">')
+					}
+				
+				
+				
+				});
+			});
+			
+			
+			
+		}
+		
+		
+		// # 기능 : 최신리스트 페이지이동 클릭버튼
+		function fn_pageMove() {
+			 $(document).on('click', '.enable_listLink', function(){
+		         $('#page').val($(this).data('page'));	// 버튼에 저장된 page 태그값을 hidden의 페이지값에 전달 -> 새로운 페이지를 파라미터로 전달해서 재요청
+		         fn_updatedMusic();
+		      });
+		}
+		
+		// # 구현
+		function fn_listPage() {
+			$('#btn_listPage').click(function() {
+				location.href = '/music/list';
+			});
+		}
+		
+		
+	
+	</script>
 </head>
 <body>
 	
@@ -15,8 +124,51 @@
 		
 		
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
-		<div class="content">여기서부터 내용을 작성하시오</div>
+		<div class="content">
+		
+		<!--  # 메인페이지 -->
+		<div class="main">
+			<!--  # 최신리스트 -->
+			<div class="main_list">
+				<div class="main_header">
+					<div class="list_title">최신리스트</div>
+					<input type="button" value="전체조회" id="btn_listPage">
+				</div>
+				
+				<!-- 구현 : 최신음악리스트4 -->
+				<!-- 
+					musicImage, artist : 별도의 테이블에서 값을 구해온다
+					musictitle : music테이블에서 조회
+				 -->
+				 
+				 <!--  * page : 페이지 파라미터값 담당 -->
+				<input type="hidden" id="page" value="1">
+				
+				<div id="updatedMusicList" class="main_item_area">
+					<div class="main_item" th:each="music:${musicList}">
+					
+					<!-- 구현 : 썸네일처리  -->
+						<div class="item_image" th:text="">
+							<!-- <img th:src="@{/music/thumbnail/?musicNo=${music.musicNo}" class="thumnail_img" title="${attach.musicOrigin}"> -->
+						
+						</div>
+						<div class="item_title" th:text="">제목</div>
+						<div class="item_artist" th:text="${artist}">아티스트</div>
+					</div>
+					
+					
+				</div>
+			</div>
+			<!--  # 믹스리스트 -->
+			<div class="main_list">믹스리스트
+			
+			</div>
+		</div>
+		
+		</div>
 	</div>
+	
+
 
 
 
