@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.tagmusic.service.UserService;
 
@@ -31,7 +32,11 @@ public class UserController {
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		userService.login(request, response);
 	}
-	
+	// 로그인 - 카카오
+	@GetMapping("/user/login/kakao")
+	public void kakaoLogin() {
+		
+	}
 
 	// 회원가입
 	@GetMapping("/user/join/agree")
@@ -58,6 +63,7 @@ public class UserController {
 	public Map<String, Object> sendAuthCode(String email){
 		return userService.sendAuthCode(email);
 	}
+	// 회원가입
 	@PostMapping("/user/join")
 	public void join(HttpServletRequest request, HttpServletResponse response) {
 		userService.join(request, response);
@@ -68,4 +74,23 @@ public class UserController {
 	public String requiredLogin_mypage() {
 		return "user/mypage";
 	}
+	// 마이페이지 - 개인정보 관리
+	@GetMapping("/user/mypage/info")
+	public String myinfo() {
+		return "user/myinfo";
+	}
+	// 마이페이지 - 개인정보 수정
+	@GetMapping("/user/info/modify")
+	public Map<String, Object> modifyMyinfo() {
+		return null;
+	}
+	
+	// 로그아웃
+	@GetMapping("/user/logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response) {
+		userService.logout(request, response);
+		return "redirect:/";
+	}
+	
+	// 회원탈퇴
 }

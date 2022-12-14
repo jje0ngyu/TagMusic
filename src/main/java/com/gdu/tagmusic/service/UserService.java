@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 public interface UserService {
 	
 	// 로그인
@@ -24,6 +26,9 @@ public interface UserService {
 	// 휴면
 	public void sleepUserHandle();  // SleepUserScheduler에서 호출
 	
+	
+	// 로그아웃
+	public void logout(HttpServletRequest request, HttpServletResponse response);
 	
 	// 탈퇴
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.UserMapper;
 import com.gdu.tagmusic.util.JavaMailUtil;
+import com.gdu.tagmusic.util.MyFileUtil;
 import com.gdu.tagmusic.util.SecurityUtil;
 
 import lombok.AllArgsConstructor;
@@ -25,6 +27,7 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements UserService {
 
 	private UserMapper userMapper;
+	private MyFileUtil myFileUtil;
 	private SecurityUtil securityUtil;
 	private JavaMailUtil javaMailUtil;
 	
@@ -79,8 +82,6 @@ public class UserServiceImpl implements UserService {
 			
 			// 로그인 처리를 위해서 session에 로그인 된 사용자 정보를 올려둠
 			request.getSession().setAttribute("loginUser", loginUser);
-			
-			System.out.println("응답" + request.getSession());
 			/*
 			// 로그인 기록 남기기
 			int updateResult = userMapper.updateAccessLog(email);
@@ -117,6 +118,7 @@ public class UserServiceImpl implements UserService {
 			
 		}
 	}
+	
 	// 회원가입
 	@Override
 	public Map<String, Object> isReduceEmail(String email) {
@@ -186,6 +188,7 @@ public class UserServiceImpl implements UserService {
 			agreeCode = 3;  // 필수 + 위치 + 프로모션
 		}
 		
+		
 		// DB로 보낼 UserDTO 만들기
 		UserDTO user = UserDTO.builder()
 				.email(email)
@@ -231,7 +234,7 @@ public class UserServiceImpl implements UserService {
 				*/
 				out.println("<script>");
 				out.println("alert('회원 가입되었습니다.');");
-				out.println("location.href='" + request.getContextPath() + "';");
+				out.println("location.href='/';");
 				out.println("</script>");
 				
 			} else {
@@ -260,6 +263,23 @@ public class UserServiceImpl implements UserService {
 	public void sleepUserHandle() {
 		// TODO Auto-generated method stub
 
+	}
+	// 로그아웃
+	@Override
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 로그아웃 처리
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginUser") != null) {
+			session.invalidate();
+		}
+		
+		// 로그인 유지 풀기
+		Cookie cookie = new Cookie("keepLogin", "");
+		cookie.setMaxAge(0);  // 쿠키 유지 시간이 0이면 삭제를 의미함
+		cookie.setPath("/");
+		response.addCookie(cookie);
+		
 	}
 	
 	// 탈퇴
