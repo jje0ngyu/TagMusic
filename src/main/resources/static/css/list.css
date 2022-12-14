@@ -1,21 +1,35 @@
 @charset "UTF-8";
 
-.page_title {
+.list_container {
 	
-	font-size: 45px;
-	font-weight: 900;
-	margin-bottom: 50px;
+ 	width: 100%;
+ 	/* margin : auto : 내용 영역을 페이지 가운데로 정렬하기 위해 사용됨  */
+ 	padding-left : 250px;
+ 	background-color: #ECECEC;
+	
 	
 }
 
 .list_page {
 	
-	margin : 100px 0;
+	margin : 100px auto;
+	width: 1250px;
+	height: 800px;
 	padding : 30px;
 	display: block;
 	
 	
 }
+
+.page_title {
+	
+	font-size: 45px;
+	font-weight: 900;
+	margin-bottom: 70px;
+	
+}
+
+
 
 .list_page_header {
 	
@@ -23,7 +37,8 @@
 	/* position: absolute;
 	top: 150px; left: 240px; */
 	margin-left: 0;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
+	height : 120px;
 	
 
 	
@@ -34,10 +49,6 @@
 	
 	float: left;
 	margin-bottom: 10px;
-	
-	
-	
-	
 	
 }
 
@@ -50,3 +61,108 @@ table {
     border-bottom: 1px solid #444444;
     padding: 10px;
 }
+
+.btn_area {
+	
+	display: flex;
+	justify-content: space-between;
+	padding-top: 15px;
+	width: 100%;
+
+}
+
+.delete_btn {
+
+
+}
+
+
+.upload_btn {
+	
+	
+}
+
+/* listpage : 하단 검색 + 페이징 영역 */
+.list_page_footer {
+	
+	
+	padding-left: 500px;
+	margin : 50px auto; 
+}
+
+.select_genre {
+	
+	margin-bottom: 30px;
+	
+}
+
+.select_genre_title {
+	
+	font-size: 20px;
+	font-weight: 900;
+	margin-bottom: 20px;
+	
+}
+
+.select_all_btn_area {
+	
+	
+	margin-top: 120px;
+}
+
+.list_select_ul {
+	
+	width : 1200px;
+	height: 100px;
+	
+	
+}
+
+.list_select_li {
+	display : inline-block;
+	width : 195px;
+	text-align: center;
+	height: 50px;
+	background-color: #888888;
+	line-height: 50px;
+	margin-bottom: 5px;
+	
+	
+}
+
+
+
+.list_select_li:hover {
+	
+	background-color: #dddddd;
+	
+}
+/* 버튼 : 기본옵션  */
+input[type=button] {
+	cursor: pointer;
+	text-decoration: none;
+	background-color: #ffffff;
+	border: 1px solid #777777;
+	border-radius: 3px;
+	color: #222222;
+	padding: 5px 10px;
+	text-align: center;
+	font-size: 10px;
+	font-weight: 900;
+}
+
+.paging {
+	
+	margin-bottom: 10px;
+	
+}
+
+
+/* 전체선택버튼 */
+.select_all_btn_area {
+	
+	margin-bottom: 10px;
+	
+	
+}
+

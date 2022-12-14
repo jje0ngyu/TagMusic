@@ -12,7 +12,7 @@
 			
 			fn_updatedMusic();	// 구현 : main페이지 최신리스트
 			fn_pageMove();		// 기능 : main페이지 페이지 이동버튼
-		 // fn_thumbnail();		// 기능 : 썸네일 가져오기			-> fn_updatedMusic ajax에서 사용
+		 	//fn_thumbnail();		// 기능 : 썸네일 가져오기			-> fn_updatedMusic ajax에서 사용
 			
 			fn_listPage();		// 구현 : 전체조회 페이지 이동
 		});
@@ -29,6 +29,7 @@
 				
 				dataType: 'json',
 				success: function(resData) {
+					
 				// resData : musicList, pageUtil, artist
 					
 					// 2. 갱신 : 기존데이터 삭제후 추가
@@ -51,18 +52,23 @@
 					
 					// 2) 가운데 페이징
 					// var mainItem = $('<div class="main_item">')
+					
+		
 					$.each(resData.musicList, function(index, music) {
 						
-						//.append($('<img class="item_image" src="=fn_thumbnail();' + music.musicNo + '" title="' + music.imgOrigin + '">'))
-						
+					
 						$('<div class="main_item">')
-						.append($('<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" title="' + music.imgOrigin + '">'))	
-						.append($('<input class="thumbnail_musicNo" type="hidden" value="' + music.musicNo + '">'))			// 썸네일을 가져오기 위한 musicNo 전달용 hidden
-						//.append(fn_thumbnail())
+						//.append($('<img class="item_image" value="()" title="' + music.imgOrigin + '">' ))
+						//.append($('<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" title="' + music.imgOrigin + '">'))	
+						.append($('<input type="hidden" class="musicNo" value="' + music.musicNo + '">'))			// 썸네일을 가져오기 위한 musicNo 전달용 hidden
+						
+						.append($('<img class="item_image" title="' + music.imgOrigin + '">'))	
 						.append($('<a class="item_title" href="/music/detail?musicNo=' + music.musicNo +'">').text(music.musicTitle))
 						.append($('<a class="item_title" href="/music/detail?musicNo=' + music.musicNo +'">').text(music.activeLogDTO.userDTO.artist))
 						.appendTo($('#updatedMusicList'));
+						fn_thumbnail();
 					}); 
+						// 기능 : 썸네일 가져오기
 					
 					// 3) 오른쪽 버튼
 					if(pageUtil.page != pageUtil.totalPage) {
@@ -72,28 +78,32 @@
 			});	
 		}
 		
+		
 		// # 기능 : 썸네일 가져오기
 		function fn_thumbnail() {
 			
-			$('.item_image').load(function () {
-				$.ajax({
-					type: 'get',
-					url: '/music/thumbnail',
-					data : 'musicNo=' + $('.thumbnail_musicNo').val(),	
+					if($('.item_image').attr('src') == null) {
+						
+						
 					
-					dataType: 'json',
-					success: function(resData) {		
-						$('<img class="item_image" src="/music/thumbnail?musicNo=' + resData.music.musicNo + '" title="' + music.imgOrigin + '">')
+							consloe.log($('.musicNo').val());
+							$.ajax({
+								type: 'get',
+								url: '/music/thumbnail',
+								data : 'musicNo=' + $('.musicNo').val(),
+							
+								dataType: 'json',
+								success: function(resData) {
+									alert('rrr');
+								}
+							});
+						
+						
+						
+						
 					}
-				
-				
-				
-				});
-			});
-			
-			
-			
-		}
+			}
+		
 		
 		
 		// # 기능 : 최신리스트 페이지이동 클릭버튼
@@ -121,7 +131,7 @@
 	<div class="session">
 		<div th:replace="~{layout/side.html::side_layout}"></div>
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
-		<div class="content">
+		<div class="main_container">
 		
 		<!--  # 메인페이지 -->
 		<div class="main">
@@ -144,11 +154,14 @@
 				<div id="updatedMusicList" class="main_item_area">
 					<div class="main_item" th:each="music:${musicList}">
 					
+					
+					
 					<!-- 구현 : 썸네일처리  -->
 						<div class="item_image" th:text="">
 							<!-- <img th:src="@{/music/thumbnail/?musicNo=${music.musicNo}" class="thumnail_img" title="${attach.musicOrigin}"> -->
-						
 						</div>
+						
+					<!-- 구현 : 제목, 아티스트 조회해오기  -->
 						<div class="item_title" th:text="">제목</div>
 						<div class="item_artist" th:text="${artist}">아티스트</div>
 					</div>

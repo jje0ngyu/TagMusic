@@ -15,16 +15,31 @@
 	<div class="session">
 		<div th:replace="~{layout/side.html::side_layout}"></div>
 		
-			<div class="content">
+			<div class="list_container">
 				<div class="list_page">
 				
 					<div class="page_title">
-					<!-- 구현 : 요청마다 게시판 이름 변경하기?  -->
-						<p>게시판</p>
+					<!-- 구현 : 요청마다 게시판 이름 변경하기  -->
+						<p>${pageName}게시판</p>
 					</div>
 				
 					<div class="list_page_header">
-						<input type="button" value="전체선택" class="btn_all">
+					<!--  구현 : 장르별 조회하기 -->
+						<div class="select_genre">
+							<div class="select_genre_title">장르별 선택하기</div>
+							<ul class="list_select_ul">
+								<li class="list_select_li">발라드</li>
+								<li class="list_select_li">팝송</li>
+								<li class="list_select_li">ost</li>
+								<li class="list_select_li">트로트</li>
+								<li class="list_select_li">기타</li>
+								<li class="list_select_li">기타</li>
+								<li class="list_select_li">기타</li>
+							</ul>
+						</div>
+					</div>
+					<div class="select_all_btn_area">
+						<input type="button" value="전체선택" class="btn_all">	
 					</div>
 					<div class="list_page_table">
 						<table>
@@ -79,9 +94,26 @@
 							</tr>
 						</tbody>
 					</table>
+					
+					<!-- 구현 : 게시글 업로드 -->
+					<div class="btn_area">
+						<input type="button" value="삭제" class="upload_btn">
+						<input type="button" value="업로드" class="delete_btn">
+					</div>
+					
+					<!-- 구현 : 게시글 페이징 처리 + 검색기능 -->
+					<div class="list_page_footer">
+						<div class="paging">
+							페이징
+						</div>
+						<div class="list_page_search">
+							<input type="text" placeholder="검색">
+							<input type="button" value="검색">
+						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 	</div>
 </body>
 </html>

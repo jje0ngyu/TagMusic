@@ -36,16 +36,13 @@
 		width:290px;
 		margin: auto;
 	}
+	
 	.login_box_left {
 		z-index: 100;
 		display: inline-block;
 		float: left;
 	}
-	.login_box_right {
-		z-index: 100;
-		display: inline-block;
-		float: right;
-	}
+	
 	.btn_login_bottom {
 		position: relative;
 		width: 100%;
