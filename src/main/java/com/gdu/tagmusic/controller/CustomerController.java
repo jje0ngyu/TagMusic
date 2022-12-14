@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.tagmusic.service.CustomerService;
@@ -39,10 +40,10 @@ public class CustomerController {
 	}
 	
 	// 고객센터에서 1:1문의하기를 클릭했을 때
-	// 리스트를 들리고 나와야함
+	// 유저면 로그인페이지이동, 비회원이면 화면 보여줌. 리스트는ajax로 해서 뽑을거임
 	@GetMapping("/customerService/chat")
-	public void customerServiceChat(HttpServletRequest request, HttpServletResponse response, Model model) {
-		customerService.findChatList(request, response, model);
+	public void customerServiceChat(HttpServletRequest request, HttpServletResponse response) {
+		customerService.divideUser(request, response);
 		//return "customerCenter/customerServiceChat";
 	}
 	
@@ -54,8 +55,17 @@ public class CustomerController {
 	
 	@ResponseBody
 	@PostMapping(value="/chat/add", produces="application/json")
-	public Map<String, Object> add(HttpServletRequest request) {
+	public Map<String, Object> chatadd(HttpServletRequest request) {
 		return customerService.addChat(request); /// 인설트의 여부가 여기에 담겨있음. 1이면 true, 0이면 false
+	}
+	
+	// 로그인한 userNo가 문의한 게시글만 뽑는 매핑값
+	@ResponseBody
+	@PostMapping(value="/chat/list", produces="application/json")
+	public Map<String, Object> chatlist(@RequestParam("userNo") int userNo){
+		// 자신이 문의한 글만 볼 수 있게 userNo를 파라미터로 넘겨줌
+		return customerService.getChatListUserNo(userNo);
+		
 	}
 
 	

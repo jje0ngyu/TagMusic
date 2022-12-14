@@ -59,10 +59,7 @@
    		 
 	</insert>
 	
-	
-	
-	<!-- 로그인한 유저의 게시판만 조회하는 쿼리,,,, 이거 왜 resultmap을 인식을 못하지?? -->
-	<select id="selectChatList" parameterType="int" resultMap="ChatMap">
+	<select id="chatListUserNo" parameterType="int" resultMap="ChatMap">
 	
     	 SELECT U.PROFILE_IMAGE, U.NAME, C.CHAT_NO, C.USER_NO, C.CHAT_DATE, C.IP, C.CONTENT, C.STATE, C.DEPTH, C.GROUP_NO, C.GROUP_ORDER
 		   FROM CHAT_ADMIN C INNER JOIN USERS U
@@ -71,7 +68,13 @@
 		  
 	</select>
 	
+	<select id="">
 	
+	
+	
+	
+	
+	</select>
 	
 	
 	

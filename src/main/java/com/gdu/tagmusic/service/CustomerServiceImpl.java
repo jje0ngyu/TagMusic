@@ -3,7 +3,6 @@ package com.gdu.tagmusic.service;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import com.gdu.tagmusic.domain.ChatDTO;
 import com.gdu.tagmusic.domain.UserDTO;
@@ -31,7 +29,6 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public Map<String, Object> addChat(HttpServletRequest request) {
 		
-		
 		// 파라미터에서 뽑으면 String임
 		Optional<String> opt = Optional.ofNullable(request.getParameter("userNO"));
 		
@@ -48,23 +45,16 @@ public class CustomerServiceImpl implements CustomerService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("insertChat", chatMapper.insertChat(chat)==1);
 		return map; 
+		
 	}
 	
 	@Override
-	public void findChatList(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public void divideUser(HttpServletRequest request, HttpServletResponse response) {
 		
 		try {
 			
 			HttpSession session = request.getSession();
 			Optional<Integer> opt = Optional.ofNullable(((UserDTO)session.getAttribute("loginUser")).getUserNo());
-			int userNo = opt.orElse(0);
-				
-			if(userNo != 0) {
-				
-			List<ChatDTO> chatList = chatMapper.selectChatList(userNo);
-			model.addAttribute("chatList", chatList);
-					
-			}
 			
 			try {
 				
@@ -103,6 +93,18 @@ public class CustomerServiceImpl implements CustomerService {
 
 		}
 }
+	
+	
+	@Override
+	public Map<String, Object> getChatListUserNo(int userNo) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("chatList", chatMapper.chatListUserNo(userNo));
+		
+		
+		
+		return map;
+	}
 }
 
 

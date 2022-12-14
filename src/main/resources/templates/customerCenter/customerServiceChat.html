@@ -32,7 +32,8 @@
 				success: function(resData){  // resData = {"isAdd", true}
 					if(resData.insertChat){
 						// 채팅목록을 가져오는 함수필요
-						alert('등록.');
+						$('#content').val('');
+						fn_ChatList();
 					}
 				
 				
@@ -44,6 +45,68 @@
 	}
 	
 	function fn_ChatList(){
+		
+		$.ajax({
+			type : 'post',
+			url : '/chat/list',
+			data : 'userNo=[[${session.loginUser.userNo}]]',
+			dataType : 'json',
+			success : function(resData){
+				$('#chat_box').empty();
+				$.each(resData.chatList, function(i, chat){
+					var div = '';
+					
+					//$('#chat_box').append('<li>'+chat.content+'</li>');
+					 
+					if(chat.depth == 0){
+						div += '<div>';
+					}else{
+						div += '<div style="margin-left: 50px;">';
+					}
+					
+					if(chat.state == 1){
+						div += '<div>';
+						div += chat.content;
+						if(chat.depth ==0) {
+							div += '<input type="button" value="답글" class="btn_reply_area">';
+						}
+						div += '</div>';
+					}else {
+						
+						
+					}
+					div += '<div>';
+					moment.locale('ko-KR');
+					div += '<span style="font-size: 12px; color: silver;">' + '${#dates.format(blog.createDate,"yyyy. M. d HH:mm")}' + '</span>';
+					div += '</div>';
+					div += '<div style="margin-left: 40px;" class="reply_area blind">';
+					div += '<form class="frm_reply">';
+					div += '<input type="hidden" name="groupNo" value="' + chat.groupNo + '">';
+					div += '<input type="text" name="content" placeholder="답글을 작성하려면 로그인을 해주세요">';
+					// 로그인한 사용자만 볼 수 있도록 if 처리
+					div += '<input type="button" value="답글작성완료" class="btn_reply_add">';
+					div += '</form>';
+					div += '</div>';
+					div += '</div>';
+					$('#chat_box').append(div);
+					$('#chat_box').append('<div style="border-bottom: 1px dotted gray;"></div>');
+				
+					 
+					
+					
+				});
+			}
+			
+			
+			
+			
+			
+			
+		});
+		
+		
+		
+		
 		
 		
 		
@@ -82,17 +145,7 @@
 			    </ul>
 			</div>
 			
-			<div class="chat_box">
-				<table>
-					<tbody>
-					
-
-						
-						
-						
-						
-					</tbody>
-				</table>
+			<div class="chat_box" id="chat_box">
 			
 			</div>
 			
