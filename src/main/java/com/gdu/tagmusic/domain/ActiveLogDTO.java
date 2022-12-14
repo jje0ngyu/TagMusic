@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
+
 public class ActiveLogDTO {
 
 	private int activeNo;
@@ -18,5 +19,6 @@ public class ActiveLogDTO {
 	private int musicNo;
 	private Date lastListenDate;
 	private int listenCount;
+	private UserDTO userDTO;
 	
 }

@@ -25,10 +25,12 @@ public class MusicDTO {
 	
 	private String imgOrigin;
 	private String imgFilesystem;
-	private String musiOrigin;
+	private String musicOrigin;
 	private String musicFilesystem;
 	private int downloadCnt;
-	private String imagePath;
+	private String imgPath;
 	private String musicPath;
+	private int hasThumbNail;
+	private ActiveLogDTO activeLogDTO;
 
 }
