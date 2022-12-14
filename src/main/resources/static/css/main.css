@@ -1,0 +1,96 @@
+@charset "UTF-8";
+
+/* main 페이지 전체
+width는 1250px, 80퍼센트면 1000px;
+ */
+.main {
+	
+	margin: 35px auto;
+	background-color: #878787;
+	width : 100%;
+	height: 900px;
+	padding: 30px;
+	
+
+	
+}
+
+a {
+	
+	text-decoration: none;
+	
+}
+
+.main_list {
+	
+	width : 100%;
+	height: 350px;
+	background-color: #AAAAAA;
+	margin-bottom: 70px;
+	margin-top: 20px;
+	
+
+	
+	
+}
+
+.main_header {
+	
+	padding: 20px;
+	display: flex;
+	justify-content: space-between;
+	
+}
+
+/*
+	전체 : width: 670
+	item : 150px
+
+*/
+
+
+.main_item_area {
+	
+	display: flex;
+	justify-content: space-between;
+	background-color: #DADADA;
+	width: 100%;
+	height: 300px;
+	
+	
+}
+
+/* 아이템 하나 */
+.main_item {
+	
+	background-color: #B4B4B4;
+	width: 200px;
+	height: 250px;
+	margin: 20px 20px;
+	padding: 10px 15px;
+	
+	
+}
+
+
+
+.item_image {
+	
+	
+	width: 170px;
+	
+	margin : 5px 0;
+	height: 170px;
+	
+}
+
+.item_title, .item_artist, .item_image {
+	display : block;
+}
+
+.item_title, .item_artist {
+	
+	text-align: left;
+	
+}
+

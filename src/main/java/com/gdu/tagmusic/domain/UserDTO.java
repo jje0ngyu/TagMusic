@@ -1,5 +1,4 @@
 package com.gdu.tagmusic.domain;
-
 import java.sql.Date;
 
 import lombok.AllArgsConstructor;
