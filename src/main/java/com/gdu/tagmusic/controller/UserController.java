@@ -32,7 +32,11 @@ public class UserController {
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		userService.login(request, response);
 	}
-	
+	// 로그인 - 카카오
+	@GetMapping("/user/login/kakao")
+	public void kakaoLogin() {
+		
+	}
 
 	// 회원가입
 	@GetMapping("/user/join/agree")

@@ -118,6 +118,7 @@ public class UserServiceImpl implements UserService {
 			
 		}
 	}
+	
 	// 회원가입
 	@Override
 	public Map<String, Object> isReduceEmail(String email) {
