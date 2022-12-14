@@ -79,6 +79,11 @@ public class UserController {
 	public String myinfo() {
 		return "user/myinfo";
 	}
+	// 마이페이지 - 개인정보 수정
+	@GetMapping("/user/info/modify")
+	public Map<String, Object> modifyMyinfo() {
+		return null;
+	}
 	
 	// 로그아웃
 	@GetMapping("/user/logout")

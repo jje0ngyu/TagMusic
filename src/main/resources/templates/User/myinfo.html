@@ -60,82 +60,84 @@
 			<h1>개인정보 관리</h1>
 			<span>멜론에 등록된 개인정보 정보를 확인할 수 있습니다. 최신 정보로 관리해주세요.</span>
 		</div>
-		
-		<div class="info_box">
-			<div class="info artist" id="info_artist">닉네임</div>
-			<div class="info name" id="info_name">이름/나이 확인</div>
-			<div class="info mobile" id="info_mobile">연락처</div>
-			<div class="info marketting" id="info_marketting">이벤트/마케팅 혜택알림</div>
-			<div class="info" id="retire">테그뮤직 탈퇴</div>
-		</div>
-		<div class="box_backlayer blind"></div>
-		<div class="modify_box blind">
-			<div class="modify_artist blind">
-				<div class="info_title">
-					댓글, 좋아요, 팬맺기 등<br/> 태그뮤직 서비스 이용 시 노출되는<br/> 닉네임입니다.
-				</div>
-				<div class="input_artist">
-					<input type="text" id="artist" placeholder="닉네임 입력">
-				</div>
-				<div class="msg_artist">
-					닉네임을 입력해 주세요. 닉네임은 2~15자로 한글, 영문, 숫자, 특수문자(-, _, .)만 사용가능합니다.
-				</div>
-				<div>
-					한글 및 영문, 숫자, 일부 특수문자(-,_,.) 만 사용 가능하며, 최대 15자까지만 등록 가능합니다.
-				</div>
-				<div>
-					* 닉네임을 변경하면 이전 작성한 글의 닉네임도 같이 변경 됩니다.
-				</div>
-				<div>
-					<input class="btn cancel" type="button" value="취소">
-					<input class="btn correct" type="button" value="변경">
-				</div>
+		<form th:action="@{/user/info/modify}" method="get">
+			<input type="text" th:name="${session.loginUser.email}" th:value="${session.loginUser.email}">
+			<div class="info_box">
+				<div class="info artist" id="info_artist">닉네임</div>
+				<div class="info name" id="info_name">이름/나이 확인</div>
+				<div class="info mobile" id="info_mobile">연락처</div>
+				<div class="info marketting" id="info_marketting">이벤트/마케팅 혜택알림</div>
+				<div class="info" id="retire">테그뮤직 탈퇴</div>
 			</div>
-			<div class="modify_name blind">
-				<div class="info_title">
-					등록된 본인인증 정보를<br/> 확인해주세요.
-				</div>
-				<div>
-					<input type="text" id="name" placeholder="이름 입력">
-				</div>
-				<div class="msg_name">
-				</div>
-				<div>
-					* 본인인증 정보는 서비스 이용을 위한 나이확인 및 본인확인 용도로 활용됩니다. 본인인증을 통해 이름/나이 정보를 업데이트해 주세요.
-					<br/>
-					* 한번 등록된 정보는 삭제하거나 타인의 정보로 변경할 수 없으니 반드시 회원님의 정보로 본인인증해 주세요.
-				</div>
-				<div>
-					<input class="btn cancel" type="button" value="취소">
-					<input class="btn correct" type="button" value="변경">
-				</div>
-			</div>
-			<div class="modify_mobile blind">
-				<div class="info_title">
-					멜론에 등록된 연락처를<br/>확인해 주세요.
-				</div>
-				<div>
-					<span class="txt_mobile">이메일</span>
-					<input type="text">이메일주소
-				</div>
-				<div>
-					<span class="txt_mobile">휴대폰번호</span>
-					<input type="text"> 010-****-1111
-				</div>
-				<div>
-					<div>
-						사용중인 연락처로 등록되어 있나요?
+			<div class="box_backlayer blind"></div>
+			<div class="modify_box blind">
+				<div class="modify_artist blind">
+					<div class="info_title">
+						댓글, 좋아요, 팬맺기 등<br/> 태그뮤직 서비스 이용 시 노출되는<br/> 닉네임입니다.
+					</div>
+					<div class="input_artist">
+						<input type="text" id="artist" name="artist" placeholder="닉네임 입력">
+					</div>
+					<div class="msg_artist">
+						닉네임을 입력해 주세요. 닉네임은 2~15자로 한글, 영문, 숫자, 특수문자(-, _, .)만 사용가능합니다.
 					</div>
 					<div>
-						연락처 정보가 변경되었다면, 현재 사용중인 정보로 변경해 주세요.
+						한글 및 영문, 숫자, 일부 특수문자(-,_,.) 만 사용 가능하며, 최대 15자까지만 등록 가능합니다.
+					</div>
+					<div>
+						* 닉네임을 변경하면 이전 작성한 글의 닉네임도 같이 변경 됩니다.
 					</div>
 					<div>
 						<input class="btn cancel" type="button" value="취소">
 						<input class="btn correct" type="button" value="변경">
 					</div>
 				</div>
+				<div class="modify_name blind">
+					<div class="info_title">
+						등록된 본인인증 정보를<br/> 확인해주세요.
+					</div>
+					<div>
+						<input type="text" id="name" placeholder="이름 입력">
+					</div>
+					<div class="msg_name">
+					</div>
+					<div>
+						* 본인인증 정보는 서비스 이용을 위한 나이확인 및 본인확인 용도로 활용됩니다. 본인인증을 통해 이름/나이 정보를 업데이트해 주세요.
+						<br/>
+						* 한번 등록된 정보는 삭제하거나 타인의 정보로 변경할 수 없으니 반드시 회원님의 정보로 본인인증해 주세요.
+					</div>
+					<div>
+						<input class="btn cancel" type="button" value="취소">
+						<input class="btn correct" type="button" value="변경">
+					</div>
+				</div>
+				<div class="modify_mobile blind">
+					<div class="info_title">
+						멜론에 등록된 연락처를<br/>확인해 주세요.
+					</div>
+					<div>
+						<span class="txt_mobile">이메일</span>
+						<input type="text">이메일주소
+					</div>
+					<div>
+						<span class="txt_mobile">휴대폰번호</span>
+						<input type="text"> 010-****-1111
+					</div>
+					<div>
+						<div>
+							사용중인 연락처로 등록되어 있나요?
+						</div>
+						<div>
+							연락처 정보가 변경되었다면, 현재 사용중인 정보로 변경해 주세요.
+						</div>
+						<div>
+							<input class="btn cancel" type="button" value="취소">
+							<input class="btn correct" type="button" value="변경">
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 </body>
 </html>
