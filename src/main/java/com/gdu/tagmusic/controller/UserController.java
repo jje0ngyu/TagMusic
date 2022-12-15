@@ -80,9 +80,9 @@ public class UserController {
 		return "user/myinfo";
 	}
 	// 마이페이지 - 개인정보 수정
-	@GetMapping("/user/info/modify")
-	public Map<String, Object> modifyMyinfo() {
-		return null;
+	@GetMapping("/user/info/modifyArtist")
+	public void modifyArtist(HttpServletRequest request, HttpServletResponse response) {
+		userService.modifyArtist(request, response);
 	}
 	
 	// 로그아웃

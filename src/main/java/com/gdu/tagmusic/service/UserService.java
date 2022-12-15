@@ -21,7 +21,7 @@ public interface UserService {
 	public void join(HttpServletRequest request, HttpServletResponse response);
 	
 	// 회원 정보 수정
-	
+	public void modifyArtist(HttpServletRequest request, HttpServletResponse response);
 	
 	// 휴면
 	public void sleepUserHandle();  // SleepUserScheduler에서 호출

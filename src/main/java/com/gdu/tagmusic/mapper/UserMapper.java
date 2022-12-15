@@ -15,4 +15,10 @@ public interface UserMapper {
 	
 	// 회원가입
 	public int insertUser(UserDTO user);
+	
+	// 개인정보 수정
+	public int updateUser(UserDTO user);
+	
+	// 휴면
+	// 탈퇴
 }

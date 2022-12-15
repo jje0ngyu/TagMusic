@@ -7,17 +7,51 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script>
 	$(function(){
+		fn_displayArtist();
 		fn_modifyArtist();
+		fn_editArtist();
 		fn_modifyName();
 		fn_modifyMobile();
 		fn_backlayer();
 		fn_retire();
+		
 	});
+	// 닉네임 노출
+	function fn_displayArtist(){
+		$.ajax({
+			function(){
+				$('#123123').prop('text').attr('${session.loginUser.artist}');				
+			}
+		});
+	};
+	
 	
 	// 닉네임 수정
 	function fn_modifyArtist(){
 		$('#info_artist').click(function(){
 			$('.modify_artist').removeClass('blind');
+		});
+	}
+	// 닉네임 수정 - 변경 버튼을 눌렀을 때
+	function fn_editArtist(){
+		$('#btn_name').click(function(){
+			$.ajax({
+				type: 'get',
+				url : '/user/info/modifyArtist',
+				data: $('#frm_modifyUser').serialize(),
+				dataType: 'text',
+				success : function() {
+					console.log('콘솔에 찍혔다.');
+					$('#artist').val('');
+					$('.box_backlayer').addClass('blind');
+					$('.modify_box').addClass('blind');
+					$('.modify_artist').addClass('blind');
+					
+				},
+				error : function(jqXHR){
+					console.log('error가 찍혔다');
+				}
+			})
 		});
 	}
 	
@@ -33,6 +67,9 @@
 			$('.modify_mobile').removeClass('blind');
 		});
 	}
+	
+	
+	
 	function fn_backlayer(){
 		$('.info').click(function(){
 			$('.box_backlayer').removeClass('blind');
@@ -51,17 +88,21 @@
 			loacation.href='/user/retire';
 		});
 	}
+	
+	
+
 </script>
 </head>
 <body>
 	<nav th:replace="~{layout/mypageNav.html::mypageFragment}"></nav>
 	<div class="contain">
 		<div>
+			<input id="123123"></input>
 			<h1>개인정보 관리</h1>
 			<span>멜론에 등록된 개인정보 정보를 확인할 수 있습니다. 최신 정보로 관리해주세요.</span>
 		</div>
-		<form th:action="@{/user/info/modify}" method="get">
-			<input type="text" th:name="${session.loginUser.email}" th:value="${session.loginUser.email}">
+		<form id="frm_modifyUser" method="get">
+			<input type="text" name="email" th:value="${session.loginUser.email}">
 			<div class="info_box">
 				<div class="info artist" id="info_artist">닉네임</div>
 				<div class="info name" id="info_name">이름/나이 확인</div>
@@ -89,7 +130,7 @@
 					</div>
 					<div>
 						<input class="btn cancel" type="button" value="취소">
-						<input class="btn correct" type="button" value="변경">
+						<input class="btn correct" id="btn_name" type="button" value="변경">
 					</div>
 				</div>
 				<div class="modify_name blind">

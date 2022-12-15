@@ -255,6 +255,42 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	// 회원 정보 수정
+	@Override
+	public void modifyArtist(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 파라미터
+		// 정보 일치용 (where)
+		String email = request.getParameter("email");
+		String artist = request.getParameter("artist");
+		
+		// 일부 파라미터는 DB에 넣을 수 있도록 가공
+		artist = securityUtil.preventXSS(artist);
+		
+		// DB로 보낼 UserDTO 만들기
+		UserDTO user = UserDTO.builder()
+				.artist(artist)
+				.email(email)
+				.build();
+				
+		// 회원정보수정
+		int result = userMapper.updateUser(user);
+		
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			if(result > 0) {
+				// 조회 조건으로 사용할 Map
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("email", email);
+				// session에 올라간 정보를 수정된 내용으로 업데이트
+				request.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	// 휴면
 	
