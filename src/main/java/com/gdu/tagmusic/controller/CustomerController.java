@@ -1,7 +1,5 @@
 package com.gdu.tagmusic.controller;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.tagmusic.service.CustomerService;
@@ -47,26 +43,30 @@ public class CustomerController {
 		//return "customerCenter/customerServiceChat";
 	}
 	
-	// 1:1 문의 단순 페이지이동 -- CustomerServiceImpl에서 findChatList 사용함
+	// 1:1 문의 페이지이동 --  페이지 이동과 동시에 리스트 뽑아옴
 	@GetMapping("/customerService/customerServiceChat")
-	public String customerServiceCustomerServiceChat(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String customerServiceCustomerServiceChat(HttpServletRequest request, Model model) {
+		model.addAttribute("chatUserNo", customerService.getChatUserNo(request));
 		return "customerCenter/customerServiceChat";
 	}
 	
 	@ResponseBody
 	@PostMapping(value="/chat/add", produces="application/json")
 	public Map<String, Object> chatadd(HttpServletRequest request) {
+		
+		
+		
 		return customerService.addChat(request); /// 인설트의 여부가 여기에 담겨있음. 1이면 true, 0이면 false
 	}
 	
-	// 로그인한 userNo가 문의한 게시글만 뽑는 매핑값
-	@ResponseBody
-	@PostMapping(value="/chat/list", produces="application/json")
-	public Map<String, Object> chatlist(@RequestParam("userNo") int userNo){
-		// 자신이 문의한 글만 볼 수 있게 userNo를 파라미터로 넘겨줌
-		return customerService.getChatListUserNo(userNo);
-		
-	}
+//	// 로그인한 userNo가 문의한 게시글만 뽑는 매핑값
+//	@ResponseBody
+//	@PostMapping(value="/chat/list", produces="application/json")
+//	public Map<String, Object> chatlist(@RequestParam("userNo") int userNo){
+//		// 자신이 문의한 글만 볼 수 있게 userNo를 파라미터로 넘겨줌
+//		return customerService.getChatListUserNo(userNo);
+//		
+//	}
 
 	
 	
