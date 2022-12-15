@@ -18,7 +18,12 @@
 			(PAYMENT_SEQ.NEXTVAL, #{email}, #{passNo}, SYSDATE)
 	</insert>
 	
-	<insert id=""></insert>
+	<insert id="insertPaymentLog" parameterType="map">
+		INSERT INTO PAYMENT_LOG
+			(PAY_LOG_NO, PAY_LOG_EMAIL, PAY_LOG_DATE, PAY_LOG_PG, PAY_LOG_NAME)
+		VALUES
+			(PAYMENT_LOG_SEQ.NEXTVAL, #{email}, SYSDATE, #{payPg}, #{ticketName})
+	</insert>
 	
 </mapper>
 

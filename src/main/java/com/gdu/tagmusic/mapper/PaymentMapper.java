@@ -13,4 +13,5 @@ import com.gdu.tagmusic.domain.PassDTO;
 public interface PaymentMapper {
 	public List<PassDTO> selectPass();
 	public int insertPayment(Map<String, Object> map);
+	public int insertPaymentLog(Map<String, Object> map);
 }

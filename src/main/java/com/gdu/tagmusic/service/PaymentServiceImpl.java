@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gdu.tagmusic.mapper.PaymentMapper;
 
@@ -26,6 +27,7 @@ public class PaymentServiceImpl implements PaymentService {
 		return map;
 	}
 	
+	@Transactional
 	@Override
 	public Map<String, Object> buyPass(HttpServletRequest request) {
 		Map<String, Object> map = new HashMap<>();
@@ -33,20 +35,23 @@ public class PaymentServiceImpl implements PaymentService {
 		String price = request.getParameter("price");
 		String passNo = request.getParameter("passNo");
 		String payPg = request.getParameter("payPg");
+		String ticketName = request.getParameter("ticketName");
 		
 		map.put("email", email);
 		map.put("price", price);
 		map.put("passNo", passNo);
 		map.put("payPg", payPg);
+		map.put("ticketName", ticketName);
 		System.out.println();
 		
 		Map<String, Object> result = new HashMap<>();
-		int rrr = paymentMapper.insertPayment(map);
-		if(rrr > 0) {
-			//paymentMapper.();
-			System.out.println("성공");
+		int passResult = paymentMapper.insertPayment(map);
+		int logResult = paymentMapper.insertPaymentLog(map);
+		
+		if(passResult > 0 && logResult > 0) {
+			result.put("result", 1);
 		} else {
-			System.out.println("실패");
+			result.put("result", 0);
 		}
 		
 		return result;
