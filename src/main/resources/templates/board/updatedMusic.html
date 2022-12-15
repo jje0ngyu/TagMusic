@@ -5,10 +5,28 @@
 <title></title>
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+
+<script th:inline="javascript">
+
+	$(function() {
+		
+		fn_thumbnail();
+
+	});
+	
+	function fn_thumbnail() {
+		
+		
+		
+		
+	}
+	
+
+</script>
 </head>
 <body>
 
-	<!--  # 게시판 페이지 -->
+	<!--  page : 최신리스트 게시판 -->
 	
 	<div th:replace="~{layout/header.html::header_layout}"></div>
 
@@ -20,7 +38,7 @@
 				
 					<div class="page_title">
 					<!-- 구현 : 요청마다 게시판 이름 변경하기  -->
-						<p>${pageName}게시판</p>
+						<p th:text="${pageName}"></p>
 					</div>
 				
 					<div class="list_page_header">
@@ -28,11 +46,11 @@
 						<div class="select_genre">
 							<div class="select_genre_title">장르별 선택하기</div>
 							<ul class="list_select_ul">
+								<li class="list_select_li">전체</li>
 								<li class="list_select_li">발라드</li>
 								<li class="list_select_li">팝송</li>
 								<li class="list_select_li">ost</li>
 								<li class="list_select_li">트로트</li>
-								<li class="list_select_li">기타</li>
 								<li class="list_select_li">기타</li>
 								<li class="list_select_li">기타</li>
 							</ul>
@@ -45,42 +63,39 @@
 						<table>
 							<thead>
 								<tr>
-									<td>
-										<div>선택</div>
-									</td>
-									<td>
-										<div>섬네일</div>
-									</td>
-									<td>
-										<div>제목</div>
-										<div>아티스트</div>
-									</td>
-									<td>
-										<div>앨범</div>
-									</td>
-									<td>
-										<div>좋아요</div>
-									</td>
-									<td>
-										<div>리스트에 담기</div>
-									</td>
-									<td>
-										<div>다운로드</div>
-									</td>
+									<td><div class="td">선택</div></td>
+									<td><div class="td">No</div></td>
+									<td colspan="3"><div class="td_music">곡정보</div></td>
+									
+									
+									<td><div class="td">좋아요</div></td>
+									<td><div class="td">리스트에 담기</div></td>
+									<td><div class="td">다운로드</div></td>
 								</tr>
 						</thead>
 						<tbody>
-							<tr>
+							<tr th:each="music,vs:${musicList}">
 								<td>
 									<input type="checkbox">
 								</td>
-								<td>//////</td>
+								<td class="td_no" th:text="${beginNo -vs.index}"></td>
+								<!-- # 구현 : 썸네일 가져오기 -->
+								<!-- 방법 : 타임리프 if else(unless)를 통해 해결  -->
 								<td>
-									<div>title</div>
-									<div>artist</div>
+									<span th:if="${music.hasThumbNail == 1}" >
+										<img class="board_thumbnail" th:src="@{/music/thumbnail(musicNo=${music.musicNo})}">
+									</span>
+									<span th:unless="${music.hasThumbNail == 1}" >
+										<img class="board_thumbnail" th:src="@{/images/defaultImage.png}">
+									</span>
+								<td>
+									
+									<div th:text="${music.musicTitle}" class="title_artist"></div>
+									<div th:text="${music.activeLogDTO.userDTO.artist}" class="title_artist"></div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
 								</td>
+								
 								<td>
-									<div>앨범</div>
+									<div th:text="${music.musicAlbum}"></div>
 								</td>
 								<td>
 									<input type="button" value="좋아요">
@@ -89,7 +104,7 @@
 									<input type="button" value="리스트에담기">
 								</td>
 								<td>
-									<input type="button" value="다운로드">
+									<input type="button" value="다운받기">
 								</td>
 							</tr>
 						</tbody>
@@ -98,18 +113,20 @@
 					<!-- 구현 : 게시글 업로드 -->
 					<div class="btn_area">
 						<input type="button" value="삭제" class="upload_btn">
-						<input type="button" value="업로드" class="delete_btn">
+						<div>
+							<input type="button" value="업로드" class="delete_btn">
+							<input type="button" value="전부다운받기" class="delete_btn">
+						</div>
 					</div>
 					
 					<!-- 구현 : 게시글 페이징 처리 + 검색기능 -->
 					<div class="list_page_footer">
-						<div class="paging">
-							페이징
-						</div>
+						<div class="page_block" th:utext="${paging}" ></div>
 						<div class="list_page_search">
-							<input type="text" placeholder="검색">
-							<input type="button" value="검색">
+							<input type="text" placeholder="검색" class="list_page_search_text">
+							<input type="button" value="검색" class="list_page_search_btn">
 						</div>
+					</div>
 					</div>
 				</div>
 			</div>

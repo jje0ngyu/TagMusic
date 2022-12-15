@@ -1,21 +1,30 @@
 @charset "UTF-8";
 
+
+p {
+	
+	height : 30px;
+	font-size: 30px;
+}
+
 .list_container {
 	
  	width: 100%;
  	/* margin : auto : 내용 영역을 페이지 가운데로 정렬하기 위해 사용됨  */
  	padding-left : 250px;
+ 	height : 100%;
  	background-color: #ECECEC;
 	
-	
+
 }
+
 
 .list_page {
 	
-	margin : 100px auto;
-	width: 1250px;
+	margin : 150px auto;
+	width: 1000px;
 	height: 800px;
-	padding : 30px;
+	padding-right: 30px;
 	display: block;
 	
 	
@@ -48,18 +57,51 @@
 .btn_all {
 	
 	float: left;
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 	
 }
 
+.td {
+	
+	 font-size: 15px;
+	 color : #333333;
+	 
+	
+}
+
+.music_detail {
+	display : flex;
+	
+}
+
+.music_detail_detail {}
+
+
+
+/* 테이블 */
 table {
-    width: 100%;
+	
+    width: 970px;
+    height : 600px;
     border-top: 1px solid #444444;
     border-collapse: collapse;
+    font-size: 15px;
+    color : #333333;
+    text-align: center;
+   
 }
   th, td {
+  
+    font-size: 16px;
+  	height: 60px;
     border-bottom: 1px solid #444444;
-    padding: 10px;
+    padding: 6px 3px;
+    
+}
+
+.title_artist {
+	
+	text-align: left;
 }
 
 .btn_area {
@@ -71,23 +113,17 @@ table {
 
 }
 
-.delete_btn {
-
-
-}
-
-
-.upload_btn {
+.td_no {
 	
+	font-weight: 900;
 	
 }
 
-/* listpage : 하단 검색 + 페이징 영역 */
-.list_page_footer {
+
+.list_page_table {
 	
+	padding-bottom: 30px;
 	
-	padding-left: 500px;
-	margin : 50px auto; 
 }
 
 .select_genre {
@@ -98,7 +134,8 @@ table {
 
 .select_genre_title {
 	
-	font-size: 20px;
+	
+	font-size: 15px;
 	font-weight: 900;
 	margin-bottom: 20px;
 	
@@ -106,26 +143,28 @@ table {
 
 .select_all_btn_area {
 	
-	
-	margin-top: 120px;
+
+	margin-top: 80px;
 }
 
 .list_select_ul {
 	
-	width : 1200px;
-	height: 100px;
+	width : 1000px;
+	height: 80px;
+	color : #333333;
 	
 	
 }
 
 .list_select_li {
 	display : inline-block;
-	width : 195px;
+	width : 185px;
 	text-align: center;
 	height: 50px;
-	background-color: #888888;
+	background-color: #999999;
 	line-height: 50px;
-	margin-bottom: 5px;
+	margin-bottom: 7px;
+	margin-right: 7px;
 	
 	
 }
@@ -144,7 +183,7 @@ input[type=button] {
 	background-color: #ffffff;
 	border: 1px solid #777777;
 	border-radius: 3px;
-	color: #222222;
+	color: #333333;
 	padding: 5px 10px;
 	text-align: center;
 	font-size: 10px;
@@ -162,7 +201,59 @@ input[type=button] {
 .select_all_btn_area {
 	
 	margin-bottom: 10px;
+	height : 35px;
 	
 	
 }
 
+.board_thumbnail {
+	
+	margin-right: 10px;
+	width : 60px;
+	height : 60px;
+	
+}
+
+
+/* 페이지 footer : 페이징 처리 */
+
+.list_page_footer {
+	
+	margin: 50px 400px;
+	
+}
+
+/* 페이지 util : 페이지 블록 처리 css */
+.paging {
+	
+	border: 1px solid #222222;
+	display: inline-block;
+	width: 40px;
+	height: 35px;
+	text-align: center;
+	line-height: 35px;
+	font-size: 20px;
+	color: #444444;
+	font-weight: 900;
+	border: 1px solid #444444;
+}
+
+.paging:hover {
+	
+	background-color: #888888; 
+	color: #eeeeee;
+	
+}
+
+.list_page_search {
+	
+	margin-top: 10px;
+	display: flex;
+
+}
+
+.list_page_search_text {
+	
+	margin-right: 5px;
+	
+}

@@ -75,11 +75,13 @@ a {
 /* 아이템 하나 */
 .main_item {
 	
+	
 	background-color: #B4B4B4;
 	width: 200px;
 	height: 250px;
 	margin: 20px 20px;
-	padding: 10px 15px;
+	padding: 5px 10px;
+	border-radius: 15px;
 	
 	
 }
@@ -89,10 +91,10 @@ a {
 .item_image {
 	
 	
-	width: 170px;
-	
+	width: 100%;
 	margin : 5px 0;
 	height: 170px;
+	border-radius: 15px;
 	
 }
 
