@@ -123,37 +123,44 @@
 			$('.modify_artist').addClass('blind');
 			$('.modify_name').addClass('blind');
 			$('.modify_mobile').addClass('blind');
+			$('.retire_box').addClass('blind');
 		})
 	}
 	function fn_retire(){
 		$('#retire').click(function(){
 			$('.retire_box').removeClass('blind');
-			$.ajax({
-				type: 'post',
-				url : '/user/retire/checkPw',
-				data: $('#frm_modifyUser').serialize(),
-				dataType: 'text',
-				success : function(resData) {
-					// 비밀번호 일치
-					// 1. 탈퇴 인사 페이지로 이동
-					if (resData > 0) {
-						alert('탈퇴에 성공하셨습니다.');
-						loacation.href='/user/retire';
-					// 비밀번호 불일치
-					// 1. 비밀번호 인풋창 리셋
-					// 2. 화면 그대로 머물기
-					} else {
-						alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
-						$('#pw').val('');
+			$('#btn_retire').click(function(){
+				$.ajax({
+					type: 'post',
+					url : '/user/retire/checkPw',
+					data: $('#frm_modifyUser').serialize(),
+					dataType: 'json',
+					success : function(resData) {
+						console.log("resData:" + resData);
+						console.log("resData.resData:" + resData.resData);
+						// 비밀번호 일치
+						// 1. 탈퇴 인사 페이지로 이동
+						if (resData.resData > 0) {
+							alert('탈퇴에 성공하셨습니다.');
+							fn_goodbye();
+						// 비밀번호 불일치
+						// 1. 비밀번호 인풋창 리셋
+						// 2. 화면 그대로 머물기
+						} else {
+							alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요.');
+							$('#pw').val('');
+						}
+					},
+					error : function(jqXHR){
+						console.log('error가 찍혔다');
 					}
-				},
-				error : function(jqXHR){
-					console.log('error가 찍혔다');
-				}
-			}); // ajax
+				}); // ajax
+			});
 		});
 	}
-	
+	function fn_goodbye(){
+		$('#frm_goodbye').submit();
+	}
 	
 
 </script>
@@ -259,6 +266,9 @@
 					</div>
 				</div>
 			</div>
+		</form>
+		<form action="/user/retire/goodbye" id="frm_goodbye">
+			
 		</form>
 	</div>
 </body>

@@ -5,14 +5,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import com.gdu.tagmusic.domain.UserDTO;
 
 public interface UserService {
 	
 	// 로그인
 	public void keepLogin(HttpServletRequest request, HttpServletResponse response);
 	public void login(HttpServletRequest request, HttpServletResponse response);
-	
+	public UserDTO getUserBySessionId(Map<String, Object> map);
 	
 	
 	// 회원가입
@@ -33,5 +33,5 @@ public interface UserService {
 	public void logout(HttpServletRequest request, HttpServletResponse response);
 	
 	// 탈퇴
-	public void retire(HttpServletRequest request, HttpServletResponse response);
+	public Map<String, Object> retire(HttpServletRequest request, HttpServletResponse response);
 }

@@ -102,10 +102,16 @@ public class UserController {
 		return "redirect:/";
 	}
 	
-	// 회원탈퇴
+	// 회원탈퇴 - 비밀번호 확인
+	@ResponseBody
 	@PostMapping("/user/retire/checkPw")
-	public void retire(HttpServletRequest request, HttpServletResponse response) {
-		userService.retire(request, response);
+	public Map<String, Object> retire(HttpServletRequest request, HttpServletResponse response) {
+		return userService.retire(request, response);
+	}
+	// 회원탈퇴 - 탈퇴 인사창
+	@GetMapping("/user/retire/goodbye")
+	public String retireMsg() {
+		return "user/retire";
 	}
 	
 }
