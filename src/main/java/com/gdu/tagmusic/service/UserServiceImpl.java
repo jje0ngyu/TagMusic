@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gdu.tagmusic.domain.RetireUserDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.UserMapper;
 import com.gdu.tagmusic.util.JavaMailUtil;
@@ -254,7 +255,7 @@ public class UserServiceImpl implements UserService {
 		
 	}
 	
-	// 회원 정보 수정
+	// 회원정보 수정 - 닉네임
 	@Override
 	public void modifyArtist(HttpServletRequest request, HttpServletResponse response) {
 		
@@ -268,8 +269,76 @@ public class UserServiceImpl implements UserService {
 		
 		// DB로 보낼 UserDTO 만들기
 		UserDTO user = UserDTO.builder()
-				.artist(artist)
 				.email(email)
+				.artist(artist)
+				.build();
+				
+		// 회원정보수정
+		int result = userMapper.updateUser(user);
+		
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			if(result > 0) {
+				// 조회 조건으로 사용할 Map
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("email", email);
+				// session에 올라간 정보를 수정된 내용으로 업데이트
+				request.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// 회원정보수정 - 실명
+	@Override
+	public void modifyName(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 파라미터
+		// 정보 일치용 (where)
+		String email = request.getParameter("email");
+		String name = request.getParameter("name");
+		
+		// DB로 보낼 UserDTO 만들기
+		UserDTO user = UserDTO.builder()
+				.email(email)
+				.name(name)
+				.build();
+				
+		// 회원정보수정
+		int result = userMapper.updateUser(user);
+		
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			if(result > 0) {
+				// 조회 조건으로 사용할 Map
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("email", email);
+				// session에 올라간 정보를 수정된 내용으로 업데이트
+				request.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// 회원정보수정 - 휴대폰
+	@Override
+	public void modifyMobile(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 파라미터
+		// 정보 일치용 (where)
+		String email = request.getParameter("email");
+		String mobile = request.getParameter("mobile");
+		
+		// DB로 보낼 UserDTO 만들기
+		UserDTO user = UserDTO.builder()
+				.email(email)
+				.mobile(mobile)
 				.build();
 				
 		// 회원정보수정
@@ -319,5 +388,36 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	// 탈퇴
+	@Transactional
+	@Override
+	public void retire(HttpServletRequest request, HttpServletResponse response) {
+		// 탈퇴할 회원의 userNo, id, joinDate는 session의 loginUser에 저장되어 있다.
+		HttpSession session = request.getSession();
+		UserDTO loginUser = (UserDTO)session.getAttribute("loginUser");
+		
+		// 탈퇴할 회원 RetireUserDTO 생성
+		RetireUserDTO retireUser = RetireUserDTO.builder()
+				.userNo(loginUser.getUserNo())
+				.email(loginUser.getEmail())
+				.artist(loginUser.getArtist())
+				.build();
+		
+		// 탈퇴처리
+		int deleteResult = userMapper.deleteUser(loginUser.getUserNo());
+		int insertResult = userMapper.insertRetireUser(retireUser);
+		
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			if(deleteResult > 0 && insertResult > 0) {
+				// session 초기화(로그인 사용자 loginUser 삭제를 위해서)
+				session.invalidate();
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }

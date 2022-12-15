@@ -22,6 +22,8 @@ public interface UserService {
 	
 	// 회원 정보 수정
 	public void modifyArtist(HttpServletRequest request, HttpServletResponse response);
+	public void modifyName(HttpServletRequest request, HttpServletResponse response);
+	public void modifyMobile(HttpServletRequest request, HttpServletResponse response);
 	
 	// 휴면
 	public void sleepUserHandle();  // SleepUserScheduler에서 호출
@@ -31,4 +33,5 @@ public interface UserService {
 	public void logout(HttpServletRequest request, HttpServletResponse response);
 	
 	// 탈퇴
+	public void retire(HttpServletRequest request, HttpServletResponse response);
 }

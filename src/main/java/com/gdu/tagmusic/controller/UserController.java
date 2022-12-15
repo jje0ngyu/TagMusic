@@ -80,9 +80,19 @@ public class UserController {
 		return "user/myinfo";
 	}
 	// 마이페이지 - 개인정보 수정
-	@GetMapping("/user/info/modifyArtist")
+	@PostMapping("/user/info/modifyArtist")
 	public void modifyArtist(HttpServletRequest request, HttpServletResponse response) {
 		userService.modifyArtist(request, response);
+	}
+	// 마이페이지 - 실명 수정
+	@PostMapping("/user/info/modifyName")
+	public void modifyName(HttpServletRequest request, HttpServletResponse response) {
+		userService.modifyName(request, response);
+	}
+	// 마이페이지 - 휴대폰 수정
+	@PostMapping("/user/info/modifyMobile")
+	public void modifyMobile(HttpServletRequest request, HttpServletResponse response) {
+		userService.modifyMobile(request, response);
 	}
 	
 	// 로그아웃
@@ -93,4 +103,9 @@ public class UserController {
 	}
 	
 	// 회원탈퇴
+	@PostMapping("/user/retire/checkPw")
+	public void retire(HttpServletRequest request, HttpServletResponse response) {
+		userService.retire(request, response);
+	}
+	
 }

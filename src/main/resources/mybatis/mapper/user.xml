@@ -49,7 +49,7 @@
 		UPDATE USERS
 		<set>
 			<if test="artist != null">ARTIST = #{artist},</if>
-			<if test="name != null">NAME = #{name}</if>
+			<if test="name != null">NAME = #{name},</if>
 			<if test="birthyear != null">BIRTHYEAR = #{birthyear},</if>
 			<if test="birthday != null">BIRTHDAY = #{birthday},</if>
 			<if test="mobile != null">MOBILE = #{mobile},</if>
@@ -63,6 +63,21 @@
 		</set>
 		WHERE EMAIL = #{email}
 	</update>
+	
+	<!-- 회원탈퇴1 : USERS 테이블에서 제거 -->
+	<delete id="deleteUser" parameterType="int">
+		DELETE
+		  FROM USERS
+		 WHERE USER_NO = #{userNo}
+	</delete>
+	
+	<!-- 회원탈퇴2 : RETIRE_USERS 테이블에 추가 -->
+	<insert id="insertRetireUser" parameterType="RetireUserDTO">
+		INSERT INTO RETIRE_USERS
+			(USER_NO, EMAIL, ARTIST, RETIRE_DATE)
+		VALUES
+			(#{userNo}, #{email}, #{artist}, SYSDATE)
+	</insert>
 	
 </mapper>
 

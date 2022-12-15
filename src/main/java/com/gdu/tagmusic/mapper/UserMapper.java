@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.gdu.tagmusic.domain.RetireUserDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 
 @Mapper
@@ -21,4 +22,6 @@ public interface UserMapper {
 	
 	// 휴면
 	// 탈퇴
+	public int insertRetireUser(RetireUserDTO retireUser);
+	public int deleteUser(int userNo);
 }
