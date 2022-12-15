@@ -32,12 +32,23 @@ public class PaymentServiceImpl implements PaymentService {
 		String email = request.getParameter("email");
 		String price = request.getParameter("price");
 		String passNo = request.getParameter("passNo");
+		String payPg = request.getParameter("payPg");
+		
 		map.put("email", email);
 		map.put("price", price);
 		map.put("passNo", passNo);
+		map.put("payPg", payPg);
+		System.out.println();
 		
 		Map<String, Object> result = new HashMap<>();
-		result.put("result", paymentMapper.insertPayment(map));
+		int rrr = paymentMapper.insertPayment(map);
+		if(rrr > 0) {
+			//paymentMapper.();
+			System.out.println("성공");
+		} else {
+			System.out.println("실패");
+		}
+		
 		return result;
 	}
 }

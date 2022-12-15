@@ -27,7 +27,7 @@ public class PreventLoginInterceptor implements HandlerInterceptor {
 			
 			out.println("<script>");
 			out.println("alert('해당 기능은 사용할 수 없습니다.');");
-			out.println("location.href='" + request.getContextPath() + "';");
+			out.println("location.href='/';");
 			out.println("</script>");
 			out.close();
 			

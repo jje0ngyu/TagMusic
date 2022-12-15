@@ -13,15 +13,14 @@
 	
 	<insert id="insertPayment" parameterType="map">
 		INSERT INTO PAYMENT
-			(PAY_NO, EMAIL, PASS_NO, PAY_DATE, PRICE)
+			(PAY_NO, EMAIL, PASS_NO, PAY_DATE)
 		VALUES
-			(PAYMENT_SEQ.NEXTVAL, ${email}, ${passNo}, SYSDATE, ${price})
+			(PAYMENT_SEQ.NEXTVAL, #{email}, #{passNo}, SYSDATE)
 	</insert>
 	
+	<insert id=""></insert>
+	
 </mapper>
-
-
-
 
 
 
