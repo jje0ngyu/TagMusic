@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import com.gdu.tagmusic.domain.ChatDTO;
 import com.gdu.tagmusic.domain.UserDTO;
@@ -54,33 +53,21 @@ public class CustomerServiceImpl implements CustomerService {
 		// 답글DTO를 만들어야함!! 필요한 파라미터는 
 		// 파라미터에서 뽑으면 String임
 		// 작성자, 제목, 아이피
+		
+		int userNo = Integer.parseInt(request.getParameter("userNo")); // 정상
+		String content = request.getParameter("content"); // 정상
+		
 		ChatDTO chat = new ChatDTO();
-		chat.setUserNo(request.getParameter("userNO"));
-		chat.set
-		
-		
-		
-		
-		chat.setWriter(writer);
-		chat.setTitle(title);
-		reply.setIp(ip);
-		reply.setDepth(depth + 1);            // 답글 depth : 원글 depth + 1
-		reply.setGroupNo(groupNo);            // 답글 groupNo : 원글 groupNo
-		reply.setGroupOrder(groupOrder + 1);  // 답글 groupOrder : 원글 groupOrder + 1
-		
-		
-		
-		Optional<String> opt = Optional.ofNullable(request.getParameter("userNO"));
-		int userNo =  Integer.parseInt(opt.orElse("0"));
-		String content =  securityUtil.preventXSS(request.getParameter("content"));
-		String ip = request.getRemoteAddr();
-		
-
-		
+		chat.setUserNo(userNo);
+		chat.setContent(content);
+		chat.setIp(request.getRemoteAddr());
+		chat.setGroupNo(groupNo);
+		chat.setGroupOrder(groupOrder+1);
 		
 		Map<String, Object> map = new HashMap<>();
-		map.put("insertChat", chatMapper.insertChat(chat)==1);
-		return map; 
+		map.put("insertChat", chatMapper.insertChat(chat) == 1);
+		
+		return map;
 		
 	}
 	
@@ -107,12 +94,22 @@ public class CustomerServiceImpl implements CustomerService {
 						String ip = request.getRemoteAddr();
 						ChatDTO chat = new ChatDTO();
 						chat.setUserNo(userNo);
+						chat.setContent("기초데이터");
 						chat.setIp(ip);
-						chatMapper.insertChat(chat);
+						chatMapper.insertChatbox(chat);
 					}else {
+						try {
+							response.setContentType("text/html; charset=UTF-8");
+							PrintWriter out = response.getWriter();
+							out.println("<script>");
+							out.println("location.href='" + request.getContextPath() + "/admin/chatUserList';");
+							out.println("</script>");	
+							out.close();
+							
+						}catch (IOException e2) {
+							e2.printStackTrace();
+						}
 						
-						
-					// 관리자일 때 이동하는 페이지도 필요함
 					}
 				}
 				
@@ -164,19 +161,28 @@ public class CustomerServiceImpl implements CustomerService {
 	public ChatDTO getChatUserNo(HttpServletRequest request) {
 		
 		
+		// 여기서 null이 떠버리면 곤란해짐
+		
 		HttpSession session = request.getSession();
 		Optional<Integer> opt = Optional.ofNullable(((UserDTO)session.getAttribute("loginUser")).getUserNo());
 		int userNo = opt.orElse(0);
-
 		
-		if(userNo != 1) {
-			return chatMapper.chatListUserNo(userNo);
-		}else {
-			return null;
-		}
-
 		
+		return chatMapper.chatListUserNo(userNo);
 	}
+	
+	
+	
+	@Override
+	public Map<String, Object> getChatList(int groupNo) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("chatList", chatMapper.getChatList(groupNo));
+		
+		return map;
+	}
+	
+	
 }
 
 

@@ -50,7 +50,7 @@
 	</resultMap>
 	
 	<!-- 원글 삽입하는 쿼리 -->
-	<insert id="insertChat" parameterType="ChatDTO">
+	<insert id="insertChatbox" parameterType="ChatDTO">
 	
 		INSERT INTO CHAT_ADMIN
   		  (CHAT_NO, USER_NO, CHAT_DATE, IP, STATE, DEPTH, GROUP_NO, GROUP_ORDER)
@@ -60,27 +60,44 @@
 	</insert>
 	
 	
-
-	
 	<select id="chatListUserNo" parameterType="int" resultMap="ChatMap">
 	
     	 SELECT U.PROFILE_IMAGE, U.NAME, C.CHAT_NO, C.USER_NO, C.CHAT_DATE, C.IP, C.CONTENT, C.STATE, C.DEPTH, C.GROUP_NO, C.GROUP_ORDER
 		   FROM CHAT_ADMIN C INNER JOIN USERS U
 			 ON C.USER_NO = U.USER_NO
 		  WHERE C.USER_NO = #{userNo}
+		    AND C.DEPTH = 0
 		  
 	</select>
 	
 	
-	<update id="updatePreviousChat" parameterMap="ChatDTO">
+	<update id="updatePreviousChat" parameterType="ChatDTO">
 	 	UPDATE CHAT_ADMIN
 		   SET GROUP_ORDER = GROUP_ORDER + 1
 		 WHERE GROUP_NO = #{groupNo}
 		   AND GROUP_ORDER > #{groupOrder}
 	</update>
 	
-
 	
+	
+	<insert id="insertChat" parameterType="ChatDTO">
+		INSERT INTO CHAT_ADMIN
+			(CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER)
+		VALUES
+			(CHAT_SEQ.NEXTVAL, #{userNo}, TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS'), #{ip}, #{content}, 1, 1, #{groupNo}, #{groupOrder})
+	</insert>
+
+
+
+	<select id="getChatList" parameterType="int" resultType="ChatDTO">
+	
+		SELECT A.RN, A.CHAT_NO, A.USER_NO, A.CHAT_DATE, A.IP, A.CONTENT, A.STATE, A.DEPTH, A.GROUP_NO, A.GROUP_ORDER
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_ORDER DESC) AS RN, CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER
+		          FROM CHAT_ADMIN
+		          WHERE GROUP_NO = #{groupNo}
+		          AND DEPTH = 1) A
+	
+	</select>
 	
 	
 	

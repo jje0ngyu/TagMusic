@@ -13,5 +13,5 @@ public interface CustomerService {
 	public Map<String, Object> addChat(HttpServletRequest request);
 	public void divideUser(HttpServletRequest request, HttpServletResponse response);
 	public ChatDTO getChatUserNo(HttpServletRequest request);
-	
+	public Map<String, Object> getChatList(int groupNo);
 }
