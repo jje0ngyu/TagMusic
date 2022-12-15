@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/mypage.css}">
+</head>
+<body>
+	<nav th:replace="~{layout/mypageNav.html::mypageFragment}"></nav>
+	<div>
+		내 정보
+	</div>
+	<div>
+		이용자님 안녕하세요.
+	</div>
+	<div>
+		로그인 및 보안
+	</div>
+	<div>
+		<a th:href="@{/user/mypage/info}">
+			개인정보 관리
+		</a>
+	</div>
+	<div>
+		내가 쓴 글
+	</div>
+	<div>
+		내가 쓴 댓글
+	</div>
+	<div>
+		내가 문의한 글
+	</div>
+
+</body>
+</html>

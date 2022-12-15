@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.tagmusic.mapper.HomeMapper">
+
+	<!--  # resultmap : 2번째 방식 사용 -->
+	<!--  USERS_DTO --><!--  ACTIVE_LOG_DTO --><!--  MUSIC_DTO -->
+	<resultMap type="MusicDTO" id="MusicMap">
+		<result column="MUSIC_NO" property="musicNo"></result>
+		<result column="EMAIL" property="email"></result>
+		<result column="MUSIC_TITLE" property="musicTitle"></result>
+		<result column="MUSIC_CONTENT" property="musicContent"></result>
+		<result column="MUSIC_ALBUM" property="musicAlbum"></result>
+		<result column="MUSIC_GENRE" property="musicGenre"></result>
+		<result column="MUSIC_UPLOAD_DATE" property="musicUploadDate"></result>
+		<result column="MUSIC_MODIFY_DATE" property="musicModifyDate"></result>
+		<result column="IP" property="ip"></result>
+		<result column="IMG_ORIGIN" property="imgOrigin"></result>
+		<result column="IMG_FILESYSTEM" property="imgFilesystem"></result>
+		<result column="MUSIC_ORIGIN" property="musicOrigin"></result>
+		<result column="MUSIC_FILESYSTEM" property="musicFilesystem"></result>
+		<result column="DOWNLOAD_CNT" property="downloadCnt"></result>
+		<result column="IMAGE_PATH" property="imagePath"></result>
+		<result column="MUSIC_PATH" property="musicPath"></result>
+		<result column="HAS_THUMBNAIL" property="hasThumbNail"></result>
+		<association javaType="ActiveLogDTO" property="activeLogDTO">
+			<id column="ACTIVE_NO" property="activeNo"></id>
+			<result column="EMAIL" property="email"></result>
+			<result column="MUSIC_NO" property="musicNo"></result>
+			<result column="LAST_LISTEN_DATE" property="lastListenDate"></result>
+			<result column="LISTEN_COUNT" property="listenCount"></result>
+			<association javaType="UserDTO" property="userDTO">
+				<id column="USER_NO" property="userNo"></id>
+				<result column="EMAIL" property="email"></result>
+				<result column="ARTIST" property="artist"></result>
+				<result column="NAME" property="name"></result>
+				<result column="PW" property="pw"></result>
+				<result column="PROFILE_IMAGE" property="profileImage"></result>
+				<result column="MOBILE" property="mobile"></result>
+				<result column="GENDER" property="gender"></result>
+				<result column="BIRTHYEAR" property="birthyear"></result>
+				<result column="BIRTHDAY" property="birthday"></result>
+				<result column="POSTCODE" property="postcode"></result>
+				<result column="ROAD_ADDRESS" property="roadAddress"></result>
+				<result column="JIBUN_ADDRESS" property="jibunAddress"></result>
+				<result column="DETAIL_ADDRESS" property="detailAddress"></result>
+				<result column="EXTRA_ADDRESS" property="extraAddress"></result>
+				<result column="SNS_TYPE" property="snsType"></result>
+				<result column="SESSION_ID" property="sessionId"></result>
+				<result column="SESSION_LIMIT_DATE" property="sessionLimitDate"></result>
+				<result column="JOIN_DATE" property="joinDate"></result>
+				<result column="PW_MODIFY_DATE" property="pwModifyDate"></result>
+				<result column="INFO_MODIFY_DATE" property="infoModifyDate"></result>
+				<result column="AGREE_CODE" property="agreeCode"></result>
+			</association>
+		</association>
+	</resultMap>
+	
+	
+	<!--  # main_최신리스트 : 전체 게시글 수 조회 -->
+	<select id="selectMusicCnt" resultType="int">
+		SELECT COUNT(MUSIC_NO) 
+		FROM MUSIC
+	</select>
+	
+	<!--  # main_최신리스트 : 전체 게시글 조회 + 아티스트 조회 -->
+	<select id="selectMusicList" parameterType="Map" resultMap="MusicMap">
+		SELECT U.USER_NO, U.EMAIL, U.ARTIST, U.NAME, U.PW, U.PROFILE_IMAGE, U.MOBILE, B.MUSIC_NO, B.EMAIL, B.MUSIC_TITLE, B.MUSIC_CONTENT, B.MUSIC_ALBUM, B.MUSIC_GENRE, B.MUSIC_UPLOAD_DATE, B.MUSIC_MODIFY_DATE, B.IP, B.IMG_ORIGIN, B.IMG_FILESYSTEM, B.MUSIC_ORIGIN, B.MUSIC_FILESYSTEM, B.DOWNLOAD_CNT, B.IMG_PATH, B.MUSIC_PATH, B.HAS_THUMBNAIL
+	  	  FROM USERS U INNER JOIN ACTIVE_LOG A
+	        ON U.EMAIL = A.EMAIL INNER JOIN (SELECT M.MUSIC_NO, M.EMAIL, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
+		  									   FROM (SELECT ROW_NUMBER() OVER(ORDER BY MUSIC_NO DESC) AS ROW_NUM, MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL
+				    								   FROM MUSIC) M
+		 									  WHERE M.ROW_NUM BETWEEN #{begin} AND #{end}) B
+            ON B.MUSIC_NO = A.MUSIC_NO
+	</select>
+	
+	
+	<!--  # musicDTO 가져오기 : 썸네일, 상세화면 -->
+	<select id="selectMusicByNo" parameterType="int" resultType="MusicDTO">
+		SELECT MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL
+		  FROM MUSIC
+		 WHERE MUSIC_NO = ${musicNo}
+	</select>
+
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+

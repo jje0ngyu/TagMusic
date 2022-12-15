@@ -1,0 +1,140 @@
+@charset "UTF-8";
+
+
+	/* 클래스 초기화  */
+	* {
+	box-sizing: border-box;
+	margin : 0;
+	padding : 0;
+	}
+	
+	/* 레이아웃(헤더) : 헤더영역 레이아웃 설정 */
+	.header {
+	height : 50px;
+	background-color: #D4D4D4;
+	border-bottom: 2px #f0f0f0 solid;
+	margin-left: 200px;
+	
+	position : fixed;
+	top : 0; right: 0; left: 0;
+	
+	}
+	
+	/* 레이아웃(헤더) : 상단 레이아웃 모든 기능을 감싸는 영역
+	flex와 space-between으로 모든 상단 레이아웃 기능을 수평정렬
+	 */
+	.header_menu {
+	margin-left : 10px;
+	display : flex;
+	justify-content : space-between;
+	padding : 10px 10px 10px 10px;
+	height: 50px;
+	vertical-align: baseline;
+	text-align: center;
+	
+	
+	}
+	/* 레이아웃(헤더) : 상단 레이아웃중 검색과 랭킹 기능을 묶은 영역
+	- header_left_menu : flex 정렬로 인해 랭킹이 페이지 가운데로 이동하므로, 
+	검색과 같은 블록 내에 위치시켜서 좌측으로 배치시키기 위해 사용하였다
+	  */
+	.header_left_menu {
+	display : flex;
+	}
+	
+	/* 레이아웃(헤더) : 검색 + 버튼 영역
+	- flex : 검색영역과 버튼을 붙이기 위해 사용하였다
+	- 감싼이유 : 검색영역과 버튼을 감싸는 css를 꾸미기위해(ex 유튜브)
+	 */
+	.header_search_area {
+	margin-left: 20px;
+	background-color: #8E8E8E;
+	display : flex;
+	padding : 5px;
+	width : 250x;
+	border-radius: 15px;
+	}
+	
+	
+		
+	/* 레이아웃(헤더) : 랭킹 영역 */
+	.header_rank {
+	margin-left: 20px;
+	width: 100px;
+	}
+	
+	/* 레이아웃(사이드) : 상단 로고 영역설정 */
+	.menu_logo {
+	width : 190px;
+	height : 100px;
+	}
+	
+	/* 전체영역 : 좌측 레이아웃 + 우측 컨텐츠 영역 */
+	.session {
+	display : flex;
+	
+	
+	}
+	
+	/* 레이아웃(사이드) : 좌측 레이아웃 설정
+	- 좌측 레이아웃 설정을 통해 우측의 컨텐츠 영역과 분리하기위한 클래스
+	 */
+	.menu {
+	background-color: #B0B0B0;
+	width : 200px;
+	height : 1000px;
+	
+	/* 레이아웃 설정 */
+	position : fixed;
+	top : 0; right: 0; left: 0;
+	padding-left: 10px;
+	}
+	
+	
+	/* 레이아웃(사이드) : 좌측 최상단 로고영역 */
+	.menu_logo {
+	padding-top : 10px;
+	}
+	
+	
+	/* 레이아웃(사이드) : 좌측 레이아웃 모든 기능을 감싸는 영역
+	- 범위 : 홈, 플레이리스트, 좋아요, 많이들은 최근들은, 이용권, 고객센터 포함 
+	 */
+	.menu_body {
+	margin-bottom: 100px;
+	}
+	
+	
+	/* 레이아웃(사이드) : 각각 좌측 레이아웃의 기능들(- 홈, 플레이리스트, 좋아요, 많이들은 최근들은, 이용권, 고객센터) 
+	- 용도 : 각 기능들 간의 거리를 벌리기 위해 사용
+	*/
+	
+	.body_menus {
+	margin : 20px 0;
+	
+	}
+	
+	/* 내용(최상위) : 레이아웃이 아닌 모든 영역 
+	- ** 모든 컨텐츠는 해당 태그 아래에서 작성하면된다 **
+	- 1250, 900 일반적인 노트북 화면 사이즈
+	
+	*/
+	.content {
+	margin-left: 200px;
+    margin-top: 50px;
+    /* margin: 50px auto; */
+    /* background-color: #ECECEC; */
+    width: 100%;
+    height: 900px;
+    text-align: center;
+	}
+	
+	/* content에 내용을 추가할때 가운데 정렬하며 쓸수있는 css 속성*/
+	.내용속성 {
+	text-align: center;
+	margin: 0 auto;
+	}
+	
+
+
+	

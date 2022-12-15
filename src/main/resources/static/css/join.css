@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+.blind {
+	display: none;
+}
+
+.profile_image {
+	width: 50px;
+}

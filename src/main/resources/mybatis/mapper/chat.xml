@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.tagmusic.mapper.ChatMapper">
+
+
+
+	
+	<resultMap type="UserDTO" id="UserMap">
+		<result column="USER_NO" property="userNo"/>
+		<result column="EMAIL" property="email"/>
+		<result column="ARTIST" property="artist"/>
+		<result column="NAME" property="name"/>
+		<result column="PW" property="pw"/>
+		<result column="PROFILE_IMAGE" property="profileImage"/>
+		<result column="MOBILE" property="mobile"/>
+		<result column="GENDER" property="gender"/>
+		<result column="BIRTHYEAR" property="birthyear"/>
+		<result column="BIRTHDAY" property="birthday"/>
+		<result column="POSTCODE" property="postcode"/>
+		<result column="ROAD_ADDRESS" property="roadAddress"/>
+		<result column="JIBUN_ADDRESS" property="jibunAddress"/>
+		<result column="DETAIL_ADDRESS" property="detailAddress"/>
+		<result column="EXTRA_ADDRESS" property="extraAddress"/>
+		<result column="SNS_TYPE" property="snsType"/>
+		<result column="SESSION_ID" property="sessionId"/>
+		<result column="SESSION_LIMIT_DATE" property="sessionLimitDate"/>
+		<result column="JOIN_DATE" property="joinDate"/>
+		<result column="PW_MODIFY_DATE" property="pwModifyDate"/>
+		<result column="INFO_MODIFY_DATE" property="infoModifyDate"/>
+		<result column="AGREE_CODE" property="agreeCode"/>
+	</resultMap>
+	
+	
+	<resultMap type="ChatDTO" id="ChatMap">
+		<result column="CHAT_NO" property="chatNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="CHAT_DATE" property="chatDate"/>
+		<result column="IP" property="ip"/>
+		<result column="CONTENT" property="content"/>
+		<result column="STATE" property="state"/>
+		<result column="DEPTH" property="depth"/>
+		<result column="GROUP_NO" property="groupNO"/>
+		<result column="GROUP_ORDER" property="groupOrder"/>
+		<collection resultMap="UserMap" property="userDTO"></collection>
+	</resultMap>
+	
+	<!-- 댓글 삽입하는 쿼리 -->
+	<insert id="insertChat" parameterType="ChatDTO">
+	
+		INSERT INTO CHAT_ADMIN
+  		  (CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER)
+		VALUES
+   		 (CHAT_SEQ.NEXTVAL, #{userNo}, SYSDATE, #{ip}, #{content}, 1, 0, CHAT_SEQ.CURRVAL, 0)
+   		 
+	</insert>
+	
+	
+	
+	<!-- 로그인한 유저의 게시판만 조회하는 쿼리,,,, 이거 왜 resultmap을 인식을 못하지?? -->
+	<select id="selectChatList" parameterType="int" resultMap="ChatMap">
+	
+    	 SELECT U.PROFILE_IMAGE, U.NAME, C.CHAT_NO, C.USER_NO, C.CHAT_DATE, C.IP, C.CONTENT, C.STATE, C.DEPTH, C.GROUP_NO, C.GROUP_ORDER
+		   FROM CHAT_ADMIN C INNER JOIN USERS U
+			 ON C.USER_NO = U.USER_NO
+		  WHERE C.USER_NO = #{userNo}
+		  
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
