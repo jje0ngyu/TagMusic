@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="/resources/js/jquery-3.6.1.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+ </head>
+<body>
+
+	<center>
+	  <h1>공지사항</h1>
+	</center>
+	
+	 <div>
+		<a th:href="@{/board/write}">새글작성</a>
+	</div>
+		
+		<div>
+			<table class="table table-striped">
+				<thead>
+					<tr></tr>
+					<tr bgcolor="#F6F6F6">
+						<td>NO.</td>
+						<td>제목</td>
+						<td>조회</td>
+						<td>작성일</td>
+					</tr>
+				</thead>
+				<tbody>
+				<tr th:each="board,vs:${boardList}">
+					<td th:text="${beginNo - vs.index}"></td>
+					<td><a th:href="@{/board/increse/hit(boardNo=${board.boardNo})}" th:text="${board.Title}"></a></td>
+					<td th:text="${board.hit}"></td>
+					<td th:text="${board.createDate}"></td>
+				</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="5" th:utext="${paging}"></td>
+					</tr>
+				</tfoot>
+			</table>
+	</div>
+
+</body>
+</html>
