@@ -9,6 +9,8 @@ server:
       force: true
     session:
       timeout: 1800
+      tracking-modes: cookie
+      
 
 # database connection
 spring:

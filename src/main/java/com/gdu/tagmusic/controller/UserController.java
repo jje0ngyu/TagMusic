@@ -37,6 +37,11 @@ public class UserController {
 	public void kakaoLogin() {
 		
 	}
+	// 로그인 - 정보찾기
+	@GetMapping("user/loginHelp")
+	public String loginHelp() {
+		return "user/loginHelp";
+	}
 
 	// 회원가입
 	@GetMapping("/user/join/agree")

@@ -168,6 +168,7 @@
 <body>
 	<img th:src="@{/images/background_login.jpg}" class="background_login">
 	<div class="backgroung_layer">
+		<div th:replace="~{layout/loginHeader.html::loginFragment}"></div>
 		<div class="login_box">
 			<div class="login_container">
 				<div class="login_title">로그인</div>
@@ -186,26 +187,27 @@
 						<!-- 패스워드 보여주기도 구현해 볼 것 -->
 						<input type="text" class="msg_pw msg_check blind" value="비밀번호는 4~60자 사이여야 합니다.">
 					</div>
-					<div>
-						<button class="btn_login">로그인</button>
-					</div>
+					
 					<div class="btn_login_bottom">
 						<div class="login_box_left">
 							<label for="rememberEmail">
 								<div class="remember_box"></div>
 									<input type="checkbox" id="rememberEmail">
 								<div class="msg_login_box">
-									로그인 정보 저장
+									이메일 기억하기
 								</div>
 							</label>
 							<label for="keepLogin">
-								<input type="checkbox" name="keepLogin" id="keepLogin">
-								로그인 유지
+								<input type="checkbox" name="keepLogin" id="keepLogin" style="margin-left:20px;">
+								<div class="msg_login_box">
+									자동로그인
+								</div>
 							</label>
 						</div>
-						<div class="login_box_right">
-							<a class="msg_login_box msg_help" href="">도움이 필요하신가요?</a>
+						<div>
+							<button class="btn_login">로그인</button>
 						</div>
+						
 					</div>
 				</form>
 				<!-- 간편 로그인 -->
@@ -259,6 +261,9 @@
 						</script>
 
 					</div>
+				</div>
+				<div class="login_box_right">
+					<a class="msg_login_box msg_help" th:href="@{/user/loginHelp}">도움이 필요하신가요?</a>
 				</div>
 				<div class="login_box_bottom">
 					<div class="login_box_left">
