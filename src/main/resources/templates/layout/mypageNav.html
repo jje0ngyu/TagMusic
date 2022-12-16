@@ -6,14 +6,17 @@
 </head>
 <body>
 	<nav th:fragment="mypageFragment" >
-		<h1>태그뮤직(로고)</h1>
+		<h1><a th:href="@{/}">태그뮤직(로고)</a></h1>
 		
 		<!-- 멜론 마이페이지 참고사항, 추후 변경할 예정 -->
 		<div>내정보 홈</div>
 		<div>개인정보 관리</div>
 		<div>로그인 및 보안</div>
 		<div>개인정보 이용</div>
-		<div>이용권/결제정보</div>
+		<form th:action="@{/payment/history}" method="post">
+           <input type="hidden" name="userName" th:value="${session.loginUser.name}">
+           <input type="submit" value="결제이력">
+        </form>
 	</nav>
 </body>
 </html>
