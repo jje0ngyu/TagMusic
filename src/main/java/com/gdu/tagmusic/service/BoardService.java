@@ -9,8 +9,8 @@ import org.springframework.ui.Model;
 
 public interface BoardService {
 	
-	public void findAllBoardList(HttpServletRequest request, Model model);
-	public void addBoard(HttpServletRequest request, HttpServletResponse response);
+	public void getBoardList(Model model);
+	public void saveBoard(HttpServletRequest request, HttpServletResponse response);
 	
-}
+	}
 

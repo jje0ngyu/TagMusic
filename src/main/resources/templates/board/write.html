@@ -51,7 +51,7 @@
 		
 		// 목록
 		$('#btn_list').click(function(){
-			<a th:href="@{/board/list}"></a>
+			location.href = '/board/list';
 		});
 		
 		// 서브밋
@@ -91,9 +91,7 @@
 		<div>
 			<button>작성완료</button>
 			<input type="reset" value="입력초기화">
-			<button>
-			<a th:href="@{/board/list}">목록</a></a>
-			</button>
+			<input type="button" value="목록" id="btn_list">
 		</div>
 		
 	</form>

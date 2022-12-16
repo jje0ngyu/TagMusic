@@ -5,16 +5,18 @@
 <title>Insert title here</title>
 <script src="/resources/js/jquery-3.6.1.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
- </head>
+</head>
 <body>
 
-	<center>
-	  <h1>공지사항</h1>
-	</center>
+	<h1>공지사항</h1>
 	
 	 <div>
-		<a th:href="@{/board/write}">새글작성</a>
+		<input type="button" value="새글 작성" id="btn_write">
+		<script>
+			$('#btn_write').click(function(){
+				location.href = '/board/write';
+			});
+		</script>
 	</div>
 		
 		<div>

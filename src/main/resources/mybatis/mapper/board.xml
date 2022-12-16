@@ -6,17 +6,31 @@
 
 <mapper namespace="com.gdu.tagmusic.mapper.BoardMapper">
 
-	<select id="selectAllBoardList" parameterType="Map" resultType="BoardDTO">
-	SELECT A.RN, A.BOARD_NO, A.BOARD_TITLE, A.BOARD_CONTENT, A.BOARD_CREATE_DATE,A.BOARD_HIT, A.IP, GUBUN
-	  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_NO DESC, GROUP_ORDER ASC) AS RN, BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_CREATE_DATE, BOARD_HIT, IP, GUBUN
-	    FROM BOARD) A
-		 WHERE A.RN BETWEEN #{begin} AND #{end}
+	<select id="selectBoardListCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM BOARD
 	</select>
-	
 
+<select id="selectBoardListByMap" parameterType="Map" resultType="BoardDTO">
+		SELECT A.ROW_NUM, A.BOARD_NO, A.BOARD_TITLE, A.BOARD_CONTENT, A.BOARD_HIT, A.IP, A.BOARD_CREATE_DATE, A.GUBUN
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY BOARD_NO DESC) AS ROW_NUM, BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_HIT, IP, BOARD_CREATE_DATE, GUBUN
+		          FROM BOARD) A
+		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+
+	<insert id="insertBoard" parameterType="BoardDTO">
+		<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+			SELECT BOARD_SEQ.NEXTVAL
+			  FROM DUAL
+		</selectKey>
+		INSERT INTO BOARD
+			(BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_CREATE_DATE, BOARD_HIT, IP)
+		VALUES
+			(#{boardNo}, #{boardTitle}, #{boardContent}, SYSDATE, 0, #{ip})
+	</insert>
+	
 	
 </mapper>
-
 
 
 

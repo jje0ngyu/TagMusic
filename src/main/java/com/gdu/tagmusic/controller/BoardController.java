@@ -22,7 +22,8 @@ public class BoardController {
 	
 	@GetMapping("/board/list")
 	public String list(HttpServletRequest request, Model model) {
-		boardService.findAllBoardList(request, model);
+		model.addAttribute("request", request);  // model에 request를 저장하기
+		boardService.getBoardList(model);          // model만 넘기지만 이미 model에는 request가 들어 있음
 		return "board/list";
 	}
 	
@@ -30,9 +31,12 @@ public class BoardController {
 	public String write() {
 		return "board/write";
 	}
+	
+	// @responseBody는 html에서 ajax시 사용
 	@ResponseBody
 	@PostMapping("/board/add")
 	public void add(HttpServletRequest request, HttpServletResponse response) {
-		boardService.addBoard(request, response);
+		boardService.saveBoard(request, response);
 	}
+	
 }
