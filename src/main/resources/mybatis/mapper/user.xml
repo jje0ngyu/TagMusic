@@ -44,6 +44,41 @@
 			(USERS_SEQ.NEXTVAL, #{email}, #{pw}, #{artist}, #{name}, #{gender}, #{mobile}, #{birthyear}, #{birthday}, #{postcode}, #{roadAddress}, #{jibunAddress}, #{detailAddress}, #{extraAddress}, #{agreeCode}, NULL, SYSDATE, SYSDATE, SYSDATE, NULL, NULL)
 	</insert>
 	
+	<!-- 회원정보수정 -->
+	<update id="updateUser" parameterType="UserDTO">
+		UPDATE USERS
+		<set>
+			<if test="artist != null">ARTIST = #{artist},</if>
+			<if test="name != null">NAME = #{name},</if>
+			<if test="birthyear != null">BIRTHYEAR = #{birthyear},</if>
+			<if test="birthday != null">BIRTHDAY = #{birthday},</if>
+			<if test="mobile != null">MOBILE = #{mobile},</if>
+			<if test="postcode != null">POSTCODE = #{postcode},</if>
+			<if test="roadAddress != null">ROAD_ADDRESS = #{roadAddress},</if>
+			<if test="jibunAddress != null">JIBUN_ADDRESS = #{jibunAddress},</if>
+			<if test="detailAddress != null">DETAIL_ADDRESS = #{detailAddress},</if>
+			<if test="extraAddress != null">EXTRA_ADDRESS = #{extraAddress},</if>
+			<if test="agreeCode != null">AGREE_CODE = #{agreeCode},</if>
+			<if test="email != null">INFO_MODIFY_DATE = SYSDATE</if>
+		</set>
+		WHERE EMAIL = #{email}
+	</update>
+	
+	<!-- 회원탈퇴1 : USERS 테이블에서 제거 -->
+	<delete id="deleteUser" parameterType="int">
+		DELETE
+		  FROM USERS
+		 WHERE USER_NO = #{userNo}
+	</delete>
+	
+	<!-- 회원탈퇴2 : RETIRE_USERS 테이블에 추가 -->
+	<insert id="insertRetireUser" parameterType="RetireUserDTO">
+		INSERT INTO RETIRE_USERS
+			(USER_NO, EMAIL, ARTIST, RETIRE_DATE)
+		VALUES
+			(#{userNo}, #{email}, #{artist}, SYSDATE)
+	</insert>
+	
 </mapper>
 
 

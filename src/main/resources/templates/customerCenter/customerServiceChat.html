@@ -10,10 +10,6 @@
 	$(function(){
 		fn_addChat();
 		fn_ChatList();
-		
-		
-		
-		
 	});
 	
 	
@@ -32,7 +28,8 @@
 				success: function(resData){  // resData = {"isAdd", true}
 					if(resData.insertChat){
 						// 채팅목록을 가져오는 함수필요
-						alert('등록.');
+						$('#content').val('');
+						fn_ChatList();
 					}
 				
 				
@@ -44,6 +41,59 @@
 	}
 	
 	function fn_ChatList(){
+		
+		$.ajax({
+			type : 'post',
+			url : '/chat/list',
+			data : 'groupNo=[[${chatUserNo.groupNo}]]',
+			dataType : 'json',
+			success : function(resData){
+				$('#chat_box').empty();
+				$.each(resData.chatList, function(i, chat){
+					var div = '';
+					
+					//$('#chat_box').append('<li>'+chat.content+'</li>');
+					 
+					if(chat.userNo == 1){
+						// 관리자가 남긴 답변일 경우
+						div += '<div style="height:40px; width:500px; margin-left: 150px;">';
+					}else{
+						
+						// 유저가 남긴 문의일 경우
+						div += '<div style="height:40px; width:300px; padding-left: 20px;">';
+						
+					}
+					
+					if(chat.state == 1){
+						div += '<div style="display:inline; text-align: center; line-height: 40px;">';
+						div += chat.content;
+						div += '</div>';
+					}
+					
+					/// 나주에 추가 기능구현할 것 : 인접형제의 chatDate랑 시간 비교해서 같은 분이면 안나오게 하기
+					div += '<span style="font-size: 10px; color: silver;" id="chatDate">' + chat.chatDate + '</span>';
+					
+					// 로그인한 사용자만 볼 수 있도록 if 처리
+					div += '</div>';
+					$('#chat_box').append(div);
+					//$('#chat_box').append('<div style="border-bottom: 1px dotted gray;"></div>');
+				
+					 
+					
+					
+				});
+			}
+			
+			
+			
+			
+			
+			
+		});
+		
+		
+		
+		
 		
 		
 		
@@ -82,27 +132,33 @@
 			    </ul>
 			</div>
 			
-			<div class="chat_box">
-				<table>
-					<tbody>
-					
-
-						
-						
-						
-						
-					</tbody>
-				</table>
+			<div class="chat_box" id="chat_box">
+			
+			
+			
+			
+				<div>[[${chatUserNo.userDTO.name}]]님 안녕하세요. <br> 궁금하신 사항이 있으신가요?</div>
+				
+				
+			
+				
+				
+				
+			
 			
 			</div>
 			
-			<div>
-				<form th:action="@{/chat/add}" method="post" id="frm_add_chat">
-					<input type="hidden" name="userNO" th:value="${session.loginUser.userNo}">
-					<div>
-						<input type="text" name="content" id="content" placeholder="문의내용">
+ 			<div>
+				<form id="frm_add_chat">
+					<!-- 원글의 DEPTH, GROUP_NO, GROUP_ORDER은 답글 남길 때 필요하니 히든으로 숨겨놔야함 -->
+					<input type="hidden" name="userNo" th:value="${chatUserNo.userNo}">
+					<input type="hidden" name="depth" th:value="${chatUserNo.depth}">
+					<input type="hidden" name="groupNo" th:value="${chatUserNo.groupNo}">
+					<input type="hidden" name="groupOrder" th:value="${chatUserNo.groupOrder}">
+					<div style="display : inline;">
+						<input type="text" name="content" id="content" placeholder="문의내용" >
 					</div>
-					<input type="button" value="보내기" id="btn_addChat">
+					<input type="button" value="문의하기" id="btn_addChat" style="display : inline;">
 				</form>
 			</div>
 			
