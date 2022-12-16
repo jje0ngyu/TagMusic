@@ -15,7 +15,7 @@ public class RetireUserDTO {
 
 		private int userNo;
 		private String email;
-		private Date retireDate;
 		private String artist;
+		private Date retireDate;
 	
 }

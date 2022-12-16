@@ -15,14 +15,17 @@
 		<typeAlias type="com.gdu.tagmusic.domain.BoardDTO" alias="BoardDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.ChatDTO" alias="ChatDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.CouponDTO" alias="CouponDTO" />
-		<typeAlias type="com.gdu.tagmusic.domain.ItemDTO" alias="ItemDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.MusicCommentDTO" alias="MusicCommentDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.MusicDTO" alias="MusicDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.MusicLikeDTO" alias="MusicLikeDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.MyMusicDTO" alias="MyMusicDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.PaymentDTO" alias="PaymentDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.PassDTO" alias="PassDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.PaymentLogDTO" alias="PaymentLogDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.PlaylistDTO" alias="PlaylistDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.UserDTO" alias="UserDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.RetireUserDTO" alias="RetireUserDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.SleepUserDTO" alias="SleepUserDTO" />
 	</typeAliases>
 
 </configuration>

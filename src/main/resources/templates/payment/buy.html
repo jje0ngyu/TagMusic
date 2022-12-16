@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<meta charset="UTF-8">
+
+<title></title>
+<style>
+	ul,ol{list-style:none}
+	a{text-decoration:none;color:#fff962;font-size:15px}
+	nav{overflow:hidden;height:80px;background-color:#1b2035; margin-top:150px;}
+	#nav3 {
+	  width: 80%;
+	  height: 10%;
+	  position: relative;
+	  text-align: center;
+	}
+	#nav3>a {
+	  line-height: 80px;
+	  display: block;
+	  font-size: 30px;
+	  font-weight: 900;
+	  position: absolute;
+	  left: 30px;
+	}
+	#nav3>select {
+	  padding: 0 20px;
+	  height: 30px;
+	  background-color: #1b2035;
+	  color: #fff;
+	  position: absolute;
+	  right: 30px;
+	  top: 50%;
+	  transform: translateY(-15px);
+	  border: 2px solid #fff;
+	  border-radius: 30px;
+	}
+	#nav3>ul {
+	  display: inline-block;
+	}
+	#nav3>ul li {
+	  float: left;
+	  line-height: 80px;
+	  padding: 0 30px;
+	}
+	#buyPageDiv{
+		width: 80%;
+		
+	}
+	
+</style>
+<!-- static 폴더 이후의 위치를 적으면 된다. -->
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+
+<script type="text/javascript">
+if(true){
+	var uid = '<%=(String)session.getAttribute("loginUser")%>';
+	alert(uid);
+}
+$(document).ready(function(){
+	fn_passList();
+	
+ });
+function fn_passList(){
+	$.ajax({
+		type: 'post',
+		url: '/pass/list',
+		dataType: 'json',
+		success: function(resData){
+			var txt = '';
+			$.each(resData.passList, function(i, pass){
+				txt += '<h2>'+pass.passName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+pass.passPrice+' 원!</h2>';
+				txt += '<input type="button" value="카카오페이로 결제하기" data-ticket="TagMusic-'+pass.passName+'" data-passno="'+pass.passNo+'" data-pg="kakaopay" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
+				if(pass.passName == "30일이용권"){
+					txt += '<input type="button" value="선물하기" id="btn_gift">';
+				}
+				txt += '<br>';
+				txt += '<br>';
+				txt += '<br>';
+			});
+			$('#buyPageDiv').append(txt);
+		}
+	});
+}
+
+function fn_buyTicket(e){
+	var musicAmount = $(e).data('amount');
+	var paymentPg = $(e).data('pg');
+	var ticketName = $(e).data('ticket');
+	var passNo = $(e).data('passno');
+	var userName = $('#userName').data('name');
+	var userEmail = $('#userEmail').data('email');
+	var userMobile = $('#userMobile').data('mobile');
+	var userAddr = '';		
+	userAddr += $('#userAddr1').data('addr');
+	userAddr += $('#userAddr2').data('addr');
+	userAddr += $('#userAddr3').data('addr');
+	userAddr += $('#userAddr4').data('addr');
+	var userPostcode = $('#postcode').data('postcode');
+		
+	var IMP = window.IMP; // 생략가능
+		
+	if(paymentPg == 'kakaopay'){
+		IMP.init('imp66111374');
+	}
+	var merchant_uid = 'TagMusic_' + new Date().getTime();
+	console.log(musicAmount + userEmail +userMobile );
+	IMP.request_pay({ 
+		pg: paymentPg,
+		pay_method: 'card',
+		merchant_uid: merchant_uid,
+		name: ticketName, 
+		//name: '노래제목:'+firstCartMusicName+' 외'+ (muprice-1) +'곡',
+		amount: musicAmount,
+		buyer_email: userEmail,// 구매자
+		buyer_name: userName,
+		buyer_tel: userMobile,
+		buyer_addr: '서울시',
+		buyer_postcode: '123-111',
+		m_redirect_url: 'https://www.yourdomain.com/payments/complete'
+		}, function (rsp) {
+			alert(rsp.success);
+			if (rsp.success) {
+			alert('성공했어');
+				 $.ajax({
+					type: 'post',
+					url: '/payment/thirtyDay',
+					data: 'email=' + userEmail + '&price=' + musicAmount + '&passNo=' + passNo + '&payPg=' + paymentPg,
+					dataType: 'json',
+					success: function(resData){
+						var msg = '';
+						console.log(resData);
+						if(resData.result == 1){
+							msg += '이용권 구매가 완료되었습니다.';
+						} else {
+							msg += '이용권 구매가 실패하였습니다..';
+						}
+						alert(msg);
+					}
+					
+				}); 
+			} else {
+			var msg = '';
+			msg += rsp.error_msg;
+			alert(msg)
+		}
+	});
+	
+
+}
+
+
+
+</script>
+</head>
+<body>
+	
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+
+	<div class="session">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+		
+		
+		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
+		<div class="content">
+			<nav id="nav3">
+				<h1>이용권 구매</h1>
+				<hr>
+				<ul>
+					<li>
+						<a th:href="@{/payment/buy}">태그뮤직 BEST</a>
+					</li>
+				</ul>
+			</nav>
+			<div th:if="${session.loginUser != null}">
+				<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
+				<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
+				<input type="hidden" id="userMobile" th:data-mobile="${session.loginUser.mobile}">
+				<input type="hidden" id="userAddr1" th:data-addr="${session.loginUser.roadAddress}">
+				<input type="hidden" id="userAddr2" th:data-addr="${session.loginUser.jibunAddress}">
+				<input type="hidden" id="userAddr3" th:data-addr="${session.loginUser.detailAddress}">
+				<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
+				<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
+			</div> 
+			<div id="buyPageDiv">
+			</div>
+		</div>
+	</div>
+
+	
+</body>
+</html>
