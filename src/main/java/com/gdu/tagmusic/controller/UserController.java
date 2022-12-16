@@ -79,6 +79,14 @@ public class UserController {
 	public String requiredLogin_mypage() {
 		return "user/mypage";
 	}
+
+	
+	// 마이페이지 - 프로필 사진 불러오기 
+	@GetMapping("/user/info/getImage") public Map<String, Object>
+	getImage(HttpServletRequest request){
+		return userService.getImage(request);
+	}
+	
 	// 마이페이지 - 개인정보 관리
 	@GetMapping("/user/mypage/info")
 	public String myinfo() {
@@ -105,6 +113,18 @@ public class UserController {
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
 		userService.logout(request, response);
 		return "redirect:/";
+	}
+	
+	// 휴면 - 화면 이동
+	@GetMapping("/user/sleep/display")
+	public String sleepDisplay() {
+		return "user/sleep";
+	}
+	
+	// 휴면 - 정상회원으로 복구
+	@PostMapping("/user/restore")
+	public void restore(HttpServletRequest request, HttpServletResponse response) {
+		userService.restoreUser(request, response);
 	}
 	
 	// 회원탈퇴 - 비밀번호 확인

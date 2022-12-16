@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gdu.tagmusic.domain.RetireUserDTO;
+import com.gdu.tagmusic.domain.SleepUserDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.UserMapper;
 import com.gdu.tagmusic.util.JavaMailUtil;
@@ -262,6 +263,13 @@ public class UserServiceImpl implements UserService {
 		
 	}
 	
+	// 회원정보 수정 - 프로필 이미지 가져오기
+	@Override
+	public Map<String, Object> getImage(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	// 회원정보 수정 - 닉네임
 	@Override
 	public void modifyArtist(HttpServletRequest request, HttpServletResponse response) {
@@ -369,13 +377,19 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	// 휴면
-	
-	
+	@Transactional
 	@Override
 	public void sleepUserHandle() {
-		// TODO Auto-generated method stub
-
+		int insertCount = userMapper.insertSleepUser();
+		if(insertCount > 0) {
+			userMapper.deleteUserForSleep();
+		}
 	}
+	@Override
+	public SleepUserDTO getSleepUserById(String id) {
+		return userMapper.selectSleepUserById(id);
+	}
+	
 	// 로그아웃
 	@Override
 	public void logout(HttpServletRequest request, HttpServletResponse response) {

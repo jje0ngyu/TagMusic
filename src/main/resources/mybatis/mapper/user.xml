@@ -44,6 +44,12 @@
 			(USERS_SEQ.NEXTVAL, #{email}, #{pw}, #{artist}, #{name}, #{gender}, #{mobile}, #{birthyear}, #{birthday}, #{postcode}, #{roadAddress}, #{jibunAddress}, #{detailAddress}, #{extraAddress}, #{agreeCode}, NULL, SYSDATE, SYSDATE, SYSDATE, NULL, NULL)
 	</insert>
 	
+	<!-- 프로필 이미지 -->
+	<select id="selectProfileImage" parameterType="String" resultType="String">
+		SELECT PROFILE_IMAGE
+		  FROM USERS
+		 WHERE EMAIL = #{email}
+	</select>
 	<!-- 회원정보수정 -->
 	<update id="updateUser" parameterType="UserDTO">
 		UPDATE USERS
@@ -63,6 +69,27 @@
 		</set>
 		WHERE EMAIL = #{email}
 	</update>
+	
+	<!-- 휴면 -->
+	<!-- 로그인 이전에 휴면회원인지 확인 -->
+	<select id="selectSleepUserById" parameterType="String" resultType="SleepUserDTO">
+		SELECT EMAIL, JOIN_DATE, LAST_LOGIN_DATE, SLEEP_DATE
+		  FROM SLEEP_USERS
+		 WHERE EMAIL = #{email}
+	</select>
+	<!-- 휴면복원1 : 복원할 회원을 USERS 테이블에 삽입 -->
+	<insert id="insertRestoreUser" parameterType="String">
+		INSERT INTO USERS(USER_NO, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE)
+			(SELECT USER_NO, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE
+			   FROM SLEEP_USERS
+			  WHERE EMAIL = #{email})
+	</insert>
+	<!-- 휴면복원2 : 복원할 회원을 SLEEP_USERS 테이블에서 삭제 -->
+	<delete id="deleteSleepUser" parameterType="String">
+		DELETE
+		  FROM SLEEP_USERS
+		 WHERE EMAIL = #{email}
+	</delete>
 	
 	<!-- 회원탈퇴1 : USERS 테이블에서 제거 -->
 	<delete id="deleteUser" parameterType="int">

@@ -2,39 +2,84 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Tag Music > 마이페이지</title>
 <link rel="stylesheet" th:href="@{/css/mypage.css}">
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script>
+	$(function(){
+		
+	});
+	
+	function fn_displayImage(){
+		$.ajax({
+			type: 'get',
+			url : '/user/info/getImage',
+			data: 'email=${session.loginUser.email}',
+			success: function(resData){
+				console.log(resData.imagePath)
+				$('#profileImage').attr('src',resData.iamgePath);
+			},
+			error: function(){
+				console.log('에러떴다');
+			}
+		})
+	}
+	
+</script>
 </head>
 <body>
 	<nav th:replace="~{layout/mypageNav.html::mypageFragment}"></nav>
-	<div>
-		내 정보
+	
+	<section class="container">
+		<div>
+			내 정보
+		</div>
+		<div>
+			<img class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">
+			
+		</div>
+		<div>
+			<span th:text="${session.loginUser.artist}"></span>님 안녕하세요.
+		</div>
+		<div>
+			로그인 및 보안
+		</div>
+		<div>
+			<a th:href="@{/user/mypage/info}">
+				개인정보 관리
+			</a>
+		</div>
+		<div>
+			<a th:href="@{/payment/history}">
+				결제정보
+			</a>
+		</div>
+		<div>
+			내가 쓴 글
+		</div>
+		<div>
+			내가 쓴 댓글
+		</div>
+		<div>
+			내가 문의한 글
+		</div>
+	</section>
+	
+	<!-- 프로필 이미지 변경 -->
+	<div class="box_backlayer">
+		<div class="profile_image_box">
+			<div>
+				프로필 이미지 변경
+			</div>
+			<div>
+				<img id="profileImage">프로필 이미지 위치
+			</div>
+			<div>
+				
+				
+			</div>
+			
+		</div>
 	</div>
-	<div>
-		<span th:text="${session.loginUser.artist}"></span>님 안녕하세요.
-	</div>
-	<div>
-		로그인 및 보안
-	</div>
-	<div>
-		<a th:href="@{/user/mypage/info}">
-			개인정보 관리
-		</a>
-	</div>
-	<div>
-		<a th:href="@{/payment/history}">
-			결제정보
-		</a>
-	</div>
-	<div>
-		내가 쓴 글
-	</div>
-	<div>
-		내가 쓴 댓글
-	</div>
-	<div>
-		내가 문의한 글
-	</div>
-
 </body>
 </html>
