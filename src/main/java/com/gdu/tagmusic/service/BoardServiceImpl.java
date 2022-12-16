@@ -56,7 +56,7 @@ public class BoardServiceImpl implements BoardService {
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("boardList", boardMapper.selectBoardListByMap(map));
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/board/list"));
+		model.addAttribute("paging", pageUtil.getPaging("/board/list"));
 		model.addAttribute("recordPerPage", recordPerPage);
 	}
 
