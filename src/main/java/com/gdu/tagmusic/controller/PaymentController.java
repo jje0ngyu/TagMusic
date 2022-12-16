@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,6 +35,15 @@ public class PaymentController {
 	public Map<String, Object> paymentResult(HttpServletRequest request){
 		return paymentService.buyPass(request); 
 	}
+	@ResponseBody
+	@PostMapping(value="/payment/remainingDay",produces="application/json; charset=UTF-8")
+	public Map<String, Object> remainingDay(HttpServletRequest request){
+		return paymentService.getRemainindperiod(request);
+	}
+	/*
+	 * @PostMapping("/payment/history") public String payLog() { return
+	 * "payment/log"; }
+	 */
 }
 
 

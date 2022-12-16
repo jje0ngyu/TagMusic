@@ -79,129 +79,28 @@
 $(document).ready(function(){
 	var userName = $('#userName').data('name');
 	if(userName != null){
-		fn_passList();
+		fn_userLog();
 	} else {
 		fn_isNotUser();
 	}
 	
  });
-function fn_isNotUser(){
+function fn_userLog(){
 	$.ajax({
 		type: 'post',
-		url: '/pass/list',
+		url: 'payment/log/list',
 		dataType: 'json',
 		success: function(resData){
 			var txt = '';
 			$.each(resData.passList, function(i, pass){
-				txt += '<div class="pass_box">';
-				txt += '<div class="pass_name">';
-				txt += '<h2>'+pass.passName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+pass.passPrice+' 원!</h2>';
-				txt += '</div>';
-				txt += '<div class="pass_btn">';
-				txt += '<input type="button" value="결제하기" onclick="fn_login()">';
-				if(pass.passName == "30일이용권"){
-					txt += '<input type="button" value="선물하기" id="btn_gift" onclick="fn_login()">';
-				}
 				
-				txt += '</div>';
-				txt += '</div>';
+				
+				
 			});
 			$('#buyPageDiv').append(txt);
 		}
 	});
 }
-function fn_passList(){
-	$.ajax({
-		type: 'post',
-		url: '/pass/list',
-		dataType: 'json',
-		success: function(resData){
-			var txt = '';
-			$.each(resData.passList, function(i, pass){
-				txt += '<div class="pass_box">';
-				txt += '<div class="pass_name">';
-				txt += '<h2>'+pass.passName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+pass.passPrice+' 원!</h2>';
-				txt += '</div>';
-				txt += '<div class="pass_btn">';
-				txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName +'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
-				if(pass.passName == "30일이용권"){
-					txt += '<input type="button" value="선물하기" id="btn_gift">';
-				}
-				txt += '</div>';
-				txt += '</div>';
-			});
-			
-			$('#buyPageDiv').append(txt);
-		}
-	});
-}
-function fn_login(){
-	alert('아직 로그인을 안하셨네요! 로그인 페이지로 이동합니다!');
-	$('#frm_login').submit();
-}
-
-function fn_buyTicket(e){
-	var musicAmount = $(e).data('amount');
-	var paymentPg = $(e).data('pg');
-	var ticketName = $(e).data('ticket');
-	var passNo = $(e).data('passno');
-	var userName = $('#userName').data('name');
-	var userEmail = $('#userEmail').data('email');
-	var userMobile = $('#userMobile').data('mobile');
-	var userAddr = '';
-	userAddr += $('#userAddr1').data('addr');
-	userAddr += $('#userAddr2').data('addr');
-	userAddr += $('#userAddr3').data('addr');
-	userAddr += $('#userAddr4').data('addr');
-	var userPostcode = $('#postcode').data('postcode');
-		
-	var IMP = window.IMP; 
-		
-	
-	IMP.init('imp66111374');//imp72345478
-	
-	var merchant_uid = 'TagMusic_' + new Date().getTime();
-	console.log(musicAmount + userEmail +userMobile );
-	IMP.request_pay({ 
-		pg: "html5_inicis",
-		pay_method: 'card',
-		merchant_uid: merchant_uid,
-		name: ticketName, 
-		//name: '노래제목:'+firstCartMusicName+' 외'+ (muprice-1) +'곡',
-		amount: musicAmount,
-		buyer_email: userEmail,
-		buyer_name: userName,
-		buyer_tel: userMobile,
-		buyer_addr: '서울시',
-		buyer_postcode: '123-111',
-		m_redirect_url: 'https://www.yourdomain.com/payments/complete'
-		}, function (rsp) {
-			if (rsp.success) {
-				 $.ajax({
-					type: 'post',
-					url: '/payment/thirtyDay',
-					data: 'email=' + userEmail + '&price=' + musicAmount + '&passNo=' + passNo + '&payPg=' + paymentPg + '&ticketName=' + ticketName + '&merchantUid=' + merchant_uid,
-					dataType: 'json',
-					success: function(resData){
-						var msg = '';
-						console.log(resData);
-						if(resData.result == 1){
-							msg += '이용권 구매가 완료되었습니다.';
-						} else {
-							msg += '이용권 구매가 실패하였습니다..';
-						}
-						alert(msg);
-					}
-					
-				}); 
-			} else {
-			var msg = '';
-			msg += rsp.error_msg;
-			alert(msg)
-		}
-	});
-}
-
 </script>
 </head>
 <body>
