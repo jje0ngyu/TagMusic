@@ -10,15 +10,15 @@ width는 1250px, 80퍼센트면 1000px;
 
  	width: 100%;
  	/* margin : auto : 내용 영역을 페이지 가운데로 정렬하기 위해 사용됨  */
- 	padding-left : 250px;
+ 	padding-left : 220px;
  	background-color: #ECECEC;
 }
  
 .main {
 	
 	margin: 35px auto;
-	margin-top: 100px;
-	background-color: #878787;
+	margin-top: 75px;
+	background-color: #212121;
 	width : 1250px;
 	height: 900px;
 	padding: 30px;
@@ -37,9 +37,10 @@ a {
 	
 	width : 100%;
 	height: 350px;
-	background-color: #AAAAAA;
+	background-color: #212121;
 	margin-bottom: 70px;
 	margin-top: 20px;
+	
 	
 
 	
@@ -51,6 +52,9 @@ a {
 	padding: 20px;
 	display: flex;
 	justify-content: space-between;
+	color: #eeeeee;
+	font-size: 25px;
+	font-weight: 600;
 	
 }
 
@@ -65,7 +69,7 @@ a {
 	
 	display: flex;
 	justify-content: space-between;
-	background-color: #DADADA;
+	background-color: #323232;
 	width: 100%;
 	height: 300px;
 	
@@ -76,12 +80,12 @@ a {
 .main_item {
 	
 	
-	background-color: #B4B4B4;
-	width: 200px;
-	height: 250px;
-	margin: 20px 20px;
-	padding: 5px 10px;
-	border-radius: 15px;
+	background-color: #212121;
+	width: 280px;
+	height: 260px;
+	margin: 20px 10px;
+	padding: 3px 10px;
+	border-radius: 10px;
 	
 	
 }
@@ -93,13 +97,26 @@ a {
 	
 	width: 100%;
 	margin : 5px 0;
-	height: 170px;
-	border-radius: 15px;
+	height: 180px;
+	border-radius: 10px;
 	
 }
 
-.item_title, .item_artist, .item_image {
+.item_artist {
+	
+	padding: 3px 0;
 	display : block;
+	color: #dddddd;
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.item_title, .item_image {
+	padding: 3px 0;
+	display : block;
+	color: #dddddd;
+	font-size: 14px;
+	font-weight: 700;
 }
 
 .item_title, .item_artist {
@@ -113,5 +130,27 @@ a {
  	margin-top: 50px;
  	width: 100%;
  	padding-right : 350px;
+ }
+ 
+ 
+ /* 바 상단텍스트  */
+ 
+ .list_title {
+ 
+ 	display:inline-block;
+ 	font-size: 28px;
+ }
+ .bar_title {
+ 
+ 	
+ 
+ }
+ 
+ .bar_content {
+ 
+	margin-left: 17px;
+ 	font-size: 15px;
+ 
+ 
  }
 

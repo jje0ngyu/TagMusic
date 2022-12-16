@@ -60,7 +60,7 @@
 						$('<div class="main_item">') 
 						.append(text)
 						.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-						.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
 						.appendTo(('#updatedMusicList'));   
 						/* .append(text)
 						.append( $('<a class="item_title" href="/music/detail?musicNo=' + music.musicNo +'">').text(music.musicTitle) )
@@ -87,7 +87,7 @@
 		// # 구현 : 최신리스트 게시판조회, mvc
 		function fn_updatedMusicBoard() {
 			$('#btn_updatedMusicBoard').click(function() {
-				location.href="/music/updatedMusicBoard?page=" + $('#page').val();
+				location.href="/music/updatedMusicBoard?page=1";
 			});
 		}
 		
@@ -111,8 +111,11 @@
 				<!--  # 최신리스트 -->
 				<div class="main_list">
 					<div class="main_header">
-						<div class="list_title">최신리스트</div>
-						<input type="button" value="전체조회" id="btn_updatedMusicBoard">
+						<div class="list_title">
+							<span class="bar_title">최신곡리스트</span>
+							<span class="bar_content">가장 최근에 나온 음악입니다</span>
+						</div>
+						<input type="button" value="더보기" id="btn_updatedMusicBoard">
 					</div>
 					
 					<!-- 구현 : 최신음악리스트4 -->
@@ -136,7 +139,28 @@
 					</div>
 				</div>
 				<!--  # 믹스리스트 -->
-				<div class="main_list">믹스리스트
+				<div class="main_list">
+					<div class="main_header">
+						<div class="list_title">
+							<span class="bar_title">인기있는 음악</span>
+							<span class="bar_content">많은 사랑을 받은 음악입니다</span>
+						
+						</div>
+						<div>
+							<span>발라드</span>
+							<span>팝송</span>
+							<span>트로트</span>
+							
+						</div><!-- header에서 flex를 줘서 수평이됨 -->
+						
+						<input type="button" value="더보기" id="btn_updatedMusicBoard">
+					</div>
+					<div id="updatedMusicList" class="main_item_area">
+						<div>
+							
+						
+						</div>
+					
 				
 				</div>
 			</div>
