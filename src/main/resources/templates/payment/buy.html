@@ -52,15 +52,38 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 
-<script type="text/javascript">
-if(true){
-	var uid = '<%=(String)session.getAttribute("loginUser")%>';
-	alert(uid);
-}
+<script th:inline="javascript">
 $(document).ready(function(){
-	fn_passList();
+	var userName = $('#userName').data('name');
+	if(userName != null){
+		fn_passList();
+	} else {
+		fn_isNotUser();
+	}
 	
  });
+function fn_isNotUser(){
+	$.ajax({
+		type: 'post',
+		url: '/pass/list',
+		dataType: 'json',
+		success: function(resData){
+			var txt = '';
+			$.each(resData.passList, function(i, pass){
+				
+				txt += '<h2>'+pass.passName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+pass.passPrice+' 원!</h2>';
+				txt += '<input type="button" value="결제하기" onclick="fn_login()">';
+				if(pass.passName == "30일이용권"){
+					txt += '<input type="button" value="선물하기" id="btn_gift" onclick="fn_login()">';
+				}
+				txt += '<br>';
+				txt += '<br>';
+				txt += '<br>';
+			});
+			$('#buyPageDiv').append(txt);
+		}
+	});
+}
 function fn_passList(){
 	$.ajax({
 		type: 'post',
@@ -70,7 +93,7 @@ function fn_passList(){
 			var txt = '';
 			$.each(resData.passList, function(i, pass){
 				txt += '<h2>'+pass.passName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+pass.passPrice+' 원!</h2>';
-				txt += '<input type="button" value="카카오페이로 결제하기" data-ticket="TagMusic-'+pass.passName+'" data-passno="'+pass.passNo+'" data-pg="kakaopay" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
+				txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName +'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
 				if(pass.passName == "30일이용권"){
 					txt += '<input type="button" value="선물하기" id="btn_gift">';
 				}
@@ -82,6 +105,10 @@ function fn_passList(){
 		}
 	});
 }
+function fn_login(){
+	alert('아직 로그인을 안하셨네요! 로그인 페이지로 이동합니다!');
+	$('#frm_login').submit();
+}
 
 function fn_buyTicket(e){
 	var musicAmount = $(e).data('amount');
@@ -91,41 +118,39 @@ function fn_buyTicket(e){
 	var userName = $('#userName').data('name');
 	var userEmail = $('#userEmail').data('email');
 	var userMobile = $('#userMobile').data('mobile');
-	var userAddr = '';		
+	var userAddr = '';
 	userAddr += $('#userAddr1').data('addr');
 	userAddr += $('#userAddr2').data('addr');
 	userAddr += $('#userAddr3').data('addr');
 	userAddr += $('#userAddr4').data('addr');
 	var userPostcode = $('#postcode').data('postcode');
 		
-	var IMP = window.IMP; // 생략가능
+	var IMP = window.IMP; 
 		
-	if(paymentPg == 'kakaopay'){
-		IMP.init('imp66111374');
-	}
+	
+	IMP.init('imp72345478');//imp66111374
+	
 	var merchant_uid = 'TagMusic_' + new Date().getTime();
 	console.log(musicAmount + userEmail +userMobile );
 	IMP.request_pay({ 
-		pg: paymentPg,
+		pg: "html5_inicis",
 		pay_method: 'card',
 		merchant_uid: merchant_uid,
 		name: ticketName, 
 		//name: '노래제목:'+firstCartMusicName+' 외'+ (muprice-1) +'곡',
 		amount: musicAmount,
-		buyer_email: userEmail,// 구매자
+		buyer_email: userEmail,
 		buyer_name: userName,
 		buyer_tel: userMobile,
 		buyer_addr: '서울시',
 		buyer_postcode: '123-111',
 		m_redirect_url: 'https://www.yourdomain.com/payments/complete'
 		}, function (rsp) {
-			alert(rsp.success);
 			if (rsp.success) {
-			alert('성공했어');
 				 $.ajax({
 					type: 'post',
 					url: '/payment/thirtyDay',
-					data: 'email=' + userEmail + '&price=' + musicAmount + '&passNo=' + passNo + '&payPg=' + paymentPg,
+					data: 'email=' + userEmail + '&price=' + musicAmount + '&passNo=' + passNo + '&payPg=' + paymentPg + '&ticketName=' + ticketName,
 					dataType: 'json',
 					success: function(resData){
 						var msg = '';
@@ -145,11 +170,7 @@ function fn_buyTicket(e){
 			alert(msg)
 		}
 	});
-	
-
 }
-
-
 
 </script>
 </head>
@@ -172,6 +193,7 @@ function fn_buyTicket(e){
 					</li>
 				</ul>
 			</nav>
+			<input type="hidden" id="isUser" th:data-user="${session}">
 			<div th:if="${session.loginUser != null}">
 				<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
 				<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
@@ -181,11 +203,17 @@ function fn_buyTicket(e){
 				<input type="hidden" id="userAddr3" th:data-addr="${session.loginUser.detailAddress}">
 				<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
 				<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
+				<input type="hidden" class="isUser" th:data-user="true">
+				<form th:action="@{/payment/history}" method="post">
+					<input type="hidden" name="userName" th:value="${session.loginUser.name}">
+					<input type="submit" value="결제이력">
+				</form>
 			</div> 
 			<div id="buyPageDiv">
 			</div>
 		</div>
 	</div>
+	<form action="/user/login/form" id="frm_login"></form>
 
 	
 </body>
