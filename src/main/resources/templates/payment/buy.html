@@ -72,7 +72,7 @@ function fn_isNotUser(){
 			$.each(resData.passList, function(i, pass){
 				
 				txt += '<h2>'+pass.passName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+pass.passPrice+' 원!</h2>';
-				txt += '<input type="button" value="카카오페이로 결제하기" onclick="fn_login()">';
+				txt += '<input type="button" value="결제하기" onclick="fn_login()">';
 				if(pass.passName == "30일이용권"){
 					txt += '<input type="button" value="선물하기" id="btn_gift" onclick="fn_login()">';
 				}
@@ -93,7 +93,7 @@ function fn_passList(){
 			var txt = '';
 			$.each(resData.passList, function(i, pass){
 				txt += '<h2>'+pass.passName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+pass.passPrice+' 원!</h2>';
-				txt += '<input type="button" value="카카오페이로 결제하기" data-ticket="'+ pass.passName +'" data-passno="'+pass.passNo+'" data-pg="kakaopay" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
+				txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName +'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
 				if(pass.passName == "30일이용권"){
 					txt += '<input type="button" value="선물하기" id="btn_gift">';
 				}
@@ -118,22 +118,22 @@ function fn_buyTicket(e){
 	var userName = $('#userName').data('name');
 	var userEmail = $('#userEmail').data('email');
 	var userMobile = $('#userMobile').data('mobile');
-	var userAddr = '';		
+	var userAddr = '';
 	userAddr += $('#userAddr1').data('addr');
 	userAddr += $('#userAddr2').data('addr');
 	userAddr += $('#userAddr3').data('addr');
 	userAddr += $('#userAddr4').data('addr');
 	var userPostcode = $('#postcode').data('postcode');
 		
-	var IMP = window.IMP; // 생략가능
+	var IMP = window.IMP; 
 		
-	if(paymentPg == 'kakaopay'){
-		IMP.init('imp66111374');
-	}
+	
+	IMP.init('imp72345478');//imp66111374
+	
 	var merchant_uid = 'TagMusic_' + new Date().getTime();
 	console.log(musicAmount + userEmail +userMobile );
 	IMP.request_pay({ 
-		pg: paymentPg,
+		pg: "html5_inicis",
 		pay_method: 'card',
 		merchant_uid: merchant_uid,
 		name: ticketName, 
@@ -204,6 +204,10 @@ function fn_buyTicket(e){
 				<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
 				<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
 				<input type="hidden" class="isUser" th:data-user="true">
+				<form th:action="@{/payment/history}" method="post">
+					<input type="hidden" name="userName" th:value="${session.loginUser.name}">
+					<input type="submit" value="결제이력">
+				</form>
 			</div> 
 			<div id="buyPageDiv">
 			</div>

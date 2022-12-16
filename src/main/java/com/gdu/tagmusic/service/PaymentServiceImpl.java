@@ -23,7 +23,6 @@ public class PaymentServiceImpl implements PaymentService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("passList", paymentMapper.selectPass());
 		
-		System.out.println("map:" + map);
 		return map;
 	}
 	
@@ -42,7 +41,6 @@ public class PaymentServiceImpl implements PaymentService {
 		map.put("passNo", passNo);
 		map.put("payPg", payPg);
 		map.put("ticketName", ticketName);
-		System.out.println();
 		
 		Map<String, Object> result = new HashMap<>();
 		int passResult = paymentMapper.insertPayment(map);
