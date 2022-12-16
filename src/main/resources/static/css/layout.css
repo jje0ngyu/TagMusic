@@ -119,11 +119,11 @@
 	- 1250, 900 일반적인 노트북 화면 사이즈
 	
 	*/
-	.content {
+.content {
 	margin-left: 200px;
     margin-top: 50px;
-    /* margin: 50px auto; */
-    /* background-color: #ECECEC; */
+    margin: 50px auto;
+    background-color: #ECECEC;
     width: 100%;
     height: 900px;
     text-align: center;

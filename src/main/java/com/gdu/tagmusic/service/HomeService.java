@@ -5,19 +5,20 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 
 public interface HomeService {
 	
-	// # 구현 : main 페이지 최신리스트
-	// 1) main 페이지 최신리스트 조회
+	// # 구현 : 최신리스트 바 
+	// 1) 최신리스트 데이터 가져오기
 	public Map<String, Object> selectUpdatedMusic4(HttpServletRequest request);
 	
 	// 2) 썸네일 가져오기
 	public ResponseEntity<byte[]> selectThumbnail(HttpServletRequest request);
 	
 	
-	// # 구현 : 전체목록 조회 + 페이지 이동
-	
+	// # 구현 : 최신리스트 게시판조회
+	public void selectUpdateMusicList(HttpServletRequest request, Model model); 
 	
 	
 

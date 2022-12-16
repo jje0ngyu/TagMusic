@@ -11,7 +11,7 @@
 		내 정보
 	</div>
 	<div>
-		이용자님 안녕하세요.
+		<span th:text="${session.loginUser.artist}"></span>님 안녕하세요.
 	</div>
 	<div>
 		로그인 및 보안
@@ -19,6 +19,11 @@
 	<div>
 		<a th:href="@{/user/mypage/info}">
 			개인정보 관리
+		</a>
+	</div>
+	<div>
+		<a th:href="@{/payment/history}">
+			결제정보
 		</a>
 	</div>
 	<div>

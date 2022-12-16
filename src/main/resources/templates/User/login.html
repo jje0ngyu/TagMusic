@@ -6,7 +6,14 @@
 <link rel="stylesheet" th:href="@{/css/login.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- 1. 카카오SDK로드 -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.0.1/kakao.min.js"
+  integrity="sha384-eKjgHJ9+vwU/FCSUG3nV1RKFolUXLsc6nLQ2R1tD0t4YFPCvRmkcF8saIfOZNWf/" crossorigin="anonymous"></script>
+<script>
+	Kakao.init('f3f16cd97c3af4e9ecc26f19ad9a208f');
+</script>
 <script>
 	
 	$(function(){
@@ -104,23 +111,51 @@
 
 	function fn_kakaoLogin(){
 		$('#kakaoLogin').click(function(){
-			Kakao.init('8890a67c089173194979845f9389950d');
-			Kakao.Auth.login({
-				success: function (response) {
-					Kakao.API.request({
-						url: '/v2/user/me',
-						success: function (response) {
-							console.log(response)
-						},
-						fail: function (error) {
-							console.log(error)
-						},
-					})
-				},
-				fail: function (error) {
-					
-				},
-			})
+	        // 3. 데모버전으로 들어가서 카카오로그인 코드를 확인.
+	        function loginWithKakao() {
+	            Kakao.Auth.login({
+	                success: function (authObj) {
+	                    console.log(authObj); // access토큰 값
+	                    Kakao.Auth.setAccessToken(authObj.access_token); // access토큰값 저장
+	
+	                    getInfo();
+	                },
+	                fail: function (err) {
+	                    console.log(err);
+	                }
+	            });
+	        }
+	
+	        // 4. 엑세스 토큰을 발급받고, 아래 함수를 호출시켜서 사용자 정보를 받아옴.
+	        function getInfo() {
+	            Kakao.API.request({
+	                url: '/v2/user/me',
+	                success: function (res) {
+	                    console.log(res);
+	                    // 이메일, 성별, 닉네임, 프로필이미지
+	                    var email = res.kakao_account.email;
+	                    var gender = res.kakao_account.gender;
+	                    var nickname = res.kakao_account.profile.nickname;
+	                    var profile_image = res.kakao_account.profile.thumbnail_image_url;
+	
+	                    console.log(email, gender, nickname, profile_image);
+	                },
+	                fail: function (error) {
+	                    alert('카카오 로그인에 실패했습니다. 관리자에게 문의하세요.' + JSON.stringify(error));
+	                }
+	            });
+	        }
+	
+	        // 5. 로그아웃 기능 - 카카오 서버에 접속하는 엑세스 토큰을 만료, 사용자 어플리케이션의 로그아웃은 따로 진행.
+	        function kakaoLogout() {
+	            if (!Kakao.Auth.getAccessToken()) {
+	                alert('Not logged in.');
+	                return;
+	            }
+	            Kakao.Auth.logout(function() {
+	                alert('logout ok\naccess token -> ' + Kakao.Auth.getAccessToken());
+	            });
+	        }
 		});
 	}
 </script>
@@ -133,6 +168,7 @@
 <body>
 	<img th:src="@{/images/background_login.jpg}" class="background_login">
 	<div class="backgroung_layer">
+		<div th:replace="~{layout/loginHeader.html::loginFragment}"></div>
 		<div class="login_box">
 			<div class="login_container">
 				<div class="login_title">로그인</div>
@@ -151,33 +187,83 @@
 						<!-- 패스워드 보여주기도 구현해 볼 것 -->
 						<input type="text" class="msg_pw msg_check blind" value="비밀번호는 4~60자 사이여야 합니다.">
 					</div>
-					<div>
-						<button class="btn_login">로그인</button>
-					</div>
+					
 					<div class="btn_login_bottom">
 						<div class="login_box_left">
 							<label for="rememberEmail">
 								<div class="remember_box"></div>
 									<input type="checkbox" id="rememberEmail">
 								<div class="msg_login_box">
-									로그인 정보 저장
+									이메일 기억하기
 								</div>
 							</label>
 							<label for="keepLogin">
-								<input type="checkbox" name="keepLogin" id="keepLogin">
-								로그인 유지
+								<input type="checkbox" name="keepLogin" id="keepLogin" style="margin-left:20px;">
+								<div class="msg_login_box">
+									자동로그인
+								</div>
 							</label>
 						</div>
-						<div class="login_box_right">
-							<a class="msg_login_box msg_help" href="">도움이 필요하신가요?</a>
+						<div>
+							<button class="btn_login">로그인</button>
 						</div>
+						
 					</div>
 				</form>
 				<!-- 간편 로그인 -->
 				<div class="loginAPI">
 					<div id="kakaoLogin">
-						<img th:src="@{/images/kakao_login_medium_wide.png}">
+						<a id="kakao-login-btn" href="javascript:loginWithKakao()">
+						  <img style="width:100%" th:src="@{/images/kakao_login_medium_wide.png}"
+						    alt="카카오 로그인 버튼" />
+						</a>
+						<p id="token-result"></p>
+						<button class="api-btn" onclick="requestUserInfo()" style="visibility:hidden">사용자 정보 가져오기</button>
+						
+						<script>
+						  function loginWithKakao() {
+						    Kakao.Auth.authorize({
+						      redirectUri: 'https://localhost:9090',
+						      state: 'userme',
+						    });
+						  }
+						
+						  function requestUserInfo() {
+						    Kakao.API.request({
+						      url: '/v2/user/me',
+						    })
+						      .then(function(res) {
+						        alert(JSON.stringify(res));
+						      })
+						      .catch(function(err) {
+						        alert(
+						          'failed to request user information: ' + JSON.stringify(err)
+						        );
+						      });
+						  }
+						
+						  // 아래는 데모를 위한 UI 코드입니다.
+						  displayToken()
+						  function displayToken() {
+						    var token = getCookie('authorize-access-token');
+						
+						    if(token) {
+						      Kakao.Auth.setAccessToken(token);
+						      document.querySelector('#token-result').innerText = 'login success, ready to request API';
+						      document.querySelector('button.api-btn').style.visibility = 'visible';
+						    }
+						  }
+						
+						  function getCookie(name) {
+						    var parts = document.cookie.split(name + '=');
+						    if (parts.length === 2) { return parts[1].split(';')[0]; }
+						  }
+						</script>
+
 					</div>
+				</div>
+				<div class="login_box_right">
+					<a class="msg_login_box msg_help" th:href="@{/user/loginHelp}">도움이 필요하신가요?</a>
 				</div>
 				<div class="login_box_bottom">
 					<div class="login_box_left">

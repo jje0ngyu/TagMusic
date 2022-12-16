@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gdu.tagmusic.domain.RetireUserDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.UserMapper;
 import com.gdu.tagmusic.util.JavaMailUtil;
@@ -32,36 +33,6 @@ public class UserServiceImpl implements UserService {
 	private JavaMailUtil javaMailUtil;
 	
 	// 로그인
-	@Override
-	public void keepLogin(HttpServletRequest request, HttpServletResponse response) {
-		
-		String email = request.getParameter("email");
-		String keepLogin = request.getParameter("keepLogin");
-		
-		if(keepLogin != null) {
-			String sessionId = request.getSession().getId();
-			Cookie cookie = new Cookie("keepLogin", sessionId);
-			cookie.setMaxAge(60 * 60 * 24 * 15);  // 15일
-			cookie.setPath(request.getContextPath());
-			response.addCookie(cookie);
-			
-			UserDTO user = UserDTO.builder()
-					.email(email)
-					.sessionId(sessionId)
-					.sessionLimitDate(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15))  // 현재타임스탬프 + 15일에 해당하는 타임스탬프
-					.build();
-
-			userMapper.updateSessionInfo(user);
-			
-		}
-		else {
-			Cookie cookie = new Cookie("keepLogin", "");
-			cookie.setMaxAge(0);
-			cookie.setPath(request.getContextPath());
-			response.addCookie(cookie);
-		}
-	}
-	
 	@Override
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		
@@ -108,7 +79,7 @@ public class UserServiceImpl implements UserService {
 				
 				out.println("<script>");
 				out.println("alert('일치하는 회원 정보가 없습니다.');");
-				/* out.println("location.href='" + request.getContextPath() + "';"); */
+				out.println("location.href='/user/login/form';");
 				out.println("</script>");
 				out.close();
 				
@@ -117,6 +88,43 @@ public class UserServiceImpl implements UserService {
 			}
 			
 		}
+	}
+	
+	// 로그인 - 로그인 유지
+	@Override
+	public void keepLogin(HttpServletRequest request, HttpServletResponse response) {
+		
+		String email = request.getParameter("email");
+		String keepLogin = request.getParameter("keepLogin");
+		
+		if(keepLogin != null) {
+			String sessionId = request.getSession().getId();
+			Cookie cookie = new Cookie("keepLogin", sessionId);
+			cookie.setMaxAge(60 * 60 * 24 * 15);  // 15일
+			cookie.setPath("/");
+			response.addCookie(cookie);
+			
+			UserDTO user = UserDTO.builder()
+					.email(email)
+					.sessionId(sessionId)
+					.sessionLimitDate(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 15))  // 현재타임스탬프 + 15일에 해당하는 타임스탬프
+					.build();
+
+			userMapper.updateSessionInfo(user);
+			
+		}
+		else {
+			Cookie cookie = new Cookie("keepLogin", "");
+			cookie.setMaxAge(0);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+		}
+	}
+	
+	// 로그인 - 자동로그인
+	@Override
+	public UserDTO getUserBySessionId(Map<String, Object> map) {
+		return userMapper.selectUserByMap(map);
 	}
 	
 	// 회원가입
@@ -254,7 +262,111 @@ public class UserServiceImpl implements UserService {
 		
 	}
 	
-	// 회원 정보 수정
+	// 회원정보 수정 - 닉네임
+	@Override
+	public void modifyArtist(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 파라미터
+		// 정보 일치용 (where)
+		String email = request.getParameter("email");
+		String artist = request.getParameter("artist");
+		
+		// 일부 파라미터는 DB에 넣을 수 있도록 가공
+		artist = securityUtil.preventXSS(artist);
+		
+		// DB로 보낼 UserDTO 만들기
+		UserDTO user = UserDTO.builder()
+				.email(email)
+				.artist(artist)
+				.build();
+				
+		// 회원정보수정
+		int result = userMapper.updateUser(user);
+		
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			if(result > 0) {
+				// 조회 조건으로 사용할 Map
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("email", email);
+				// session에 올라간 정보를 수정된 내용으로 업데이트
+				request.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// 회원정보수정 - 실명
+	@Override
+	public void modifyName(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 파라미터
+		// 정보 일치용 (where)
+		String email = request.getParameter("email");
+		String name = request.getParameter("name");
+		
+		// DB로 보낼 UserDTO 만들기
+		UserDTO user = UserDTO.builder()
+				.email(email)
+				.name(name)
+				.build();
+				
+		// 회원정보수정
+		int result = userMapper.updateUser(user);
+		
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			if(result > 0) {
+				// 조회 조건으로 사용할 Map
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("email", email);
+				// session에 올라간 정보를 수정된 내용으로 업데이트
+				request.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	// 회원정보수정 - 휴대폰
+	@Override
+	public void modifyMobile(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 파라미터
+		// 정보 일치용 (where)
+		String email = request.getParameter("email");
+		String mobile = request.getParameter("mobile");
+		
+		// DB로 보낼 UserDTO 만들기
+		UserDTO user = UserDTO.builder()
+				.email(email)
+				.mobile(mobile)
+				.build();
+				
+		// 회원정보수정
+		int result = userMapper.updateUser(user);
+		
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			if(result > 0) {
+				// 조회 조건으로 사용할 Map
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("email", email);
+				// session에 올라간 정보를 수정된 내용으로 업데이트
+				request.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	// 휴면
 	
@@ -283,5 +395,60 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	// 탈퇴
+	@Transactional
+	@Override
+	public Map<String, Object> retire(HttpServletRequest request, HttpServletResponse response) {
+		
+		HttpSession session = request.getSession();
+		
+		// 비밀번호 일치하는지 확인
+		String email = ((UserDTO)session.getAttribute("loginUser")).getEmail();
+		String pw = securityUtil.sha256(request.getParameter("pw"));
+		
+		// 조회 조건으로 사용할 Map
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", email);
+		map.put("pw", pw);
+		UserDTO selectUser = userMapper.selectUserByMap(map);
+		
+		// 탈퇴 결과
+		Map<String, Object> result = new HashMap<>();
+		
+		// 검색된 결과가 있으면 탈퇴 진행
+		if (selectUser != null) {
+				// 탈퇴시킬 유저정보 저장
+				UserDTO loginUser = (UserDTO)session.getAttribute("loginUser");
+				
+				// 탈퇴할 회원 RetireUserDTO 생성
+				RetireUserDTO retireUser = RetireUserDTO.builder()
+						.userNo(loginUser.getUserNo())
+						.email(loginUser.getEmail())
+						.artist(loginUser.getArtist())
+						.build();
+				
+				// 탈퇴처리
+				int deleteResult = userMapper.deleteUser(loginUser.getUserNo());
+				int insertResult = userMapper.insertRetireUser(retireUser);
+				
+				// 응답
+				try {
+					response.setContentType("text/html; charset=UTF-8");
+					if(deleteResult > 0 && insertResult > 0) {
+						// session 초기화(로그인 사용자 loginUser 삭제를 위해서)
+						session.invalidate();
+						result.put("resData", 1);
+					}
+					
+				} catch(Exception e) {
+					result.put("resData", 1);
+					e.printStackTrace();
+				}
+		// 검색된 결과가 없다
+		} else {
+			result.put("resData", 0);
+		}
+		
+		return result;
+	}
 
 }
