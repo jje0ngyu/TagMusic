@@ -58,7 +58,7 @@ public class HomeServiceImpl implements HomeService {
 		
 		// 5. 모든 데이터를 전달할 map
 		map.put("musicList", musicList);	
-		System.out.println(map);
+		
 		
 		map.put("pageUtil", pageUtil);
 		return map;
@@ -81,7 +81,7 @@ public class HomeServiceImpl implements HomeService {
 		
 		// db 정보를 통해 이미지를 담은 responseentity객체 반환
 		ResponseEntity<byte[]> result = null;
-		System.out.println(music.getHasThumbNail());		
+
 		try {
 			
 			if(music.getHasThumbNail() == 1) {
