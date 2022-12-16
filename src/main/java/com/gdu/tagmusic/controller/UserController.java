@@ -37,6 +37,11 @@ public class UserController {
 	public void kakaoLogin() {
 		
 	}
+	// 로그인 - 정보찾기
+	@GetMapping("user/loginHelp")
+	public String loginHelp() {
+		return "user/loginHelp";
+	}
 
 	// 회원가입
 	@GetMapping("/user/join/agree")
@@ -80,9 +85,19 @@ public class UserController {
 		return "user/myinfo";
 	}
 	// 마이페이지 - 개인정보 수정
-	@GetMapping("/user/info/modify")
-	public Map<String, Object> modifyMyinfo() {
-		return null;
+	@PostMapping("/user/info/modifyArtist")
+	public void modifyArtist(HttpServletRequest request, HttpServletResponse response) {
+		userService.modifyArtist(request, response);
+	}
+	// 마이페이지 - 실명 수정
+	@PostMapping("/user/info/modifyName")
+	public void modifyName(HttpServletRequest request, HttpServletResponse response) {
+		userService.modifyName(request, response);
+	}
+	// 마이페이지 - 휴대폰 수정
+	@PostMapping("/user/info/modifyMobile")
+	public void modifyMobile(HttpServletRequest request, HttpServletResponse response) {
+		userService.modifyMobile(request, response);
 	}
 	
 	// 로그아웃
@@ -92,5 +107,16 @@ public class UserController {
 		return "redirect:/";
 	}
 	
-	// 회원탈퇴
+	// 회원탈퇴 - 비밀번호 확인
+	@ResponseBody
+	@PostMapping("/user/retire/checkPw")
+	public Map<String, Object> retire(HttpServletRequest request, HttpServletResponse response) {
+		return userService.retire(request, response);
+	}
+	// 회원탈퇴 - 탈퇴 인사창
+	@GetMapping("/user/retire/goodbye")
+	public String retireMsg() {
+		return "user/retire";
+	}
+	
 }

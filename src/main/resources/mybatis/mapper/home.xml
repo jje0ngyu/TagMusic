@@ -59,15 +59,16 @@
 		</association>
 	</resultMap>
 	
-	
+		<!-- 전체 음악게시글 수 조회 -->
 	<!--  # main_최신리스트 : 전체 게시글 수 조회 -->
 	<select id="selectMusicCnt" resultType="int">
 		SELECT COUNT(MUSIC_NO) 
 		FROM MUSIC
 	</select>
 	
-	<!--  # main_최신리스트 : 전체 게시글 조회 + 아티스트 조회 -->
-	<select id="selectMusicList" parameterType="Map" resultMap="MusicMap">
+	<!--  # main 페이지 : 전체 게시글 조회 + 해당 게시글을 업로드한 유저의 아티스트명 조회 -->
+	<!--  - user, activelog, music(페이징 처리 서브쿼리된) 3단 조인 -->
+	<select id="selectUpdatedMusicList" parameterType="Map" resultMap="MusicMap">
 		SELECT U.USER_NO, U.EMAIL, U.ARTIST, U.NAME, U.PW, U.PROFILE_IMAGE, U.MOBILE, B.MUSIC_NO, B.EMAIL, B.MUSIC_TITLE, B.MUSIC_CONTENT, B.MUSIC_ALBUM, B.MUSIC_GENRE, B.MUSIC_UPLOAD_DATE, B.MUSIC_MODIFY_DATE, B.IP, B.IMG_ORIGIN, B.IMG_FILESYSTEM, B.MUSIC_ORIGIN, B.MUSIC_FILESYSTEM, B.DOWNLOAD_CNT, B.IMG_PATH, B.MUSIC_PATH, B.HAS_THUMBNAIL
 	  	  FROM USERS U INNER JOIN ACTIVE_LOG A
 	        ON U.EMAIL = A.EMAIL INNER JOIN (SELECT M.MUSIC_NO, M.EMAIL, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
@@ -78,12 +79,21 @@
 	</select>
 	
 	
-	<!--  # musicDTO 가져오기 : 썸네일, 상세화면 -->
+	<!--  # musicDTO 1개 가져오기 -->
+	<!--  - 용도 : 썸네일, 상세화면 -->
 	<select id="selectMusicByNo" parameterType="int" resultType="MusicDTO">
 		SELECT MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL
 		  FROM MUSIC
 		 WHERE MUSIC_NO = ${musicNo}
 	</select>
+	
+	
+	<!-- <select id="" parameterType="Map" resultType="MusicDTO">
+		SELECT M.MUSIC_NO, M.EMAIL, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY MUSIC_NO DESC) AS ROW_NUM, MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL
+				    								   FROM MUSIC) M
+		WHERE M.ROW_NUM BETWEEN #{begin} AND #{end})
+	</select> -->
 
 	
 </mapper>
