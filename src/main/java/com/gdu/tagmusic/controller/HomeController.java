@@ -26,12 +26,12 @@ public class HomeController {
 	}
 
 	
-	// # 구현 : 최신리스트바 	------------------------------------------------
+	// # 구현 : 최신리스트바 	===============================================
 	// 1) 데이터 가져오기
 
 	@ResponseBody
 	@GetMapping(value="/music/list/updated", produces="application/json")
-	public Map<String, Object> updatedMusicList(HttpServletRequest request) {	
+	public Map<String, Object> updatedMusic(HttpServletRequest request) {	
 		return homeService.selectUpdatedMusic4(request);
 		
 	}
@@ -47,9 +47,27 @@ public class HomeController {
 	@GetMapping("/music/updatedMusicBoard")
 	public String updatedMusicBoard(HttpServletRequest request, Model model) {
 		homeService.selectUpdateMusicList(request, model);
-		return "/board/updatedMusic";
+		return "/musicBoard/latestMusic";
 	}
 	
+	
+	
+	// # 구현 : 인기리스트 바	================================================
+	
+	@ResponseBody
+	@GetMapping(value="/music/list/popular", produces="application/json")
+	public Map<String, Object> popularMusic(HttpServletRequest request) {	
+		return homeService.selectPopularMusic4(request);
+		
+	}
+	
+	// # 구현 : 장르별 인기리스트 바 ============================================
+	@ResponseBody
+	@GetMapping(value="/music/list/popular/genre", produces="application/json")
+	public Map<String, Object> popularMusicGenre(HttpServletRequest request) {	
+		return homeService.selectPopularMusicGenre4(request);
+		
+	}
 
 
 

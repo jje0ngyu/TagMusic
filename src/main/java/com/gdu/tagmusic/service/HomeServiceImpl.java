@@ -143,5 +143,83 @@ public class HomeServiceImpl implements HomeService {
 		 */
 	}
 	
+	// # 인기리스트
+	// 1) 인기리스트 데이터 가져오기
+	@Override
+	public Map<String, Object> selectPopularMusic4(HttpServletRequest request) {
+		
+		// 1. 파라미터 : page
+				Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+				int page = Integer.parseInt(opt.orElse("1"));	
+				// - 한 페이지(바)당 4개를 보여줄 것
+				
+				
+				// 파라미터 : 장르
+				/*
+				 * String genre = request.getParameter("genre"); Optional<String> opt2 =
+				 * Optional.ofNullable(request.getParameter("page"));
+				*/
+				
+				
+				// 2. 페이징 처리
+				int recordPerPage = 4;
+				int totalRecordCnt = homeMapper.selectPopularMusicCnt();
+				System.out.println(totalRecordCnt);				
+				pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
+				
+				// 3. 음악리스트 조회
+				// - users 테이블, active_log 테이블과 조인하여 해당 게시글의 artist를 조회해온다
+				Map<String, Object> map = new HashMap<>();
+				map.put("begin", pageUtil.getBegin());
+				map.put("end", pageUtil.getEnd());
+				//map.put("genre", genre);
+
+				List<MusicDTO> musicList = homeMapper.selectPopularMusicList(map);
+
+				
+				// 5. 모든 데이터를 전달할 map
+				map.put("musicList", musicList);	
+				
+				
+				map.put("pageUtil", pageUtil);
+				return map;
+	}
+	
+	// # 장르별 인기리스트
+	@Override
+	public Map<String, Object> selectPopularMusicGenre4(HttpServletRequest request) {
+		// 1. 파라미터 : page
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(opt.orElse("1"));	
+		// - 한 페이지(바)당 4개를 보여줄 것
+		
+		
+		// 파라미터 : 장르
+		String genre = request.getParameter("genre");
+		
+		// 2. 페이징 처리
+		int recordPerPage = 4;
+		int totalRecordCnt = homeMapper.selectPopularMusicCnt();
+		System.out.println(totalRecordCnt);				
+		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
+		
+		// 3. 음악리스트 조회
+		// - users 테이블, active_log 테이블과 조인하여 해당 게시글의 artist를 조회해온다
+		Map<String, Object> map = new HashMap<>();
+		map.put("begin", pageUtil.getBegin());
+		map.put("end", pageUtil.getEnd());
+		map.put("genre", genre);
+
+		List<MusicDTO> musicList = homeMapper.selectPopularMusicGenreList(map);
+
+		
+		// 5. 모든 데이터를 전달할 map
+		map.put("musicList", musicList);	
+		map.put("pageUtil", pageUtil);
+		return map;
+		
+	}
+	
+	
 
 }

@@ -57,6 +57,37 @@
 				<result column="AGREE_CODE" property="agreeCode"></result>
 			</association>
 		</association>
+		<association javaType="MusicLikeDTO" property="musicLikeDTO">
+			<id column="ACTIVE_NO" property="activeNo"></id>
+			<result column="EMAIL" property="email"></result>
+			<result column="MUSIC_NO" property="musicNo"></result>
+			<result column="LAST_LISTEN_DATE" property="lastListenDate"></result>
+			<result column="LISTEN_COUNT" property="listenCount"></result>
+			<association javaType="UserDTO" property="userDTO">
+				<id column="USER_NO" property="userNo"></id>
+				<result column="EMAIL" property="email"></result>
+				<result column="ARTIST" property="artist"></result>
+				<result column="NAME" property="name"></result>
+				<result column="PW" property="pw"></result>
+				<result column="PROFILE_IMAGE" property="profileImage"></result>
+				<result column="MOBILE" property="mobile"></result>
+				<result column="GENDER" property="gender"></result>
+				<result column="BIRTHYEAR" property="birthyear"></result>
+				<result column="BIRTHDAY" property="birthday"></result>
+				<result column="POSTCODE" property="postcode"></result>
+				<result column="ROAD_ADDRESS" property="roadAddress"></result>
+				<result column="JIBUN_ADDRESS" property="jibunAddress"></result>
+				<result column="DETAIL_ADDRESS" property="detailAddress"></result>
+				<result column="EXTRA_ADDRESS" property="extraAddress"></result>
+				<result column="SNS_TYPE" property="snsType"></result>
+				<result column="SESSION_ID" property="sessionId"></result>
+				<result column="SESSION_LIMIT_DATE" property="sessionLimitDate"></result>
+				<result column="JOIN_DATE" property="joinDate"></result>
+				<result column="PW_MODIFY_DATE" property="pwModifyDate"></result>
+				<result column="INFO_MODIFY_DATE" property="infoModifyDate"></result>
+				<result column="AGREE_CODE" property="agreeCode"></result>
+			</association>
+		</association>
 	</resultMap>
 	
 		<!-- 전체 음악게시글 수 조회 -->
@@ -88,12 +119,49 @@
 	</select>
 	
 	
-	<!-- <select id="" parameterType="Map" resultType="MusicDTO">
-		SELECT M.MUSIC_NO, M.EMAIL, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY MUSIC_NO DESC) AS ROW_NUM, MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL
-				    								   FROM MUSIC) M
-		WHERE M.ROW_NUM BETWEEN #{begin} AND #{end})
-	</select> -->
+	<select id="selectPopularMusicCnt" resultType="int">
+		SELECT COUNT(M.MUSIC_NO) 
+		FROM MUSIC M INNER JOIN MUSIC_LIKE L
+		ON M.MUSIC_NO = L.MUSIC_NO
+	</select>
+	
+	<!-- # 인기리스트4 조회하기 -->
+	<select id="selectPopularMusicList" parameterType="Map" resultMap="MusicMap">
+		SELECT U.USER_NO, U.EMAIL, U.ARTIST, U.NAME, U.PW, U.PROFILE_IMAGE, U.MOBILE, Q.HEARTS, Q.MUSIC_NO, Q.EMAIL, Q.MUSIC_TITLE, Q.MUSIC_CONTENT, Q.MUSIC_ALBUM, Q.MUSIC_GENRE, Q.MUSIC_UPLOAD_DATE, Q.MUSIC_MODIFY_DATE, Q.IP, Q.IMG_ORIGIN, Q.IMG_FILESYSTEM, Q.MUSIC_ORIGIN, Q.MUSIC_FILESYSTEM, Q.DOWNLOAD_CNT, Q.IMG_PATH, Q.MUSIC_PATH, Q.HAS_THUMBNAIL
+	  	  FROM USERS U INNER JOIN ACTIVE_LOG A
+	        ON U.EMAIL = A.EMAIL INNER JOIN ( SELECT D.MUSIC_NO, D.HEARTS, D.EMAIL, D.MUSIC_TITLE, D.MUSIC_CONTENT, D.MUSIC_ALBUM, D.MUSIC_GENRE, D.MUSIC_UPLOAD_DATE, D.MUSIC_MODIFY_DATE, D.IP, D.IMG_ORIGIN, D.IMG_FILESYSTEM, D.MUSIC_ORIGIN, D.MUSIC_FILESYSTEM, D.DOWNLOAD_CNT, D.IMG_PATH, D.MUSIC_PATH, D.HAS_THUMBNAIL
+												FROM  (SELECT ROW_NUMBER() OVER(ORDER BY B.HEARTS DESC) AS ROW_NUM, B.MUSIC_NO, B.HEARTS, B.EMAIL, B.MUSIC_TITLE, B.MUSIC_CONTENT, B.MUSIC_ALBUM, B.MUSIC_GENRE, B.MUSIC_UPLOAD_DATE, B.MUSIC_MODIFY_DATE, B.IP, B.IMG_ORIGIN, B.IMG_FILESYSTEM, B.MUSIC_ORIGIN, B.MUSIC_FILESYSTEM, B.DOWNLOAD_CNT, B.IMG_PATH, B.MUSIC_PATH, B.HAS_THUMBNAIL
+									        			FROM (SELECT M.MUSIC_NO, COUNT(L.LIKE_NO) AS HEARTS, M.EMAIL, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
+									                			FROM MUSIC M INNER JOIN MUSIC_LIKE L
+									        	ON M.MUSIC_NO = L.MUSIC_NO INNER JOIN (SELECT MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL
+									                                                FROM MUSIC) T
+									       		ON L.MUSIC_NO = T.MUSIC_NO
+									        	GROUP BY M.MUSIC_NO, M.EMAIL, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
+									        	) B ) D
+												WHERE ROW_NUM BETWEEN #{begin} AND #{end}) Q
+			ON A.MUSIC_NO = Q.MUSIC_NO
+	</select>
+
+	<!-- # 장르별 인기리스트4 조회하기 -->
+	<select id="selectPopularMusicGenreList" parameterType="Map" resultMap="MusicMap">
+		SELECT U.USER_NO, U.EMAIL, U.ARTIST, U.NAME, U.PW, U.PROFILE_IMAGE, U.MOBILE, Q.HEARTS, Q.MUSIC_NO, Q.EMAIL, Q.MUSIC_TITLE, Q.MUSIC_CONTENT, Q.MUSIC_ALBUM, Q.MUSIC_GENRE, Q.MUSIC_UPLOAD_DATE, Q.MUSIC_MODIFY_DATE, Q.IP, Q.IMG_ORIGIN, Q.IMG_FILESYSTEM, Q.MUSIC_ORIGIN, Q.MUSIC_FILESYSTEM, Q.DOWNLOAD_CNT, Q.IMG_PATH, Q.MUSIC_PATH, Q.HAS_THUMBNAIL
+	  	  FROM USERS U INNER JOIN ACTIVE_LOG A
+	        ON U.EMAIL = A.EMAIL INNER JOIN ( SELECT D.MUSIC_NO, D.HEARTS, D.EMAIL, D.MUSIC_TITLE, D.MUSIC_CONTENT, D.MUSIC_ALBUM, D.MUSIC_GENRE, D.MUSIC_UPLOAD_DATE, D.MUSIC_MODIFY_DATE, D.IP, D.IMG_ORIGIN, D.IMG_FILESYSTEM, D.MUSIC_ORIGIN, D.MUSIC_FILESYSTEM, D.DOWNLOAD_CNT, D.IMG_PATH, D.MUSIC_PATH, D.HAS_THUMBNAIL
+												FROM  (SELECT ROW_NUMBER() OVER(ORDER BY B.HEARTS DESC) AS ROW_NUM, B.MUSIC_NO, B.HEARTS, B.EMAIL, B.MUSIC_TITLE, B.MUSIC_CONTENT, B.MUSIC_ALBUM, B.MUSIC_GENRE, B.MUSIC_UPLOAD_DATE, B.MUSIC_MODIFY_DATE, B.IP, B.IMG_ORIGIN, B.IMG_FILESYSTEM, B.MUSIC_ORIGIN, B.MUSIC_FILESYSTEM, B.DOWNLOAD_CNT, B.IMG_PATH, B.MUSIC_PATH, B.HAS_THUMBNAIL
+									        			FROM (SELECT M.MUSIC_NO, COUNT(L.LIKE_NO) AS HEARTS, M.EMAIL, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
+									                			FROM MUSIC M INNER JOIN MUSIC_LIKE L
+									        	ON M.MUSIC_NO = L.MUSIC_NO INNER JOIN (SELECT MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL
+									                                                FROM MUSIC) T
+									       		ON L.MUSIC_NO = T.MUSIC_NO
+									        	GROUP BY M.MUSIC_NO, M.EMAIL, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
+									        	) B ) D
+												WHERE ROW_NUM BETWEEN #{begin} AND #{end}) Q
+			ON A.MUSIC_NO = Q.MUSIC_NO
+		WHERE Q.MUSIC_GENRE = #{genre}
+	</select>
+	
+	
+	
 
 	
 </mapper>
