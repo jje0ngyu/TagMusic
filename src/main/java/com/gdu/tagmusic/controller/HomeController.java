@@ -44,7 +44,7 @@ public class HomeController {
 	
 			
 	// # 구현 : 최신리스트 게시판 조회	-----------------------------------------
-	@GetMapping("/music/updatedMusicBoard")
+	@GetMapping("/music/board/updatedMusic")
 	public String updatedMusicBoard(HttpServletRequest request, Model model) {
 		homeService.selectUpdateMusicList(request, model);
 		return "/musicBoard/latestMusic";
@@ -61,15 +61,36 @@ public class HomeController {
 		
 	}
 	
-	// # 구현 : 장르별 인기리스트 바 ============================================
+	// 구현 : 인기리스트 게시판 조회	----------------------------------------
+	@GetMapping("/music/board/popularMusic")
+	public String popularMusicBoard(HttpServletRequest request, Model model) {
+		homeService.selectPopularMusicList(request, model);
+		return "/musicBoard/popularMusic";
+	}
+	
+	
+	
+	// # 구현 : 장르별 인기리스트 바 -------------------------------------------
 	@ResponseBody
 	@GetMapping(value="/music/list/popular/genre", produces="application/json")
 	public Map<String, Object> popularMusicGenre(HttpServletRequest request) {	
 		return homeService.selectPopularMusicGenre4(request);
 		
 	}
+	
+	// # 구현 : 전체검색
+	@GetMapping("/music/main/totalSearch")
+	public String totalSearch(HttpServletRequest request, Model model) {
+		homeService.selectSearchMusic(request, model);
+		return "/musicBoard/searchMusic";
+	}
 
-
-
+	// # 구현 : 음악랭킹(댓글수 + 좋아요수)
+	@ResponseBody
+	@GetMapping(value="/music/ranking", produces="application/json")
+	public Map<String, Object> musicRank() {	
+		return homeService.selectMusicRank();
+		
+	}
 
 }

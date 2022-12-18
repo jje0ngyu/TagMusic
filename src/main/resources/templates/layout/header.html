@@ -29,6 +29,69 @@
 	}
 </style>
 
+<script th:inline="javascript">
+
+	$(document).ready(function() {
+		
+		fn_totalSearch();	// 구현 : 전체검색 + 기능 : 빈칸검색방지
+		fn_musicRanking();  // 구현 : 랭킹(좋아요수 + 댓글수)
+		fn_rankingMove();
+		fn_aaa();
+	});
+	
+	// 구현 : 전체검색 + 빈칸검색방지 
+	function fn_totalSearch() {
+		
+		$('#totalSearch').click(function() {
+			
+			if($('#query').val() == '') {
+				alert('검색어를 입력하세요');
+				event.preventDefault();
+				return;
+			}
+			location.href='/music/main/totalSearch?query=' + $('#query').val() + '&page=' + $('#layout_page').val();
+		});
+	};
+	
+	// 구현 : 랭킹
+	function fn_musicRanking() {
+		
+		$.ajax({
+				type: 'get',
+				url: '/music/ranking',
+				dataType: 'json',
+				success: function(resData) {
+				
+						
+					$.each(resData.rankingList, function(index, rank) {
+						
+						$('<li class="ranking_li">').append('<a class="ranking_link" href="/music/detail?musicNo=' + rank.musicNo + '">'+ (index + 1) + '&nbsp;&nbsp;&nbsp;' + rank.musicTitle + '&nbsp;&nbsp;&nbsp;' + rank.activeLogDTO.userDTO.artist + '</a>')
+						.appendTo('#ranking_ol');
+					});
+				}
+		});		
+	}
+	
+
+	
+	function fn_aaa () {
+		
+		$('#ranking_ol').click(function () {
+			alert('di');
+			
+		});
+		
+	
+		
+		
+	}
+		
+	
+	
+
+
+</script>
+
 </head>
 <body>
 
@@ -39,15 +102,19 @@
 		<div class="header_menu">
 			<div class="header_left_menu">
 				<div class="header_search_area">
-					<input type="text" id="" name="" placeholder="검색" class="header_search">
-					<input type="button" class="header_search_btn" value="검색">
+					<div class="header_search_area_left">
+						<input type="text" id="query" name="query" placeholder="검색" class="header_search">
+						<!-- * 검색시 page 파라미터 디폴트값-->
+						<input type="hidden" id="layout_page" value="1">
+					</div>
+					<div class="header_search_area_right">
+						<a class="header_search_btn" id="totalSearch">검</a>
+					</div>
 				</div>
 				
-				<div class="header_rank">랭킹
-					<ol>
-						<li>1</li>
-						<li>2</li>
-						<li>3</li>
+				<div class="header_rank">
+					<ol class="ranking_ol" id="ranking_ol">
+							
 					</ol>
 				</div>
 			</div>

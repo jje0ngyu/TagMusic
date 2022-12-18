@@ -22,10 +22,18 @@ public interface HomeService {
 	// 1) 인기리스트 바 데이터 가져오기
 	public Map<String, Object> selectPopularMusic4(HttpServletRequest request);
 	// 2) 썸네일 가져오기 : 재활용
-	
-	// # 장르별 인기리스트
-	// 1) 장르별 인기리스트 데이터 가져오기
+	// 3) 인기리스트 게시판 조회
+	public void selectPopularMusicList(HttpServletRequest request, Model model); 
+	// 4) 장르별 인기리스트 데이터 가져오기
 	public Map<String, Object> selectPopularMusicGenre4(HttpServletRequest request);
+	
+	
+	// # 전체검색
+	public void selectSearchMusic(HttpServletRequest request, Model model); 
+	
+	// # 랭킹
+	public Map<String, Object> selectMusicRank();
+
 
 	
 	

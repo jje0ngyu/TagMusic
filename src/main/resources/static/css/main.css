@@ -23,7 +23,7 @@ width는 1250px, 80퍼센트면 1000px;
 	margin: 35px auto;
 	margin-top: 75px;
 	background-color: #212121;
-	width : 1250px;
+	width : 1650px;
 	height: 900px;
 	padding: 30px;
 	
@@ -72,7 +72,7 @@ a {
 .main_item_area {
 	
 	display: flex;
-	justify-content: space-between;
+	
 	background-color: #323232;
 	width: 100%;
 	height: 300px;
@@ -94,6 +94,10 @@ a {
 	
 }
 
+.main_item:hover {
+	
+	background-color: #545454;
+}
 
 
 .item_image {
@@ -144,6 +148,7 @@ a {
  	color: #eeeeee;
  	display:inline-block;
  	font-size: 28px;
+ 	margin-right: 400px;
  }
 
  
@@ -192,11 +197,13 @@ a {
 	
 }
 
-/* header 버튼 a링크없애기 */
-.bar_header_menu_title:visited {
-	
-	color: #eeeeee;
-	text-decoration: none;
-}
 
+
+/* 페이지 버튼 위치고정 */
+
+.page_popular_right {
+	
+	display: block;
+	float: right;
+}
 

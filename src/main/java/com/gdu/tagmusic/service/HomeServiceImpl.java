@@ -58,8 +58,6 @@ public class HomeServiceImpl implements HomeService {
 		
 		// 5. 모든 데이터를 전달할 map
 		map.put("musicList", musicList);	
-		
-		
 		map.put("pageUtil", pageUtil);
 		return map;
 	}
@@ -126,8 +124,7 @@ public class HomeServiceImpl implements HomeService {
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
 		
-		
-		model.addAttribute("paging", pageUtil.getPaging("/music/updatedMusicBoard"));	
+		model.addAttribute("paging", pageUtil.getPaging("/music/board/updatedMusic"));	
 		model.addAttribute("musicList", homeMapper.selectUpdatedMusicList(map));
 		model.addAttribute("beginNo", totalRecordCnt - (page-1) * pageUtil.getRecordPerPage());		
 		// 게시글 가장 첫번째번호 : html에서 index값을 뺴서 no값을 출력
@@ -162,9 +159,8 @@ public class HomeServiceImpl implements HomeService {
 				
 				
 				// 2. 페이징 처리
-				int recordPerPage = 4;
+				int recordPerPage = 6;
 				int totalRecordCnt = homeMapper.selectPopularMusicCnt();
-				System.out.println(totalRecordCnt);				
 				pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
 				
 				// 3. 음악리스트 조회
@@ -179,10 +175,43 @@ public class HomeServiceImpl implements HomeService {
 				
 				// 5. 모든 데이터를 전달할 map
 				map.put("musicList", musicList);	
-				
-				
 				map.put("pageUtil", pageUtil);
 				return map;
+	}
+	
+	// # 인기순 게시판 조회
+	@Override
+	public void selectPopularMusicList(HttpServletRequest request, Model model) {
+		
+			// 1. 파라미터
+			Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+			int page = Integer.parseInt(opt.orElse("1"));
+	
+			// 2. 페이징 처리
+			int recordPerPage = 10;
+			int totalRecordCnt = homeMapper.selectPopularMusicCnt();		
+			pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
+			
+			System.out.println(pageUtil.getBeginPage());
+			System.out.println(pageUtil.getEndPage());
+			
+			// 3. 음악리스트 조회
+			// - users 테이블, active_log 테이블과 조인하여 해당 게시글의 artist를 조회해온다
+			Map<String, Object> map = new HashMap<>();
+			map.put("begin", pageUtil.getBegin());
+			map.put("end", pageUtil.getEnd());
+			//map.put("genre", genre);
+
+		
+			// 4. model로 전달
+				model.addAttribute("paging", pageUtil.getPaging("/music/board/popularMusic"));	
+				model.addAttribute("popularList", homeMapper.selectPopularMusicList(map));
+				model.addAttribute("beginNo", totalRecordCnt - (page-1) * pageUtil.getRecordPerPage());		
+				// 게시글 가장 첫번째번호 : html에서 index값을 뺴서 no값을 출력
+				model.addAttribute("pageName", "인기리스트");
+			
+		
+		
 	}
 	
 	// # 장르별 인기리스트
@@ -198,7 +227,7 @@ public class HomeServiceImpl implements HomeService {
 		String genre = request.getParameter("genre");
 		
 		// 2. 페이징 처리
-		int recordPerPage = 4;
+		int recordPerPage = 6;
 		int totalRecordCnt = homeMapper.selectPopularMusicCnt();
 		System.out.println(totalRecordCnt);				
 		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
@@ -219,6 +248,64 @@ public class HomeServiceImpl implements HomeService {
 		return map;
 		
 	}
+	
+	// # 전체검색
+	@Override
+	public void selectSearchMusic(HttpServletRequest request, Model model) {
+		
+		// 1) 파라미터
+				Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+				int page = Integer.parseInt(opt.orElse("1"));
+				String query = request.getParameter("query");
+
+				int recordPerPage = 10;
+				int totalRecordCnt = homeMapper.selectSearchMusicCnt(query);	// 검색어 query 전달
+				System.out.println(totalRecordCnt);
+				
+				// 2) 페이징 처리
+				pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
+				
+				// 3) model에 값을 전달
+				Map<String, Object> map = new HashMap<>();
+				map.put("begin", pageUtil.getBegin());
+				map.put("end", pageUtil.getEnd());
+				map.put("query", query);
+				
+				System.out.println(homeMapper.selectSearchMusicList(map));
+				model.addAttribute("paging", pageUtil.getPaging("/music/main/totalSearch?query=" + query));	
+				model.addAttribute("searchList", homeMapper.selectSearchMusicList(map));
+				model.addAttribute("beginNo", totalRecordCnt - (page-1) * pageUtil.getRecordPerPage());		
+				// 게시글 가장 첫번째번호 : html에서 index값을 뺴서 no값을 출력
+				model.addAttribute("pageName", "검색어 :  " +  query);
+				model.addAttribute("query", query);	// * 검색값도 화면에 반환
+			
+				
+				
+				
+		
+	}
+	
+	// # 랭킹
+	@Override
+	public Map<String, Object> selectMusicRank() {
+		
+		// # 페이징 처리 : page는 1페이지만, 랭킹은 10개까지, 전체도 10개로 한정
+		pageUtil.setPageUtil(1, 10, 10);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("begin", pageUtil.getBegin());
+		map.put("end", pageUtil.getEnd());
+		
+		
+		List<MusicDTO> rankingList = homeMapper.selectMusicRanking10(map);
+		map.put("rankingList", rankingList);
+		
+		// * list를 반환시, list와 map 주의
+		
+		return map;
+	}
+
+
 	
 	
 

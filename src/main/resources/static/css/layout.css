@@ -10,7 +10,7 @@
 	
 	/* 레이아웃(헤더) : 헤더영역 레이아웃 설정 */
 	.header {
-	height : 50px;
+	height : 60px;
 	background-color: #D4D4D4;
 	border-bottom: 2px #f0f0f0 solid;
 	margin-left: 200px;
@@ -28,9 +28,11 @@
 	display : flex;
 	justify-content : space-between;
 	padding : 10px 10px 10px 10px;
-	height: 50px;
+	height: 100%;
+
 	vertical-align: baseline;
 	text-align: center;
+	border-bottom: 1px solid #aaaaaa;
 	
 	
 	}
@@ -48,19 +50,70 @@
 	 */
 	.header_search_area {
 	margin-left: 20px;
-	background-color: #8E8E8E;
+	margin-bottom: 10px;
+	background-color: #323232;
 	display : flex;
 	padding : 5px;
-	width : 250x;
-	border-radius: 15px;
+	width : 370x;
+	height: 40px;
+	border-radius: 20px;
+	
 	}
 	
+	
+	.header_search {
+		margin-left: 2px;
+		border: 0;
+		outline: none;
+		width: 180px;
+		height: 20px;
+		background-color: #323232;
+		padding: 13px;
+		
+		font-weight: 600;
+		font-size: 13px;
+		color: #eeeeee;
+		
+	}
+	
+	
+	.header_search_area_left {
+		
+		border-right: 2px solid #555555;
+		
+	}
+	
+	.header_search_area_right {
+		
+		margin-left: 10px;
+		margin-right: 10px;
+		
+	}
+	
+	.header_search_btn {
+		font-weight: 900;
+		font-size: 13px;
+		color: #eeeeee;
+		display: inline-block;
+		text-align: center;
+	}
 	
 		
 	/* 레이아웃(헤더) : 랭킹 영역 */
 	.header_rank {
 	margin-left: 20px;
-	width: 100px;
+	width: 180px;
+	background-color: #eeeeee;
+	border-radius: 2px;
+	height: 30px;
+	margin: 5px 20px;
+	line-height: 20px;
+	border: 1px solid #aaaaaa;
+	
+	font-size: 14px;
+	color: #323232;
+	text-align: left;
+	padding: 5px 25px;
 	}
 	
 	/* 레이아웃(사이드) : 상단 로고 영역설정 */
@@ -129,6 +182,114 @@
     text-align: center;
 	}
 	
+	
+/* 알람, 로그인 */
+.header_btn {
+	
+	text-align: center;
+	height: 50px;
+	line-height: 40px;
+	margin-right: 20px;
+	
+	
+	
+}
+
+/* 랭킹 */
+
+.header_rank {
+	
+	height: 35px;
+	width: 200px;
+	line-height: 25px;
+	position: relative;
+	border-radius: 10px;
+
+	
+	
+}
+
+.ranking_ol {
+	
+	list-style: none;
+	height: 30px;
+}
+
+.ranking_link {
+	
+	text-decoration: none;
+	color: inherit;
+	
+}
+
+
+
+.ranking_ol:hover{
+	
+	border-radius: 10px;
+	border: 1px solid #ababab;
+	background-color: #efefef;
+	position:absolute;
+	top: 0px; left: 0;
+	width: 198px;
+	height: 260px;
+	padding: 5px 25px;
+
+	
+}
+
+
+
+
+
+
+
+.ranking_li:nth-child(2) {
+	
+	
+	
+}
+
+.ranking_li:nth-child(3) {
+	
+	
+}
+
+.ranking_li:nth-child(4) {
+	
+	
+}
+
+.ranking_li:nth-child(5) {
+	
+	
+}
+
+.ranking_li:nth-child(6) {
+	
+	
+}
+
+.ranking_li:nth-child(7) {
+	
+	
+}
+
+.ranking_li:nth-child(8) {
+	
+	display: none;
+}
+
+.ranking_li:nth-child(9) {
+	
+	display: none;
+}
+
+.ranking_li:nth-child(10) {
+	
+	display: none;
+}
+
 
 
 

@@ -32,7 +32,15 @@ public interface HomeMapper {
 	// 2) 장르별 인기리스트 데이터 조회
 	public List<MusicDTO> selectPopularMusicGenreList(Map<String, Object> map);
 
+	// # 전체검색
+	// 1) 검색한 게시글 수 조회
+	public int selectSearchMusicCnt(String query);
+	// 2) 검색한 음악리스트 조회
+	public List<MusicDTO> selectSearchMusicList(Map<String, Object> map);
 
+
+	// # 랭킹
+	public List<MusicDTO> selectMusicRanking10(Map<String, Object> map);
 
 	
 	
