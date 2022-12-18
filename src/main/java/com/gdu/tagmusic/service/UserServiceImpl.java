@@ -1,7 +1,9 @@
 package com.gdu.tagmusic.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +15,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.tagmusic.domain.ProfileImageDTO;
 import com.gdu.tagmusic.domain.RetireUserDTO;
 import com.gdu.tagmusic.domain.SleepUserDTO;
 import com.gdu.tagmusic.domain.UserDTO;
@@ -23,15 +28,16 @@ import com.gdu.tagmusic.util.MyFileUtil;
 import com.gdu.tagmusic.util.SecurityUtil;
 
 import lombok.AllArgsConstructor;
+import net.coobird.thumbnailator.Thumbnails;
 
 @AllArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
 	private UserMapper userMapper;
-	private MyFileUtil myFileUtil;
 	private SecurityUtil securityUtil;
 	private JavaMailUtil javaMailUtil;
+	private MyFileUtil myFileUtil;
 	
 	// 로그인
 	@Override
@@ -45,7 +51,7 @@ public class UserServiceImpl implements UserService {
 		map.put("email", email);
 		map.put("pw", pw);
 		UserDTO loginUser = userMapper.selectUserByMap(map);
-		System.out.println("loginUser" + loginUser);
+		
 		// id, pw가 일치하는 회원이 있다 : session에 loginUser 저장하기 + 로그인 기록 남기기 
 		if(loginUser != null) {
 			
@@ -54,13 +60,13 @@ public class UserServiceImpl implements UserService {
 			
 			// 로그인 처리를 위해서 session에 로그인 된 사용자 정보를 올려둠
 			request.getSession().setAttribute("loginUser", loginUser);
-			/*
+			
 			// 로그인 기록 남기기
 			int updateResult = userMapper.updateAccessLog(email);
 			if(updateResult == 0) {
 				userMapper.insertAccessLog(email);
 			}
-			*/
+			
 			// 이동 (로그인페이지 이전 페이지로 되돌아가기)
 			try {
 				response.sendRedirect(url);
@@ -234,13 +240,13 @@ public class UserServiceImpl implements UserService {
 				// 로그인 처리를 위해서 session에 로그인 된 사용자 정보를 올려둠
 				request.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
 				
-				/*
+				
 				// 로그인 기록 남기기
 				int updateResult = userMapper.updateAccessLog(email);
 				if(updateResult == 0) {
 					userMapper.insertAccessLog(email);
 				}
-				*/
+				
 				out.println("<script>");
 				out.println("alert('회원 가입되었습니다.');");
 				out.println("location.href='/';");
@@ -270,6 +276,76 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 	
+	// 회원정보 수정 - 이미지 변경
+	@Override
+	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
+		/*
+		HttpSession session = multipartRequest.getSession(); String email =
+		((UserDTO)session.getAttribute("loginUser")).getEmail();
+		 */
+		System.out.println("서비스임플시작");
+		String email = multipartRequest.getParameter("email");
+		
+		// 첨부된 파일 목록
+		MultipartFile imageFile = multipartRequest.getFile("profileImagefile");  // <input type="file" name="file">
+		System.out.println("email:" + email);
+		System.out.println("imageFile:" + imageFile);
+		// 첨부 결과
+		int attachResult;
+		if(imageFile.getSize() == 0) {  // 첨부가 없는 경우 (files 리스트에 [MultipartFile[field="files", filename=, contentType=application/octet-stream, size=0]] 이렇게 저장되어 있어서 files.size()가 1이다.
+			attachResult = 1;
+		} else {
+			attachResult = 0;
+		}
+		try {
+			
+			// 첨부가 있는지 점검
+			if(imageFile != null && imageFile.isEmpty() == false) {  // 둘 다 필요함
+				
+				// 원래 이름
+				String origin = imageFile.getOriginalFilename();
+				origin = origin.substring(origin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
+				
+				// 저장할 이름
+				String filesystem = myFileUtil.getFilename(origin);
+				
+				// 저장할 경로
+				String path = myFileUtil.getTodayPath();
+				
+				// 저장할 경로 만들기
+				File dir = new File(path);
+				if(dir.exists() == false) {
+					dir.mkdirs();
+				}
+				
+				// 첨부할 File 객체
+				File file = new File(dir, filesystem);
+				
+				// 첨부파일 서버에 저장(업로드 진행)
+				imageFile.transferTo(file);
+
+				// ProfileImageDTO 생성
+				ProfileImageDTO profile = ProfileImageDTO.builder()
+						.profileImagePath(path)
+						.profileImageOrigin(origin)
+						.profileImageFilesystem(filesystem)
+						.email(email)
+						.build();
+				
+				// 첨부파일의 Content-Type 확인
+				String contentType = Files.probeContentType(file.toPath());  // 이미지의 Content-Type(image/jpeg, image/png, image/gif)
+
+				// DB에 AttachDTO 저장
+				attachResult += userMapper.insertImage(profile);
+				System.out.println("트라이?");
+			}
+			
+		} catch(Exception e) {
+			System.out.println("캐치?");
+			e.printStackTrace();
+		}
+		System.out.println("서비스임플 종료");
+	}
 	// 회원정보 수정 - 닉네임
 	@Override
 	public void modifyArtist(HttpServletRequest request, HttpServletResponse response) {
@@ -376,7 +452,13 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
-	// 휴면
+	// 휴면 - 로그인 시, 휴면 체크
+	@Override
+	public SleepUserDTO getSleepUserByEmail(String email) {
+		return userMapper.selectSleepUserByEmail(email);
+	}
+	
+	// 휴면 - 자동 휴면 체크 (스케줄러)
 	@Transactional
 	@Override
 	public void sleepUserHandle() {
@@ -385,9 +467,47 @@ public class UserServiceImpl implements UserService {
 			userMapper.deleteUserForSleep();
 		}
 	}
+	
+	// 휴면 - 정상회원으로 복구
+	@Transactional
 	@Override
-	public SleepUserDTO getSleepUserById(String id) {
-		return userMapper.selectSleepUserById(id);
+	public void restoreUser(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 계정 복원을 원하는 사용자의 아이디
+		HttpSession session = request.getSession();
+		SleepUserDTO sleepUser = (SleepUserDTO)session.getAttribute("sleepUser");
+		String email = sleepUser.getEmail();
+		
+		// 계정복구진행
+		int insertCount = userMapper.insertRestoreUser(email);
+		int deleteCount = 0;
+		if(insertCount > 0) {
+			deleteCount = userMapper.deleteSleepUser(email);
+		}
+		// 응답
+		try {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			
+			if(insertCount > 0 && deleteCount > 0) {
+				// session에 저장된 sleepUser 제거
+				session.removeAttribute("sleepUser");
+				
+				out.println("<script>");
+				out.println("alert('휴면 계정이 복구되었습니다. 휴면 계정 활성화를 위해 곧바로 로그인을 해 주세요.');");
+				out.println("location.href='/';");
+				out.println("</script>");
+			} else {
+				out.println("<script>");
+				out.println("alert('휴면 계정이 복구되지 않았습니다.');");
+				out.println("history.back();");
+				out.println("</script>");
+			}
+			out.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	// 로그아웃

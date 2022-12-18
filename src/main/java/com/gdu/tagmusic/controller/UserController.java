@@ -22,6 +22,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	
 	// 로그인
 	@GetMapping("/user/login/form")
 	public String loginForm(HttpServletRequest request, Model model) {
@@ -32,11 +33,7 @@ public class UserController {
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		userService.login(request, response);
 	}
-	// 로그인 - 카카오
-	@GetMapping("/user/login/kakao")
-	public void kakaoLogin() {
-		
-	}
+	
 	// 로그인 - 정보찾기
 	@GetMapping("user/loginHelp")
 	public String loginHelp() {
@@ -82,8 +79,8 @@ public class UserController {
 
 	
 	// 마이페이지 - 프로필 사진 불러오기 
-	@GetMapping("/user/info/getImage") public Map<String, Object>
-	getImage(HttpServletRequest request){
+	@PostMapping("/user/info/getImage")
+	public Map<String, Object> getImage(HttpServletRequest request){
 		return userService.getImage(request);
 	}
 	
@@ -92,6 +89,15 @@ public class UserController {
 	public String myinfo() {
 		return "user/myinfo";
 	}
+	
+	//
+	// @ResponseBody
+	@PostMapping("/user/info/modifyImage")
+	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
+		System.out.println("컨트롤러");
+		userService.modifyImage(multipartRequest, response);
+	}
+
 	// 마이페이지 - 개인정보 수정
 	@PostMapping("/user/info/modifyArtist")
 	public void modifyArtist(HttpServletRequest request, HttpServletResponse response) {

@@ -7,12 +7,14 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script>
 	$(function(){
-		
+		fn_popupProfileImage();
+		//fn_changeImage();
+		fn_closePopup();
 	});
-	
+	// 이미지 노출
 	function fn_displayImage(){
 		$.ajax({
-			type: 'get',
+			type: 'post',
 			url : '/user/info/getImage',
 			data: 'email=${session.loginUser.email}',
 			success: function(resData){
@@ -22,7 +24,43 @@
 			error: function(){
 				console.log('에러떴다');
 			}
-		})
+		}); // ajax
+	}
+	// 이미지 변경 모달팝업
+	function fn_popupProfileImage(){
+		$('#profile_image').click(function(){
+			$('.box_backlayer').removeClass('blind');
+			$('.profile_image_box').removeClass('blind');
+		});
+	}
+	/*
+	// 이미지 변경
+	function fn_changeImage(){
+		$('#frm_progileImage').submit(function(){
+			$.ajax({
+				type: 'post',
+				enctype: 'multipart/form-data',
+				url : '/user/info/modifyImage',
+				data: $('#frm_progileImage').serialize(),
+				processData: false,
+   				contentType: false,
+				success: function(resData){
+					console.log('성공');
+				},
+				error: function(){
+					console.log('에러');
+				}
+			})
+		});
+	}
+	*/
+	// 팝업창 닫기
+	function fn_closePopup(){
+		
+		$('.box_backlayer').click(function(){
+			$('.box_backlayer').addClass('blind');
+			$('.profile_image_box').addClass('blind');
+		});
 	}
 	
 </script>
@@ -35,7 +73,7 @@
 			내 정보
 		</div>
 		<div>
-			<img class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">
+			<img id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">
 			
 		</div>
 		<div>
@@ -66,20 +104,31 @@
 	</section>
 	
 	<!-- 프로필 이미지 변경 -->
-	<div class="box_backlayer">
-		<div class="profile_image_box">
-			<div>
-				프로필 이미지 변경
-			</div>
-			<div>
-				<img id="profileImage">프로필 이미지 위치
-			</div>
-			<div>
-				
-				
-			</div>
+	<div class="box_backlayer blind">
+	<div class="profile_image_box blind">
+		<div>
+			프로필 이미지 변경
+		</div>
+		<div>
+			<img id="profileImage">프로필 이미지 위치
+			<img class="profile_image" th:src="${session.loginUser.profileImage}">
+			   <form id="frm_progileImage" th:action="@{/user/info/modifyImage}" method="post" enctype="multipart/form-data">
+				   <input type="text" name="email" th:value="${session.loginUser.email}">
+			       <div>
+				       <input type="file" name="profileImagefile" id="profileImagefile">
+				   </div>
+			       <div>
+				       <input type="button" value="취소">
+				       <button>변경하기</button>
+				   </div>
+			   </form>
+		</div>
+		<div>
+			
 			
 		</div>
+		
+	</div>
 	</div>
 </body>
 </html>

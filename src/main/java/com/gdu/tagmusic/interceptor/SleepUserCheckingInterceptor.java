@@ -18,14 +18,13 @@ public class SleepUserCheckingInterceptor implements HandlerInterceptor {
 	private UserService userService;
 	
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-			throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		
 		// 로그인하려고 사용자가 입력한 아이디
 		String email = request.getParameter("email");
 		
 		// 해당 아이디가 휴면테이블에 있는지 확인
-		SleepUserDTO sleepUser = userService.getSleepUserById(email);
+		SleepUserDTO sleepUser = userService.getSleepUserByEmail(email);
 		
 		// session에 휴면계정 정보를 올려둠
 		HttpSession session = request.getSession();

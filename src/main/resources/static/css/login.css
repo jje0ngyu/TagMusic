@@ -106,11 +106,11 @@
 .remember_box {
 	background-size: 15px;
 	background-repeat: no-repeat;
-	background-image: url(../images/checkbox_uncheck.png);
+	background-image: url(../images/uncheck.png);
 	
 }
 .checkbox_check {
-	background-image: url(../images/checkbox_check.png);
+	background-image: url(../images/check.png);
 }
 .msg_login_box {
 	display: inline-block;
