@@ -25,6 +25,7 @@ public interface UserMapper {
 	// 개인정보 수정
 	public String selectProfileImage(String email);
 	public int insertImage(ProfileImageDTO image);
+	public int updateImagePath(ProfileImageDTO image);
 	public int updateUser(UserDTO user);
 	
 	// 휴면

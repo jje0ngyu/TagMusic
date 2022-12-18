@@ -283,13 +283,10 @@ public class UserServiceImpl implements UserService {
 		HttpSession session = multipartRequest.getSession(); String email =
 		((UserDTO)session.getAttribute("loginUser")).getEmail();
 		 */
-		System.out.println("서비스임플시작");
 		String email = multipartRequest.getParameter("email");
 		
 		// 첨부된 파일 목록
 		MultipartFile imageFile = multipartRequest.getFile("profileImagefile");  // <input type="file" name="file">
-		System.out.println("email:" + email);
-		System.out.println("imageFile:" + imageFile);
 		// 첨부 결과
 		int attachResult;
 		if(imageFile.getSize() == 0) {  // 첨부가 없는 경우 (files 리스트에 [MultipartFile[field="files", filename=, contentType=application/octet-stream, size=0]] 이렇게 저장되어 있어서 files.size()가 1이다.
@@ -310,10 +307,11 @@ public class UserServiceImpl implements UserService {
 				String filesystem = myFileUtil.getFilename(origin);
 				
 				// 저장할 경로
-				String path = myFileUtil.getTodayPath();
+				String staticPath = myFileUtil.staticPath();
+				String ImagePath = myFileUtil.getTodayPath();
 				
 				// 저장할 경로 만들기
-				File dir = new File(path);
+				File dir = new File(staticPath + ImagePath);
 				if(dir.exists() == false) {
 					dir.mkdirs();
 				}
@@ -326,7 +324,7 @@ public class UserServiceImpl implements UserService {
 
 				// ProfileImageDTO 생성
 				ProfileImageDTO profile = ProfileImageDTO.builder()
-						.profileImagePath(path)
+						.profileImagePath(staticPath + ImagePath)
 						.profileImageOrigin(origin)
 						.profileImageFilesystem(filesystem)
 						.email(email)
@@ -337,14 +335,33 @@ public class UserServiceImpl implements UserService {
 
 				// DB에 AttachDTO 저장
 				attachResult += userMapper.insertImage(profile);
-				System.out.println("트라이?");
+				
+				ProfileImageDTO profileImage = ProfileImageDTO.builder()
+						.profileImagePath(ImagePath)
+						.profileImageFilesystem(filesystem)
+						.email(email)
+						.build();
+				int result = userMapper.updateImagePath(profileImage);
+				
+				response.setContentType("text/html; charset=UTF-8");
+				PrintWriter out = response.getWriter();
+				if(result > 0) {
+					// 조회 조건으로 사용할 Map
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("email", email);
+					// session에 올라간 정보를 수정된 내용으로 업데이트
+					multipartRequest.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
+					
+					out.println("<script>");
+					out.println("alert('사진이 변경되었습니다.');");
+					out.println("location.href='/';");
+					out.println("</script>");
+				}
 			}
 			
 		} catch(Exception e) {
-			System.out.println("캐치?");
 			e.printStackTrace();
 		}
-		System.out.println("서비스임플 종료");
 	}
 	// 회원정보 수정 - 닉네임
 	@Override

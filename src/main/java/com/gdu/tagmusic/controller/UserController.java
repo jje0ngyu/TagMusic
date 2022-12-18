@@ -94,7 +94,6 @@ public class UserController {
 	// @ResponseBody
 	@PostMapping("/user/info/modifyImage")
 	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
-		System.out.println("컨트롤러");
 		userService.modifyImage(multipartRequest, response);
 	}
 

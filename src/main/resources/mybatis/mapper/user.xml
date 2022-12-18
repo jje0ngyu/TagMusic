@@ -72,6 +72,13 @@
 			(PROFILEIMAGE_SEQ.NEXTVAL, #{profileImagePath}, #{profileImageOrigin}, #{profileImageFilesystem}, #{email})
 	</insert>
 	
+	<!-- 프로필 경로 수정 -->
+	<update id="updateImagePath" parameterType="ProfileImageDTO">
+		UPDATE USERS
+		   SET PROFILE_IMAGE = #{profileImagePath} || '\' || #{profileImageFilesystem}
+		 WHERE EMAIL = #{email}
+	</update>
+	
 	<!-- 회원정보수정 -->
 	<update id="updateUser" parameterType="UserDTO">
 		UPDATE USERS

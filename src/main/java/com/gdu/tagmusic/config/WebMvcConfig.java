@@ -5,6 +5,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.gdu.tagmusic.interceptor.KeepLoginInterceptor;
+import com.gdu.tagmusic.interceptor.PreventLoginInterceptor;
 import com.gdu.tagmusic.interceptor.SleepUserCheckingInterceptor;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	private KeepLoginInterceptor keepLoginInterceptor;
 	private SleepUserCheckingInterceptor sleepUserCheckingInterceptor;
+	private PreventLoginInterceptor preventLoginInterceptor;
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -26,6 +28,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		
 		registry.addInterceptor(sleepUserCheckingInterceptor)
 			.addPathPatterns("/user/login");
+		
+		registry.addInterceptor(preventLoginInterceptor)
+			.addPathPatterns("/user/login/form")
+			.addPathPatterns("/user/join/*");
 	}
 	
 	
