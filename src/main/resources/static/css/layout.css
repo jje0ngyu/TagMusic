@@ -215,7 +215,7 @@
 	height: 30px;
 }
 
-.ranking_link {
+#ranking_link {
 	
 	text-decoration: none;
 	color: inherit;
@@ -223,9 +223,9 @@
 }
 
 
-
-.ranking_ol:hover{
+.ranking_ol_hover{
 	
+	list-style: none;
 	border-radius: 10px;
 	border: 1px solid #ababab;
 	background-color: #efefef;
@@ -238,57 +238,51 @@
 	
 }
 
-
-
-
-
-
-
-.ranking_li:nth-child(2) {
-	
-	
-	
-}
-
-.ranking_li:nth-child(3) {
-	
-	
-}
-
-.ranking_li:nth-child(4) {
-	
-	
-}
-
-.ranking_li:nth-child(5) {
-	
-	
-}
-
-.ranking_li:nth-child(6) {
-	
-	
-}
-
-.ranking_li:nth-child(7) {
-	
-	
-}
-
-.ranking_li:nth-child(8) {
+.ranking_li:nth-of-type(2) {
 	
 	display: none;
 }
 
-.ranking_li:nth-child(9) {
+.ranking_li:nth-of-type(3) {
 	
 	display: none;
 }
 
-.ranking_li:nth-child(10) {
+.ranking_li:nth-of-type(4) {
 	
 	display: none;
 }
+
+.ranking_li:nth-of-type(5) {
+	
+	display: none;
+}
+
+.ranking_li:nth-of-type(6) {
+	
+	display: none;
+}
+
+.ranking_li:nth-of-type(7) {
+	
+	display: none;
+}
+
+.ranking_li:nth-of-type(8) {
+	
+	display: none;
+}
+
+.ranking_li:nth-of-type(9) {
+	
+	display: none;
+}
+
+.ranking_li:nth-of-type(10) {
+	
+	display: none;
+}
+
 
 
 
