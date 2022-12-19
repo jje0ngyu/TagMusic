@@ -191,10 +191,6 @@ public class HomeServiceImpl implements HomeService {
 			int recordPerPage = 10;
 			int totalRecordCnt = homeMapper.selectPopularMusicCnt();		
 			pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
-			
-			System.out.println(pageUtil.getBeginPage());
-			System.out.println(pageUtil.getEndPage());
-			
 			// 3. 음악리스트 조회
 			// - users 테이블, active_log 테이블과 조인하여 해당 게시글의 artist를 조회해온다
 			Map<String, Object> map = new HashMap<>();
@@ -228,8 +224,7 @@ public class HomeServiceImpl implements HomeService {
 		
 		// 2. 페이징 처리
 		int recordPerPage = 6;
-		int totalRecordCnt = homeMapper.selectPopularMusicCnt();
-		System.out.println(totalRecordCnt);				
+		int totalRecordCnt = homeMapper.selectPopularMusicCnt();		
 		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
 		
 		// 3. 음악리스트 조회
@@ -260,7 +255,6 @@ public class HomeServiceImpl implements HomeService {
 
 				int recordPerPage = 10;
 				int totalRecordCnt = homeMapper.selectSearchMusicCnt(query);	// 검색어 query 전달
-				System.out.println(totalRecordCnt);
 				
 				// 2) 페이징 처리
 				pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
@@ -271,7 +265,6 @@ public class HomeServiceImpl implements HomeService {
 				map.put("end", pageUtil.getEnd());
 				map.put("query", query);
 				
-				System.out.println(homeMapper.selectSearchMusicList(map));
 				model.addAttribute("paging", pageUtil.getPaging("/music/main/totalSearch?query=" + query));	
 				model.addAttribute("searchList", homeMapper.selectSearchMusicList(map));
 				model.addAttribute("beginNo", totalRecordCnt - (page-1) * pageUtil.getRecordPerPage());		

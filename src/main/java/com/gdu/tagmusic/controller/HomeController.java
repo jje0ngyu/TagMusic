@@ -92,5 +92,11 @@ public class HomeController {
 		return homeService.selectMusicRank();
 		
 	}
+	
+	// # 구현 : 음악플레이어
+	@GetMapping("/music/player")
+	public String musicPlayer() {
+		return "/layout/musicPlayer";
+	}
 
 }
