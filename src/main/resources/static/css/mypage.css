@@ -24,6 +24,8 @@ html, body, nav, section {
 		font-weight: 500;
 		padding-top: 20px;
 		padding-left: 30px;	
+		top: 0;
+		left: 0;
 	}
 	.text_box {
 		margin: 20px 0;
@@ -48,7 +50,7 @@ html, body, nav, section {
 .profile_image_box {
 	position: relative;
 	width: 420px;
-	
+	z-index: 101;
 	background-color: green;
 	margin: 100px auto 0;
 	text-align: center;

@@ -307,11 +307,10 @@ public class UserServiceImpl implements UserService {
 				String filesystem = myFileUtil.getFilename(origin);
 				
 				// 저장할 경로
-				String staticPath = myFileUtil.staticPath();
 				String ImagePath = myFileUtil.getTodayPath();
 				
 				// 저장할 경로 만들기
-				File dir = new File(staticPath + ImagePath);
+				File dir = new File(ImagePath);
 				if(dir.exists() == false) {
 					dir.mkdirs();
 				}
@@ -324,7 +323,7 @@ public class UserServiceImpl implements UserService {
 
 				// ProfileImageDTO 생성
 				ProfileImageDTO profile = ProfileImageDTO.builder()
-						.profileImagePath(staticPath + ImagePath)
+						.profileImagePath(ImagePath)
 						.profileImageOrigin(origin)
 						.profileImageFilesystem(filesystem)
 						.email(email)
