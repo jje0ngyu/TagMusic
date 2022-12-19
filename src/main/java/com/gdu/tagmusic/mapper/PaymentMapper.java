@@ -17,4 +17,5 @@ public interface PaymentMapper {
 	public int updatePaymentExtend(Map<String, Object> map);
 	public int selectRemainiend(Map<String, Object> map);
 	public Date selectPassDday(Map<String, Object> map);
+	public int deletePass();
 }

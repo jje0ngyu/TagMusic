@@ -55,6 +55,12 @@
 	     WHERE EMAIL = #{email}
 	</select>
 	
+	<delete id="deletePass">
+		DELETE 
+		  FROM PAYMENT
+		 WHERE SYSDATE > EXPIRATION_DATE
+	</delete>
+	
 </mapper>
 
 

@@ -34,7 +34,6 @@ $(document).ready(function(){
 });
 function fn_remainingDay(){
 	var userEmail = $('#userEmail').data('email');
-	console.log(userEmail);
 	$.ajax({
 		type: 'post',
 		url: '/payment/remainingDay',
@@ -48,7 +47,7 @@ function fn_remainingDay(){
 			
 		},
 		error: function(xqXHR){
-			console.log(xqXHR);
+			console.log('실패!');
 		}
 	});
 }
@@ -119,6 +118,7 @@ function fn_remainingDay(){
 								location.href='/user/logout';
 							})
 						</script>
+						<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
 					</div>
 				</div>
 			</div>
@@ -131,6 +131,6 @@ function fn_remainingDay(){
 
 
 
-<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
+
 </body>
 </html>

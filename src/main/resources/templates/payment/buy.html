@@ -69,6 +69,43 @@
 		display: inline-block;
 	}
 	
+	/* 선물 box */
+	.blind {
+		display: none;
+	}
+	.backlayer {
+		position: absolute;
+		top: 0;
+		left: 0;
+		background-color: rgba(0,0,0,0.7);
+		z-index: 100;
+		width: 100%;
+		height:100%;
+	}
+	.gift_session {
+		position: absolute;
+		top: 0;
+		left: 0;
+		background-color: rgba(255,255,255,0);
+		width: 100%;
+		height:100%;
+	}
+	.container_gift {
+		position: relative;
+		z-index: 110;
+		width: 420px;
+		height: 300px;
+		background-color: white;
+		margin: 200px auto;
+	}
+	.gift_box {
+		position: relative;
+		margin: auto;
+		width: 300px;
+		background-color: green;
+		text-align: center;
+	}
+	
 	
 </style>
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
@@ -123,9 +160,9 @@ function fn_passList(){
 				txt += '<h2>'+pass.passName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+pass.passPrice+' 원!</h2>';
 				txt += '</div>';
 				txt += '<div class="pass_btn">';
-				txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName +'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
+				txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName+'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
 				if(pass.passName == "30일이용권"){
-					txt += '<input type="button" value="선물하기" id="btn_gift">';
+					txt += '<input type="button" id="btn_gift" value="선물하기" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
 				}
 				txt += '</div>';
 				txt += '</div>';
@@ -141,6 +178,10 @@ function fn_login(){
 }
 
 function fn_buyTicket(e){
+	
+		
+	
+	
 	var musicAmount = $(e).data('amount');
 	var paymentPg = $(e).data('pg');
 	var ticketName = $(e).data('ticket');
@@ -191,6 +232,7 @@ function fn_buyTicket(e){
 							msg += '이용권 구매가 실패하였습니다..';
 						}
 						alert(msg);
+						fn_remainingDay();
 					}
 					
 				}); 
@@ -200,6 +242,78 @@ function fn_buyTicket(e){
 			alert(msg)
 		}
 	});
+	
+}
+function fn_presentTicket(e){
+	$('.backlayer').removeClass('blind');
+	$('.gift_session').removeClass('blind');
+	var userNickName = prompt("어떤 유저에게 선물하시겠습니까? 유저의 이메일을 입력해주세요!", "이메일 입력");
+	var ticketName = $(e).data('ticket');
+	ticketName += '(TO.'+ userNickName +')';
+	if(confirm('\'' + userNickName + '\' 에게 선물하시겠습니까??')){
+		
+		var musicAmount = $(e).data('amount');
+		var paymentPg = $(e).data('pg');
+		
+		var passNo = $(e).data('passno');
+		var userName = $('#userName').data('name');
+		var userEmail = $('#userEmail').data('email');
+		var userMobile = $('#userMobile').data('mobile');
+		var userAddr = '';
+		userAddr += $('#userAddr1').data('addr');
+		userAddr += $('#userAddr2').data('addr');
+		userAddr += $('#userAddr3').data('addr');
+		userAddr += $('#userAddr4').data('addr');
+		var userPostcode = $('#postcode').data('postcode');
+			
+		var IMP = window.IMP; 
+			
+		
+		IMP.init('imp66111374');//imp72345478
+		
+		var merchant_uid = 'TagMusic_' + new Date().getTime();
+		
+		IMP.request_pay({ 
+			pg: "html5_inicis",
+			pay_method: 'card',
+			merchant_uid: merchant_uid,
+			name: ticketName, 
+			//name: '노래제목:'+firstCartMusicName+' 외'+ (muprice-1) +'곡',
+			amount: musicAmount,
+			buyer_email: userEmail,
+			buyer_name: userName,
+			buyer_tel: userMobile,
+			buyer_addr: '서울시',
+			buyer_postcode: '123-111',
+			m_redirect_url: 'https://www.yourdomain.com/payments/complete'
+			}, function (rsp) {
+				if (rsp.success) {
+					 $.ajax({
+						type: 'post',
+						url: '/payment/thirtyDay',
+						data: 'email=' + userEmail + '&price=' + musicAmount + '&passNo=' + passNo + '&payPg=' + paymentPg + '&ticketName=' + ticketName + '&merchantUid=' + merchant_uid,
+						dataType: 'json',
+						success: function(resData){
+							var msg = '';
+							console.log(resData);
+							if(resData.result == 1){
+								msg += '이용권 구매가 완료되었습니다.';
+							} else {
+								msg += '이용권 구매가 실패하였습니다..';
+							}
+							alert(msg);
+							fn_remainingDay();
+						}
+						
+					}); 
+				} else {
+				var msg = '';
+				msg += rsp.error_msg;
+				alert(msg)
+			}
+		});
+	}
+	console.log(ticketName);
 }
 
 </script>
@@ -242,8 +356,51 @@ function fn_buyTicket(e){
 			<div id="buyPageDiv">
 			</div>
 		</div>
+		
+		<span th:utext="${loginUser}"></span>
 	</div>
 	<form action="/user/login/form" id="frm_login"></form>
+	<!-- 프로필 사진 클릭시 팝업 창 -->
+	<div class="backlayer blind"></div>
+	<div class="gift_session blind">
+		<div class="container_gift">
+			<div class="gift_box">
+				<div>
+					<span th:text="${session.loginUser.artist}"></span> 님
+				</div>
+				<div><span th:text="${session.loginUser.email}"></span></div>
+				<div>
+					<div>
+						<span id="remainingDay"></span>
+					</div>
+					<div>
+						<span id="dDay"></span>
+					</div>
+				</div>					
+				<div>
+					<input type="button" value="TagMusic 계정관리" class="account_manage">
+				</div>
+				<div>
+					<input type="button" value="로그아웃" class="btn_logout">
+				</div>
+				<script>
+					$('.account_manage').click(function(){
+						location.href='/user/mypage';
+					});
+					$('.btn_logout').click(function(){
+						location.href='/user/logout';
+					})
+				</script>
+				<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
+			</div>
+		</div>
+	</div>
+	<script>
+		$('.backlayer').click(function(){
+			$('.backlayer').addClass('blind');
+			$('.gift_session').addClass('blind');
+		});
+	</script>
 
 	
 </body>
