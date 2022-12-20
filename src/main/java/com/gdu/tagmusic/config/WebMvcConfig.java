@@ -36,19 +36,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	}
 	
-<<<<<<< HEAD
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/load/image/**")
 			.addResourceLocations("file:///C:/summernoteImage/");
 	}
-=======
-	
-	
-	
-	
-	
-	
->>>>>>> main
 	
 }
