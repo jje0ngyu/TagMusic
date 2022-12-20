@@ -27,7 +27,7 @@ public class DeleteWrongFiles {
 		// 삭제되는지 테스트는 아래 크론식으로 확인
 		// cron="0 0/1 * * * *"(1분마다 잘못 업로드 된 파일을 지움)
 		
-		@Scheduled(cron="0 0/1 * * * *")  // 새벽 4시마다 동작
+		@Scheduled(cron="0 0 4 * * *")  // 새벽 4시마다 동작
 		public void execute() {
 			
 			// 어제 업로드 된 파일의 경로

@@ -18,7 +18,7 @@ public class DeleteTempFiles {
 	private MyFileUtil myFileUtil;
 	
 	//@Scheduled(cron="0 0 3 * * *")  // 새벽 3시마다 동작
-	@Scheduled(cron="0 0/1 * * * *")  // 1분마다 동작
+	@Scheduled(cron="0 0 4 * * *")  // 1분마다 동작
 	public void execute() {
 		
 		String tempPath = myFileUtil.getTempPath();  // 루트/storage
