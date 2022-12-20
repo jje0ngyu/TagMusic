@@ -21,6 +21,9 @@
 			 	AND SESSION_ID = #{sessionId}
 			 	AND SESSION_LIMIT_DATE > SYSDATE
 			 </if>
+			 <if test="mobile != null">
+				 AND MOBILE = #{mobile}
+			 </if>
 			 <if test="name != null">
 			 	AND NAME = #{name}
 			 </if>
@@ -48,6 +51,13 @@
 		 WHERE EMAIL = #{email}
 	</update>
 	
+	<!-- 마이페이지 : 비밀번호 수정, 임시비밀번호로 수정 -->
+	<update id="updateUserPassword" parameterType="UserDTO">
+		UPDATE USERS
+		   SET PW = #{pw}
+		     , PW_MODIFY_DATE = SYSDATE
+		 WHERE USER_NO = #{userNo}
+	</update>
 	
 	<!-- 일반회원가입 -->
 	<insert id="insertUser" parameterType="UserDTO">
@@ -56,6 +66,16 @@
 		VALUES
 			(USERS_SEQ.NEXTVAL, #{email}, #{pw}, #{artist}, #{name}, #{gender}, #{mobile}, #{birthyear}, #{birthday}, #{postcode}, #{roadAddress}, #{jibunAddress}, #{detailAddress}, #{extraAddress}, #{agreeCode}, NULL, SYSDATE, SYSDATE, SYSDATE, NULL, NULL)
 	</insert>
+	
+	<!-- 네이버아이디로그인 회원가입 -->
+	<insert id="insertNaverUser" parameterType="UserDTO">
+		INSERT INTO USERS
+			(USER_NO, ID, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE)
+		VALUES
+			(USERS_SEQ.NEXTVAL, #{id}, #{pw}, #{name}, #{gender}, #{email}, #{mobile}, #{birthyear}, #{birthday}, NULL, NULL, NULL, NULL, NULL, #{agreeCode}, #{snsType}, SYSDATE, SYSDATE, SYSDATE, NULL, NULL)
+	</insert>
+	
+	
 	
 	<!-- 프로필 이미지 -->
 	<select id="selectProfileImage" parameterType="String" resultType="String">
@@ -78,6 +98,7 @@
 		   SET PROFILE_IMAGE = #{profileImagePath} || '\' || #{profileImageFilesystem}
 		 WHERE EMAIL = #{email}
 	</update>
+	
 	
 	<!-- 회원정보수정 -->
 	<update id="updateUser" parameterType="UserDTO">

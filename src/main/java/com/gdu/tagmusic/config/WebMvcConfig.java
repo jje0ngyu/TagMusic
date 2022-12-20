@@ -34,5 +34,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.addPathPatterns("/user/join/*");
 	}
 	
-	
 }

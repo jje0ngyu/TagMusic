@@ -15,9 +15,13 @@ public interface UserMapper {
 	// 로그인
 	public UserDTO selectUserByMap(Map<String, Object> map);
 	public int updateSessionInfo(UserDTO user);
+	// 로그인 - 네이버 간편로그인
+	public int insertNaverUser(UserDTO user);
 	// 로그인 - 로그 남기기
 	public int updateAccessLog(String email);
 	public int insertAccessLog(String email);
+	// 로그인 - 임시 비밀번호
+	public int updateUserPassword(UserDTO user);
 	
 	// 회원가입
 	public int insertUser(UserDTO user);

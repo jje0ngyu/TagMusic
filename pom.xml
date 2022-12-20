@@ -18,6 +18,12 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20220924</version>
+		</dependency>
 		<!--   * 메일전송에 필요한 jar 2가지 : javax.mail, spring-context-support  -->
 		<!--  메일전송 13장 추가 : javax.mail  -->
 		<!--  https://mvnrepository.com/artifact/com.sun.mail/javax.mail  -->

@@ -155,13 +155,20 @@
 								</div>
 							</label>
 						</div>
-						<div>
-							<button class="btn_login">로그인</button>
-						</div>
+						
 						
 					</div>
 				</form>
-				<!-- 간편 로그인 -->
+				<div>
+					<button class="btn_login">로그인</button>
+				</div>
+				<!-- 간편 로그인 : 네이버 -->
+				<div>
+					<a th:href="${apiURL}"><img height="40" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
+				</div>
+				
+				
+				<!-- 간편 로그인 : 카카오 -->
 				<div class="loginAPI">
 					<div id="kakaoLogin">
 						<a id="kakao-login-btn" href="javascript:loginWithKakao()">
