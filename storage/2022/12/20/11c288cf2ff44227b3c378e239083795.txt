@@ -1,0 +1,6 @@
+- BbsDTO
+ 도메인 패키지 아래 
+예를 들어서 sql에서
+BBS_TITLE 이면
+bbsTitle 이 된다.
+클래스 이름 첫글자 대문자

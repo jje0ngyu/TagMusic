@@ -7,35 +7,36 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
+	<h1>업로드</h1>
+	<div>
 
-	<center><h1>공지사항</h1></center>
-	
 	 <div>
 		<input type="button" value="새글 작성" id="btn_write">
 		<script>
 			$('#btn_write').click(function(){
-				location.href = '/board/write';
+				location.href = '/upload/write';
 			});
 		</script>
 	</div>
 		
+		<hr>
+		
 		<div>
 			<table class="table table-striped">
 				<thead>
-					<tr></tr>
-					<tr bgcolor="#F6F6F6">
-						<td>NO.</td>
+					<tr>
+						<td>번호</td>
 						<td>제목</td>
-						<td>조회</td>
 						<td>작성일</td>
+						<td>첨부개수</td>
 					</tr>
 				</thead>
-				<tbody>
-				<tr th:each="board,vs:${boardList}">
-					<td th:text="${beginNo - vs.index}"></td>
-					<td><a th:href="@{/board/increse/hit(boardNo=${board.boardNo})}" th:text="${board.boardTitle}"></a></td>
-					<td th:text="${board.boardHit}"></td>
-					<td th:text="${board.boardCreateDate}"></td>
+				<tbody>	
+				<tr th:each="upload,vs:${uploadList}">
+					<td th:text="${upload.uploadNo}"></td>
+					<td><a th:href="@{/upload/detail(uploadNo=${upload.uploadNo})}" th:text="${upload.title}"></a></td>
+					<td th:text="${upload.createDate}"></td>
+					<td th:text="${upload.attachCnt}"></td>
 				</tr>
 				</tbody>
 				<tfoot>
@@ -44,7 +45,9 @@
 					</tr>	
 				</tfoot>
 			</table>
+		</div>
+		
 	</div>
-
+	
 </body>
 </html>

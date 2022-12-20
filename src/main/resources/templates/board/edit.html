@@ -28,29 +28,28 @@
 			    ['insert', ['link', 'picture', 'video']]
 			],
 			callbacks: {
-				
 				onImageUpload: function(files){
 					
 					for(let i = 0; i < files.length; i++) {
-						 
+						
 						var formData = new FormData();
-						formData.append('file', files[i]); 
+						formData.append('file', files[i]);  
 						
 						$.ajax({
 							type: 'post',
 							url: '/board/uploadImage',
 							data: formData,
-							contentType: false, 
-							processData: false,  
-							dataType: 'json',   
+							contentType: false,  
+							processData: false, 
+							dataType: 'json',  
 							success: function(resData){
 								$('#content').summernote('insertImage', resData.src);
 								$('#summernote_image_list').append($('<input type="hidden" name="summernoteImageNames" value="' + resData.filesystem + '">'))
 							}
 						});  
 					}  
-				}  
-			} 
+				}
+			}
 		});
 		
 		
@@ -59,11 +58,11 @@
 		});
 		
 		
-		$('#frm_write').submit(function(event){
+		$('#frm_edit').submit(function(event){
 			if($('#title').val() == ''){
 				alert('제목은 필수입니다.');
-				event.preventDefault(); 
-				return; 
+				event.preventDefault();
+				return;
 			}
 		});
 		
@@ -74,10 +73,16 @@
 <body>
 <div>
 
-	<h1>공지 작성</h1>
 	
-	</button>
-	<form id="frm_write" th:action="@{/board/add}" method="post">
+
+	<h1>작성 화면</h1>
+	
+	
+	
+	
+	<form id="frm_edit" th:object="${board}" th:action="@{/board/modify}" method="post">
+	
+		<input type="hidden" name="boardNo" th:field="*{boardNo}">
 	
 		<div>
 			<label for="title">제목</label>
@@ -93,16 +98,14 @@
 		<div id="summernote_image_list"></div>
 		
 		<div>
-			<button>작성완료</button>
-			<input type="reset" value="입력초기화">
+			<button>수정완료</button>
+			<input type="reset" value="작성초기화">
 			<input type="button" value="목록" id="btn_list">
 		</div>
 		
 	</form>
 	
-	
-	
-</div>
+</div> 
 
 </body>
 </html>

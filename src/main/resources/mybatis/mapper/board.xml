@@ -11,12 +11,20 @@
 		  FROM BOARD
 	</select>
 
-<select id="selectBoardListByMap" parameterType="Map" resultType="BoardDTO">
+	<select id="selectBoardListByMap" parameterType="Map" resultType="BoardDTO">
 		SELECT A.ROW_NUM, A.BOARD_NO, A.BOARD_TITLE, A.BOARD_CONTENT, A.BOARD_HIT, A.IP, A.BOARD_CREATE_DATE, A.GUBUN
 		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY BOARD_NO DESC) AS ROW_NUM, BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_HIT, IP, BOARD_CREATE_DATE, GUBUN
 		          FROM BOARD) A
 		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
+	
+	<insert id="insertSummernoteImage" parameterType="SummernoteImageDTO">
+		INSERT INTO SUMMERNOTE_IMAGE
+			(BOARD_NO, FILESYSTEM)
+		VALUES
+			(#{boardNo}, #{filesystem})
+	</insert>
+	
 
 	<insert id="insertBoard" parameterType="BoardDTO">
 		<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
@@ -29,6 +37,49 @@
 			(#{boardNo}, #{boardTitle}, #{boardContent}, SYSDATE, 0, #{ip})
 	</insert>
 	
+	<update id="updateHit" parameterType="int">
+		UPDATE BOARD
+		   SET BOARD_HIT = BOARD_HIT + 1
+		 WHERE BOARD_NO = #{booardNo}
+	</update>
+	
+	<select id="selectBoardByNo" parameterType="int" resultType="BoardDTO">
+		SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_HIT, IP, BOARD_CREATE_DATE
+		  FROM BOARD
+		 WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	<update id="updateBoard" parameterType="BoardDTO">
+		UPDATE BOARD
+		   SET BOARD_TITLE = #{boardTitle}
+		     , BOARD_CONTENT = #{boardContent}
+		     , BOARD_CREATE_DATE = SYSDATE
+		 WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<delete id="deleteBoard" parameterType="int">
+		DELETE
+		  FROM BOARD
+		 WHERE BOARD_NO = #{boardNo}
+	</delete>
+	
+		<select id="selectSummernoteImageListInBoard" parameterType="int" resultType="SummernoteImageDTO">
+		SELECT BOARD_NO, FILESYSTEM
+		  FROM SUMMERNOTE_IMAGE
+		 WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	
+	<select id="selectAllSummernoteImageList" resultType="SummernoteImageDTO">
+		SELECT BOARD_NO, FILESYSTEM
+		  FROM SUMMERNOTE_IMAGE
+	</select>
+	
+	<delete id="deleteSummernoteImage" parameterType="String">
+		DELETE
+		  FROM SUMMERNOTE_IMAGE
+		 WHERE FILESYSTEM = #{filesystem}
+	</delete>
 	
 </mapper>
 
