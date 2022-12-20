@@ -14,6 +14,7 @@
 
 	$(document).ready(function() {
 
+			
 	});
 
 
@@ -23,9 +24,22 @@
 <body>
 
 			<div class="layout_tagMusic_player">
-				<div>가</div>
-				<div>나</div>
-				<div>다</div>
+				<div class="musicPlayer">
+					<div class="player_thumbnail">썸네일</div>
+					<div>재생기능</div>
+					<div>
+						<div>타이틀</div>
+						<div>음악바</div>
+					</div>
+					<div>크기조절</div>
+				</div>
+				
+			</div>	
+			<div class="layout_tagMusic_player_hidden">
+				<audio class="audio" controls="controls">
+					  <source src="track.ogg" type="audio/ogg" />
+					  <source src="track.mp3" type="audio/mpeg" />
+				</audio>
 			
 			</div>		
 	

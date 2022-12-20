@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.gdu.tagmusic.interceptor.KeepLoginInterceptor;
+import com.gdu.tagmusic.interceptor.PreventLoginInterceptor;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -19,6 +20,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.addPathPatterns("/")
 			.addPathPatterns("/admin/*")
 			.excludePathPatterns("/login");
+		
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 }

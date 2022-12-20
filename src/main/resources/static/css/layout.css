@@ -8,6 +8,7 @@
 	padding : 0;
 	}
 	
+
 	body {
 		
 		zoom: 1;
@@ -202,6 +203,18 @@
 		
 	background-color: #bbbbbb;
 		
+	}
+	
+	.body_menus:nth-of-type(4) {
+	
+	border-top: none;
+	
+	}
+	
+	.body_menus:nth-of-type(5) {
+	
+	
+	margin-bottom: 70px;
 	}
 	
 	

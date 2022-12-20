@@ -93,10 +93,22 @@ public class HomeController {
 		
 	}
 	
-	// # 구현 : 음악플레이어
+	// # 구현 : 음악플레이어	=================================================
 	@GetMapping("/music/player")
 	public String musicPlayer() {
 		return "/layout/musicPlayer";
 	}
-
+	
+	// # 구현 : 플레이리스트 목록페이지 이동	===================================== 
+	@GetMapping("/music/user/playlistPage")
+	public String movePlaylist_listPage() {
+		return "/userMusicService/playlistPage";
+	}
+	
+	// # 구현 : 플레이리스트 생성 페이지
+	@GetMapping("/music/user/playlist/add")
+	public String CreatePlaylistPage() {
+		return "/userMusicService/createPlaylist";
+	}
+	
 }

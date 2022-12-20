@@ -22,6 +22,7 @@ p {
 .list_page {
 	
 	margin : 150px auto;
+	
 	width: 1000px;
 	height: 800px;
 	padding-right: 30px;
@@ -63,7 +64,7 @@ p {
 
 .td {
 	
-	 font-size: 15px;
+	 font-size: 13px;
 	 color : #333333;
 	 
 	
@@ -74,8 +75,6 @@ p {
 	
 }
 
-.music_detail_detail {}
-
 
 
 /* 테이블 */
@@ -83,7 +82,7 @@ table {
 	
     width: 970px;
     height : 600px;
-    border-top: 1px solid #444444;
+   
     border-collapse: collapse;
     font-size: 15px;
     color : #333333;
@@ -92,11 +91,23 @@ table {
 }
   th, td {
   
-    font-size: 16px;
+    font-size: 13px;
   	height: 60px;
-    border-bottom: 1px solid #444444;
+    border-top: 1px solid #888888;
     padding: 6px 3px;
     
+}
+
+tr:nth-of-type(10) {
+	border-bottom: 1px solid #888888;
+	
+	
+}
+
+tr:nth-of-type(1) {
+
+	border-top: 2px solid #444444;
+	
 }
 
 .title_artist {
@@ -209,8 +220,8 @@ input[type=button] {
 .board_thumbnail {
 	
 	margin-right: 10px;
-	width : 60px;
-	height : 60px;
+	width : 50px;
+	height : 50px;
 	
 }
 

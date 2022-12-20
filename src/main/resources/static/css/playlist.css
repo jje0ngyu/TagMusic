@@ -1,0 +1,148 @@
+@charset "UTF-8";
+
+
+/* 클래스 초기화  */
+	* {
+	box-sizing: border-box;
+	margin : 0;
+	padding : 0;
+	
+	}
+	
+	.playlist_container {
+
+	width: 100%;
+ 	padding-left : 240px;
+ 	background-color: #ECECEC;
+ 	color: #eeeeee;
+	
+	}
+	
+	.playlist {
+	
+	margin: 35px auto;
+	margin-top: 75px;
+	background-color: #212121;
+	width : 1300px;
+	height: 1300px;
+
+	padding: 80px 150px;
+	
+	
+	}
+	
+	.playlist_title_username { 
+	
+	color: #eeeeee;
+	font-weight: 800;
+	
+	
+	}
+	
+	.playlist_header {
+	
+	margin: 80px auto 20px;
+	background-color: #323232;
+	height: 50px;
+	line-height: 50px;
+	border-radius: 10px;
+	padding: 0 20px;
+	
+	}
+	
+	.playlist_cnt {
+	
+	display: inline-block;
+	margin-right: 50px;
+	
+	font-weight: 800;
+	}
+	
+	.btn_playlist_add {
+	
+	
+	background-color: #efefef;
+	color: #232323;
+	display: inline-block;
+	width: 230px;
+	height: 35px;
+	line-height: 35px;
+	border-radius: 6px;
+	text-align: center;
+	cursor: pointer;
+	font-weight: 900;
+	padding: 0 10px;
+
+	}
+	
+	.btn_playlist_edit {
+	
+	background-color: #efefef;
+	color: #232323;
+	display: inline-block;
+	width: 150px;
+	height: 35px;
+	line-height: 35px;
+	border-radius: 6px;
+	text-align: center;
+	cursor: pointer;
+	font-weight: 900;
+	padding: 0 10px;
+	margin-left: 440px;
+	
+	}
+	
+	.playlist_body {
+	
+	margin: 30px auto;
+	background-color: #323232;
+	height: 800px;
+	padding : 20px;
+
+	}
+	
+	.playlist_item {
+	
+	display: flex;
+	background-color: #232323;
+	padding: 20px;
+	/* width: 1310px; */
+	height: 190px;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	
+
+
+	
+	}
+	
+	.playlist_item_area_left {
+	
+		width: 200px;
+		height: 150px;
+		border-right: 1px solid #898989;
+		
+	}
+	
+	.playlist_thumbnail {
+		
+		border-radius: 10px;
+		display: inline-block;
+		width: 160px;
+		height: 150px;
+		background-color: red;
+	
+	}
+	
+	.playlist_item_area_right {
+	
+		margin-left: 40px;
+	
+	}
+	
+	.playlist_item_area_right_item {
+	
+		margin: 5px 0;
+	
+	}
+	
