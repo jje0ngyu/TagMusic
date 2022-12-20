@@ -35,6 +35,21 @@ public class PaymentController {
 	public Map<String, Object> paymentResult(HttpServletRequest request){
 		return paymentService.buyPass(request); 
 	}
+	@ResponseBody
+	@PostMapping(value="/payment/remainingDay",produces="application/json; charset=UTF-8")
+	public Map<String, Object> remainingDay(HttpServletRequest request){
+		return paymentService.getRemainindperiod(request);
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/payment/recipient",produces="application/json; charset=UTF-8")
+	public Map<String, Object> recipientInfo(HttpServletRequest request){
+		return paymentService.selectRecipientByEmail(request);
+	}
+	/*
+	 * @PostMapping("/payment/history") public String payLog() { return
+	 * "payment/log"; }
+	 */
 }
 
 

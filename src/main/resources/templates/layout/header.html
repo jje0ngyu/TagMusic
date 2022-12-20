@@ -28,10 +28,34 @@
 		text-align: center;
 	}
 </style>
-
+<script type="text/javascript">
+$(document).ready(function(){
+	fn_remainingDay();
+});
+function fn_remainingDay(){
+	var userEmail = $('#userEmail').data('email');
+	$.ajax({
+		type: 'post',
+		url: '/payment/remainingDay',
+		data: 'email=' + userEmail,
+		dataType: 'json',
+		success: function(resData){
+			$('#remainingDay').text('이용권 종료일 : '+resData.remainingDay);
+			$('#dDay').text('이용권 남은일수 : '+resData.dDay + '일');
+			console.log(resData.result);
+			console.log(resData.dDay);
+			
+		},
+		error: function(xqXHR){
+			console.log('실패!');
+		}
+	});
+}
+	
+</script>
 </head>
 <body>
-
+	
 
 	<div th:fragment="header_layout" >
 	
@@ -71,7 +95,15 @@
 						<div>
 							<span th:text="${session.loginUser.artist}"></span> 님
 						</div>
-						<div><span th:text="${session.loginUser.email}"></span></div>					
+						<div><span th:text="${session.loginUser.email}"></span></div>
+						<div>
+							<div>
+								<span id="remainingDay"></span>
+							</div>
+							<div>
+								<span id="dDay"></span>
+							</div>
+						</div>					
 						<div>
 							<input type="button" value="TagMusic 계정관리" class="account_manage">
 						</div>
@@ -86,6 +118,7 @@
 								location.href='/user/logout';
 							})
 						</script>
+						<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
 					</div>
 				</div>
 			</div>
