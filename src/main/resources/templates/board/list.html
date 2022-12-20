@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+	<center><h1>공지사항</h1></center>
+	
+	 <div>
+		<input type="button" value="새글 작성" id="btn_write">
+		<script>
+			$('#btn_write').click(function(){
+				location.href = '/board/write';
+			});
+		</script>
+	</div>
+		
+		<div>
+			<table class="table table-striped">
+				<thead>
+					<tr></tr>
+					<tr bgcolor="#F6F6F6">
+						<td>NO.</td>
+						<td>제목</td>
+						<td>조회</td>
+						<td>작성일</td>
+					</tr>
+				</thead>
+				<tbody>
+				<tr th:each="board,vs:${boardList}">
+					<td th:text="${beginNo - vs.index}"></td>
+					<td><a th:href="@{/board/increse/hit(boardNo=${board.boardNo})}" th:text="${board.boardTitle}"></a></td>
+					<td th:text="${board.boardHit}"></td>
+					<td th:text="${board.boardCreateDate}"></td>
+				</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+					<center><td colspan="5" th:utext="${paging}"></td></center>
+					</tr>	
+				</tfoot>
+			</table>
+	</div>
+
+</body>
+</html>

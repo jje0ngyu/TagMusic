@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<script>
+
+	$(function(){
+		
+		// 게시글 수정화면으로 이동
+		$('#btn_upload_edit').click(function(event){
+			$('#frm_upload').attr('action', '/upload/edit');
+			$('#frm_upload').submit();
+		});
+		
+		// 게시글 삭제
+		$('#btn_upload_remove').click(function(event){
+			if(confirm('첨부된 모든 파일이 함께 삭제됩니다. 삭제할까요?')){
+				$('#frm_upload').attr('action', '/upload/remove');
+				$('#frm_upload').submit();
+			}
+		});
+		
+		// 게시글 목록
+		$('#btn_upload_list').click(function(event){
+			location.href = '/upload/list';
+		});
+		
+		
+		
+	});
+	
+</script>
+</head>
+<body>
+
+	<div>
+		<h1>업로드 게시글 정보</h1>
+		<ul>
+			<li th:text="${upload.title}">제목 : </li>
+			<li th:text="${upload.content}">내용 : </li>
+			<li th:text="${upload.createDate}">작성일 :  </li>
+			<li th:text="${upload.modifyDate}">수정일 : </li>
+		</ul>
+		<div>
+			<form id="frm_upload" method="post">
+				<input type="hidden" name="uploadNo" th:value="${upload.uploadNo}">
+				<input type="button" value="게시글편집" id="btn_upload_edit"> 			
+				<input type="button" value="게시글삭제" id="btn_upload_remove"> 			
+				<input type="button" value="게시글목록" id="btn_upload_list"> 			
+			</form>
+		</div>
+	</div>
+	
+	<hr>
+	
+	<div>
+		<h3>첨부 목록 및 다운로드</h3>
+		<div>
+			<div th:each="attach : ${attachList}">
+				<a th:href="@{/upload/download(attachNo=${attach.attachNo})}">
+					<div th:if="${attach.hasThumbnail == 1}">
+						<img th:src="@{/upload/display(attachNo=${attach.attachNo})}" class="attach_img" th:title="${attach.origin}" th:text="${attach.origin}">
+					</div>
+					<div th:if="${attach.hasThumbnail == 0}">
+						<img th:src="@{/images/text.png}" width="50px" class="attach_img" th:title="${attach.origin}" th:text="${attach.origin}">
+					</div>
+				</a>
+				<br>
+			</div>
+		</div>
+		<br><br>
+		<div>
+			<a th:href="@{/upload/downloadAll(uploadNo=${upload.uploadNo})}">모두 다운로드</a>
+		</div>
+	</div>
+	
+</body>
+</html>

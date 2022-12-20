@@ -1,7 +1,5 @@
 package com.gdu.tagmusic.domain;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,13 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class BoardDTO {
-	
+public class SummernoteImageDTO {
 	private int boardNo;
-	private String boardTitle;
-	private String boardContent;
-	private Date boardCreateDate;;
-	private int boardHit;
-	private String ip;	
-	private String gubun;
+	private String path;
+	private String filesystem;
 }
