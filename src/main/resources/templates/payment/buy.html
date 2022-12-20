@@ -249,10 +249,10 @@ function fn_buyTicket(e){
 }
 function fn_presentTicket(e){
 	$('#recipientInfoBox').text('');
+	var recipientEmail = $('#getRecipientEmail').val();
 	$('#getRecipientEmail').val('');
 	$('.backlayer').removeClass('blind');
 	$('.gift_session').removeClass('blind');
-	
 	var userNickName = $(e).data('artist');
 	var ticketName = $('.btn_gift_30days').data('ticket');
 	ticketName += '(TO.'+ userNickName +')';
@@ -275,7 +275,6 @@ function fn_presentTicket(e){
 	
 		
 		IMP.init('imp66111374');//imp72345478
-		
 		var merchant_uid = 'TagMusic_' + new Date().getTime();
 		console.log($(e).data('if'));
 		if($(e).data('if') == '1'){
@@ -296,8 +295,8 @@ function fn_presentTicket(e){
 				if (rsp.success) {
 					 $.ajax({
 						type: 'post',
-						url: '/payment/thirtyDay',
-						data: 'email=' + userEmail + '&price=' + musicAmount + '&passNo=' + passNo + '&payPg=' + paymentPg + '&ticketName=' + ticketName + '&merchantUid=' + merchant_uid,
+						url: '/payment/present/thirtyDay',
+						data: 'email=' + recipientEmail  +'&sessionEmail=' + userEmail + '&price=' + musicAmount + '&passNo=' + passNo + '&payPg=' + paymentPg + '&ticketName=' + ticketName + '&merchantUid=' + merchant_uid,
 						dataType: 'json',
 						success: function(resData){
 							var msg = '';

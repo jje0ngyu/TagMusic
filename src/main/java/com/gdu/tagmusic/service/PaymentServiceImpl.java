@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,50 @@ public class PaymentServiceImpl implements PaymentService {
 		} else if (paymentCnt >= 1){
 			int extendResult = paymentMapper.updatePaymentExtend(map);
 			int logResult = paymentMapper.insertPaymentLog(map);
+			if(extendResult > 0 && logResult > 0) {
+				result.put("result", 1);
+			} else {
+				result.put("result", 0);
+			}
+		}
+		return result;
+	}
+	
+	@Transactional
+	@Override
+	public Map<String, Object> presentPass(HttpServletRequest request) {
+		
+		Map<String, Object> map = new HashMap<>();
+		String email = request.getParameter("email");
+		String price = request.getParameter("price");
+		String passNo = request.getParameter("passNo");
+		String payPg = request.getParameter("payPg");
+		String ticketName = request.getParameter("ticketName");
+		String merchantUid = request.getParameter("merchantUid");
+		String sessionEmail = request.getParameter("sessionEmail");
+		
+		map.put("email", email);
+		map.put("price", price);
+		map.put("passNo", passNo);
+		map.put("payPg", payPg);
+		map.put("ticketName", ticketName);
+		map.put("merchantUid", merchantUid);
+		map.put("sessionEmail", sessionEmail);
+		
+		int paymentCnt = paymentMapper.selectPaymentCnt(map);
+		System.out.println(paymentCnt);
+		Map<String, Object> result = new HashMap<>();
+		if(paymentCnt == 0) {
+			int passResult = paymentMapper.insertPayment(map);
+			int logResult = paymentMapper.insertPaymentGiftLog(map);
+			if(passResult > 0 && logResult > 0) {
+				result.put("result", 1);
+			} else {
+				result.put("result", 0);
+			}
+		} else if (paymentCnt >= 1){
+			int extendResult = paymentMapper.updatePaymentExtend(map);
+			int logResult = paymentMapper.insertPaymentGiftLog(map);
 			if(extendResult > 0 && logResult > 0) {
 				result.put("result", 1);
 			} else {

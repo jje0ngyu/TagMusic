@@ -46,6 +46,13 @@ public class PaymentController {
 	public Map<String, Object> recipientInfo(HttpServletRequest request){
 		return paymentService.selectRecipientByEmail(request);
 	}
+	
+	@ResponseBody
+	@PostMapping(value="/payment/present/thirtyDay",produces="application/json; charset=UTF-8")
+	public Map<String, Object> paymentGiftResult(HttpServletRequest request){
+		return paymentService.presentPass(request);
+	}
+	
 	/*
 	 * @PostMapping("/payment/history") public String payLog() { return
 	 * "payment/log"; }
