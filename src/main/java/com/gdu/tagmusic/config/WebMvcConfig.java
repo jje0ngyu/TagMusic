@@ -25,13 +25,21 @@ public class WebMvcConfig implements WebMvcConfigurer {
 			.addPathPatterns("/customerService")
 			.addPathPatterns("/admin/*")
 			.excludePathPatterns("/login");
-		
+
 		registry.addInterceptor(sleepUserCheckingInterceptor)
 			.addPathPatterns("/user/login");
 		
 		registry.addInterceptor(preventLoginInterceptor)
 			.addPathPatterns("/user/login/form")
 			.addPathPatterns("/user/join/*");
+
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 }

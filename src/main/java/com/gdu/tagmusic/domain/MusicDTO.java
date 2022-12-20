@@ -32,5 +32,6 @@ public class MusicDTO {
 	private String musicPath;
 	private int hasThumbNail;
 	private ActiveLogDTO activeLogDTO;
+	private MusicLikeDTO musicLikeDTO;
 
 }
