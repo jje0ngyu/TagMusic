@@ -4,9 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.tagmusic.domain.PassDTO;
+import com.gdu.tagmusic.domain.UserDTO;
 
 @Mapper
 public interface PaymentMapper {
@@ -18,4 +21,5 @@ public interface PaymentMapper {
 	public int selectRemainiend(Map<String, Object> map);
 	public Date selectPassDday(Map<String, Object> map);
 	public int deletePass();
+	public UserDTO selectRecipientByEmail(Map<String, Object> map);
 }

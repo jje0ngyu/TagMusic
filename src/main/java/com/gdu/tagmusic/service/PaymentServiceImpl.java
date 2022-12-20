@@ -82,4 +82,14 @@ public class PaymentServiceImpl implements PaymentService {
 		result.put("dDay", remaining);
 		return result;
 	}
+	
+	@Override
+	public Map<String, Object> selectRecipientByEmail(HttpServletRequest request) {
+		Map<String, Object> result = new HashMap<>();
+		String email = request.getParameter("email");
+		result.put("email", email);
+		result.put("result", paymentMapper.selectRecipientByEmail(result));
+		System.out.println(result.get("result"));
+		return result;
+	}
 }

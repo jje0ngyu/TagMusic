@@ -61,6 +61,12 @@
 		 WHERE SYSDATE > EXPIRATION_DATE
 	</delete>
 	
+	<select id="selectRecipientByEmail" parameterType="map" resultType="UserDTO">
+		SELECT EMAIL, ARTIST
+		  FROM USERS
+		 WHERE EMAIL = #{email}
+	</select>
+	
 </mapper>
 
 
