@@ -13,6 +13,9 @@
 	<typeAliases>
 		<typeAlias type="com.gdu.tagmusic.domain.ActiveLogDTO" alias="ActiveLogDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.BoardDTO" alias="BoardDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.SummernoteImageDTO" alias="SummernoteImageDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.AttachDTO" alias="AttachDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.UploadDTO" alias="UploadDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.ChatDTO" alias="ChatDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.CouponDTO" alias="CouponDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.MusicCommentDTO" alias="MusicCommentDTO" />
@@ -23,6 +26,7 @@
 		<typeAlias type="com.gdu.tagmusic.domain.PassDTO" alias="PassDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.PaymentLogDTO" alias="PaymentLogDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.PlaylistDTO" alias="PlaylistDTO" />
+		<typeAlias type="com.gdu.tagmusic.domain.ProfileImageDTO" alias="ProfileImageDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.UserDTO" alias="UserDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.RetireUserDTO" alias="RetireUserDTO" />
 		<typeAlias type="com.gdu.tagmusic.domain.SleepUserDTO" alias="SleepUserDTO" />

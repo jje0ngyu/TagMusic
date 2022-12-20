@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+
+	<h1 th:text="${board.boardTitle}"></h1>
+	
+	<div>
+	
+	
+		<span th:text="|▷ 작성일 ${#dates.format(board.boardCreateDate,'yyyy. M. d HH:mm')}|"></span>
+		&nbsp;&nbsp;&nbsp;
+		
+		
+	</div>
+	
+	<div>
+		<span th:text="|조회수 ${#numbers.formatInteger(board.boardHit,1,'COMMA')}|"></span>
+	</div>
+	
+	<hr>
+	
+	<div th:utext="${board.boardContent}"></div>
+	
+
+	<div>
+		<form id="frm_btn" method="post">
+			<input type="hidden" name="boardNo" th:value="${board.boardNo}">
+			<input type="button" value="수정" id="btn_edit_board">
+			<input type="button" value="삭제" id="btn_remove_board">
+			<input type="button" value="목록" onclick="location.href='/board/list'">
+		</form>
+		<script>
+			$('#btn_edit_board').click(function(){
+				$('#frm_btn').attr('action', '/board/edit');
+				$('#frm_btn').submit();
+			});
+			$('#btn_remove_board').click(function(){
+				if(confirm('삭제하시겠습니까?')){
+					$('#frm_btn').attr('action', '/board/remove');
+					$('#frm_btn').submit();
+				}
+			});
+		</script>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<meta charset="UTF-8">
+<title></title>
+<!-- static 폴더 이후의 위치를 적으면 된다. -->
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+
+<script th:inline="javascript">
+
+	$(document).ready(function() {
+		
+		fn_playlist();	
+		
+	});
+
+	
+
+</script>
+</head>
+<body>
+
+	<!--  page : 최신리스트 게시판 -->
+	
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+
+	<div class="session">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+		
+		<div class="playlist_container">
+			<div class="playlist">
+				<div class="playlist_title">
+					<p class="playlist_title_username"> ${loginUser} 님의 플레이리스트</p>
+				
+				</div>
+				<div class="playlist_header">
+					<span class="playlist_cnt">전체 : 0 개</span>
+					<span class="btn_playlist_add" >     +    플레이리스트 만들기</span>
+					<span class="btn_playlist_edit" >     +    편집하기</span>
+					<script>
+					
+						// * 윈도우함수
+						$('.btn_playlist_add').click(function() {
+							let style = "width=200px, height=200px";
+							window.open('/music/user/playlist/add/', 'page', 'scrollbars=no, width=200px, height=200px');
+						});
+						
+						
+					
+					</script>
+				</div>
+				
+				<div class="playlist_body">
+					<div class="playlist_item_area">
+						
+						<!--  # 구현 : 플레이리스트 목록 불러오기 -->
+						<div class="playlist_item">
+							<div class="playlist_item_area_left">
+								<div class="playlist_thumbnail"></div>
+							</div>
+							
+							<div class="playlist_item_area_right">
+								<div class="playlist_item_area_right_item">플레이리스트명</div>
+								<div class="playlist_item_area_right_item">0곡</div>
+
+							</div>
+						</div>
+						<div class="playlist_item">
+							<div class="playlist_item_area_left">
+								<div class="playlist_thumbnail"></div>
+							</div>
+							<div class="playlist_item_area_right">
+								<div class="playlist_item_area_right_item">플레이리스트명</div>
+								<div class="playlist_item_area_right_item">0곡</div>
+							
+							</div>
+						</div>
+						<div class="playlist_item">
+							<div class="playlist_item_area_left">
+								<div class="playlist_thumbnail"></div>
+							</div>
+							<div class="playlist_item_area_right">
+								<div class="playlist_item_area_right_item">플레이리스트명</div>
+								<div class="playlist_item_area_right_item">0곡</div>
+							
+							</div>
+						</div>
+						<div>
+							
+						
+						</div>
+						
+				
+					
+					</div>
+			
+				
+				</div>
+			</div>
+		</div>
+		
+			
+	</div>
+</body>
+</html>

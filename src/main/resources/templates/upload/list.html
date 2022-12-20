@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body>
+	<h1>업로드</h1>
+	<div>
+
+	 <div>
+		<input type="button" value="새글 작성" id="btn_write">
+		<script>
+			$('#btn_write').click(function(){
+				location.href = '/upload/write';
+			});
+		</script>
+	</div>
+		
+		<hr>
+		
+		<div>
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<td>번호</td>
+						<td>제목</td>
+						<td>작성일</td>
+						<td>첨부개수</td>
+					</tr>
+				</thead>
+				<tbody>	
+				<tr th:each="upload,vs:${uploadList}">
+					<td th:text="${upload.uploadNo}"></td>
+					<td><a th:href="@{/upload/detail(uploadNo=${upload.uploadNo})}" th:text="${upload.title}"></a></td>
+					<td th:text="${upload.createDate}"></td>
+					<td th:text="${upload.attachCnt}"></td>
+				</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+					<center><td colspan="5" th:utext="${paging}"></td></center>
+					</tr>	
+				</tfoot>
+			</table>
+		</div>
+		
+	</div>
+	
+</body>
+</html>

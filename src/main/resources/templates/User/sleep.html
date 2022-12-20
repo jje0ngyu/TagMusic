@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Tag Music > 휴면회원</title>
+<link rel="stylesheet" th:href="@{/css/mypage.css}">
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+</head>
+<body>
+
+	<div>
+	
+		<h1>휴면계정안내</h1>
+		
+		<div>
+			안녕하세요!<br>
+			<span th:text="${session.sleepUser.artist}"></span>님은 1년 이상 로그인하지 않아 관련 법령에 의해 휴면계정으로 전환되었습니다.<br><br>
+			<ul>
+				<li><span th:text="|가입일 ${session.sleepUser.joinDate}|"></span></li>
+				<li><span th:text="|휴면전환일 ${session.sleepUser.sleepDate}|"></span></li>
+			</ul>
+		</div>
+		
+		<hr>
+		
+		<div>
+			<div>
+				휴면해제를 위해 휴면해제 버튼을 클릭해 주세요.
+			</div>
+			<form id="frm_restore" th:action="@{/user/restore}" method="post">
+				<div>
+					<input type="button" value="취소" onclick="location.href='/'">
+					<button>휴면해제</button>
+				</div>
+			</form>
+		</div>
+	
+	</div>
+	
+</body>
+</html>

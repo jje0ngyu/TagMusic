@@ -12,8 +12,18 @@
 		$(document).ready(function() {
 			
 			fn_updatedMusic();			// 구현 : main페이지 최신리스트바
-			fn_pageMove();				// 기능 : 최신리스트바 페이지 버튼
+			fn_updatedPageMove();				// 기능 : 최신리스트바 페이지 버튼
 			fn_updatedMusicBoard();		// 구현 : 최신리스트 게시판조회
+			
+			fn_popularMusic();			// 구현 : 인기음악 전체리스트바
+			fn_popularPageMove();		// 기능 : 인기음악 페이지 버튼
+			fn_popularMusicBoard();		// 구현 : 인기음악 게시판조회
+			fn_popllarMusic_Total();	// 구현 : 인기음악 장르_가요 전체요청버튼
+			fn_popllarMusic_Gayeo();	// 구현 : 인기음악 장르_가요 리스트바
+			fn_popularPageMoveGenre();
+			fn_popllarMusic_POP();		// 구현 : 인기음악 장르_팝 리스트바
+			fn_popllarMusic_Trot();		// 구현 : 인기음악 장르_트로트 리스트바
+			fn_popllarMusic_Rock();		// 구현 : 인기음악 장르_락 리스트바
 			
 		});
 				
@@ -24,7 +34,7 @@
 			$.ajax({
 				type: 'get',
 				url: '/music/list/updated',
-				data : 'page=' + $('#page').val(),	
+				data : 'page=' + $('#page_updated').val(),	
 				dataType: 'json',
 				success: function(resData) {	// resData : musicList, pageUtil, artist
 					
@@ -34,11 +44,11 @@
 			
 					// 페이징
 					var pageUtil = resData.pageUtil;
-					var page = $('#page').val();
+					var page = $('#page_updated').val();
 					
 					// (1) # 기능 : 페이징 좌측버튼 보여주기
 					if(pageUtil.page > 1) {
-						$('#updatedMusicList').append($('<span class="enable_listLink" data-page="' +(pageUtil.page -1) + '">').text('◀'));
+						$('#updatedMusicList').append($('<span class="enable_listLink1 page_updated_left" data-page="' +(pageUtil.page -1) + '">').text('◀'));
 					}
 					
 					// (2) 가운데 : 게시글
@@ -46,10 +56,8 @@
 						
 						// # 구현 : 썸네일 가져오기
 						// * 방법 : 자바스크립트로 텍스트 추가하는 방식을 사용
-						console.log(music)
 						var text = '';
 						if(music.hasThumbNail == 1) {
-							console.log(music.hasThumbNail);
 							// (1) 썸네일이 존재하는 경우 썸네일 맵핑 요청
 							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
 						} else if(music.hasThumbNail == 0) {
@@ -60,26 +68,27 @@
 						$('<div class="main_item">') 
 						.append(text)
 						.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-						.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
 						.appendTo(('#updatedMusicList'));   
 						/* .append(text)
 						.append( $('<a class="item_title" href="/music/detail?musicNo=' + music.musicNo +'">').text(music.musicTitle) )
 						.append( $('<a class="item_title" href="/music/detail?musicNo=' + music.musicNo +'">').text(music.activeLogDTO.userDTO.artist) )
 						.appendTo($('#updatedMusicList'));  */
+					
 						
 					}); 
 					// (3) # 기능 : 페이징 우측버튼 보여주기
 					if(pageUtil.page != pageUtil.totalPage) {
-						$('#updatedMusicList').append($('<span class="enable_listLink" data-page="' + (pageUtil.page + 1) + '">').text('▶'));						
+						$('#updatedMusicList').append($('<span class="enable_listLink1 page_updated_right" data-page="' + (pageUtil.page + 1) + '">').text('▶'));						
 					}	
 				}
 			});	
 		}
 		
 		// # 기능 : 최신리스트바 페이지 버튼
-		function fn_pageMove() {
-			 $(document).on('click', '.enable_listLink', function(){
-		         $('#page').val($(this).data('page'));	// 버튼에 저장된 page 태그값을 hidden의 페이지값에 전달 -> 새로운 페이지를 파라미터로 전달해서 재요청
+		function fn_updatedPageMove() {
+			 $(document).on('click', '.enable_listLink1', function(){
+		         $('#page_updated').val($(this).data('page'));	// 버튼에 저장된 page 태그값을 hidden의 페이지값에 전달 -> 새로운 페이지를 파라미터로 전달해서 재요청
 		         fn_updatedMusic();
 		      });
 		}
@@ -87,10 +96,332 @@
 		// # 구현 : 최신리스트 게시판조회, mvc
 		function fn_updatedMusicBoard() {
 			$('#btn_updatedMusicBoard').click(function() {
-				location.href="/music/updatedMusicBoard?page=" + $('#page').val();
+				location.href="/music/board/updatedMusic?page=1";
 			});
 		}
 		
+		// # 구현 : 인기음악 전체리스트바
+		function fn_popularMusic() {
+			$.ajax({
+				type: 'get',
+				url: '/music/list/popular',
+				data : 'page=' + $('#page_popular').val(),	
+				dataType: 'json',
+				success: function(resData) {	// resData : musicList, pageUtil, artist
+					
+					// 갱신
+					$('#popularMusicList').empty();
+			
+			
+					// 페이징
+					var pageUtil = resData.pageUtil;
+					var page = $('#page_popular').val();
+					
+					// (1) # 기능 : 페이징 좌측버튼 보여주기
+					if(pageUtil.page > 1) {
+						$('#popularMusicList').append($('<span class="enable_listLink page_popular_left" data-page="' +(pageUtil.page -1) + '">').text('◀'));
+					}
+					
+					// (2) 가운데 : 게시글
+					$.each(resData.musicList, function(index, music) {
+						
+						// # 구현 : 썸네일 가져오기
+						// * 방법 : 자바스크립트로 텍스트 추가하는 방식을 사용
+						var text = '';
+						if(music.hasThumbNail == 1) {
+							// (1) 썸네일이 존재하는 경우 썸네일 맵핑 요청
+							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+						} else if(music.hasThumbNail == 0) {
+							// (2) 디폴트 이미지 : 정적 파일의 경로는 static 이하 폴더부터
+							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+						}
+						
+						$('<div class="main_item">') 
+						.append(text)
+						.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
+						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+						.appendTo(('#popularMusicList'));   
+						
+					}); 
+					// (3) # 기능 : 페이징 우측버튼 보여주기
+					if(pageUtil.page != pageUtil.totalPage) {
+						$('#popularMusicList').append($('<span class="enable_listLink page_popular_right" data-page="' + (pageUtil.page + 1) + '">').text('▶'));						
+					}	
+				}
+			});	
+			
+		}
+		
+		// # 구현 : 인기리스트 게시판 이동
+		function fn_popularMusicBoard() {
+			$('#btn_popularMusicBoard').click(function() {
+				location.href="/music/board/popularMusic?page=1";
+			});
+		}
+		
+		// # 기능 : 인기리스트바 페이지 버튼
+		function fn_popularPageMove() {
+			 $(document).on('click', '.enable_listLink', function(){
+		         $('#page_popular').val($(this).data('page'));	// 버튼에 저장된 page 태그값을 hidden의 페이지값에 전달 -> 새로운 페이지를 파라미터로 전달해서 재요청
+		         fn_popularMusic();
+		      });
+		}
+		
+		// # 인기리스트 : 전체버튼
+		function fn_popllarMusic_Total() {
+			
+			$('#bar_genre_total').click(function () {
+				 $('#page_popular').val('1');
+				fn_popularMusic();
+			});
+		}
+		
+		// # 인기리스트 : 가요버튼
+
+		function fn_popllarMusic_Gayeo() {
+			
+			
+			
+			$('#bar_genre_gayeo').click(function () { 
+				
+				$('#page_popular_genre').val('1');
+				
+				$.ajax({
+				type: 'get',
+				url: '/music/list/popular/genre',
+				data : 'page=' + $('#page_popular_genre').val() + '&genre=' + $('#bar_genre_gayeo').text(),	
+				dataType: 'json',
+				success: function(resData) {	// resData : musicList, pageUtil, artist
+					
+					// 갱신
+					$('#popularMusicList').empty();
+			
+			
+					// 페이징
+					var pageUtil = resData.pageUtil;
+					var page = $('#page_popular_genre').val();
+					
+					// (1) # 기능 : 페이징 좌측버튼 보여주기
+					if(pageUtil.page > 1) {
+						$('#popularMusicList').append($('<span class="enable_listLink2" data-genre="' + $('#genre').text()  + '"data-page="' +(pageUtil.page -1) + '">').text('◀'));
+					}
+					
+					// (2) 가운데 : 게시글
+					$.each(resData.musicList, function(index, music) {
+						
+						// # 구현 : 썸네일 가져오기
+						// * 방법 : 자바스크립트로 텍스트 추가하는 방식을 사용
+						var text = '';
+						if(music.hasThumbNail == 1) {
+							// (1) 썸네일이 존재하는 경우 썸네일 맵핑 요청
+							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+						} else if(music.hasThumbNail == 0) {
+							// (2) 디폴트 이미지 : 정적 파일의 경로는 static 이하 폴더부터
+							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+						}
+						
+						$('<div class="main_item">') 
+						.append(text)
+						.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
+						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+						.appendTo(('#popularMusicList'));   
+						
+					}); 
+					// (3) # 기능 : 페이징 우측버튼 보여주기
+					if(pageUtil.page != pageUtil.totalPage) {
+						$('#popularMusicList').append($('<span class="enable_listLink2" data-genre="' + $('#genre').text()  + '"data-page="' + (pageUtil.page + 1) + '">').text('▶'));						
+					}	
+				}
+			});		
+		});
+	}
+	
+	// # 기능 : 인기리스트 장르 페이지
+	
+		function fn_popularPageMoveGenre() {
+				
+				
+				 $(document).on('click', '.enable_listLink12', function(){
+			         $('#page_popular_genre').val($(this).data('page'));	// 버튼에 저장된 page 태그값을 hidden의 페이지값에 전달 -> 새로운 페이지를 파라미터로 전달해서 재요청
+			         fn_popllarMusic_Gayeo();
+			      });
+			}
+			
+		function fn_popllarMusic_POP() {
+			
+			
+				$('#bar_genre_pop').click(function () { 
+					
+					$('#page_popular_genre').val('1');
+					
+					$.ajax({
+					type: 'get',
+					url: '/music/list/popular/genre',
+					data : 'page=' + $('#page_popular_genre').val() + '&genre=' + $('#bar_genre_pop').text(),	
+					dataType: 'json',
+					success: function(resData) {	// resData : musicList, pageUtil, artist
+						
+						// 갱신
+						$('#popularMusicList').empty();
+				
+				
+						// 페이징
+						var pageUtil = resData.pageUtil;
+						var page = $('#page_popular_genre').val();
+						
+						// (1) # 기능 : 페이징 좌측버튼 보여주기
+						if(pageUtil.page > 1) {
+							$('#popularMusicList').append($('<span class="enable_listLink2" data-genre="' + $('#genre').text()  + '"data-page="' +(pageUtil.page -1) + '">').text('◀'));
+						}
+						
+						// (2) 가운데 : 게시글
+						$.each(resData.musicList, function(index, music) {
+							
+							// # 구현 : 썸네일 가져오기
+							// * 방법 : 자바스크립트로 텍스트 추가하는 방식을 사용
+							var text = '';
+							if(music.hasThumbNail == 1) {
+								// (1) 썸네일이 존재하는 경우 썸네일 맵핑 요청
+								text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+							} else if(music.hasThumbNail == 0) {
+								// (2) 디폴트 이미지 : 정적 파일의 경로는 static 이하 폴더부터
+								text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+							}
+							
+							$('<div class="main_item">') 
+							.append(text)
+							.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
+							.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+							.appendTo(('#popularMusicList'));   
+							
+						}); 
+						// (3) # 기능 : 페이징 우측버튼 보여주기
+						if(pageUtil.page != pageUtil.totalPage) {
+							$('#popularMusicList').append($('<span class="enable_listLink2" data-genre="' + $('#genre').text()  + '"data-page="' + (pageUtil.page + 1) + '">').text('▶'));						
+						}	
+					}
+				});		
+			});
+			
+		}		
+		
+		function fn_popllarMusic_Trot() {
+			
+			$('#bar_genre_trot').click(function () { 
+					
+					$('#page_popular_genre').val('1');
+					
+					$.ajax({
+					type: 'get',
+					url: '/music/list/popular/genre',
+					data : 'page=' + $('#page_popular_genre').val() + '&genre=' + $('#bar_genre_trot').text(),	
+					dataType: 'json',
+					success: function(resData) {	// resData : musicList, pageUtil, artist
+						
+						// 갱신
+						$('#popularMusicList').empty();
+				
+				
+						// 페이징
+						var pageUtil = resData.pageUtil;
+						var page = $('#page_popular_genre').val();
+						
+						// (1) # 기능 : 페이징 좌측버튼 보여주기
+						if(pageUtil.page > 1) {
+							$('#popularMusicList').append($('<span class="enable_listLink2" data-genre="' + $('#genre').text()  + '"data-page="' +(pageUtil.page -1) + '">').text('◀'));
+						}
+						
+						// (2) 가운데 : 게시글
+						$.each(resData.musicList, function(index, music) {
+							
+							// # 구현 : 썸네일 가져오기
+							// * 방법 : 자바스크립트로 텍스트 추가하는 방식을 사용
+							var text = '';
+							if(music.hasThumbNail == 1) {
+								// (1) 썸네일이 존재하는 경우 썸네일 맵핑 요청
+								text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+							} else if(music.hasThumbNail == 0) {
+								// (2) 디폴트 이미지 : 정적 파일의 경로는 static 이하 폴더부터
+								text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+							}
+							
+							$('<div class="main_item">') 
+							.append(text)
+							.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
+							.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+							.appendTo(('#popularMusicList'));   
+							
+						}); 
+						// (3) # 기능 : 페이징 우측버튼 보여주기
+						if(pageUtil.page != pageUtil.totalPage) {
+							$('#popularMusicList').append($('<span class="enable_listLink2" data-genre="' + $('#genre').text()  + '"data-page="' + (pageUtil.page + 1) + '">').text('▶'));						
+						}	
+					}
+				});		
+			});
+			
+			
+		}
+		
+		function fn_popllarMusic_Rock() {
+			
+			$('#bar_genre_rock').click(function () { 
+					
+					$('#page_popular_genre').val('1');
+					
+					$.ajax({
+					type: 'get',
+					url: '/music/list/popular/genre',
+					data : 'page=' + $('#page_popular_genre').val() + '&genre=' + $('#bar_genre_rock').text(),	
+					dataType: 'json',
+					success: function(resData) {	// resData : musicList, pageUtil, artist
+						
+						// 갱신
+						$('#popularMusicList').empty();
+				
+				
+						// 페이징
+						var pageUtil = resData.pageUtil;
+						var page = $('#page_popular_genre').val();
+						
+						// (1) # 기능 : 페이징 좌측버튼 보여주기
+						if(pageUtil.page > 1) {
+							$('#popularMusicList').append($('<span class="enable_listLink2" data-genre="' + $('#genre').text()  + '"data-page="' +(pageUtil.page -1) + '">').text('◀'));
+						}
+						
+						// (2) 가운데 : 게시글
+						$.each(resData.musicList, function(index, music) {
+							
+							// # 구현 : 썸네일 가져오기
+							// * 방법 : 자바스크립트로 텍스트 추가하는 방식을 사용
+							var text = '';
+							if(music.hasThumbNail == 1) {
+								// (1) 썸네일이 존재하는 경우 썸네일 맵핑 요청
+								text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+							} else if(music.hasThumbNail == 0) {
+								// (2) 디폴트 이미지 : 정적 파일의 경로는 static 이하 폴더부터
+								text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+							}
+							
+							$('<div class="main_item">') 
+							.append(text)
+							.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
+							.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+							.appendTo(('#popularMusicList'));   
+							
+						}); 
+						// (3) # 기능 : 페이징 우측버튼 보여주기
+						if(pageUtil.page != pageUtil.totalPage) {
+							$('#popularMusicList').append($('<span class="enable_listLink2" data-genre="' + $('#genre').text()  + '"data-page="' + (pageUtil.page + 1) + '">').text('▶'));						
+						}	
+					}
+				});		
+			});
+			
+			
+		}
+		
+	
 		
 	
 	</script>
@@ -104,15 +435,18 @@
 
 
 		<div class="main_container">
-
+		
 
 		<!--  # 메인페이지 -->
 			<div class="main">
 				<!--  # 최신리스트 -->
 				<div class="main_list">
 					<div class="main_header">
-						<div class="list_title">최신리스트</div>
-						<input type="button" value="전체조회" id="btn_updatedMusicBoard">
+						<div class="list_title">
+							<span class="bar_title">최신곡리스트</span>
+							<span class="bar_content">가장 최근에 나온 음악입니다</span>
+						</div>
+						<input type="button" value="더보기" id="btn_updatedMusicBoard">
 					</div>
 					
 					<!-- 구현 : 최신음악리스트4 -->
@@ -122,10 +456,13 @@
 					 -->
 					 
 					 <!--  * page : 페이지 파라미터값 담당 -->
-					<input type="hidden" id="page" value="1">
+					<input type="hidden" id="page_updated" value="1">
+					<input type="hidden" id="page_popular" value="1">
+					<input type="hidden" id="page_popular_genre" value="1">
 					
 					<div id="updatedMusicList" class="main_item_area">
 						<div class="main_item" th:each="music:${musicList}">
+							<div>이미지</div>
 						<!-- 구현 : 썸네일처리  -->
 						<!-- 	<div class="item_image" th:text=""></div> -->
 							
@@ -136,23 +473,50 @@
 					</div>
 				</div>
 				<!--  # 믹스리스트 -->
-				<div class="main_list">믹스리스트
-				
+				<div class="main_list">
+					<div class="main_header">
+						<div class="list_title">
+							<span class="bar_title">인기있는 음악</span>
+							<span class="bar_content">많은 사랑을 받은 음악입니다</span>
+						
+						</div>
+						
+						
+						<!-- * 장르구분용 hidden -->
+						<input type="hidden" id="genre_value">
+						
+						<div class="bar_header_menus">
+							<div class="bar_header_menu">
+								<span class="bar_header_menu_title" id="bar_genre_total">전체</span>
+							</div>
+							<div class="bar_header_menu">
+								<span class="bar_header_menu_title" id="bar_genre_gayeo">가요</span>
+							</div>
+							<div class="bar_header_menu">
+								<span class="bar_header_menu_title" id="bar_genre_pop">팝송</span>
+							</div>
+							<div class="bar_header_menu">
+								<span class="bar_header_menu_title" id="bar_genre_trot">트로트</span>
+							</div>
+							<div class="bar_header_menu">
+								<span class="bar_header_menu_title" id="bar_genre_rock">락</span>
+							</div>
+
+							
+						</div><!-- header에서 flex를 줘서 수평이됨 -->
+						
+						<input type="button" value="더보기" id="btn_popularMusicBoard">
+					</div>
+		
+					<div id="popularMusicList" class="main_item_area">
+					
+					
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-	
 
-
-
-
-
-
-
-
-	
-	
-	
-</body>
-</html>
+			<!-- # 구현 : 음악플레이어, iframe크기를 지정함으로서 불러온 html의 일부만 보여줄 수 있다  -->
+			
+		<iframe src="/music/player" align width="100%" height="72vh" bottom class="player" scrolling="no">음악</iframe> 
+		</div>	
+	</div>	

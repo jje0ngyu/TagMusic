@@ -1,6 +1,6 @@
 package com.gdu.tagmusic.domain;
 
-import java.sql.Date;
+import java.util.Date;
 
 import groovy.transform.builder.Builder;
 import lombok.AllArgsConstructor;
@@ -15,5 +15,5 @@ public class PaymentDTO {
 	private int payNo;
 	private String email;
 	private int passNo;
-	private Date payDate;
+	private Date expirationDate;
 }

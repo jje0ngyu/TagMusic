@@ -71,7 +71,7 @@ public class SecurityUtil {
 	}
 	
 	// 인증코드2 만들기(commons-lang3 디펜던시)
-	public static String generateRandomString(int length) {
+	public String generateRandomString(int length) {
 	    boolean useLetter = true;
 	    boolean useNumbers = true;
 	    return RandomStringUtils.random(length, useLetter, useNumbers);

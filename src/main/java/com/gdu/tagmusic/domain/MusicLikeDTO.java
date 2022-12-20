@@ -14,6 +14,7 @@ public class MusicLikeDTO {
 	private int likeNo;
 	private String email;
 	private int musicNo;
+	private UserDTO userDTO;
 	
 	
 
