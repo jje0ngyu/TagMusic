@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{layout/header::head('태그뮤직>고객센터')}"></head>
 <meta charset="UTF-8">
-<title th:text="${title}"></title>
+<title>고객센터>태그뮤직</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/summernote-lite.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js}"></script>
 <link rel="stylesheet" th:href="@{/summernote-0.8.18-dist/summernote-lite.css}">
+<link rel="stylesheet" th:href="@{/css/customerService.css}">
 </head>
 <script>
 	
@@ -72,11 +73,39 @@
 </script>
 
 <body>
-<div>
 
+<div th:replace="~{layout/header.html::header_layout}"></div>
+	<div class="session">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
+		<div class="container">
+			<div class="mainbox" >
+			
+				<div class="maintitle">태그뮤직 고객센터</div>
+				
+				<div class="top_bar">
+				    <ul>
+				        <li>
+				            <a th:href="@{/customerService/home}">홈</a>
+				        </li>
+				        <li class="click">
+				            <a th:href="@{/board/list}">공지사항</a>
+				        </li>
+				        <li>
+				            <a th:href="@{/customerService/FAQ}">자주 하는 질문</a>
+				        </li>
+				        <li>
+				            <a th:href="@{/customerService/chat}">1:1문의하기</a>
+				        </li>
+				    </ul>
+					
+				</div>
+				
+				
+				
 	<h1>공지 작성</h1>
 	
-	</button>
+	
 	<form id="frm_write" th:action="@{/board/add}" method="post">
 	
 		<div>
@@ -99,10 +128,12 @@
 		</div>
 		
 	</form>
-	
-	
-	
-</div>
+			</div>
+		</div>
+	</div>
+
+
+
 
 </body>
 </html>
