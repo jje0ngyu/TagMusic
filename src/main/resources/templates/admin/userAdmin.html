@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('관리자페이지')}"></head>
+<meta charset="UTF-8">
+<title>고객센터>관리자</title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<link rel="stylesheet" th:href="@{/css/customerService.css}">
+<script th:inline="javascript">
+
+	$(function(){
+		fn_user_list();
+	});
+	
+	function fn_user_list(){
+
+		$.ajax({
+			type : 'post',
+			url : '/admin/user/list',
+			data : 'page=' + $('#page').val(),
+			dataType : 'json',
+			success : function(resData){
+				alert('성공');
+				
+				
+			}
+		});
+	};
+
+
+
+	
+
+</script>
+<body>
+
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+	<div class="session">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
+		<div class="container">
+			<div class="title">관리자 페이지</div>
+			
+			<div class="top_bar">
+			    <ul>
+			        <li class="click">
+			            <a th:href="@{/admin/user/control}">유저관리</a>
+			        </li>
+			        <li>
+			            <a th:href="@{/admin/music/control}">음원관리</a>
+			        </li>
+			        <li>
+			            <a th:href="@{/admin/chatUserList}">1:1문의 관리</a>
+			        </li>
+			    </ul>
+			</div>
+
+
+			<div>유저 관리</div>
+			
+			<div class="user_list_container">
+			
+			
+			
+			</div>
+			
+			
+
+			
+
+			
+			
+			
+		</div>
+	</div>
+	
+
+
+
+
+
+
+</body>
+</html>
