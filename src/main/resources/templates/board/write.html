@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script th:src="@{/summernote-0.8.18-dist/summernote-lite.js}"></script>
+<script th:src="@{/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js}"></script>
+<link rel="stylesheet" th:href="@{/summernote-0.8.18-dist/summernote-lite.css}">
+</head>
+<script>
+	
+	$(document).ready(function(){
+		
+		
+		$('#content').summernote({
+			width: 800,
+			height: 400,
+			lang: 'ko-KR',
+			toolbar: [
+			    
+			    ['style', ['bold', 'italic', 'underline', 'clear']],
+			    ['font', ['strikethrough', 'superscript', 'subscript']],
+			    ['fontsize', ['fontsize']],
+			    ['color', ['color']],
+			    ['para', ['ul', 'ol', 'paragraph']],
+			    ['height', ['height']],
+			    ['insert', ['link', 'picture', 'video']]
+			],
+			callbacks: {
+				
+				onImageUpload: function(files){
+					
+					for(let i = 0; i < files.length; i++) {
+						 
+						var formData = new FormData();
+						formData.append('file', files[i]); 
+						
+						$.ajax({
+							type: 'post',
+							url: '/board/uploadImage',
+							data: formData,
+							contentType: false, 
+							processData: false,  
+							dataType: 'json',   
+							success: function(resData){
+								$('#content').summernote('insertImage', resData.src);
+								$('#summernote_image_list').append($('<input type="hidden" name="summernoteImageNames" value="' + resData.filesystem + '">'))
+							}
+						});  
+					}  
+				}  
+			} 
+		});
+		
+		
+		$('#btn_list').click(function(){
+			location.href = '/board/list';
+		});
+		
+		
+		$('#frm_write').submit(function(event){
+			if($('#title').val() == ''){
+				alert('제목은 필수입니다.');
+				event.preventDefault(); 
+				return; 
+			}
+		});
+		
+	});
+	
+</script>
+
+<body>
+<div>
+
+	<h1>공지 작성</h1>
+	
+	</button>
+	<form id="frm_write" th:action="@{/board/add}" method="post">
+	
+		<div>
+			<label for="title">제목</label>
+			<input type="text" name="title" id="title">
+		</div>
+		
+		<div>
+			<label for="content">내용</label>
+			<textarea name="content" id="content"></textarea>				
+		</div>
+		
+		
+		<div id="summernote_image_list"></div>
+		
+		<div>
+			<button>작성완료</button>
+			<input type="reset" value="입력초기화">
+			<input type="button" value="목록" id="btn_list">
+		</div>
+		
+	</form>
+	
+	
+	
+</div>
+
+</body>
+</html>

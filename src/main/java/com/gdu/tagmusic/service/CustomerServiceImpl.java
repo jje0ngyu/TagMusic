@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +26,10 @@ import lombok.AllArgsConstructor;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 	
+	
+	@Autowired
 	private SecurityUtil securityUtil;
+	@Autowired
 	private ChatMapper chatMapper;
 	
 	
@@ -174,12 +178,20 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	
 	@Override
-	public Map<String, Object> getChatList(int groupNo) {
+	public Map<String, Object> getChatList(HttpServletRequest request) {
 		
+		int groupNo = Integer.parseInt(request.getParameter("groupNo"));
+		int userNo = Integer.parseInt(request.getParameter("userNo"));
+		
+		// 검색을 위한 map
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("chatList", chatMapper.getChatList(groupNo));
+		map.put("groupNo", groupNo);
+		map.put("userNo", userNo);
 		
-		return map;
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("chatList", chatMapper.getChatList(map));
+		
+		return result;
 	}
 	
 	

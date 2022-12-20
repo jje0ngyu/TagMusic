@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MyFileUtil {
+	
+	// 경로 구분자
+		private String sep = Matcher.quoteReplacement(File.separator);
 
 	// 파일명 : UUID값을 사용
 	// 경로명 : 현재 날짜를 디렉터리로 생성해서 사용
@@ -51,7 +54,7 @@ public class MyFileUtil {
 		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		String sep = Matcher.quoteReplacement(File.separator);
-		return sep + "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
+		return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
 	}
 	
 	// 어제 경로
@@ -62,8 +65,18 @@ public class MyFileUtil {
 		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		String sep = Matcher.quoteReplacement(File.separator);
-		return sep + "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
+		return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
 	}
+	
+	// 임시 경로
+		public String getTempPath() {
+			return "/storage" + sep + "temp";
+		}
+		
+		// 써머노트 이미지 경로
+		public String getSummernotePath() {
+			return "/storage" + sep + "summernote";
+		}
 	
 	// 1~9 => 01~09
 	public String makeZero(int n) {

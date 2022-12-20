@@ -1,11 +1,180 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('태그뮤직>1:1문의')}"></head>
+<head th:replace="~{layout/header::head('관리자>1:1문의')}"></head>
 <meta charset="UTF-8">
 <title>고객센터>태그뮤직</title>
+<style>
+
+	.blind {
+		display: none;
+	}	
+</style>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script th:src="@{/js/moment-with-locales.js}"></script>
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
-<script type="text/javascript">
+<script th:inline="javascript">
+
+	
+
+
+	var page = 1;
+	var totalPage = 0;
+	var timer;
+
+		
+	function fn_getChatList() {
+		$('.chat_list').addClass('blind');    // 목록 숨기기
+		$('.wrapper').removeClass('blind');       // 로딩바 보여주기
+		$.ajax({
+			type: 'get',
+			url: '/chat/list/scroll',
+			data: 'page=' + page,  // page=1, page=2, page=3, ...으로 동작함
+			dataType: 'json',
+			success: function(resData){
+				totalPage = resData.totalPage;  // 목록을 가져올 때 전체 페이지 수를 저장해 둠
+				page = page + 1;                // 스크롤을 통해서 한 페이지를 가져올때마다 다음 스크롤에서는 다음 페이지를 가져올 수 있도록 page를 증가시킴
+				$.each(resData.chatList, function(i, chat){
+					
+
+					
+					
+					if(chat.userNo =! 1){
+						var chats = '<div class="chat_warp" data-groupno="' + chat.groupNo + '" onclick="fn_detail();">';
+						chats += '<div><img src="'+chat.userDTO.profileImage+'"></img></div>';
+						
+						chats += '<div>'+chat.userDTO.name+'</div>';
+						
+					}
+					
+					if(chat.userNo = 1) {
+						chats += '<div data-groupno="'+chat.content+'"></div>';
+					}else{
+						chats += '<div>'+chat.content+'</div>';
+					}
+					
+					if(chat.userNo =! 1){
+					moment.locale('ko-KR');
+					chats += '<div>'+moment(chat.chatDate).format('YY-MM-DD A h:mm:ss') +'</div>';
+					chats += '</div>';
+					}
+					
+					
+					
+					$('.chat_list_container').append(chats);
+					
+					
+					
+					
+					
+					// chats += '<div>'+dayjs(chat.chatDate).format('[YYYYescape] YYYY-MM-DDTHH:mm:ssZ[Z]') +'</div>';
+					
+				});
+				
+				
+				
+				$('.chat_list').removeClass('blind'); // 목록 보여주기
+				$('.wrapper').addClass('blind');          // 로딩바 숨기기
+			}
+		});
+	}
+
+	$(document).ready(function(){
+		
+		/*
+			스크롤 이벤트는 1px마다 동작하므로 매우 자주 동작하는 이벤트임
+			스크롤을 빠르게 움직이면 문서의 마지막에 도착했을때 동일한 ajax 요청이 2번 이상 호출될 수 있음(동일한 페이지를 2개 이상 가져옴)
+			이 문제를 해결하기 위해서 디바운스를 이용함
+			
+			디바운스(Debounce)
+			지정된 시간 후에 동작하는 setTimeout 타이머 함수를 이용해서 일정 시간 이전의 연속적인 스크롤 요청은 동작하지 않도록 처리
+		*/
+		
+		// 스크롤을 움직이기 전 첫 목록을 가져옴
+		fn_getChatList();
+		
+		// 스크롤 이벤트
+		$(window).scroll(function(){
+			// 동일한 setTimeout이 다시 요청되었다면 setTimeout 동작 취소
+			if(timer) {
+				clearTimeout(timer);
+			}
+			// 마지막 스크롤 후 0.2초 후에 동작하는 setTimeout
+			timer = setTimeout(function(){
+				var scrollTop = $(this).scrollTop();        // 스크롤 된 길이
+				var windowHeight = $(this).height();        // 웹 브라우저(화면) 높이
+				var documentHeight = $(document).height();  // 문서 전체 높이
+				if((scrollTop + windowHeight) >= documentHeight){  // 스크롤이 화면 끝까지 내려갔음
+					if(page > totalPage){  // 마지막 페이지를 넘어가면 동작 안함
+						return;
+					}
+					fn_getChatList();
+				}
+			}, 200);  // 200밀리초 = 0.2초(시간은 알아서 조절할 것)
+		});
+		
+		
+		
+		
+	});
+	
+	function fn_detail(){
+		
+			$.ajax({
+				type: 'post',
+				url: '/chat/list/detail',
+				data: 'groupNo='+$('.chat_warp').data('groupno'),
+				dataType: 'json',
+				success: function(resData){
+					
+					$('.chat_detail_container').empty();
+					
+					var div = '';
+	
+					$.each(resData.chatDetail, function(i, detail){
+					
+						var div = '';
+						
+						div += '<div>';
+						
+						if(detail.depth == 1){
+							if(detail.userNo =! 1){
+								div += '<div>'+ detail.userDTO.name +'</div>';
+								div += '<div>'+ detail.content +'</div>';
+								div += '<div>'+ detail.chatDate +'</div>';
+							}else {
+								div += '<div>'+ detail.userDTO.name +'</div>';
+								div += '<div>'+ detail.content +'</div>';
+								div += '<div>'+ detail.chatDate +'</div>';
+							}
+							
+							
+						}else {
+							
+							div += '<div><form id="addChat">';
+							div += '<input type="text" name="content">';
+							div += '<input type="hidden" name="depth" value="'+ detail.depth+'">';
+							div += '<input type="hidden" name="groupNo" value ="'+detail.groupNo+'">';
+							div += '<input type="hidden" name="groupOrder" value ="'+detail.groupOrder+'">';
+							div += '<input type="button" value="전송하기" onclick="fn_addChat();">';
+							div += '</form></div>';
+							
+						}
+						
+						div += '</div>';
+						
+						$('.chat_detail_container').append(div);
+					
+					});
+				}
+			});
+	}
+	
+
+
+	
+
+
+	
 
 </script>
 <body>
@@ -14,19 +183,31 @@
 	<div class="session">
 		<div th:replace="~{layout/side.html::side_layout}"></div>
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
-		<div class="container">
-			<div class="mainbox">
-			
-			<span>문의 목록</span>
+		<div class="container1">
+			<div class="title">1:1 문의 관리자 페이지</div>
 			
 			
 			
 			
 			
-			
-			
+			<div>
+				<div id="chat_list" class="chat_list">
+					<div class="chat_list_container"></div>
+				</div>
+					
+					
+				<div class="wrapper">	
+					<div class="loading_bar"></div>
+				</div>	
 			</div>
 		
+			
+			<div>
+				<div class="chat_detail_container"></div>
+			</div>
+			
+			
+			
 		</div>
 	</div>
 	
