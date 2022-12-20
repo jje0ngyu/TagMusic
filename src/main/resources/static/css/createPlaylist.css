@@ -1,0 +1,153 @@
+@charset "UTF-8";
+
+
+
+ * {
+ 	box-sizing: border-box;
+     padding: 0;
+     margin: 0;
+ }
+ 
+ 
+ .create_playlist_container {
+ 
+	width: 100vw;
+	height: 100vh;
+	background-color: #212121;
+	padding : 10px 30px;
+ }
+ 
+.cpl_main {
+	
+ 	border-radius: 5px;
+	background-color: #212121;
+	margin: 0 auto;
+	width: 480px;
+	height: 250px;
+}
+
+.cpl_logo {
+	
+	background-color: pink;
+	width: 120px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	margin: 30px auto;
+	
+}
+
+.cpl_title {
+	
+	padding: 10px;
+	width: 445px;
+	color: #eeeeee;
+}
+
+.cpl_page_title {
+	
+	background-color: #323232;
+	padding: 10px;
+	border-radius: 5px;
+	font-weight: 900;
+}
+
+.cpl_body {
+	
+	
+	padding: 10px;
+	width: 475px;
+	height: 100px;
+	
+}
+
+.cpl_input_area {
+	
+	background-color: #323232;
+	border-radius: 5px;
+	height: 110px;
+	padding: 10px;
+	
+}
+
+.playlist_name {
+	
+	background-color: #545454;
+}
+
+.cpl_input_del {
+	
+	margin-top: 5px;
+	text-align: center;
+	color: #eeeeee;
+	font-weight: 900;
+	
+}
+
+.playlist_name {
+	
+	display: block;
+	background-color: #434343;
+	padding: 5px 15px;
+	outline: none;
+	border: none;
+	border-radius: 10px;
+	margin: 20px auto;
+	width: 300px;
+	height: 30px;
+	
+}
+
+.cpl_create_area {
+	
+	margin: 50px auto;
+
+	display: flex;
+	background-color: #323232;
+	height: 50px;
+	border-radius: 5px;	
+	padding: 10px 20px;
+	width: 190px;
+	
+}
+
+.btn_cpl_create {
+	
+
+	
+	margin-right: 15px;
+	text-align: center;
+	width: 100px;
+	height: 30px;
+	background-color: #eeeeee;
+	border-radius: 5px;
+	line-height: 30px;
+	
+	font-weight: 900;
+	font-size: 15px;
+	cursor: pointer;
+	border: none;
+
+}
+
+.btn_cpl_cancel {
+	
+	
+	text-align: center;
+	width: 100px;
+	height: 30px;
+	background-color: #eeeeee;
+	border-radius: 5px;
+	line-height: 30px;
+	
+	font-weight: 900;
+	font-size: 15px;
+	cursor: pointer;
+	border: none;
+	
+	
+}
+
+ 
+
+ 

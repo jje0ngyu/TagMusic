@@ -8,14 +8,43 @@
 
 <script th:inline="javascript">
 
-	
+	$(document).ready(function() {
+		
+		
+		// # 기능 : 팝업창 종료
+		$('.btn_cpl_cancel').click(function() {
+			window.close();
+		});
+		
+	});
 	
 
 </script>
 </head>
 <body>
+	<div class="create_playlist_container">
+		<div class="cpl_main">
+			<div class="cpl_logo">로고</div>
+			
+			<div class="cpl_header">
+				<div></div>
+			</div>
+			<div class="cpl_body">
+				<div class="cpl_input_area">
+					<div class="cpl_input_del">${loginUser}님!, 원하는 플레이리스트 명을 입력하세요</div>
+					<input type="text" id="playlist_name" class="playlist_name">
+				</div>
+				<div class="cpl_create_area">
+					<div class="btn_cpl_create">생성</div>
+					<div class="btn_cpl_cancel">취소</div>
+				</div>
+			</div>
+		</div>
 	
-	플레이리스트 만들기
+	
+	</div>
+	
+	
 	
 </body>
 </html>
