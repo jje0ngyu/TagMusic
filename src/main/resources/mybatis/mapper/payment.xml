@@ -6,19 +6,66 @@
 
 <mapper namespace="com.gdu.tagmusic.mapper.PaymentMapper">
 
+	<!-- 상품을 보여주기 위한 셀렉트 -->
 	<select id="selectPass" resultType="PassDTO">
 		SELECT PASS_NO, PASS_NAME, PASS_PRICE
 		  FROM PASS
 	</select>
 	
+	<!-- 회원들의 이용권을 관리하는 테이블 -->
 	<insert id="insertPayment" parameterType="map">
 		INSERT INTO PAYMENT
-			(PAY_NO, EMAIL, PASS_NO, PAY_DATE)
+			(PAY_NO, EMAIL, PASS_NO, EXPIRATION_DATE)
 		VALUES
-			(PAYMENT_SEQ.NEXTVAL, #{email}, #{passNo}, SYSDATE)
+			(PAYMENT_SEQ.NEXTVAL, #{email}, #{passNo}, SYSDATE + 30)
 	</insert>
 	
-	<insert id=""></insert>
+	<!-- 결제 이력을 관리하는 테이블 -->
+	<insert id="insertPaymentLog" parameterType="map">
+		INSERT INTO PAYMENT_LOG
+			(PAY_LOG_NO, PAY_LOG_EMAIL, PAY_LOG_DATE, PAY_LOG_PG, PAY_LOG_NAME, PAY_LOG_PRICE)
+		VALUES
+			(#{merchantUid}, #{email}, SYSDATE, #{payPg}, #{ticketName}, #{price})
+	</insert>
+	
+	<!-- 회원이 만료일이 지났나? 혹은 신규인가 -->
+	<select id="selectPaymentCnt" resultType="int" parameterType="map">
+		SELECT COUNT(*)
+		  FROM PAYMENT
+		 WHERE EMAIL = #{email}
+		   AND PASS_NO = #{passNo}
+		   AND EXPIRATION_DATE > SYSDATE
+	</select>
+	
+	<update id="updatePaymentExtend" parameterType="map">
+		UPDATE PAYMENT
+  		   SET EXPIRATION_DATE = EXPIRATION_DATE + 30
+  		 WHERE EMAIL = #{email}
+	</update>
+	
+	<select id="selectRemainiend" parameterType="map" resultType="integer">
+		SELECT FLOOR(EXPIRATION_DATE - SYSDATE)
+ 		  FROM PAYMENT
+	     WHERE EMAIL = #{email}
+	</select>
+	
+	<select id="selectPassDday" parameterType="map" resultType="date">
+		SELECT EXPIRATION_DATE
+ 		  FROM PAYMENT
+	     WHERE EMAIL = #{email}
+	</select>
+	
+	<delete id="deletePass">
+		DELETE 
+		  FROM PAYMENT
+		 WHERE SYSDATE > EXPIRATION_DATE
+	</delete>
+	
+	<select id="selectRecipientByEmail" parameterType="map" resultType="UserDTO">
+		SELECT EMAIL, ARTIST
+		  FROM USERS
+		 WHERE EMAIL = #{email}
+	</select>
 	
 </mapper>
 
