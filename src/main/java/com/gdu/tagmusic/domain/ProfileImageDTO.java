@@ -1,7 +1,4 @@
 package com.gdu.tagmusic.domain;
-
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,11 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class RetireUserDTO {
+public class ProfileImageDTO {
 
-		private int userNo;
-		private String email;
-		private String artist;
-		private Date retireDate;
+	private int profileImageNo;
+	private String email;
+	private String profileImagePath;
+	private String profileImageOrigin;
+	private String profileImageFilesystem;
 	
 }

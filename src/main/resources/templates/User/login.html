@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<head th:replace="~{layout/header::head('Tag Music > 로그인')}"></head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" th:href="@{/css/login.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<!-- 1. 카카오SDK로드 -->
-<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.0.1/kakao.min.js"
-  integrity="sha384-eKjgHJ9+vwU/FCSUG3nV1RKFolUXLsc6nLQ2R1tD0t4YFPCvRmkcF8saIfOZNWf/" crossorigin="anonymous"></script>
+<!-- 카카오 SDK -->
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js" integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx" crossorigin="anonymous"></script>
+<!-- 카카오 로그인 -->
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.1.0/kakao.min.js"
+  integrity="sha384-dpu02ieKC6NUeKFoGMOKz6102CLEWi9+5RQjWSV0ikYSFFd8M3Wp2reIcquJOemx" crossorigin="anonymous"></script>
 <script>
 	Kakao.init('f3f16cd97c3af4e9ecc26f19ad9a208f');
 </script>
@@ -21,7 +22,6 @@
 		fn_inputPw();
 		fn_login();
 		fn_displayRememberEmail();
-		fn_kakaoLogin();
 	});
 	
 	function fn_inputEmail(){
@@ -109,55 +109,6 @@
 		
 	}
 
-	function fn_kakaoLogin(){
-		$('#kakaoLogin').click(function(){
-	        // 3. 데모버전으로 들어가서 카카오로그인 코드를 확인.
-	        function loginWithKakao() {
-	            Kakao.Auth.login({
-	                success: function (authObj) {
-	                    console.log(authObj); // access토큰 값
-	                    Kakao.Auth.setAccessToken(authObj.access_token); // access토큰값 저장
-	
-	                    getInfo();
-	                },
-	                fail: function (err) {
-	                    console.log(err);
-	                }
-	            });
-	        }
-	
-	        // 4. 엑세스 토큰을 발급받고, 아래 함수를 호출시켜서 사용자 정보를 받아옴.
-	        function getInfo() {
-	            Kakao.API.request({
-	                url: '/v2/user/me',
-	                success: function (res) {
-	                    console.log(res);
-	                    // 이메일, 성별, 닉네임, 프로필이미지
-	                    var email = res.kakao_account.email;
-	                    var gender = res.kakao_account.gender;
-	                    var nickname = res.kakao_account.profile.nickname;
-	                    var profile_image = res.kakao_account.profile.thumbnail_image_url;
-	
-	                    console.log(email, gender, nickname, profile_image);
-	                },
-	                fail: function (error) {
-	                    alert('카카오 로그인에 실패했습니다. 관리자에게 문의하세요.' + JSON.stringify(error));
-	                }
-	            });
-	        }
-	
-	        // 5. 로그아웃 기능 - 카카오 서버에 접속하는 엑세스 토큰을 만료, 사용자 어플리케이션의 로그아웃은 따로 진행.
-	        function kakaoLogout() {
-	            if (!Kakao.Auth.getAccessToken()) {
-	                alert('Not logged in.');
-	                return;
-	            }
-	            Kakao.Auth.logout(function() {
-	                alert('logout ok\naccess token -> ' + Kakao.Auth.getAccessToken());
-	            });
-	        }
-		});
-	}
 </script>
 <style>
 	.blind {
@@ -204,60 +155,59 @@
 								</div>
 							</label>
 						</div>
-						<div>
-							<button class="btn_login">로그인</button>
-						</div>
+						
 						
 					</div>
 				</form>
-				<!-- 간편 로그인 -->
+				<div>
+					<button class="btn_login">로그인</button>
+				</div>
+				<!-- 간편 로그인 : 네이버 -->
+				<div>
+					<a th:href="${apiURL}"><img height="45px" th:src="@{/images/login_naver.png}"/></a>
+				</div>
+				
+				
+				<!-- 간편 로그인 : 카카오 -->
 				<div class="loginAPI">
 					<div id="kakaoLogin">
 						<a id="kakao-login-btn" href="javascript:loginWithKakao()">
-						  <img style="width:100%" th:src="@{/images/kakao_login_medium_wide.png}"
+						  <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
 						    alt="카카오 로그인 버튼" />
 						</a>
 						<p id="token-result"></p>
-						<button class="api-btn" onclick="requestUserInfo()" style="visibility:hidden">사용자 정보 가져오기</button>
 						
 						<script>
-						  function loginWithKakao() {
-						    Kakao.Auth.authorize({
-						      redirectUri: 'https://localhost:9090',
-						      state: 'userme',
-						    });
-						  }
+							function loginWithKakao() {
+							    Kakao.Auth.authorize({
+							      redirectUri: 'http://localhost:9090',
+							    });
+							  }
+						    Kakao.Auth.setAccessToken('${ACCESS_TOKEN}');
+							displayToken()
+						    function displayToken() {
+						    	var token = getCookie('authorize-access-token');
+						    	
+						    	if(token) {
+									Kakao.Auth.setAccessToken(token);
+									Kakao.Auth.getStatusInfo()
+									    .then(function(res) {
+									    if (res.status === 'connected') {
+									        document.getElementById('token-result').innerText
+									             = 'login success, token: ' + Kakao.Auth.getAccessToken();
+									        }
+									    })
+									    .catch(function(err) {
+									        Kakao.Auth.setAccessToken(null);
+									    });
+								}
+							}
+							
+							function getCookie(name) {
+							    var parts = document.cookie.split(name + '=');
+							    if (parts.length === 2) { return parts[1].split(';')[0]; }
+							}
 						
-						  function requestUserInfo() {
-						    Kakao.API.request({
-						      url: '/v2/user/me',
-						    })
-						      .then(function(res) {
-						        alert(JSON.stringify(res));
-						      })
-						      .catch(function(err) {
-						        alert(
-						          'failed to request user information: ' + JSON.stringify(err)
-						        );
-						      });
-						  }
-						
-						  // 아래는 데모를 위한 UI 코드입니다.
-						  displayToken()
-						  function displayToken() {
-						    var token = getCookie('authorize-access-token');
-						
-						    if(token) {
-						      Kakao.Auth.setAccessToken(token);
-						      document.querySelector('#token-result').innerText = 'login success, ready to request API';
-						      document.querySelector('button.api-btn').style.visibility = 'visible';
-						    }
-						  }
-						
-						  function getCookie(name) {
-						    var parts = document.cookie.split(name + '=');
-						    if (parts.length === 2) { return parts[1].split(';')[0]; }
-						  }
 						</script>
 
 					</div>

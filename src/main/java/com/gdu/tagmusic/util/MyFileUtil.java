@@ -25,7 +25,7 @@ public class MyFileUtil {
 		} else {
 			
 			// 파라미터로 전달된 filename의 확장자만 살려서 UUID.확장자 방식으로 반환
-			String[] arr = filename.split("\\.");  // 정규식에서 .(마침표) 인식 : \. 또는 [.]
+			String[] arr = filename.split("[.]");  // 정규식에서 .(마침표) 인식 : \. 또는 [.]
 			
 			// 확장자
 			extension = arr[arr.length - 1];
@@ -37,6 +37,13 @@ public class MyFileUtil {
 		
 	}
 	
+	// 정적자원 경로
+	public String staticPath() {
+		String sep = Matcher.quoteReplacement(File.separator);
+		System.out.println(sep);
+		return "src" + sep + "main" + sep + "resources" + sep + "static";
+	}
+	
 	// 오늘 경로
 	public String getTodayPath() {
 		Calendar calendar = Calendar.getInstance();
@@ -44,7 +51,7 @@ public class MyFileUtil {
 		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		String sep = Matcher.quoteReplacement(File.separator);
-		return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
+		return sep + "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
 	}
 	
 	// 어제 경로
@@ -55,7 +62,7 @@ public class MyFileUtil {
 		int month = calendar.get(Calendar.MONTH) + 1;
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
 		String sep = Matcher.quoteReplacement(File.separator);
-		return "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
+		return sep + "storage" + sep + year + sep + makeZero(month) + sep + makeZero(day);
 	}
 	
 	// 1~9 => 01~09

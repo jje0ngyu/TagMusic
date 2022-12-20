@@ -2,39 +2,133 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Tag Music > 마이페이지</title>
 <link rel="stylesheet" th:href="@{/css/mypage.css}">
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script>
+	$(function(){
+		fn_popupProfileImage();
+		//fn_changeImage();
+		fn_closePopup();
+	});
+	// 이미지 노출
+	function fn_displayImage(){
+		$.ajax({
+			type: 'post',
+			url : '/user/info/getImage',
+			data: 'email=${session.loginUser.email}',
+			success: function(resData){
+				console.log(resData.imagePath)
+				$('#profileImage').attr('src',resData.iamgePath);
+			},
+			error: function(){
+				console.log('에러떴다');
+			}
+		}); // ajax
+	}
+	// 이미지 변경 모달팝업
+	function fn_popupProfileImage(){
+		$('#profile_image').click(function(){
+			$('.box_backlayer').removeClass('blind');
+			$('.profile_image_box').removeClass('blind');
+		});
+	}
+	/*
+	// 이미지 변경
+	function fn_changeImage(){
+		$('#frm_progileImage').submit(function(){
+			$.ajax({
+				type: 'post',
+				enctype: 'multipart/form-data',
+				url : '/user/info/modifyImage',
+				data: $('#frm_progileImage').serialize(),
+				processData: false,
+   				contentType: false,
+				success: function(resData){
+					console.log('성공');
+				},
+				error: function(){
+					console.log('에러');
+				}
+			})
+		});
+	}
+	*/
+	// 팝업창 닫기
+	function fn_closePopup(){
+		
+		$('.box_backlayer').click(function(){
+			$('.box_backlayer').addClass('blind');
+			$('.profile_image_box').addClass('blind');
+		});
+	}
+	
+</script>
 </head>
 <body>
 	<nav th:replace="~{layout/mypageNav.html::mypageFragment}"></nav>
-	<div>
-		내 정보
+	
+	<section class="container">
+		<div>
+			내 정보
+		</div>
+		<div>
+			<img id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">
+			
+		</div>
+		<div>
+			<span th:text="${session.loginUser.artist}"></span>님 안녕하세요.
+		</div>
+		<div>
+			로그인 및 보안
+		</div>
+		<div>
+			<a th:href="@{/user/mypage/info}">
+				개인정보 관리
+			</a>
+		</div>
+		<div>
+			<a th:href="@{/payment/history}">
+				결제정보
+			</a>
+		</div>
+		<div>
+			내가 쓴 글
+		</div>
+		<div>
+			내가 쓴 댓글
+		</div>
+		<div>
+			내가 문의한 글
+		</div>
+	</section>
+	
+	<!-- 프로필 이미지 변경 -->
+	<div class="box_backlayer blind"></div>
+	<div class="profile_image_box blind">
+		<div>
+			프로필 이미지 변경
+		</div>
+		<div>
+			<img id="profileImage">프로필 이미지 위치
+			<img class="profile_image" th:src="${session.loginUser.profileImage}">
+			   <form id="frm_progileImage" th:action="@{/user/info/modifyImage}" method="post" enctype="multipart/form-data">
+				   <input type="text" name="email" th:value="${session.loginUser.email}">
+			       <div>
+				       <input type="file" name="profileImagefile" id="profileImagefile">
+				   </div>
+			       <div>
+				       <input type="button" value="취소">
+				       <button>변경하기</button>
+				   </div>
+			   </form>
+		</div>
+		<div>
+			
+			
+		</div>
+		
 	</div>
-	<div>
-		<span th:text="${session.loginUser.artist}"></span>님 안녕하세요.
-	</div>
-	<div>
-		로그인 및 보안
-	</div>
-	<div>
-		<a th:href="@{/user/mypage/info}">
-			개인정보 관리
-		</a>
-	</div>
-	<div>
-		<a th:href="@{/payment/history}">
-			결제정보
-		</a>
-	</div>
-	<div>
-		내가 쓴 글
-	</div>
-	<div>
-		내가 쓴 댓글
-	</div>
-	<div>
-		내가 문의한 글
-	</div>
-
+	
 </body>
 </html>
