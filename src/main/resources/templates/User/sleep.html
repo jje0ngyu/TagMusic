@@ -14,7 +14,7 @@
 		
 		<div>
 			안녕하세요!<br>
-			${session.sleepUser.artist}님은 1년 이상 로그인하지 않아 관련 법령에 의해 휴면계정으로 전환되었습니다.<br><br>
+			<span th:text="${session.sleepUser.artist}"></span>님은 1년 이상 로그인하지 않아 관련 법령에 의해 휴면계정으로 전환되었습니다.<br><br>
 			<ul>
 				<li><span th:text="|가입일 ${session.sleepUser.joinDate}|"></span></li>
 				<li><span th:text="|휴면전환일 ${session.sleepUser.sleepDate}|"></span></li>

@@ -36,6 +36,7 @@ public class UserController {
 	public void login(HttpServletRequest request, HttpServletResponse response) {
 		userService.login(request, response);
 	}
+	
 	// 로그인 - 네이버 간편로그인
 	@GetMapping("/user/naver/login")
 	public String naverLogin(HttpServletRequest request, Model model) {
@@ -55,6 +56,10 @@ public class UserController {
 			return "redirect:/";
 		}
 		
+	}
+	@PostMapping("/user/naver/join")
+	public void naverJoin(HttpServletRequest request, HttpServletResponse response) {
+		userService.naverJoin(request, response);
 	}
 	
 	// 로그인 - 정보찾기

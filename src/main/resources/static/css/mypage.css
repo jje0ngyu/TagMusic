@@ -38,6 +38,13 @@ html, body, nav, section {
 		left: 230px;
 		padding: 60px;
 	}
+	/* mypage 콘테이너*/
+	.contain {
+		position: absolute;
+		top: 0;
+		left: 230px;
+		width: 100%;
+	}
 }
 
 
@@ -59,6 +66,7 @@ html, body, nav, section {
 
 
 .info_box {
+	position: relative;
 	background-color: lime; 	
 }
 .info {

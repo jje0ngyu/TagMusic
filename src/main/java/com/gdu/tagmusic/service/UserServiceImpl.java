@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -165,15 +166,68 @@ public class UserServiceImpl implements UserService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return apiURL;
 		
 	}
 	// 로그인 - 네이버 간편로그인 2
 	@Override
 	public String getNaverLoginToken(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		// access_token 받기
+		String clientId = "mtNSZZEJIiSUesKY51WB";
+		String clientSecret = "sCWaP84Z8a";
+		String code = request.getParameter("code");
+		String state = request.getParameter("state");
+		String redirectURI = null;
+		try {
+			redirectURI = URLEncoder.encode("http://localhost:9090/", "UTF-8");
+		} catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		StringBuffer res = new StringBuffer();  // StringBuffer는 StringBuilder과 동일한 역할 수행
+		try {
+			String apiURL;
+			apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&";
+			apiURL += "client_id=" + clientId;
+			apiURL += "&client_secret=" + clientSecret;
+			apiURL += "&redirect_uri=" + redirectURI;
+			apiURL += "&code=" + code;
+			apiURL += "&state=" + state;
+			
+			URL url = new URL(apiURL);
+			HttpURLConnection con = (HttpURLConnection)url.openConnection();
+			con.setRequestMethod("GET");
+			int responseCode = con.getResponseCode();
+			BufferedReader br;
+			if(responseCode == 200) {
+				br = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			} else {
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+			}
+			String inputLine;
+			while ((inputLine = br.readLine()) != null) {
+				res.append(inputLine);
+			}
+			br.close();
+			con.disconnect();
+			
+			/*
+				res.toString()
+				
+				{
+					"access_token":"AAAANipjD0VEPFITQ50DR__AgNpF2hTecVHIe9v-_uoyK5eP1mfdYX57bM3VTF_x4cWgz0v2fQlZsOOjl9uS0j8CLI4",
+					"refresh_token":"2P9T9LTrnjaBf8XwF87a2UNUL4isfvk3QyLF8U1MDmju5ViiSXNSxii80ii8kvZWDiiYSiptFFYsuwqWl6C8n59NwoAEU6MmipfIis2htYMnZUlutzvRexh0PIZzzqqK3HlGYttJ",
+					"token_type":"bearer",
+					"expires_in":"3600"
+				}
+			*/
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		JSONObject obj = new JSONObject(res.toString());
+		String access_token = obj.getString("access_token");
+		return access_token;
 	}
 	// 로그인 - 네이버 간편로그인 3
 	@Override
@@ -213,6 +267,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			
 			JSONObject profile = new JSONObject(sb.toString()).getJSONObject("response");
+			String id = profile.getString("id");
 			String name = profile.getString("name");
 			String gender = profile.getString("gender");
 			String email = profile.getString("email");
@@ -221,6 +276,7 @@ public class UserServiceImpl implements UserService {
 			String birthday = profile.getString("birthday").replace("-", "");
 			
 			user = UserDTO.builder()
+					.artist(id)
 					.name(name)
 					.gender(gender)
 					.email(email)
@@ -262,7 +318,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void naverJoin(HttpServletRequest request, HttpServletResponse response) {
 		// 파라미터
-		String artist = request.getParameter("id");
+		String id = request.getParameter("artist");
 		String name = request.getParameter("name");
 		String gender = request.getParameter("gender");
 		String mobile = request.getParameter("mobile");
@@ -289,7 +345,7 @@ public class UserServiceImpl implements UserService {
 		
 		// DB로 보낼 UserDTO 만들기
 		UserDTO user = UserDTO.builder()
-				.artist(artist)
+				.artist(id)
 				.pw(pw)
 				.name(name)
 				.gender(gender)
