@@ -21,11 +21,27 @@
 			 	AND SESSION_ID = #{sessionId}
 			 	AND SESSION_LIMIT_DATE > SYSDATE
 			 </if>
+			 <if test="mobile != null">
+				 AND MOBILE = #{mobile}
+			 </if>
 			 <if test="name != null">
 			 	AND NAME = #{name}
 			 </if>
 		 </where>
 	</select>
+	
+	<!-- 로그인 기록(ACCESS_LOG) 남기기 -->
+	<update id="updateAccessLog" parameterType="String">
+		UPDATE ACCESS_LOG
+		   SET LOGIN_DATE = SYSDATE
+		 WHERE EMAIL = #{email}
+	</update>
+	<insert id="insertAccessLog" parameterType="String">
+		INSERT INTO ACCESS_LOG
+			(ACCESS_LOG_NO, EMAIL, LOGIN_DATE)
+		VALUES
+			(ACCESS_LOG_SEQ.NEXTVAL, #{email}, SYSDATE)
+	</insert>
 	
 	<!-- 로그인 유지를 위한 SESSION_ID/SESSION_LIMIT_DATE 업데이트 -->
 	<update id="updateSessionInfo" parameterType="UserDTO">
@@ -35,6 +51,13 @@
 		 WHERE EMAIL = #{email}
 	</update>
 	
+	<!-- 마이페이지 : 비밀번호 수정, 임시비밀번호로 수정 -->
+	<update id="updateUserPassword" parameterType="UserDTO">
+		UPDATE USERS
+		   SET PW = #{pw}
+		     , PW_MODIFY_DATE = SYSDATE
+		 WHERE USER_NO = #{userNo}
+	</update>
 	
 	<!-- 일반회원가입 -->
 	<insert id="insertUser" parameterType="UserDTO">
@@ -43,6 +66,39 @@
 		VALUES
 			(USERS_SEQ.NEXTVAL, #{email}, #{pw}, #{artist}, #{name}, #{gender}, #{mobile}, #{birthyear}, #{birthday}, #{postcode}, #{roadAddress}, #{jibunAddress}, #{detailAddress}, #{extraAddress}, #{agreeCode}, NULL, SYSDATE, SYSDATE, SYSDATE, NULL, NULL)
 	</insert>
+	
+	<!-- 네이버아이디로그인 회원가입 -->
+	<insert id="insertNaverUser" parameterType="UserDTO">
+		INSERT INTO USERS
+			(USER_NO, ARTIST, PW, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE)
+		VALUES
+			(USERS_SEQ.NEXTVAL, #{artist}, #{pw}, #{name}, #{gender}, #{email}, #{mobile}, #{birthyear}, #{birthday}, NULL, NULL, NULL, NULL, NULL, #{agreeCode}, #{snsType}, SYSDATE, SYSDATE, SYSDATE, NULL, NULL)
+	</insert>
+	
+	
+	
+	<!-- 프로필 이미지 -->
+	<select id="selectProfileImage" parameterType="String" resultType="String">
+		SELECT PROFILE_IMAGE
+		  FROM USERS
+		 WHERE EMAIL = #{email}
+	</select>
+	
+	<!-- 프로필 이미지 변경 -->
+	<insert id="insertImage" parameterType="ProfileImageDTO">
+		INSERT INTO PROFILEIMAGE
+			(PROFILEIMAGE_NO, PROFILEIMAGE_PATH, PROFILEIMAGE_ORIGIN, PROFILEIMAGE_FILESYSTEM, EMAIL)
+		VALUES
+			(PROFILEIMAGE_SEQ.NEXTVAL, #{profileImagePath}, #{profileImageOrigin}, #{profileImageFilesystem}, #{email})
+	</insert>
+	
+	<!-- 프로필 경로 수정 -->
+	<update id="updateImagePath" parameterType="ProfileImageDTO">
+		UPDATE USERS
+		   SET PROFILE_IMAGE = #{profileImagePath} || '\' || #{profileImageFilesystem}
+		 WHERE EMAIL = #{email}
+	</update>
+	
 	
 	<!-- 회원정보수정 -->
 	<update id="updateUser" parameterType="UserDTO">
@@ -64,6 +120,48 @@
 		WHERE EMAIL = #{email}
 	</update>
 	
+	<!-- 휴면 -->
+	<!-- 로그인 이전에 휴면회원인지 확인 -->
+	<select id="selectSleepUserByEmail" parameterType="String" resultType="SleepUserDTO">
+		SELECT EMAIL, ARTIST, JOIN_DATE, SLEEP_DATE
+		  FROM SLEEP_USERS
+		 WHERE EMAIL = #{email}
+	</select>
+	
+	<!-- 휴면처리1 : 1년 이상 로그인 기록이 없으면 휴면테이블에 저장 -->
+	<insert id="insertSleepUser">
+		INSERT INTO SLEEP_USERS(USER_NO, PW, ARTIST, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, SLEEP_DATE)
+	        (SELECT U.USER_NO, U.PW, U.ARTIST, U.NAME, U.GENDER, U.EMAIL, U.MOBILE, U.BIRTHYEAR, U.BIRTHDAY, U.POSTCODE, U.ROAD_ADDRESS, U.JIBUN_ADDRESS, U.DETAIL_ADDRESS, U.EXTRA_ADDRESS, U.AGREE_CODE, U.SNS_TYPE, U.JOIN_DATE, SYSDATE
+	           FROM USERS U LEFT OUTER JOIN ACCESS_LOG A
+	             ON U.EMAIL = A.EMAIL
+	          WHERE MONTHS_BETWEEN(SYSDATE, A.LOGIN_DATE) >= 12
+	             OR (MONTHS_BETWEEN(SYSDATE, U.JOIN_DATE) >= 12 AND A.LOGIN_DATE IS NULL))
+	</insert>
+	<!-- 휴면처리2 : 1년 이상 로그인 기록이 없으면 회원테이블에서 삭제 -->
+	<delete id="deleteUserForSleep">
+	    DELETE FROM USERS
+	     WHERE EMAIL IN (SELECT U.EMAIL
+	                    FROM USERS U LEFT OUTER JOIN ACCESS_LOG A
+	                      ON U.EMAIL = A.EMAIL
+	                   WHERE MONTHS_BETWEEN(SYSDATE, A.LOGIN_DATE) >= 12
+	                      OR (MONTHS_BETWEEN(SYSDATE, U.JOIN_DATE) >= 12 AND A.LOGIN_DATE IS NULL))
+	</delete>
+	
+	<!-- 휴면복원1 : 복원할 회원을 USERS 테이블에 삽입 -->
+	<insert id="insertRestoreUser" parameterType="String">
+		INSERT INTO USERS(USER_NO, PW, ARTIST, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE)
+			(SELECT USER_NO, PW, ARTIST, NAME, GENDER, EMAIL, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE
+			   FROM SLEEP_USERS
+			  WHERE EMAIL = #{email})
+	</insert>
+	<!-- 휴면복원2 : 복원할 회원을 SLEEP_USERS 테이블에서 삭제 -->
+	<delete id="deleteSleepUser" parameterType="String">
+		DELETE
+		  FROM SLEEP_USERS
+		 WHERE EMAIL = #{email}
+	</delete>
+	
+	<!-- 탈퇴 -->
 	<!-- 회원탈퇴1 : USERS 테이블에서 제거 -->
 	<delete id="deleteUser" parameterType="int">
 		DELETE

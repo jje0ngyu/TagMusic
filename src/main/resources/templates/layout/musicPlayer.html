@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script th:src="@{/js/moment-with-locales.js}"></script>
+<link rel="stylesheet" th:href="@{/css/layout.css}">
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/musicBoard.css}">
+<link rel="stylesheet" th:href="@{/css/musicPlayer.css}">
+
+<script th:inline="javascript">
+
+	$(document).ready(function() {
+
+			
+	});
+
+
+</script>
+
+</head>
+<body>
+
+			<div class="layout_tagMusic_player">
+				<div class="musicPlayer">
+					<div class="player_thumbnail">썸네일</div>
+					<div>재생기능</div>
+					<div>
+						<div>타이틀</div>
+						<div>음악바</div>
+					</div>
+					<div>크기조절</div>
+				</div>
+				
+			</div>	
+			<div class="layout_tagMusic_player_hidden">
+				<audio class="audio" controls="controls">
+					  <source src="track.ogg" type="audio/ogg" />
+					  <source src="track.mp3" type="audio/mpeg" />
+				</audio>
+			
+			</div>		
+	
+		
+		
+	
+
+
+
+
+</body>
+</html>

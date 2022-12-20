@@ -12,9 +12,10 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class PaymentLogDTO {
-	private int payLogNo;
+	private String payLogNo;
 	private String payLogEmail;
 	private Date payLogDate;
 	private String payLogPg;
 	private String payLogName;
+	private int payLogPrice;
 }
