@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.tagmusic.service.CustomerService;
@@ -63,9 +62,8 @@ public class CustomerController {
 	// 로그인한 userNo가 문의한 게시글만 뽑는 매핑값
 	@ResponseBody
 	@PostMapping(value="/chat/list", produces="application/json")
-	public Map<String, Object> chatlist(@RequestParam("groupNo") int groupNo){
-		// 자신이 문의한 글만 볼 수 있게 userNo를 파라미터로 넘겨줌
-		return customerService.getChatList(groupNo);
+	public Map<String, Object> chatlist(HttpServletRequest request){
+		return customerService.getChatList(request);
 	}
 
 	

@@ -7,14 +7,96 @@
 
 <mapper namespace="com.gdu.tagmusic.mapper.AdminMapper">
 
-
-	<select id="selectChatList" resultType="ChatDTO">
-		SELECT CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER
-		FROM CHAT_ADMIN
+	<resultMap type="UserDTO" id="UserMap">
+		<result column="USER_NO" property="userNo"/>
+		<result column="EMAIL" property="email"/>
+		<result column="ARTIST" property="artist"/>
+		<result column="NAME" property="name"/>
+		<result column="PW" property="pw"/>
+		<result column="PROFILE_IMAGE" property="profileImage"/>
+		<result column="MOBILE" property="mobile"/>
+		<result column="GENDER" property="gender"/>
+		<result column="BIRTHYEAR" property="birthyear"/>
+		<result column="BIRTHDAY" property="birthday"/>
+		<result column="POSTCODE" property="postcode"/>
+		<result column="ROAD_ADDRESS" property="roadAddress"/>
+		<result column="JIBUN_ADDRESS" property="jibunAddress"/>
+		<result column="DETAIL_ADDRESS" property="detailAddress"/>
+		<result column="EXTRA_ADDRESS" property="extraAddress"/>
+		<result column="SNS_TYPE" property="snsType"/>
+		<result column="SESSION_ID" property="sessionId"/>
+		<result column="SESSION_LIMIT_DATE" property="sessionLimitDate"/>
+		<result column="JOIN_DATE" property="joinDate"/>
+		<result column="PW_MODIFY_DATE" property="pwModifyDate"/>
+		<result column="INFO_MODIFY_DATE" property="infoModifyDate"/>
+		<result column="AGREE_CODE" property="agreeCode"/>
+	</resultMap>
+	
+	
+	<resultMap type="ChatDTO" id="ChatMap">
+		<result column="CHAT_NO" property="chatNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="CHAT_DATE" property="chatDate"/>
+		<result column="IP" property="ip"/>
+		<result column="CONTENT" property="content"/>
+		<result column="STATE" property="state"/>
+		<result column="DEPTH" property="depth"/>
+		<result column="GROUP_NO" property="groupNo"/>
+		<result column="GROUP_ORDER" property="groupOrder"/>
+		<collection resultMap="UserMap" property="userDTO"></collection>
+	</resultMap>
+	
+	
+	<select id="selectAllChatCount" resultType="int">
+        SELECT COUNT(*)
+        FROM (	SELECT DISTINCT USER_NO
+                FROM CHAT_ADMIN )
 	</select>
 	
+	<select id="selectChatUsingScroll" parameterType="Map" resultMap="ChatMap">
+		
+  
+    SELECT C.CHAT_NO, C.USER_NO, C.CHAT_DATE, C.IP, C.CONTENT,C.STATE,C.DEPTH,C.GROUP_NO,C.GROUP_ORDER, U.NAME, U.PROFILE_IMAGE
+      FROM CHAT_ADMIN C INNER JOIN USERS U
+        ON C.USER_NO = U.USER_NO
+        WHERE C.GROUP_ORDER = 1
+        
+        
+     UNION
+     
+ 	SELECT A.CHAT_NO,A.USER_NO,A.CHAT_DATE,A.IP,A.CONTENT,A.STATE,A.DEPTH,A.GROUP_NO,A.GROUP_ORDER, U.NAME, U.PROFILE_IMAGE
+	  FROM (  SELECT *
+                FROM CHAT_ADMIN 
+               WHERE (GROUP_NO,GROUP_ORDER) IN (  SELECT GROUP_NO, MIN(GROUP_ORDER) AS GROUP_ORDER
+                                                    FROM CHAT_ADMIN 
+                                                   WHERE NOT USER_NO = 1 
+                                                     AND NOT DEPTH = 0  
+                                                   GROUP BY GROUP_NO )      )A INNER JOIN USERS U
+         ON A.USER_NO = U.USER_NO
+         ORDER BY CHAT_DATE DESC
+	
+	</select>
+	
+	
 
-
+	
+	
+	
+	
+	
+	<select id="getChatDetail" parameterType="int" resultMap="ChatMap">
+	
+		SELECT CHAT_NO, C.USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER, U.NAME, U.PROFILE_IMAGE
+		  FROM CHAT_ADMIN C INNER JOIN USERS U
+		    ON C.USER_NO = U.USER_NO
+	     WHERE C.GROUP_NO = #{groupNo}
+	  ORDER BY GROUP_ORDER DESC
+	
+	</select>
+	
+	
+	
+	
 
 
 
