@@ -4,6 +4,11 @@
 	display: none;
 }
 
+html body div{
+	margin:0;
+	padding: 0;
+}
+
 
 @media only screen and (min-width: 740px) {
 	.body {
@@ -90,7 +95,7 @@
 .btn_login {
 	position: relative;
 	width: 100%;
-	height: 40px;
+	height: 45px;
 	margin-top: 10px;
 	border-radius: 5px;
 	border: none;
@@ -102,6 +107,24 @@
 	font-weight: 700;
 	background-color: #417CF2;
 }
+/* 간편로그인 */
+.btNaver {
+	position: relative;
+	width: 100%;
+	background-color: #03c75a;
+	color: white;
+	border-radius: 5px;
+	height: 45px;
+	line-height: 45px;
+}
+.login_icon {
+	position: relative;
+	top: 2px;
+	left: -30px;
+	width: 20px;
+	height: 20px;
+}
+
 .remember_box {
 	background-size: 15px;
 	background-repeat: no-repeat;
