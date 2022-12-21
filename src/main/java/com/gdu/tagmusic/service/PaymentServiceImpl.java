@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.PaymentMapper;
 import com.gdu.tagmusic.util.PageUtil;
 
@@ -121,16 +123,27 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	@Override
 	public Map<String, Object> getRemainindperiod(HttpServletRequest request) {
-		Map<String, Object> map = new HashMap<>();
-		String email = request.getParameter("email");
-		map.put("email", email);
-		int remaining = paymentMapper.selectRemainiend(map);
-		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date dDay = paymentMapper.selectPassDday(map);
-		Map<String, Object> result = new HashMap<>();
-		result.put("remainingDay", sdf1.format(dDay));
-		result.put("dDay", remaining);
-		return result;
+		try {
+			Map<String, Object> map = new HashMap<>();
+			Optional<String> strOpt = Optional.ofNullable(request.getParameter("email"));
+			String email = strOpt.orElse("1");
+			map.put("email", email);
+			Optional<Integer> opt = Optional.ofNullable(paymentMapper.selectRemainiend(map));
+			int remaining = opt.orElse(0);
+			Map<String, Object> result = new HashMap<>();
+			if(email.equals("1") || remaining != 0) {
+				SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date dDay = paymentMapper.selectPassDday(map);
+				result.put("remainingDay", sdf1.format(dDay));
+				result.put("dDay", remaining);
+			}
+			return result;
+		} catch (Exception e) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("error", "로그인 안된 유저 및 이용권 없는사람 방지용입니다.");
+			e.printStackTrace();
+			return map;
+		}
 	}
 	
 	@Override
@@ -168,5 +181,23 @@ public class PaymentServiceImpl implements PaymentService {
 		Map<String, Object> result = new HashMap<>();
 		result.put("result", paymentMapper.deleteLogByNo(map));
 		return result;
+	}
+
+	@Override
+	public Map<String, Object> isHavePass(HttpServletRequest request) {
+		try {
+			HttpSession session = request.getSession();
+			String email = ((UserDTO)session.getAttribute("loginUser")).getEmail();
+			Map<String, Object> map = new HashMap<>();
+			map.put("email", email);
+			map.put("result", paymentMapper.selectIsPaymentCnt(map));
+			return map;
+		} catch (NullPointerException e) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("isNotLogin", "loginPlz");
+			return map;
+		}
+		
+		
 	}
 }
