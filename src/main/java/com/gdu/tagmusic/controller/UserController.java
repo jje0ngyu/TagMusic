@@ -71,7 +71,6 @@ public class UserController {
 	@ResponseBody
 	@PostMapping(value="/user/findEmail", produces="application/json")  // 아이디 찾기
 	public Map<String, Object> findEmail(@RequestBody Map<String, Object> map) {
-		System.out.println("컨트롤러");
 		return userService.findUser(map);
 	}
 	// 로그인 - 비밀번호 찾기
@@ -154,6 +153,16 @@ public class UserController {
 	public void modifyName(HttpServletRequest request, HttpServletResponse response) {
 		userService.modifyName(request, response);
 	}
+	// 마이페이지 - 비밀번호 확인
+	@PostMapping("/user/info/checkPw")
+	public Map<String, Object> checkPw(HttpServletRequest request, HttpServletResponse response) {
+		return userService.checkPw(request, response);
+	}
+	// 마이페이지 - 비밀번호 수정
+	@PostMapping("/user/info/modifyPw")
+	public void modifyPw(HttpServletRequest request, HttpServletResponse response) {
+		userService.modifyPw(request, response);
+	}
 	// 마이페이지 - 휴대폰 수정
 	@PostMapping("/user/info/modifyMobile")
 	public void modifyMobile(HttpServletRequest request, HttpServletResponse response) {
@@ -179,7 +188,7 @@ public class UserController {
 		userService.restoreUser(request, response);
 	}
 	
-	// 회원탈퇴 - 비밀번호 확인
+	// 회원탈퇴 - 비밀번호 확인 후 탈퇴
 	@ResponseBody
 	@PostMapping("/user/retire/checkPw")
 	public Map<String, Object> retire(HttpServletRequest request, HttpServletResponse response) {

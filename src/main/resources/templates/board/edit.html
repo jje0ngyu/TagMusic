@@ -75,10 +75,7 @@
 
 	
 
-	<h1>작성 화면</h1>
-	
-	
-	
+	<h1>수정 화면</h1>
 	
 	<form id="frm_edit" th:object="${board}" th:action="@{/board/modify}" method="post">
 	
@@ -86,12 +83,12 @@
 	
 		<div>
 			<label for="title">제목</label>
-			<input type="text" name="title" id="title">
+			<input type="text" name="title" id="title" th:value="${board.boardTitle}">
 		</div>
 		
 		<div>
 			<label for="content">내용</label>
-			<textarea name="content" id="content"></textarea>				
+			<textarea name="content" id="content" th:text="${board.boardContent}"></textarea>				
 		</div>
 		
 		

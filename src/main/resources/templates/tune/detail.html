@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/mypage.css}">
+<script>
+	
+</script>
+</head>
+<body>
+
+	<h1>음원 등록</h1>
+	
+	<hr>
+	앨범정보 등록
+	<div>
+		<form id="frm_upload" th:action="@{/tune/upload}" method="post" enctype="multipart/form-data">
+			<div>
+				음원 번호 (music_no)_sequence
+			</div>
+			<div>
+				<div>
+					닉네임 (DTO로 노출)
+				</div>
+				<input type="text" name="artist" th:value="${music.email}" readonly>-이 값은 artist를 불러오도록 수정할 것.
+			</div>
+			<div>
+				<div>
+					게시일 (music_upload_date) - sql에서 등록
+				</div>
+				<div>
+					<input type="text" th:value="${music.musicUploadDate}">
+				</div>
+			</div>
+			<div>
+				게시글 수정일 (music_modify_date) - sql에서 등록
+				<div>
+					<input type="text" th:value="${music.musicModifyDate}">
+				</div>
+			</div>
+			<div>
+				<div>
+					<img th:src="|../../../../../${music.imgPath}/${music.imgFilesystem}|">
+					<img th:src="|..\..\..\..\..\${music.imgPath}\${music.imgFilesystem}|">
+					앨범이미지 (has_thumbnail)
+				</div>
+				<img th:src="|..\..\..\${music.imgPath}/${music.imgFilesystem}|" name="image">
+			</div>
+			<div>
+				<div>
+					앨범이름 (music_album)
+				</div>
+				<input type="text" name="musicAlbum" th:value="${music.musicAlbum}">
+			</div>
+			<div>
+				<div>
+					음원(music)
+				</div>
+				<audio controls="controls">
+					 <source th:src="|${music.musicPath} + ${music.musicFilesystem}|" type="audio/mp3" />
+				</audio>
+			</div>
+			<div>
+				<div>
+					음원 이름 (music_title)
+				</div>
+				<input type="text" name="musicTitle" th:value="${music.musicTitle}">
+			</div>
+			<div>
+				<div>
+					장르 (music_genre)
+				</div>
+				<input type="text" name="musicGenre" th:value="${music.musicGenre}">
+			</div>
+			<div>
+				<div>
+					평점/좋아요 수 - sql에서 0으로 시작
+				</div>
+			</div>
+			<div>
+				듣기 / 담기 / 다운 / 다운로드 수 (download_cont) / 선물하기(이용권)
+			</div>
+			<div>
+				
+				<textarea name="musicContent">가사 (music_content)</textarea>
+				<div>
+					가수
+				</div>
+				<div>
+					발매일
+				</div>
+				<div>
+					발매사
+				</div>
+				<div>
+					기획사
+				</div>
+				<div>
+					댓글수 - sql에서0으로 시작
+				</div>
+			</div>
+			<div>
+				아이피 (ip) - serviceimpl에서 등록
+			</div>
+			<input type="submit" id="btn_add" value="등록하기">
+		</form>
+	</div>
+	<a th:href="@{/}">메인으로 이동하기</a>
+</body>
+</html>
