@@ -96,7 +96,7 @@
 	
 	margin: 30px auto;
 	background-color: #323232;
-	height: 800px;
+	height: 1070px;
 	padding : 20px;
 	border-radius: 6px;
 
@@ -135,9 +135,32 @@
 	
 	}
 	
-	.playlist_item_area_right {
+	.playlist_item_area_middle {
 	
 		margin-left: 40px;
+		
+	}
+	
+	.playlist_item_area_right {
+	
+		margin-left: 455px;
+	
+	}
+	
+	.btn_playlist_delete {
+	
+		background-color: #efefef;
+		color: #232323;
+		display: inline-block;
+		width: 90px;
+		height: 35px;
+		line-height: 35px;
+		border-radius: 6px;
+		text-align: center;
+		cursor: pointer;
+		font-weight: 900;
+		padding: 0 10px;
+		
 	
 	}
 	

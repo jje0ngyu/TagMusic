@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.gdu.tagmusic.interceptor.KeepLoginInterceptor;
+import com.gdu.tagmusic.interceptor.PleaseLogininterceptor;
 import com.gdu.tagmusic.interceptor.PreventLoginInterceptor;
 import com.gdu.tagmusic.interceptor.SleepUserCheckingInterceptor;
 
@@ -18,6 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	private KeepLoginInterceptor keepLoginInterceptor;
 	private SleepUserCheckingInterceptor sleepUserCheckingInterceptor;
 	private PreventLoginInterceptor preventLoginInterceptor;
+	private PleaseLogininterceptor pleaseLogininterceptor;
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -33,6 +35,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(preventLoginInterceptor)
 			.addPathPatterns("/user/login/form")
 			.addPathPatterns("/user/join/*");
+		
+		// 비로그인 유저방지 인터셉터
+		registry.addInterceptor(pleaseLogininterceptor)
+		.addPathPatterns("/music/user/playlistPage");	// 플레이리스트
 
 	}
 	

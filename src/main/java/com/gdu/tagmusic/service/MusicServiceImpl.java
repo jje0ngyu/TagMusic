@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,19 +18,22 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 
 import com.gdu.tagmusic.domain.MusicDTO;
-import com.gdu.tagmusic.mapper.HomeMapper;
+import com.gdu.tagmusic.domain.UserDTO;
+import com.gdu.tagmusic.mapper.MusicMapper;
 import com.gdu.tagmusic.util.PageUtil;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Service
-public class HomeServiceImpl implements HomeService {
+public class MusicServiceImpl implements MusicService {
 	
 	
-	private HomeMapper homeMapper;
+	private MusicMapper musicMapper;
 	private PageUtil pageUtil;
 	
+	
+	// [메인페이지]
 	
 	// # 구현 : main화면 최신리스트 조회
 	// 1) music 테이블에 저장된 모든 음악데이터 조회
@@ -43,7 +47,7 @@ public class HomeServiceImpl implements HomeService {
 		
 		// 2. 페이징 처리
 		int recordPerPage = 4;
-		int totalRecordCnt = homeMapper.selectMusicCnt();
+		int totalRecordCnt = musicMapper.selectMusicCnt();
 		
 		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
 		
@@ -53,7 +57,7 @@ public class HomeServiceImpl implements HomeService {
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
 
-		List<MusicDTO> musicList = homeMapper.selectUpdatedMusicList(map);
+		List<MusicDTO> musicList = musicMapper.selectUpdatedMusicList(map);
 
 		
 		// 5. 모든 데이터를 전달할 map
@@ -74,7 +78,7 @@ public class HomeServiceImpl implements HomeService {
 		// db에서 이미지 정보 가져오기 
 		
 		// 경로 : fileutil을 통해 차후 결정
-		MusicDTO music = homeMapper.selectMusicByNo(musicNo);
+		MusicDTO music = musicMapper.selectMusicByNo(musicNo);
 		File file = new File(music.getImgPath(), music.getImgFilesystem());
 		
 		// db 정보를 통해 이미지를 담은 responseentity객체 반환
@@ -113,7 +117,7 @@ public class HomeServiceImpl implements HomeService {
 		int page = Integer.parseInt(opt.orElse("1"));
 
 		int recordPerPage = 10;
-		int totalRecordCnt = homeMapper.selectMusicCnt();
+		int totalRecordCnt = musicMapper.selectMusicCnt();
 		
 		
 		// 2) 페이징 처리
@@ -125,7 +129,7 @@ public class HomeServiceImpl implements HomeService {
 		map.put("end", pageUtil.getEnd());
 		
 		model.addAttribute("paging", pageUtil.getPaging("/music/board/updatedMusic"));	
-		model.addAttribute("musicList", homeMapper.selectUpdatedMusicList(map));
+		model.addAttribute("musicList", musicMapper.selectUpdatedMusicList(map));
 		model.addAttribute("beginNo", totalRecordCnt - (page-1) * pageUtil.getRecordPerPage());		
 		// 게시글 가장 첫번째번호 : html에서 index값을 뺴서 no값을 출력
 		model.addAttribute("pageName", "최신리스트");
@@ -160,7 +164,7 @@ public class HomeServiceImpl implements HomeService {
 				
 				// 2. 페이징 처리
 				int recordPerPage = 6;
-				int totalRecordCnt = homeMapper.selectPopularMusicCnt();
+				int totalRecordCnt = musicMapper.selectPopularMusicCnt();
 				pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
 				
 				// 3. 음악리스트 조회
@@ -170,7 +174,7 @@ public class HomeServiceImpl implements HomeService {
 				map.put("end", pageUtil.getEnd());
 				//map.put("genre", genre);
 
-				List<MusicDTO> musicList = homeMapper.selectPopularMusicList(map);
+				List<MusicDTO> musicList = musicMapper.selectPopularMusicList(map);
 
 				
 				// 5. 모든 데이터를 전달할 map
@@ -189,7 +193,7 @@ public class HomeServiceImpl implements HomeService {
 	
 			// 2. 페이징 처리
 			int recordPerPage = 10;
-			int totalRecordCnt = homeMapper.selectPopularMusicCnt();		
+			int totalRecordCnt = musicMapper.selectPopularMusicCnt();		
 			pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
 			// 3. 음악리스트 조회
 			// - users 테이블, active_log 테이블과 조인하여 해당 게시글의 artist를 조회해온다
@@ -201,12 +205,10 @@ public class HomeServiceImpl implements HomeService {
 		
 			// 4. model로 전달
 				model.addAttribute("paging", pageUtil.getPaging("/music/board/popularMusic"));	
-				model.addAttribute("popularList", homeMapper.selectPopularMusicList(map));
+				model.addAttribute("popularList", musicMapper.selectPopularMusicList(map));
 				model.addAttribute("beginNo", totalRecordCnt - (page-1) * pageUtil.getRecordPerPage());		
 				// 게시글 가장 첫번째번호 : html에서 index값을 뺴서 no값을 출력
 				model.addAttribute("pageName", "인기리스트");
-			
-		
 		
 	}
 	
@@ -224,7 +226,7 @@ public class HomeServiceImpl implements HomeService {
 		
 		// 2. 페이징 처리
 		int recordPerPage = 6;
-		int totalRecordCnt = homeMapper.selectPopularMusicCnt();		
+		int totalRecordCnt = musicMapper.selectPopularMusicCnt();		
 		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
 		
 		// 3. 음악리스트 조회
@@ -234,7 +236,7 @@ public class HomeServiceImpl implements HomeService {
 		map.put("end", pageUtil.getEnd());
 		map.put("genre", genre);
 
-		List<MusicDTO> musicList = homeMapper.selectPopularMusicGenreList(map);
+		List<MusicDTO> musicList = musicMapper.selectPopularMusicGenreList(map);
 
 		
 		// 5. 모든 데이터를 전달할 map
@@ -254,7 +256,7 @@ public class HomeServiceImpl implements HomeService {
 				String query = request.getParameter("query");
 
 				int recordPerPage = 10;
-				int totalRecordCnt = homeMapper.selectSearchMusicCnt(query);	// 검색어 query 전달
+				int totalRecordCnt = musicMapper.selectSearchMusicCnt(query);	// 검색어 query 전달
 				
 				// 2) 페이징 처리
 				pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
@@ -266,16 +268,11 @@ public class HomeServiceImpl implements HomeService {
 				map.put("query", query);
 				
 				model.addAttribute("paging", pageUtil.getPaging("/music/main/totalSearch?query=" + query));	
-				model.addAttribute("searchList", homeMapper.selectSearchMusicList(map));
+				model.addAttribute("searchList", musicMapper.selectSearchMusicList(map));
 				model.addAttribute("beginNo", totalRecordCnt - (page-1) * pageUtil.getRecordPerPage());		
 				// 게시글 가장 첫번째번호 : html에서 index값을 뺴서 no값을 출력
 				model.addAttribute("pageName", "검색어 :  " +  query);
-				model.addAttribute("query", query);	// * 검색값도 화면에 반환
-			
-				
-				
-				
-		
+				model.addAttribute("query", query);	// * 검색값도 화면에 반환	
 	}
 	
 	// # 랭킹
@@ -290,12 +287,87 @@ public class HomeServiceImpl implements HomeService {
 		map.put("end", pageUtil.getEnd());
 		
 		
-		List<MusicDTO> rankingList = homeMapper.selectMusicRanking10(map);
+		List<MusicDTO> rankingList = musicMapper.selectMusicRanking10(map);
 		map.put("rankingList", rankingList);
 		
 		// * list를 반환시, list와 map 주의
 		
+
 		return map;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// [유저서비스]
+	// # 유저 플레이리스트 페이지 이동
+	@Override
+	public void selectUserPlaylist(HttpServletRequest request, Model model) {
+	
+		// 1. page 파라미터
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(opt.orElse("1"));
+		
+		// 2. session에 저장된 User EMAIL 가져오기
+		HttpSession session = request.getSession();
+		UserDTO user = (UserDTO) session.getAttribute("loginUser");
+		String email = user.getEmail();
+		int userNo = user.getUserNo();
+		String name = user.getName();
+		//System.out.println(user.getEmail());
+		
+		// 3. 전달할 데이터를 담을 map
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+		map.put("userNo", userNo);
+		
+		// 4. 페이징 처리
+		int totalRecordCnt = musicMapper.selectUserMusicListCnt(map);
+		int recordPerPage = 5;
+		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
+		
+		// 5. model에 플레이리스트 개수, 리스트 반환, 유저명
+		model.addAttribute("userPlaylistCnt", totalRecordCnt);
+		model.addAttribute("userName", name);
+		model.addAttribute("userPlaylist", musicMapper.selectUserMusicList(map));
+
+		
+	}
+	
+	// # 유저 각 플레이리스트에 담긴 음악수
+	@Override
+	public Map<String, Object> selectUserPlaylistMusicCnt(HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		UserDTO user = (UserDTO) session.getAttribute("loginUser");
+		String email = user.getEmail();
+		
+		Optional<String> opt = Optional.ofNullable(request.getParameter("listNo"));
+		int listNo = Integer.parseInt(opt.orElse("1"));
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+		map.put("listNo", listNo);
+		
+		int userPlaylistMusicCnt = musicMapper.selectUserMusicListMusicCnt(map);
+		
+		Map<String, Object> result = new HashMap<>();
+		map.put("userPlaylistMusicCnt", userPlaylistMusicCnt);
+		System.out.println(userPlaylistMusicCnt);
+		return result;
+	}
+	
+	
+	// # 플레이리스트의 썸네일 가져오기 : 가장 최근에 업로드된 음악의 썸네일
+	@Override
+	public ResponseEntity<byte[]> selectUserPlaylist_TopMusicThumbnail(HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

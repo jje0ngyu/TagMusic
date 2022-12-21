@@ -6,9 +6,10 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.tagmusic.domain.MusicDTO;
+import com.gdu.tagmusic.domain.PlaylistDTO;
 
 @Mapper
-public interface HomeMapper {
+public interface MusicMapper {
 	
 	// [main 페이지]
 	
@@ -38,9 +39,17 @@ public interface HomeMapper {
 	// 2) 검색한 음악리스트 조회
 	public List<MusicDTO> selectSearchMusicList(Map<String, Object> map);
 
-
 	// # 랭킹
 	public List<MusicDTO> selectMusicRanking10(Map<String, Object> map);
+	
+	// [유저서비스]
+	// # 유저 플레이리스트 페이지 이동
+	// 1) 유저의 플레이리스트 개수
+	public int 	selectUserMusicListCnt(Map<String, Object> map);
+	// 2) 유저의 플레이리스트 조회
+	public List<PlaylistDTO> selectUserMusicList(Map<String, Object> map);
+	// 3) 해당 유저 플레이리스트별 곡수
+	public int 	selectUserMusicListMusicCnt(Map<String, Object> map);
 
 	
 	
