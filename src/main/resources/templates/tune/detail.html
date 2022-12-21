@@ -17,7 +17,7 @@
 	<div>
 		<form id="frm_upload" th:action="@{/tune/upload}" method="post" enctype="multipart/form-data">
 			<div>
-				음원 번호 (music_no)_sequence
+				음원 번호 <span th:text="${music.musicNo}"></span>
 			</div>
 			<div>
 				<div>
@@ -41,11 +41,9 @@
 			</div>
 			<div>
 				<div>
-					<img th:src="|../../../../../${music.imgPath}/${music.imgFilesystem}|">
-					<img th:src="|..\..\..\..\..\${music.imgPath}\${music.imgFilesystem}|">
 					앨범이미지 (has_thumbnail)
 				</div>
-				<img th:src="|..\..\..\${music.imgPath}/${music.imgFilesystem}|" name="image">
+				<img th:src="|${music.imgPath}/${music.imgFilesystem}|" name="image">
 			</div>
 			<div>
 				<div>
@@ -57,8 +55,8 @@
 				<div>
 					음원(music)
 				</div>
-				<audio controls="controls">
-					 <source th:src="|${music.musicPath} + ${music.musicFilesystem}|" type="audio/mp3" />
+				<audio controls="controls" autoplay controlsList="nodownload">
+					 <source th:src="@{/tune/display(musicNo=${music.musicNo})}" type="audio/mp3" />
 				</audio>
 			</div>
 			<div>
@@ -81,6 +79,20 @@
 			<div>
 				듣기 / 담기 / 다운 / 다운로드 수 (download_cont) / 선물하기(이용권)
 			</div>
+			
+			<h3>첨부 목록 및 다운로드</h3>
+			<div>
+				<a th:href="@{/tune/download(musicNo=${music.musicNo})}">
+					<div th:if="${music.hasThumbNail == 1}">
+						<img th:src="@{/tune/display(musicNo=${music.musicNo})}" class="attach_img">
+					</div>
+					<div th:if="${music.hasThumbNail == 0}">
+						<img th:src="@{/images/text.png}" width="50px" class="attach_img">
+					</div>
+				</a>
+			</div>
+			
+			
 			<div>
 				
 				<textarea name="musicContent">가사 (music_content)</textarea>

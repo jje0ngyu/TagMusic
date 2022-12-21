@@ -4,11 +4,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.tagmusic.service.TuneService;
@@ -32,10 +36,24 @@ public class TuneController {
 		return "redirect:/tune/detail";
 	}
 	
-	// 음원 상세보기
+	// 음원 상세보기 - 페이지 이동
 	@GetMapping("/tune/detail")
 	public String detailTune (@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, Model model) {
 		model.addAttribute("music", tuneService.getMusicByNo(musicNo));
 		return "tune/detail";
+	}
+	
+	// 음원 상세보기 - 나타내기?
+	@ResponseBody
+	@GetMapping("/tune/display")
+	public ResponseEntity<byte[]> display(@RequestParam int musicNo){
+		return tuneService.display(musicNo);
+	}
+	
+	// 음원 상세보기 - 다운로드
+	@ResponseBody
+	@GetMapping("/tune/download")
+	public ResponseEntity<Resource> download(@RequestHeader("User-Agent") String userAgent, @RequestParam("musicNo") int musicNo) {
+		return tuneService.download(userAgent, musicNo);
 	}
 }

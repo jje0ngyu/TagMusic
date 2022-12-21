@@ -9,6 +9,9 @@ public interface TuneMapper {
 	
 	public MusicDTO selectMusicByNo (int musicNo);
 	public int insertMusic (MusicDTO music);
+	
+	// 음원 다운로드
+	public int updateDownloadCnt(int musicNo);
 }
 	
 

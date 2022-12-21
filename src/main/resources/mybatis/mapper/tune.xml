@@ -17,6 +17,14 @@
 			(MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE) 
 		VALUES
 			(MUSIC_SEQ.NEXTVAL, #{email}, #{musicTitle}, #{musicContent}, #{musicAlbum}, #{musicGenre}, #{ip}, #{imgOrigin}, #{imgFilesystem}, #{musicOrigin}, #{musicFilesystem}, 0, #{imgPath}, #{musicPath}, #{hasThumbNail}, SYSDATE)
-	</insert>	
+	</insert>
+	
+	
+	<!-- 음원 다운로드 - 다운 횟수 증가 -->
+	<update id="updateDownloadCnt" parameterType="int">
+		UPDATE MUSIC
+		   SET DOWNLOAD_CNT = DOWNLOAD_CNT + 1
+		 WHERE MUSIC_NO = #{musicNo}
+	</update>
 	
 </mapper>
