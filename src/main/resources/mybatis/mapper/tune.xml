@@ -6,11 +6,17 @@
 
 <mapper namespace="com.gdu.tagmusic.mapper.TuneMapper">
 
+	<select id="selectMusicByNo" parameterType="int" resultType="MusicDTO">
+		SELECT MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE
+		  FROM MUSIC
+		 WHERE MUSIC_NO = #{musicNo}
+	</select>
+
 	<insert id="insertMusic" parameterType="MusicDTO">
 		INSERT INTO MUSIC
-			(MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLODA_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL) 
+			(MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE) 
 		VALUES
-			(MUSIC_SEQ.NEXTVAL, #{email}, #{musicTitle}, #{musicContent}, #{musicAlbum}, #{musicGenre}, SYSDATE, #{ip}, #{imgOrigin}, #{imgFilesystem}, #{musicOrigin}, #{musicFilesystem}, 0, #{imgPath}, #{musicPath}, #{hasThumbNail})
+			(MUSIC_SEQ.NEXTVAL, #{email}, #{musicTitle}, #{musicContent}, #{musicAlbum}, #{musicGenre}, #{ip}, #{imgOrigin}, #{imgFilesystem}, #{musicOrigin}, #{musicFilesystem}, 0, #{imgPath}, #{musicPath}, #{hasThumbNail}, SYSDATE)
 	</insert>	
 	
 </mapper>

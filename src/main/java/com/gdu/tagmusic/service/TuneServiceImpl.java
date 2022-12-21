@@ -24,6 +24,8 @@ public class TuneServiceImpl implements TuneService {
 	private TuneMapper tuneMapper;
 	private MyFileUtil myFileUtil; 
 	
+	
+	// 음원 등록
 	@Override
 	public void addMusic(MultipartHttpServletRequest request, HttpServletResponse response) {
 		// 파라미터
@@ -88,7 +90,7 @@ public class TuneServiceImpl implements TuneService {
 			if(musicFile != null && musicFile.isEmpty() == false) {  // 둘 다 필요함
 				
 				// 원래 이름
-				musicOrigin = imgFile.getOriginalFilename();
+				musicOrigin = musicFile.getOriginalFilename();
 				musicOrigin = musicOrigin.substring(musicOrigin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
 				
 				// 저장할 이름
@@ -132,5 +134,12 @@ public class TuneServiceImpl implements TuneService {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	// 음원 상세보기
+	@Override
+	public MusicDTO getMusicByNo(int musicNo) {
+		MusicDTO music = tuneMapper.selectMusicByNo(musicNo);
+		return music;
 	}
 }

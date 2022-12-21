@@ -5,15 +5,6 @@
 <title>Insert title here</title>
 <link rel="stylesheet" th:href="@{/css/mypage.css}">
 <script>
-	$(function(){
-		fn_add();
-	});
-	
-	function fn_add(){
-		$('#frm_upload').submit(function(){
-			alert('음원을 등록합니다.');
-		});
-	}
 	
 </script>
 </head>
@@ -29,49 +20,58 @@
 				음원 번호 (music_no)_sequence
 			</div>
 			<div>
-				<input type="hidden" name="email" th:value="${session.loginUser.email}">
 				<div>
 					닉네임 (DTO로 노출)
 				</div>
-				<input type="text" name="artist" th:value="${session.loginUser.artist}" readonly>
+				<input type="text" name="artist" th:value="${music.email}" readonly>-이 값은 artist를 불러오도록 수정할 것.
 			</div>
 			<div>
 				<div>
 					게시일 (music_upload_date) - sql에서 등록
 				</div>
+				<div>
+					<input type="text" th:value="${music.musicUploadDate}">
+				</div>
 			</div>
 			<div>
 				게시글 수정일 (music_modify_date) - sql에서 등록
+				<div>
+					<input type="text" th:value="${music.musicModifyDate}">
+				</div>
 			</div>
 			<div>
 				<div>
+					<img th:src="|../../../../../${music.imgPath}/${music.imgFilesystem}|">
+					<img th:src="|..\..\..\..\..\${music.imgPath}\${music.imgFilesystem}|">
 					앨범이미지 (has_thumbnail)
 				</div>
-				<input type="file" name="image">
+				<img th:src="|..\..\..\${music.imgPath}/${music.imgFilesystem}|" name="image">
 			</div>
 			<div>
 				<div>
 					앨범이름 (music_album)
 				</div>
-				<input type="text" name="musicAlbum">
+				<input type="text" name="musicAlbum" th:value="${music.musicAlbum}">
 			</div>
 			<div>
 				<div>
 					음원(music)
 				</div>
-				<input type="file" name="music">
+				<audio controls="controls">
+					 <source th:src="|${music.musicPath} + ${music.musicFilesystem}|" type="audio/mp3" />
+				</audio>
 			</div>
 			<div>
 				<div>
 					음원 이름 (music_title)
 				</div>
-				<input type="text" name="musicTitle">
+				<input type="text" name="musicTitle" th:value="${music.musicTitle}">
 			</div>
 			<div>
 				<div>
 					장르 (music_genre)
 				</div>
-				<input type="text" name="musicGenre">
+				<input type="text" name="musicGenre" th:value="${music.musicGenre}">
 			</div>
 			<div>
 				<div>
