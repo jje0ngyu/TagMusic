@@ -53,16 +53,24 @@
 		});
 	}
 	
+	
+	
 </script>
 </head>
 <body>
 
 	<div>
 	
-		<h1>수정화면</h1>
+		<h1>편집화면</h1>
 		
-		<form th action="@{/upload/modify}" method="post" enctype="multipart/form-data">
+		<form th action="@{/upload/modify}" th:object="${upload}" method="post" enctype="multipart/form-data">
 		
+			<div>
+				<button>편집완료</button>
+				<input type="button" value="목록" onclick="location.href='/upload/list'">
+			</div>
+
+			<input type="hidden" name="uploadNo" th:value="${upload.uploadNo}">
 		
 			<div>
 				<label for="title">제목</label>
@@ -70,7 +78,7 @@
 			</div>
 			<div>
 				<label for="content">내용</label>
-				<input type="text" id="content" name="content" th:value="${upload.content}">
+				<textarea name="content" id="content" th:text="${upload.Content}"></textarea>				
 			</div>
 			<div>
 				<label for="files">첨부 추가</label>
@@ -78,21 +86,17 @@
 				<div id="file_list"></div>
 			</div>
 		
-			<div>
-				<button>수정완료</button>
-				<input type="button" value="목록" onclick="location.href='/upload/list'">
-			</div>
-
-			<input type="hidden" name="uploadNo" th:value="${upload.uploadNo}">
-		
+			
 		</form>
 		
 		<div>
-			<h3>첨부삭제</h3>	
-			<div th:each="attach : ${attachList}">
-				<div>
-					${attach.origin}<a class="lnk_remove_attach" href="/upload/attach/remove?uploadNo=${upload.uploadNo}&attachNo=${attach.attachNo}"><i class="fa-regular fa-trash-can"></i></a>
-				</div>
+			<h3>첨부삭제</h3>
+			
+			<tr th:each="attach : ${attachList}">
+			    <a class="lnk_remove_attach" th:href="@{/upload/attach/remove?uploadNo=${upload.uploadNo}&attachNo=${attach.attachNo}}"><td th:text="${attach.origin}"></td></a>
+			</tr>
+			
+			<!-- <i class="fa-regular fa-trash-can"></i> -->      
 			
 		</div>
 	
