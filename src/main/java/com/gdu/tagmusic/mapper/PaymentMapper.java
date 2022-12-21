@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.tagmusic.domain.PassDTO;
+import com.gdu.tagmusic.domain.PaymentLogDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 
 @Mapper
@@ -21,4 +22,9 @@ public interface PaymentMapper {
 	public Date selectPassDday(Map<String, Object> map);
 	public int deletePass();
 	public UserDTO selectRecipientByEmail(Map<String, Object> map);
+	
+	public int selectPaymentLogListCount();
+	public List<PaymentLogDTO> selectPaymentLogList(Map<String, Object> map);
+	
+	public int deleteLogByNo(Map<String, Object> map);
 }

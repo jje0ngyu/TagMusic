@@ -74,6 +74,40 @@
 		  FROM USERS
 		 WHERE EMAIL = #{email}
 	</select>
+	<!-- 결제이력의 총개수 (페이징처리 위함) -->
+	<select id="selectPaymentLogListCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM PAYMENT_LOG
+	</select>
+		<!-- 결제 이력을 확인하기 위한 쿼리 -->
+	<select id="selectPaymentLogList" parameterType="Map" resultType="PaymentLogDTO">
+		SELECT A.PAY_LOG_NO, A.PAY_LOG_EMAIL, A.PAY_LOG_NAME, A.PAY_LOG_DATE, A.PAY_LOG_PG, A.PAY_LOG_PRICE
+  		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY PAY_LOG_NO DESC) AS ROW_NUM, PAY_LOG_NO, PAY_LOG_EMAIL, PAY_LOG_NAME, PAY_LOG_DATE, PAY_LOG_PG, PAY_LOG_PRICE
+				  FROM PAYMENT_LOG
+				 WHERE PAY_LOG_EMAIL = #{email}) A
+		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	<!-- 결제 이력 삭제  -->
+	<delete id="deleteLogByNo" parameterType="Map">
+		DELETE
+		  FROM PAYMENT_LOG
+		 <where>
+		 	<foreach item="payLogNo" collection="payLogNo" open="PAY_LOG_NO in (" separator="," close=")" >
+		 		#{payLogNo}
+		 	</foreach>
+		 </where>
+	</delete>
+
+	<select id="selectPaymentBuyLogList">
+	SELECT A.PAY_LOG_NO, A.PAY_LOG_EMAIL, A.PAY_LOG_NAME, A.PAY_LOG_DATE, A.PAY_LOG_PG, A.PAY_LOG_PRICE
+ 	  FROM (SELECT ROW_NUMBER() OVER(ORDER BY PAY_LOG_NO DESC) AS ROW_NUM, PAY_LOG_NO, PAY_LOG_EMAIL, PAY_LOG_NAME, PAY_LOG_DATE, PAY_LOG_PG, PAY_LOG_PRICE
+			  FROM PAYMENT_LOG
+			 WHERE PAY_LOG_EMAIL = #{email}
+			   AND PAY_LOG_NAME NOT LIKE '%(TO%') A
+	 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	
 	
 </mapper>
 

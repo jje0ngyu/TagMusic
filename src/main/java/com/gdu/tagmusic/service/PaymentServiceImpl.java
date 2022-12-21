@@ -3,6 +3,7 @@ package com.gdu.tagmusic.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,12 +14,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gdu.tagmusic.mapper.PaymentMapper;
+import com.gdu.tagmusic.util.PageUtil;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
 	
 	@Autowired
 	private PaymentMapper paymentMapper;
+	
+	@Autowired 
+	private PageUtil pageUtil;
 	
 	@Override
 	public Map<String, Object> getPassList() {
@@ -135,6 +140,33 @@ public class PaymentServiceImpl implements PaymentService {
 		result.put("email", email);
 		result.put("result", paymentMapper.selectRecipientByEmail(result));
 		System.out.println(result.get("result"));
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> getLogList(HttpServletRequest request) {
+		String email = request.getParameter("email");
+		int page = Integer.parseInt(request.getParameter("page"));
+		int logCount = paymentMapper.selectPaymentLogListCount();
+		pageUtil.setPageUtil(page, 10, logCount);
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+		map.put("begin", pageUtil.getBegin());
+		map.put("end", pageUtil.getEnd());
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("logList", paymentMapper.selectPaymentLogList(map));
+		result.put("pageUtil", pageUtil);
+		
+		return result;
+	}
+	
+	@Override
+	public Map<String, Object> removeLog(List<String> payLogNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("payLogNo", payLogNo);
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", paymentMapper.deleteLogByNo(map));
 		return result;
 	}
 }

@@ -1,5 +1,7 @@
 package com.gdu.tagmusic.controller;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.tagmusic.service.PaymentService;
@@ -53,10 +56,23 @@ public class PaymentController {
 		return paymentService.presentPass(request);
 	}
 	
-	/*
-	 * @PostMapping("/payment/history") public String payLog() { return
-	 * "payment/log"; }
-	 */
+	
+	@PostMapping("/payment/history")
+	public String payLog() {
+		return "payment/log";
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/payment/buyLogList",produces="application/json; charset=UTF-8")
+	public Map<String, Object> paymentBuyLogList(HttpServletRequest request){
+		return paymentService.getLogList(request);
+	}
+	
+	@ResponseBody
+	@PostMapping(value="/payment/logRemove",produces="application/json; charset=UTF-8")
+	public Map<String, Object> removeLog(@RequestParam(value="payLogNo[]") List<String> payLogNo){
+		return paymentService.removeLog(payLogNo);
+	}
 }
 
 
