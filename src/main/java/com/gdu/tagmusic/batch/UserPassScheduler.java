@@ -18,7 +18,7 @@ public class UserPassScheduler{
 	@Autowired
 	private PaymentMapper paymentMapper;
 	
-	@Scheduled(cron="0 0/1 * * * *")
+	@Scheduled(cron="0 0 4 * * *")
 	public void execute() {
 		paymentMapper.deletePass();
 	}
