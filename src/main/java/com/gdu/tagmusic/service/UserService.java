@@ -37,6 +37,8 @@ public interface UserService {
 	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response);
 	public void modifyArtist(HttpServletRequest request, HttpServletResponse response);
 	public void modifyName(HttpServletRequest request, HttpServletResponse response);
+	public Map<String, Object> checkPw(HttpServletRequest request, HttpServletResponse response);
+	public void modifyPw(HttpServletRequest request, HttpServletResponse response);
 	public void modifyMobile(HttpServletRequest request, HttpServletResponse response);
 	
 	// 휴면
