@@ -73,6 +73,12 @@ public class PaymentController {
 	public Map<String, Object> removeLog(@RequestParam(value="payLogNo[]") List<String> payLogNo){
 		return paymentService.removeLog(payLogNo);
 	}
+	
+	@ResponseBody
+	@PostMapping(value="/payment/isPassHave",produces="application/json; charset=UTF-8")
+	public Map<String, Object> passHave(HttpServletRequest request){
+		return paymentService.isHavePass(request);
+	}
 }
 
 

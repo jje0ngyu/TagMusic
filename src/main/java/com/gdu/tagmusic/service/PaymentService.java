@@ -15,6 +15,7 @@ public interface PaymentService {
 	
 	public Map<String, Object> getLogList(HttpServletRequest request);
 	public Map<String, Object> removeLog(List<String> payLogNo);
+	public Map<String, Object> isHavePass(HttpServletRequest request);
 	
 	
 }

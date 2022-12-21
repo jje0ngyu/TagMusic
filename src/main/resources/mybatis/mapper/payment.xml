@@ -51,7 +51,7 @@
 	</update>
 	
 	<!-- 이용권 끝나는 날짜 D_DAY -->
-	<select id="selectRemainiend" parameterType="map" resultType="integer">
+	<select id="selectRemainiend" parameterType="map" resultType="Integer">
 		SELECT FLOOR(EXPIRATION_DATE - SYSDATE)
  		  FROM PAYMENT
 	     WHERE EMAIL = #{email}
@@ -97,18 +97,11 @@
 		 	</foreach>
 		 </where>
 	</delete>
-
-	<select id="selectPaymentBuyLogList">
-	SELECT A.PAY_LOG_NO, A.PAY_LOG_EMAIL, A.PAY_LOG_NAME, A.PAY_LOG_DATE, A.PAY_LOG_PG, A.PAY_LOG_PRICE
- 	  FROM (SELECT ROW_NUMBER() OVER(ORDER BY PAY_LOG_NO DESC) AS ROW_NUM, PAY_LOG_NO, PAY_LOG_EMAIL, PAY_LOG_NAME, PAY_LOG_DATE, PAY_LOG_PG, PAY_LOG_PRICE
-			  FROM PAYMENT_LOG
-			 WHERE PAY_LOG_EMAIL = #{email}
-			   AND PAY_LOG_NAME NOT LIKE '%(TO%') A
-	 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+	<select id="selectIsPaymentCnt" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		  FROM PAYMENT
+		 WHERE EMAIL = #{email}
 	</select>
-	
-	
-	
 </mapper>
 
 
