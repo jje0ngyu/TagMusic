@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.tagmusic.mapper.TuneMapper">
+
+	<insert id="insertMusic" parameterType="MusicDTO">
+		INSERT INTO MUSIC
+			(MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLODA_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL) 
+		VALUES
+			(MUSIC_SEQ.NEXTVAL, #{email}, #{musicTitle}, #{musicContent}, #{musicAlbum}, #{musicGenre}, SYSDATE, #{ip}, #{imgOrigin}, #{imgFilesystem}, #{musicOrigin}, #{musicFilesystem}, 0, #{imgPath}, #{musicPath}, #{hasThumbNail})
+	</insert>	
+	
+</mapper>
