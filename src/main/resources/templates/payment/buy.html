@@ -307,8 +307,8 @@ function fn_presentTicket(e){
 							}
 							alert(msg);
 							fn_remainingDay();
-							fn_init();						}
-						
+							fn_init();
+						}
 					}); 
 				} else {
 				var msg = '';
@@ -351,12 +351,33 @@ function fn_presentTicket(e){
 				<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
 				<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
 				<input type="hidden" class="isUser" th:data-user="true">
-				
-				<form th:action="@{/payment/history}" method="post">
-					<input type="hidden" name="userName" th:value="${session.loginUser.name}">
-					<input type="submit" value="결제이력">
-				</form>
-			</div> 
+			</div>
+			<!-- 패스 -->
+			<div>
+				<input type="button" id="isPassHave" value="티켓가지고있어?" onclick="isPassHave();">
+			</div>
+			<script>
+			function isPassHave(){
+				$.ajax({
+					type: 'post',
+					url: '/payment/isPassHave',
+					dataType: 'json',
+					success: function(resData){
+						console.log(resData.isNotLogin);
+						if(resData.result == 0){
+							if(confirm('이용권이 없는 회원입니다. 이용권을 구매하러 가시겠습니까?')){
+								location.href="/payment/buy";
+							}
+						}
+						if(resData.isNotLogin == 'loginPlz'){
+							if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
+								location.href="/user/login/form";
+							}
+						}
+					}
+				});
+			}
+			</script>
 			<div id="buyPageDiv">
 			</div>
 		</div>

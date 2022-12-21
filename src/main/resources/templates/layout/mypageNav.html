@@ -12,15 +12,19 @@
 		<div class="text_box">개인정보 관리</div>
 		<div class="text_box">로그인 및 보안</div>
 		<div class="text_box">개인정보 이용</div>
-		<form th:action="@{/payment/history}" method="post">
+		<div class="text_box" id="paymentHistory">결제이력</div>
+		<form th:action="@{/payment/history}" method="post" id="submit_history">
            <input type="hidden" name="userName" th:value="${session.loginUser.name}">
-           <input type="submit" value="결제이력">
         </form>
 		<script>
 			// 내 정보 홈
 			$('#mypageHome').click(function(){
 				location.href='/user/mypage';
 			});
+			$('#paymentHistory').click(function(){
+				$('#submit_history').submit();
+			});
+			
 		</script>
 	</nav>
 </body>
