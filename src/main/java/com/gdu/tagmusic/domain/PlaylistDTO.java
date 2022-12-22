@@ -17,5 +17,6 @@ public class PlaylistDTO {
 	private String email;
 	private String listName;
 	private UserDTO userDTO;
+	private int playlistMusicCnt;
 	
 }

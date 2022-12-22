@@ -9,65 +9,87 @@
 <script th:inline="javascript">
 
 	$(document).ready(function() {
-		
+		//fn_aaa();
 		//fn_userPlaylist();	// 구현 : 유저의 플레이리스트 조회 ajax
 		//fn_playlistCnt();
-
+		//fn_deletePlaylist();		// 구현: 플레이리스트 삭제
+		//fn_playlistCnt();
 	});
 	
-	// 구현 : 유저의 플레이리스트 전부 불러오기
-	/* function fn_userPlaylist() {
-		
-		$.ajax({
-			type: 'get',
-			url: '/music/user/playlist',
-			data : 'page=1',
-			dataType: 'json',
-			success: function(resData) {	
-				console.log(resData);
-				
-				$('.playlist_item_area').empty();	// 리스트 초기화
-				
-				$.each(resData.userPlaylist, function(index, playlist) {
-					console.log(playlist.listName);
-					
-					 $('<div class="playlist_item">')
-					.append( $('<div class="playlist_item_area_left"><div class="playlist_thumbnail"></div></div>') )
-					.append( $('<div class="playlist_item_area_middle"><div class="playlist_item_area_right_item">'+playlist.listName+'</div></div>') )
-					.append( $('<div class="playlist_item_area_right">').append( $('<div class="btn_playlist_delete">삭제</div>') ) ) 
-					.appendTo('.playlist_item_area');
-				}); 
-			}
-		});
-	} */
+	// 구현 : 유저의 플레이리스트 목록 조회
+
 	
-	function fn_playlistCnt() {
+/* 	
+	function fn_userPlaylist() {
+		
+			$.ajax({
+				type: 'get',
+				url: '/music/user/playlist',
+				dataType: 'json',
+				success: function(resData) {
+					
+					// 유저명
+					$('#playlist_title').empty();		
+					$('#playlist_title')
+					.append( $('<p class="playlist_title_username">' + resData.userName + '님의 플레이리스트</p>') )
+					.append( $('<div class="playlist_cnt">※ 총 <span class="playlist_cnt_emp">' + resData.userPlaylistCnt + ' </span> 개의 플레이리스트를 보유하고 있습니다</div>') )
+					// 플레이리스트 총 개수
+					//$('#playlist_header').empty();
+					
+					// 플레이리스트 목록
+					$('.playlist_item_area').empty();	
+					$.each(resData.userPlaylist, function(index, playlist) {	
+						
+						$('<div class="playlist_item">')
+						.append( $('<div class="playlist_item_area_left"><div class="playlist_thumbnail"></div></div>') )
+						.append( $('<div class="playlist_item_area_middle">')
+								.append( $('<div class="playlist_item_area_right_item">').text(playlist.listName) ) )
+								//.append( $('<div class="playlist_item_area_right_item userPlaylist_cnt">').text(playlist.playlistMusicCnt) ) )			// 기능 : 플레이리스트별 수록곡 수
+			
+						.append( $('<div class="playlist_item_area_right"><div class="btn_playlist_delete">삭제</div></div>') )
+						.appendTo('.playlist_item_area');
+						//fn_playlistCnt();			// 기능 : 플레이리스트별 수록곡 수
+					}); 
+				}
+			});	
+	}  */
+	
+	/* function fn_playlistCnt() {	
 		
 		$.ajax({
 			type: 'get',
-			url: '/music/user/playlistCnt',
+			url: '/music/user/playlistMusicCnt',
+			dataType: 'json',
+			success: function(resData) {
+				
+				$('.playlist_item_area_right').empty();	// 음악수 초기화
+				
+				$.each(resData.userPlaylistMusicCntList, function(index, cnt) {
+
+					$('.playlist_item_area_right').text(cnt + ' 곡');
+				});  
+			}
+		});	
+	}  */
+	
+	/* function fn_playlist_thumbnail() {	// 기능 : 플레이리스트별 썸네일
+		
+		$.ajax({
+			type: 'get',
+			url: '/music/user/playlistThumbnail',
 			data : 'listNo=' + $('#listNo').val(),
 			dataType: 'json',
-			success: function(resData) {	
-				console.log(resData);
+			success: function(resData) {
 				
-				$('.playlist_item_area').empty();	// 리스트 초기화
+				$('.userPlaylist_cnt').empty();	// 음악수 초기화
 				
-				$.each(resData.userPlaylist, function(index, playlist) {
-					console.log(playlist.listName);
-					
-					 $('<div class="playlist_item">')
-					.append( $('<div class="playlist_item_area_left"><div class="playlist_thumbnail"></div></div>') )
-					.append( $('<div class="playlist_item_area_middle"><div class="playlist_item_area_right_item">'+playlist.listName+'</div></div>') )
-					.append( $('<div>').append( $('<div class="playlist_item_area_right">').append( $('<div class="btn_playlist_delete">삭제</div>') ) ) )
-					.appendTo('.playlist_item_area');
-				}); 
+				
+				alert('a');
 			}
-		});
+		});	
 		
 		
-		
-	}
+	} */
 
 
 
@@ -81,17 +103,20 @@
 
 	<div class="session">
 		<div th:replace="~{layout/side.html::side_layout}"></div>
+	
 		
 		<div class="playlist_container">
 			<div class="playlist">
-				<div class="playlist_title">
+				<!-- 기능 : 유저명  -->
+				<div id="playlist_title" class="playlist_title">
 					<p class="playlist_title_username" th:text="|${userName} 님의 플레이리스트|"></p>
-		
+					<div class="playlist_cnt">※ 총 <span class="playlist_cnt_emp" th:text="${userPlaylistCnt}"></span>개의 플레이리스트를 보유하고 있습니다</div>
 				</div>
-				<div class="playlist_header">
-					<span class="playlist_cnt" th:text="|${userPlaylistCnt} 개|"></span>
-					<span class="btn_playlist_add" >     +    플레이리스트 만들기</span>
-					<span class="btn_playlist_edit" >     +    편집하기</span>
+				
+				<!-- 기능 : 유저 플레이리스트 총 개수  -->
+				<div id="playlist_header" class="playlist_header">
+					<div class="btn_playlist_add">+    플레이리스트 만들기</div>
+					<div class="btn_playlist_edit">  편집하기</div>     
 					<script>
 					
 						// * 윈도우함수
@@ -110,21 +135,24 @@
 				
 				<div class="playlist_body">
 					<div class="playlist_item_area">
-					<input type="hidden" id="page" th:value="1">
 					
-						
 						<!--  # 구현 : 플레이리스트 목록 불러오기 -->
 						<div class="playlist_item" th:each="playlist,vs:${userPlaylist}">
 						
 							<input type="hidden" id="listNo" th:value="${playlist.listNo}">
 							<div class="playlist_item_area_left">
-								<div class="playlist_thumbnail"></div>
+								<div class="playlist_thumbnail">
+									
+										<img class="item_image" th:src="@{/music/user/playlistThumbnail(listNo=${playlist.listNo})}">
+								
+									
+								</div>
 							</div>
 							
 							<div class="playlist_item_area_middle">
 								<div class="playlist_item_area_right_item" th:text="${playlist.listName}"></div>
-								<div class="">
-									<!-- # 기능 : 각 플레이리스트별 음악개수 : ajax  -->
+								<div class="playlist_item_area_right_item userPlaylist_cnt">
+						 
 									
 								</div>
 							</div>
@@ -135,6 +163,7 @@
 							</div>
 						</div>
 					</div>
+					<div class="playlist_item_area_right"></div>
 					
 			
 				

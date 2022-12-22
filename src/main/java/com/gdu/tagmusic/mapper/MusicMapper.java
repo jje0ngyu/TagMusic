@@ -44,12 +44,23 @@ public interface MusicMapper {
 	
 	// [유저서비스]
 	// # 유저 플레이리스트 페이지 이동
+	
+	// 1) 유저의 listNo 전부 반환
+	public List<Integer> selectMusicListNoList(Map<String, Object> map);
+	
+	// 2) 유저의 플레이리스트 썸네일 반환
+	public MusicDTO selectUserPlaylistThumbnail(int listNo);
+
+	
+		
 	// 1) 유저의 플레이리스트 개수
 	public int 	selectUserMusicListCnt(Map<String, Object> map);
 	// 2) 유저의 플레이리스트 조회
 	public List<PlaylistDTO> selectUserMusicList(Map<String, Object> map);
 	// 3) 해당 유저 플레이리스트별 곡수
-	public int 	selectUserMusicListMusicCnt(Map<String, Object> map);
+	public List<Integer> selectUserMusicListMusicCnt(Map<String, Object> map);
+	// 4) 유저의 플레이리스트 LIST_NO
+	//public List<Integer> selectUserPlaylistNoList(Map<String, Object> map);
 
 	
 	

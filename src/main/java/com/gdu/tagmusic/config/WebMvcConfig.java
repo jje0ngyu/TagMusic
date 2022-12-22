@@ -38,7 +38,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		
 		// 비로그인 유저방지 인터셉터
 		registry.addInterceptor(pleaseLogininterceptor)
-		.addPathPatterns("/music/user/playlistPage");	// 플레이리스트
+		.addPathPatterns("/music/move/playlist");	// 플레이리스트
 
 	}
 	

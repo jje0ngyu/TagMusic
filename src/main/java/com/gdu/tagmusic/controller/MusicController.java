@@ -99,27 +99,46 @@ public class MusicController {
 		return "/layout/musicPlayer";
 	}
 	
+	
+	
 	// [유저서비스 : 맵핑 : /music/user/**]
-	// # 구현 : 플레이리스트 목록페이지 이동	===================================== 
-	@GetMapping("/music/user/playlist")
-	public String userPlaylist(HttpServletRequest request, Model model) {
-			musicService.selectUserPlaylist(request, model);
+	// 구현 : 플레이리스트 페이지 이동 
+	@GetMapping("/music/move/playlist")
+	public String movePlaylist(HttpServletRequest request, Model model) {
+		musicService.selectUserPlaylist(request, model);
 		return "/musicUserService/playlistPage";
 	}
 	
+	@ResponseBody
+	@GetMapping("/music/user/playlistThumbnail")
+	public ResponseEntity<byte[]> playlistThubnail (HttpServletRequest request) {
+		return musicService.selectPlaylistThumbnail(request);
+	}
+	
+	// 구현 : 유저 플레이리스트 목록조회
+	/*
+	 * @ResponseBody
+	 * 
+	 * @GetMapping(value="/music/user/playlist", produces="application/json") public
+	 * Map<String, Object> userPlaylist(HttpServletRequest request) { return
+	 * musicService.selectUserPlaylist(request); }
+	 */
 	
 	// # 기능 : 플레이리스트별 음악개수 조회
-	@GetMapping("/music/user/playlistCnt")
-	public Map<String, Object> userPlaylistCnt(HttpServletRequest request) {
-		return musicService.selectUserPlaylistMusicCnt(request);
-	}
-	
+	/*
+	 * @ResponseBody
+	 * 
+	 * @GetMapping(value="/music/user/playlistMusicCnt",
+	 * produces="application/json") public Map<String, Object>
+	 * userPlaylistCnt(HttpServletRequest request) { return
+	 * musicService.selectUserPlaylistMusicCnt(request); }
+	 */
 	
 	// # 구현 : 플레이리스트 생성 페이지
-	@GetMapping("/music/user/addPlaylist")
-	public String CreatePlaylistPage() {
-		return "/musicUserService/createPlaylist";
-	}
+	/*
+	 * @GetMapping("/music/user/addPlaylist") public String CreatePlaylistPage() {
+	 * return "/musicUserService/createPlaylist"; }
+	 */
 	
 	
 	// # 기능 : 플레이리스트 썸네일 불러오기

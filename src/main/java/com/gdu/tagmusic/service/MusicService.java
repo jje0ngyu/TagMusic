@@ -37,14 +37,24 @@ public interface MusicService {
 	
 	// [유저서비스]
 	
-	// # 1) 유저 플레이리스트목록요청 
-	public void selectUserPlaylist(HttpServletRequest request, Model model); 
+	// # 유저 플레이리스트
 	
-	public Map<String, Object> selectUserPlaylistMusicCnt(HttpServletRequest request); 
+	// 1. 유저의 listNo 가져오기
+	public void selectUserPlaylist(HttpServletRequest request, Model model);
 	
-	// # 유저 플레이리스트 썸네일 가져오기
-	public ResponseEntity<byte[]> selectUserPlaylist_TopMusicThumbnail(HttpServletRequest request);
-
+	// 2. 유저 플레이리스트 썸네일
+	public ResponseEntity<byte[]> selectPlaylistThumbnail(HttpServletRequest request);
+	
+	/*
+	 * // 1) 유저 플레이리스트 목록조회 public Map<String, Object>
+	 * selectUserPlaylist(HttpServletRequest request);
+	 * 
+	 * // 2) 유저 플레이리스트별 수록곡 개수 public Map<String, Object>
+	 * selectUserPlaylistMusicCnt(HttpServletRequest request);
+	 * 
+	 * // 3) 유저 플레이리스트 썸네일 가져오기 public ResponseEntity<byte[]>
+	 * selectUserPlaylist_TopMusicThumbnail(HttpServletRequest request);
+	 */
 	
 	
 

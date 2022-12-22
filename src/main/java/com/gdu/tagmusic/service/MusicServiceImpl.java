@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 
 import com.gdu.tagmusic.domain.MusicDTO;
+import com.gdu.tagmusic.domain.PlaylistDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.MusicMapper;
 import com.gdu.tagmusic.util.PageUtil;
@@ -297,19 +298,21 @@ public class MusicServiceImpl implements MusicService {
 	}
 	
 	
-	
-	
-	
+
 	
 	
 	
 	
 	// [유저서비스]
-	// # 유저 플레이리스트 페이지 이동
+	
+	// # 유저 플레이리스트 목록 조회
+	
+	// 1. 유저 플레이리스트 페이지 이동 및 조회
+
 	@Override
 	public void selectUserPlaylist(HttpServletRequest request, Model model) {
 	
-		// 1. page 파라미터
+		// 1. page 파라미터 : 전달해오지 않았음, 1만 필요하니 디폴트값 1만 사용
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
 		
@@ -321,6 +324,7 @@ public class MusicServiceImpl implements MusicService {
 		String name = user.getName();
 		//System.out.println(user.getEmail());
 		
+		
 		// 3. 전달할 데이터를 담을 map
 		Map<String, Object> map = new HashMap<>();
 		map.put("email", email);
@@ -328,48 +332,79 @@ public class MusicServiceImpl implements MusicService {
 		
 		// 4. 페이징 처리
 		int totalRecordCnt = musicMapper.selectUserMusicListCnt(map);
-		int recordPerPage = 5;
+		int recordPerPage = 5;	// 5개만 조회
 		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
 		
-		// 5. model에 플레이리스트 개수, 리스트 반환, 유저명
+		// 5. map에 플레이리스트 개수, 리스트 반환, 유저명
 		model.addAttribute("userPlaylistCnt", totalRecordCnt);
 		model.addAttribute("userName", name);
 		model.addAttribute("userPlaylist", musicMapper.selectUserMusicList(map));
-
-		
 	}
 	
-	// # 유저 각 플레이리스트에 담긴 음악수
+	// 2. 플레이리스트 썸네일 불러오기
 	@Override
-	public Map<String, Object> selectUserPlaylistMusicCnt(HttpServletRequest request) {
+	public ResponseEntity<byte[]> selectPlaylistThumbnail(HttpServletRequest request) {
 		
-		HttpSession session = request.getSession();
-		UserDTO user = (UserDTO) session.getAttribute("loginUser");
-		String email = user.getEmail();
-		
-		Optional<String> opt = Optional.ofNullable(request.getParameter("listNo"));
-		int listNo = Integer.parseInt(opt.orElse("1"));
-		
-		Map<String, Object> map = new HashMap<>();
-		map.put("email", email);
-		map.put("listNo", listNo);
-		
-		int userPlaylistMusicCnt = musicMapper.selectUserMusicListMusicCnt(map);
-		
-		Map<String, Object> result = new HashMap<>();
-		map.put("userPlaylistMusicCnt", userPlaylistMusicCnt);
-		System.out.println(userPlaylistMusicCnt);
-		return result;
-	}
-	
-	
-	// # 플레이리스트의 썸네일 가져오기 : 가장 최근에 업로드된 음악의 썸네일
-	@Override
-	public ResponseEntity<byte[]> selectUserPlaylist_TopMusicThumbnail(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		// 파라미터 : listNo
+				Optional<String> opt = Optional.ofNullable(request.getParameter("listNo"));
+				int listNo = Integer.parseInt(opt.orElse("0"));
+				
+			
+				
+				MusicDTO music = musicMapper.selectUserPlaylistThumbnail(listNo);
+				
+				File file = new File(music.getImgPath(), music.getImgFilesystem());
+				
+				// db 정보를 통해 이미지를 담은 responseentity객체 반환
+				ResponseEntity<byte[]> result = null;
 
+				try {
+					
+					if(music.getHasThumbNail() == 1) {
+						
+						HttpHeaders headers = new HttpHeaders();
+						headers.add("Content-Type", Files.probeContentType(file.toPath()));
+						File thumbnail = new File("c:\\" + music.getImgPath(), music.getImgFilesystem());
+						result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(thumbnail), null, HttpStatus.OK);
+						return result;
+						
+					} 
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+				return null;
+			}
+	
+	/*
+	 * // # 유저 각 플레이리스트에 담긴 음악수
+	 * 
+	 * @Override public Map<String, Object>
+	 * selectUserPlaylistMusicCnt(HttpServletRequest request) {
+	 * 
+	 * // 1. session에 저장된 userDTO에서 email과 userNo를 반환받는다 HttpSession session =
+	 * request.getSession(); UserDTO user = (UserDTO)
+	 * session.getAttribute("loginUser"); String email = user.getEmail(); int userNo
+	 * = user.getUserNo();
+	 * 
+	 * // 2. 데이터를 map에 담ㄷ음 Map<String, Object> map = new HashMap<>();
+	 * map.put("email", email); map.put("userNo", userNo);
+	 * 
+	 * // 3. 해당 유저의 정보를 가지고 playlist의 수록곡 수를 조회
+	 * 
+	 * List<Integer> userPlaylistMusicCntList =
+	 * musicMapper.selectUserMusicListMusicCnt(map);
+	 * map.put("userPlaylistMusicCntList", userPlaylistMusicCntList);
+	 * System.out.println(userPlaylistMusicCntList); return map; }
+	 * 
+	 * 
+	 * // # 플레이리스트의 썸네일 가져오기 : 가장 최근에 업로드된 음악의 썸네일
+	 * 
+	 * @Override public ResponseEntity<byte[]>
+	 * selectUserPlaylist_TopMusicThumbnail(HttpServletRequest request) { // TODO
+	 * Auto-generated method stub return null; }
+	 */
 
 	
 	
