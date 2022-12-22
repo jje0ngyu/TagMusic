@@ -10,6 +10,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.HTTP;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,7 +92,7 @@ public class MusicServiceImpl implements MusicService {
 				
 				HttpHeaders headers = new HttpHeaders();
 				headers.add("Content-Type", Files.probeContentType(file.toPath()));
-				File thumbnail = new File("c:\\" + music.getImgPath(), music.getImgFilesystem());
+				File thumbnail = new File(music.getImgPath(),  "s_" + music.getImgFilesystem());
 				result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(thumbnail), null, HttpStatus.OK);
 				return result;
 				
@@ -341,6 +342,7 @@ public class MusicServiceImpl implements MusicService {
 		model.addAttribute("userPlaylist", musicMapper.selectUserMusicList(map));
 	}
 	
+	
 	// 2. 플레이리스트 썸네일 불러오기
 	@Override
 	public ResponseEntity<byte[]> selectPlaylistThumbnail(HttpServletRequest request) {
@@ -352,7 +354,7 @@ public class MusicServiceImpl implements MusicService {
 			
 				
 				MusicDTO music = musicMapper.selectUserPlaylistThumbnail(listNo);
-				
+				//System.out.println(music);
 				File file = new File(music.getImgPath(), music.getImgFilesystem());
 				
 				// db 정보를 통해 이미지를 담은 responseentity객체 반환
@@ -360,11 +362,12 @@ public class MusicServiceImpl implements MusicService {
 
 				try {
 					
+					
 					if(music.getHasThumbNail() == 1) {
 						
 						HttpHeaders headers = new HttpHeaders();
 						headers.add("Content-Type", Files.probeContentType(file.toPath()));
-						File thumbnail = new File("c:\\" + music.getImgPath(), music.getImgFilesystem());
+						File thumbnail = new File(music.getImgPath(),  "s_" + music.getImgFilesystem());
 						result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(thumbnail), null, HttpStatus.OK);
 						return result;
 						
@@ -376,6 +379,50 @@ public class MusicServiceImpl implements MusicService {
 
 				return null;
 			}
+	
+	// 3. 플레이리스트 생성창 이동 + 유저이름 얻기
+	@Override
+	public void getUserName(HttpServletRequest request, Model  model) {
+		
+		HttpSession session = request.getSession();
+		UserDTO user = (UserDTO) session.getAttribute("loginUser");
+		String name = user.getName();
+		
+		
+		Optional<String> opt = Optional.ofNullable(request.getParameter("listNo"));
+		int listNo = Integer.parseInt(opt.orElse("0"));
+		
+		
+		
+		
+		model.addAttribute("userName", name);
+		model.addAttribute("listName", musicMapper.selectPlaylistName(listNo));
+		
+		
+	}
+	
+	// 구현 : 플레이리스트 추가
+	@Override
+	public void addPlaylist(HttpServletRequest request) {
+		
+		// 1. 파라미터 : 플레이리스트명
+		String listName = request.getParameter("listName");
+		
+		// 2. session의 email과 user
+		HttpSession session = request.getSession();
+		UserDTO user = (UserDTO) session.getAttribute("loginUser");
+		String email = user.getEmail();
+		
+		
+		// 3. map에 담기 : 플레이리스트에 필요한 칼럼 2가지
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+		map.put("listName", listName);
+		
+		// 4. INSERT
+		int result = musicMapper.insertPlaylist(map);
+		
+	}
 	
 	/*
 	 * // # 유저 각 플레이리스트에 담긴 음악수

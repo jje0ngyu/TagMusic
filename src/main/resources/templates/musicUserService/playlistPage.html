@@ -54,7 +54,7 @@
 			});	
 	}  */
 	
-	/* function fn_playlistCnt() {	
+	function fn_playlistCnt() {	
 		
 		$.ajax({
 			type: 'get',
@@ -70,7 +70,7 @@
 				});  
 			}
 		});	
-	}  */
+	}  
 	
 	/* function fn_playlist_thumbnail() {	// 기능 : 플레이리스트별 썸네일
 		
@@ -90,7 +90,7 @@
 		
 		
 	} */
-
+	
 
 
 </script>
@@ -121,12 +121,13 @@
 					
 						// * 윈도우함수
 						$('.btn_playlist_add').click(function() {
-							window.open('/music/user/playlist/add/', 'page', 'scrollbars=no, width=600px, height=400px, top=290px, left=575px, resizable=no');
+							window.open('/music/move/playlistAdd', 'page', 'scrollbars=no, width=600px, height=400px, top=290px, left=575px, resizable=no');
 							// 전체 너비 1650, 높이 900
 							// 팝업창 너비 600, 높이 400
 							// left : 525, top : 250
-					
 						});
+						
+					
 						
 						
 					
@@ -141,10 +142,18 @@
 						
 							<input type="hidden" id="listNo" th:value="${playlist.listNo}">
 							<div class="playlist_item_area_left">
+								<input type="checkbox" class="playlist_box">
 								<div class="playlist_thumbnail">
 									
-										<img class="item_image" th:src="@{/music/user/playlistThumbnail(listNo=${playlist.listNo})}">
-								
+									<!-- # 기능 : 플레이리스트 썸네일 가져오기 : 가장 최신곡 썸네일
+									- 문제 : userPlaylist에는 musicNo를 못가져옴
+									- 해결 : 업로드 시 썸네일이 별도로 설정되지 않으면 
+									 -->
+									 <!-- 1 후에 썸네일 처리하기
+									<img class="thumbnail" th:src="@{/music/user/playlistThumbnail(listNo=${playlist.listNo})}"> -->
+									<!-- 2) 업로드시 디폴트 이미지로 자동으로 업로드 되기 때문에 -->
+									<img class="playlist_thumbnail" th:src="@{/images/defaultImage.png}">
+							
 									
 								</div>
 							</div>
@@ -157,13 +166,31 @@
 								</div>
 							</div>
 							<div>
-								<div class="playlist_item_area_right">
-									<div class="btn_playlist_delete">삭제</div>
+								<div class="playlist_item_area_right">  
+									<div class="btn_playlist btn_playlist_modify" id="btn_playlist_modify" th:value="${playlist.listNo}">편집하기</div>
+									<script>
+					
+									// * 윈도우함수
+									$('#btn_playlist_modify').click(function() {
+										window.open('/music/move/playlisteModify?listNo=' + $('#listNo').val(), 'page', 'scrollbars=no, width=600px, height=400px, top=290px, left=575px, resizable=no');
+										// 전체 너비 1650, 높이 900
+										// 팝업창 너비 600, 높이 400
+										// left : 525, top : 250
+									});
+						
+						
+						
+					
+					</script>
+									
+									
+									<div class="btn_playlist" id="btn_playlist_delete" th:value="${playlist.listNo}">삭제</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="playlist_item_area_right"></div>
+					
+					
 					
 			
 				

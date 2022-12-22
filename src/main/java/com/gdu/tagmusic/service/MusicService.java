@@ -45,6 +45,12 @@ public interface MusicService {
 	// 2. 유저 플레이리스트 썸네일
 	public ResponseEntity<byte[]> selectPlaylistThumbnail(HttpServletRequest request);
 	
+	// 3. 유저 이름얻기
+	public void getUserName(HttpServletRequest request, Model  model);
+	
+	// 4. 플레이리스트 추가
+	public void addPlaylist(HttpServletRequest request);
+	
 	/*
 	 * // 1) 유저 플레이리스트 목록조회 public Map<String, Object>
 	 * selectUserPlaylist(HttpServletRequest request);

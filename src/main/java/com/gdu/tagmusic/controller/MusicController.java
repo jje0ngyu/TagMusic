@@ -115,6 +115,32 @@ public class MusicController {
 		return musicService.selectPlaylistThumbnail(request);
 	}
 	
+	// # 구현 : 플레이리스트 생성 페이지 열기
+	
+	@GetMapping("/music/move/playlistAdd") 
+	public String moveCreatePlaylist(HttpServletRequest request, Model model) {
+		musicService.getUserName(request, model);
+		return "/musicUserService/createPlaylistPage"; 
+	}
+	
+	// # 구현 : 플레이리스트 생성 : 팝업창 종료와 
+	
+	@GetMapping("/music/user/playlistAdd") 
+	public String addPlaylist(HttpServletRequest request) {
+		musicService.addPlaylist(request);
+		return "/musicUserService/createPlaylistPage"; 
+	}
+	
+	// 구현 : 플레이리스트 수정 페이지 열기 : 
+	@GetMapping("/music/move/playlistModify")
+	public String modifyPlaylist(HttpServletRequest request, Model model) {
+		musicService.getUserName(request, model);
+		return "/musicUserService/updatePlaylistPage"; 
+	}
+
+	
+	
+	
 	// 구현 : 유저 플레이리스트 목록조회
 	/*
 	 * @ResponseBody
@@ -134,11 +160,6 @@ public class MusicController {
 	 * musicService.selectUserPlaylistMusicCnt(request); }
 	 */
 	
-	// # 구현 : 플레이리스트 생성 페이지
-	/*
-	 * @GetMapping("/music/user/addPlaylist") public String CreatePlaylistPage() {
-	 * return "/musicUserService/createPlaylist"; }
-	 */
 	
 	
 	// # 기능 : 플레이리스트 썸네일 불러오기

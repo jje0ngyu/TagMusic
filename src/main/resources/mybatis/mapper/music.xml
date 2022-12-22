@@ -275,6 +275,27 @@
 			WHERE B.ROW_NUM = 1
 	</select>
 	
+	<!-- 4. 플레이리스트 추가 -->
+	<insert id="insertPlaylist" parameterType="map" >
+		INSERT INTO PLAYLIST VALUES (PLAYLIST_SEQ.NEXTVAL, #{email}, #{listName})
+	</insert>
+	
+	<!-- 5. 플레이리스트 생성방지 -->
+	<select id="selectUserMusiclistCnt" parameterType="String" resultType="int" >
+		SELECT COUNT(*) 
+		FROM PLAYLIST
+		WHERE EMAIL = #{email}
+	
+	</select>
+	
+	<!-- 6. 플레이리스트명 받기 -->
+	
+	<select id="selectPlaylistName" parameterType="int" resultType="String" >
+		SELECT LIST_NAME
+		FROM PLAYLIST
+		WHERE LIST_NO = #{listNo}
+	</select>
+	
 	
 	
 	

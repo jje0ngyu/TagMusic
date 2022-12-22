@@ -51,6 +51,14 @@ public interface MusicMapper {
 	// 2) 유저의 플레이리스트 썸네일 반환
 	public MusicDTO selectUserPlaylistThumbnail(int listNo);
 
+	// 3) 플레이리스트 추가
+	public int insertPlaylist(Map<String, Object> map);
+	
+	// 4) 플레이리스트 개수 방지 : 인터셉터
+	public int selectUserMusiclistCnt(String email);
+	
+	// 5) 플레이리스트 이름 받기
+	public String selectPlaylistName(int listNo);
 	
 		
 	// 1) 유저의 플레이리스트 개수

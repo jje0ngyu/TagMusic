@@ -132,10 +132,10 @@
 	}
 	
 	.playlist_item_area_left {
-	
-		width: 200px;
+
+		width: 220px;
 		height: 150px;
-		border-right: 1px solid #898989;
+		border-right: 2px solid #676767;
 		
 	}
 	
@@ -145,28 +145,33 @@
 		display: inline-block;
 		width: 160px;
 		height: 150px;
-		background-color: red;
+		
+		margin-right: 5px;
 	
 	}
 	
 	.playlist_item_area_middle {
 	
-		margin-left: 25px;
-		margin-right: 460px;
+		width: 560px;
+		margin-left: 30px;
+		
 	}
 	
 	.playlist_item_area_right {
+		
+		display: flex;
+		
 	
 		
 	
 	}
 	
-	.btn_playlist_delete {
+	.btn_playlist {
 	
 		background-color: #efefef;
 		color: #232323;
 		display: inline-block;
-		width: 90px;
+		width: 60px;
 		height: 35px;
 		line-height: 35px;
 		border-radius: 6px;
@@ -175,6 +180,7 @@
 		font-weight: 900;
 		padding: 0 10px;
 		list-style: none;
+		margin-right: 15px;
 		
 	
 	}
@@ -184,5 +190,17 @@
 		font-size: 20px;
 		font-weight: 800;
 	
+	}
+	
+	.playlist_box {
+		
+		width: 20px;
+		height: 150px;
+		display: inline-block;
+		text-align: center;
+		margin-right: 10px;
+		
+		
+		
 	}
 	
