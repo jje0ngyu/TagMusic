@@ -1,8 +1,6 @@
 package com.gdu.tagmusic.service;
 
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -11,12 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.gdu.tagmusic.domain.UploadDTO;
-
 
 public interface UploadService {
 	
-	public List<UploadDTO> getUploadList();
+	public void getUploadList(Model model);
 	public void save(MultipartHttpServletRequest multipartRequest, HttpServletResponse response);
 	public void getUploadByNo(int uploadNo, Model model);
 	public ResponseEntity<byte[]> display(int attachNo);

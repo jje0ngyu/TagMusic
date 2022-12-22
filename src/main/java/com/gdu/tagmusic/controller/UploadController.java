@@ -23,13 +23,13 @@ public class UploadController {
 	@Autowired
 	private UploadService uploadService;
 	
-	
 	@GetMapping("/upload/list")
-	public String list(Model model) {
-		model.addAttribute("uploadList", uploadService.getUploadList());
+	public String list(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);  
+		uploadService.getUploadList(model);          
 		return "upload/list";
 	}
-	
+
 	@GetMapping("/upload/write")
 	public String write() {
 		return "upload/write";
