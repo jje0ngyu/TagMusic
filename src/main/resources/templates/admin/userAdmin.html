@@ -31,7 +31,7 @@
 				$.each(resData.userList, function(i, user) {
 					
 					$('<tr>')
-					.append( $('<td>').append($('<input type="checkbox" name="userCheck" value="'+ user.userNo +'">')))
+					.append( $('<td>').append($('<input class="blind" type="checkbox" name="userCheck" value="'+ user.userNo +'">')))
 	                .append( $('<td>').append(user.userNo) )
 					.append( $('<td>').append($('<img class="thum" src="'+user.profileImage+'"></img>')))
 	                .append( $('<td>').append(user.name) )
@@ -93,7 +93,7 @@
 				<table>
 					<thead>
 						<tr>
-							<td><input type="checkbox"></td>
+							<td><input type="checkbox" class="blind"></td>
 							<td><span data-title="USER_NO">회원번호</span></td>
 							<td><span data-title="PROFILE_IMAGE">프로필이미지</span></td>
 							<td><span data-title="NAME">이름</span></td>
