@@ -6,15 +6,25 @@
 
 <mapper namespace="com.gdu.tagmusic.mapper.UploadMapper">
 
-	<select id="selectUploadList" resultType="UploadDTO">
-		SELECT U.UPLOAD_NO, U.TITLE, U.CONTENT, U.CREATE_DATE, U.MODIFY_DATE, (SELECT COUNT(*) FROM ATTACH A WHERE U.UPLOAD_NO = A.UPLOAD_NO) AS ATTACH_CNT
-		  FROM UPLOAD U
+	<select id="selectUploadListCount" resultType="int">
+		SELECT COUNT(*)
+		  FROM UPLOAD
+	</select>
+
+	<select id="selectUploadListByMap" parameterType="Map" resultType="UploadDTO">
+		SELECT A.ROW_NUM, A.UPLOAD_NO, A.TITLE, A.CONTENT, A.CREATE_DATE, A.MODIFY_DATE
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_NO DESC) AS ROW_NUM, UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE
+		          FROM UPLOAD) A
+		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
 	
-	<!--
-		UPLOAD_SEQ.NEXTVAL 값을 INSERT 수행 이전에(BEFORE)
-		parameter로 전달되는 UploadDTO의 uploadNo에 넣어 주시오.
-	-->
+	<!-- 게시글의 첨부 개수를 확인하기 위한 쿼리 -->
+	<select id="selectAttachCnt" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+  		  FROM ATTACH
+  	     WHERE UPLOAD_NO = #{uploadNo}
+	</select>
+	
 	<insert id="insertUpload" parameterType="UploadDTO">
 		<selectKey keyProperty="uploadNo" resultType="int" order="BEFORE">
 			SELECT UPLOAD_SEQ.NEXTVAL
@@ -23,7 +33,7 @@
 		INSERT INTO UPLOAD
 			(UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE)
 		VALUES
-			(#{uploadNo}, #{title}, #{content}, SYSTIMESTAMP, SYSTIMESTAMP)
+			(#{uploadNo}, #{title}, #{content}, SYSDATE, SYSDATE)
 	</insert>
 	
 	<insert id="insertAttach" parameterType="AttachDTO">
@@ -61,7 +71,7 @@
 		UPDATE UPLOAD
 		   SET TITLE = #{title}
 		     , CONTENT = #{content}
-		     , MODIFY_DATE = SYSTIMESTAMP
+		     , MODIFY_DATE = SYSDATE
 		 WHERE UPLOAD_NO = #{uploadNo}
 	</update>
 	

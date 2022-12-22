@@ -1,0 +1,112 @@
+새로 추가한 것
+
+-- 테이블 삭제
+DROP TABLE SUMMERNOTE_IMAGE;
+
+
+-- 테이블 생성
+CREATE TABLE SUMMERNOTE_IMAGE
+(
+    BOARD_NO NUMBER,
+    FILESYSTEM VARCHAR2(40 BYTE)
+);
+
+
+-- 서머노트 이미지 외래키 : 블로그를 삭제하면 써머노트에서 사용한 이미지 파일도 삭제한다.
+ALTER TABLE SUMMERNOTE_IMAGE
+    ADD CONSTRAINT FK_SUMMERNOTE_BOARD
+        FOREIGN KEY(BOARD_NO) REFERENCES BOARD(BOARD_NO)
+            ON DELETE CASCADE;
+==============================================================
+WebMvcConfig
+
+@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/load/image/**")
+			.addResourceLocations("file:///C:/summernoteImage/");
+	}
+==================================================================	
+Mybatis-config.xml
+<typeAlias type="com.gdu.tagmusic.domain.SummernoteImageDTO" alias="SummernoteImageDTO" />
+===========================================================================
+batch
+
+public class DeleteWrongSummernoteImages
+
+public class DeleteTempFiles
+
+
+
+============================================================================
+Upload 테이블 전체 확인!
+
+MyFileUtil
+
+// 경로 구분자
+private String sep = Matcher.quoteReplacement(File.separator);
+
+
+// 임시 경로
+	public String getTempPath() {
+		return "/storage" + sep + "temp";
+	}
+	
+	// 써머노트 이미지 경로
+	public String getSummernotePath() {
+		return "/storage" + sep + "summernote";
+	}
+
+
+
+
+
+============================================================================
+
+시퀀스 삭제
+DROP TABLE UPLOAD CASCADE CONSTRAINTS;
+DROP TABLE ATTACH CASCADE CONSTRAINTS;
+
+시퀀스 생성 
+CREATE SEQUENCE ATTACH_SEQ NOCACHE;
+CREATE SEQUENCE UPLOAD_SEQ NOCACHE;
+
+테이블 삭제
+DROP TABLE UPLOAD CASCADE CONSTRAINTS;
+DROP TABLE ATTACH CASCADE CONSTRAINTS;
+
+테이블 생성 
+CREATE TABLE ATTACH
+(
+    ATTACH_NO NUMBER NOT NULL,     -- PK
+    PATH VARCHAR2(300 BYTE),       -- 파일의 경로
+    ORIGIN VARCHAR2(300 BYTE),     -- 파일의 원래 이름
+    FILESYSTEM VARCHAR2(42 BYTE),  -- 파일의 저장된 이름
+    DOWNLOAD_CNT NUMBER,           -- 다운로드 횟수
+    HAS_THUMBNAIL NUMBER,          -- 썸네일이 있으면 1, 없으면 0
+    UPLOAD_NO NUMBER               -- 게시글번호, FK
+);
+
+CREATE TABLE UPLOAD
+(
+    UPLOAD_NO NUMBER NOT NULL,  -- PK
+    TITLE VARCHAR2(100 BYTE),   -- 제목
+    CONTENT VARCHAR2(100 BYTE), -- 내용
+    CREATE_DATE TIMESTAMP,      -- 작성일
+    MODIFY_DATE TIMESTAMP       -- 수정일
+);
+
+기본키
+ALTER TABLE ATTACH
+    ADD CONSTRAINT PK_ATTACH
+        PRIMARY KEY(ATTACH_NO);
+
+ALTER TABLE UPLOAD
+    ADD CONSTRAINT PK_UPLOAD
+        PRIMARY KEY(UPLOAD_NO);
+
+
+-- 외래키 : UPLOAD 테이블
+ALTER TABLE ATTACH
+    ADD CONSTRAINT FK_ATTACH_UPLOAD
+        FOREIGN KEY(UPLOAD_NO) REFERENCES UPLOAD(UPLOAD_NO)
+            ON DELETE CASCADE;
