@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gdu.tagmusic.service.TuneService;
 
@@ -31,8 +32,9 @@ public class TuneController {
 	
 	// 음원 등록 - DB에 등록
 	@PostMapping("/tune/upload")
-	public String uploadTune (MultipartHttpServletRequest request, HttpServletResponse response) {
-		tuneService.addMusic(request, response);
+	public String uploadTune (MultipartHttpServletRequest request, HttpServletResponse response, RedirectAttributes redirect) {
+		int musicNo = tuneService.addMusic(request, response);
+		redirect.addAttribute("musicNo", musicNo);
 		return "redirect:/tune/detail";
 	}
 	

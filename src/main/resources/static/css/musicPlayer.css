@@ -16,9 +16,10 @@
 	.player {
 	position: fixed;
 	left:0; bottom:0;
+	}
 	
-
-	
+	.tune_album_img:hover {
+		cursor: pointer;		
 	}
 	
 	.layout_tagMusic_player {

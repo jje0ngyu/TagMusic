@@ -35,7 +35,7 @@ public class TuneServiceImpl implements TuneService {
 	
 	// 음원 등록
 	@Override
-	public void addMusic(MultipartHttpServletRequest request, HttpServletResponse response) {
+	public int addMusic(MultipartHttpServletRequest request, HttpServletResponse response) {
 		// 파라미터
 		String userNo = request.getParameter("userNo");	// userNo 를 사용하지는 확인필요
 		String email = request.getParameter("email");
@@ -54,7 +54,7 @@ public class TuneServiceImpl implements TuneService {
 		String musicFilesystem = "";
 		String musicPath = "";
 		int hasThumbnail = 0;
-		
+		int musicNo = 0;
 		// 첨부된 파일 목록
 		// 이미지
 		MultipartFile imgFile= request.getFile("image");  // <input type="file" name="file">
@@ -136,13 +136,20 @@ public class TuneServiceImpl implements TuneService {
 					.hasThumbNail(hasThumbnail)
 					.build();
 			Map<String, Object> result = new HashMap<>();
-			result.put("result", tuneMapper.insertMusic(music));
+			int insertSuccess = tuneMapper.insertMusic(music);
+			if(insertSuccess >= 1) {
+				musicNo = tuneMapper.selectMaxmMsicNoByEmail(email);
+			}
+			result.put("result", insertSuccess);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		
+		return musicNo;
+		
 	}
+	
 	
 	// 음원 상세보기
 	@Override
