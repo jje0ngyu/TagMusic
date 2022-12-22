@@ -140,7 +140,7 @@
 						<!--  # 구현 : 플레이리스트 목록 불러오기 -->
 						<div class="playlist_item" th:each="playlist,vs:${userPlaylist}">
 						
-							<input type="hidden" id="listNo" th:value="${playlist.listNo}">
+							
 							<div class="playlist_item_area_left">
 								<input type="checkbox" class="playlist_box">
 								<div class="playlist_thumbnail">
@@ -167,12 +167,14 @@
 							</div>
 							<div>
 								<div class="playlist_item_area_right">  
+									<input type="hidden" id="listNo" th:value="${playlist.listNo}">
 									<div class="btn_playlist btn_playlist_modify" id="btn_playlist_modify" th:value="${playlist.listNo}">편집하기</div>
 									<script>
 					
-									// * 윈도우함수
-									$('#btn_playlist_modify').click(function() {
-										window.open('/music/move/playlisteModify?listNo=' + $('#listNo').val(), 'page', 'scrollbars=no, width=600px, height=400px, top=290px, left=575px, resizable=no');
+									// * 윈도우함수: 반복문에서 얻은 val값을 얻고싶을경우 : (1) 클래스 타입을 이벤트 대상으로 삼는다 (2) 이벤트 대상을 기준으로 함수로 대상태그를 찾는다
+									$('.btn_playlist_modify').click(function() {
+										var listNo = $(this).prev().val();
+										window.open('/music/move/playlisteModify?listNo=' + $(this).prev().val() , 'page', 'scrollbars=no, width=600px, height=400px, top=290px, left=575px, resizable=no');
 										// 전체 너비 1650, 높이 900
 										// 팝업창 너비 600, 높이 400
 										// left : 525, top : 250
