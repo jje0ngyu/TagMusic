@@ -43,11 +43,17 @@ public class TuneController {
 		return "tune/detail";
 	}
 	
-	// 음원 상세보기 - 나타내기?
+	// 음원 상세보기 - 음원 정보 호출
 	@ResponseBody
-	@GetMapping("/tune/display")
+	@GetMapping("/tune/display/music")
 	public ResponseEntity<byte[]> display(@RequestParam int musicNo){
 		return tuneService.display(musicNo);
+	}
+	// 음원 상세보기 - 앨범 이미지 정보 호출
+	@ResponseBody
+	@GetMapping("/tune/display/image")
+	public ResponseEntity<byte[]> displayImage(@RequestParam int musicNo){
+		return tuneService.displayImage(musicNo);
 	}
 	
 	// 음원 상세보기 - 다운로드
@@ -56,4 +62,12 @@ public class TuneController {
 	public ResponseEntity<Resource> download(@RequestHeader("User-Agent") String userAgent, @RequestParam("musicNo") int musicNo) {
 		return tuneService.download(userAgent, musicNo);
 	}
+	
+	// 음원 - iframe
+	@GetMapping("/tune/iframe")
+	public String musicPlayer(@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, Model model) {
+		model.addAttribute("music", tuneService.getMusicByNo(musicNo));
+		return "/layout/musicPlayer";
+	}
+	
 }

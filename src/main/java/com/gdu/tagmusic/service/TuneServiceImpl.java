@@ -151,21 +151,43 @@ public class TuneServiceImpl implements TuneService {
 		return music;
 	}
 	
-	// 음원 다운로드
+	// 음원 상세보기 - 음악 display
 	@Override
 	public ResponseEntity<byte[]> display(int musicNo) {
 		MusicDTO music = tuneMapper.selectMusicByNo(musicNo);
-		File file = new File(music.getMusicPath(), music.getMusicFilesystem());
-		System.out.println(file.toPath());
+		File musicFile = new File(music.getMusicPath(), music.getMusicFilesystem());
+		File imgFile = new File(music.getImgPath(), music.getImgFilesystem());
 		ResponseEntity<byte[]> result = null;
 
 		try {
 
 			if(music.getHasThumbNail() == 1) {
 				HttpHeaders headers = new HttpHeaders();
-				headers.add("Content-Type", Files.probeContentType(file.toPath()));
+				headers.add("Content-Type", Files.probeContentType(musicFile.toPath()));
 				File thumbnail = new File(music.getMusicPath(), music.getMusicFilesystem());
 				result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(thumbnail), null, HttpStatus.OK);
+			}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	// 음원 상세보기 - 이미지 display
+	@Override
+	public ResponseEntity<byte[]> displayImage(int musicNo) {
+		MusicDTO music = tuneMapper.selectMusicByNo(musicNo);
+		File imgFile = new File(music.getImgPath(), music.getImgFilesystem());
+		ResponseEntity<byte[]> result = null;
+
+		try {
+
+			if(music.getHasThumbNail() == 1) {
+				HttpHeaders headers = new HttpHeaders();
+				headers.add("Content-Type", Files.probeContentType(imgFile.toPath()));
+				File image = new File(music.getImgPath(), music.getImgFilesystem());
+				result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(image), null, HttpStatus.OK);
 			}
 		
 		} catch (Exception e) {
