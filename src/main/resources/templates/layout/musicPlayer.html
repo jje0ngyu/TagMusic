@@ -5,26 +5,58 @@
 <title th:text="${title}"></title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
-<!--/*
-<link rel="stylesheet" th:href="@{/css/layout.css}">
-<link rel="stylesheet" th:href="@{/css/main.css}">
-<link rel="stylesheet" th:href="@{/css/musicBoard.css}">
-*/-->
 <link rel="stylesheet" th:href="@{/css/musicPlayer.css}">
 
-<script th:inline="javascript">
+<script>
 
 	$(document).ready(function() {
-		fn_click_album_image();
-			
+		fn_audio_play();
+		fn_audio_pause();
+		fn_muted();
+		fn_repeat();
 	});
 	
-	<!-- 이미지를 클릭하면 해당 페이지로 iframe 링크 이동 -->
-	function fn_click_album_image(){
-		$('.tune_album_img').click(function(){
-			if (!$('.iframe_audio').play()) {			
-				$('.iframe_audio').play();
-			}
+	function fn_audio_play() {
+		$('.audio_play').click(function(){
+			document.getElementById('iframe_audio').play();
+			$('.audio_play').addClass('blind');
+			$('.audio_pause').removeClass('blind');
+		});
+	}
+	function fn_audio_pause() {
+		$('.audio_pause').click(function(){
+			document.getElementById('iframe_audio').pause();
+			$('.audio_play').removeClass('blind');
+			$('.audio_pause').addClass('blind');
+		});
+	}
+	
+	/* 음소거 */
+	function fn_muted() {
+		$('.img_no_sound').click(function(){
+			document.getElementById('iframe_audio').muted = false;
+			$('.img_no_sound').addClass('blind');
+			$('.img_sound').removeClass('blind');
+		});
+		$('.img_sound').click(function(){
+			document.getElementById('iframe_audio').muted = true;
+			$('.img_no_sound').removeClass('blind');
+			$('.img_sound').addClass('blind');
+		});
+	}
+	/* 한 곡 반복 재생 */
+	function fn_repeat() {
+		$('.img_no_repeat').click(function(){
+			alert('클릭!');
+			document.getElementById('iframe_audio').loop = true;
+			$('.img_no_repeat').addClass('blind');
+			$('.img_one_repeat').removeClass('blind');
+		});
+		$('.img_one_repeat').click(function(){
+			alert('아얐!!');
+			document.getElementById('iframe_audio').loop = false;
+			$('.img_no_repeat').toggleClass('blind');
+			$('.img_one_repeat').toggleClass('blind');
 		});
 	}
 
@@ -33,7 +65,50 @@
 </head>
 <body>
 	<div>
-		<audio controls="controls" autoplay controlsList="nodownload" class="iframe_audio">
+		<audio controls="controls" autoplay controlsList="nodownload" id="iframe_audio" class="iframe_audio">
 			<source th:src="@{/tune/display/music(musicNo=${music.musicNo})}" type="audio/mp3" />
 		</audio>
 	</div>
+	<div class="controlls_wrap">
+		<div class="left_controlls">
+			<div class="left_controll">
+				<img class="btn_side img_previous" th:src="@{/images/previous.png}">
+			</div>
+			<div class="left_controll">
+				<img class="btn_main img_play audio_play blind" th:src="@{/images/play.png}">			
+				<img class="btn_main img_stop audio_pause" th:src="@{/images/pause.png}">
+			</div>
+			<div class="left_controll">
+				<img class="btn_side img_next" th:src="@{/images/next.png}">
+			</div>
+		</div>
+		
+		<div class="center_controlls">
+			<div class="album_image">
+				<img th:src="@{/tune/display/image(musicNo=${music.musicNo})}" id="iframe_album_image" style="height: 68px;">
+			</div>
+			<div class="music_info">
+				<div class="iframe_msg_title" th:text="${music.musicTitle}"></div>
+				<div class="iframe_msg_content" th:text="|${music.email} - ${music.musicAlbum}|"></div>
+			</div>
+			<div>
+				<img class="btn_side img_dot" th:src="@{/images/dot.png}">
+			</div>
+		</div>
+		
+		<div class="right_controlls">
+			<div class="right_controll">
+				<img class="btn_side img_sound" th:src="@{/images/sound.png}">
+				<img class="btn_side img_no_sound blind" th:src="@{/images/no_sound.png}">
+			</div>
+			<div class="right_controll">
+				<img class="btn_side img_no_repeat" th:src="@{/images/repeat_one_gray.png}">
+				<img class="btn_side img_one_repeat blind" th:src="@{/images/repeat_one_white.png}">
+			</div>
+			<div class="right_controll">
+				<img class="btn_side img_shuffle" th:src="@{/images/shuffle.png}">
+			</div>
+		</div>
+	
+	</div>
+	
