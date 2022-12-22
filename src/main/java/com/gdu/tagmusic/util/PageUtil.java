@@ -81,4 +81,37 @@ public class PageUtil {
 		
 	}
 	
+	public String getPagingForAjax(String path) {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		if(path.contains("?")) {
+			path += "&";
+		} else {
+			path += "?";
+		}
+		
+		// 이전블록 : 1block이 아니면 이전블록이 있다
+		if(beginPage != 1) {
+			sb.append("<a class=\"page_right\" onclick=\"fn_page_list(" + (beginPage + 1) + ");\">이전 ◀</a>");
+		}
+		
+		// 페이지번호 : 현재 페이지는 링크가 없다
+		for(int p = beginPage; p <= endPage; p++) {
+			if(p == page) {
+				sb.append("<span class=\"paging\">" + p + "</span>");
+			} else {
+				sb.append("<a class=\"paging\" onclick=\"fn_page_list("+ p +");\">" + p + "</a>");
+			}
+		}
+		
+		// 다음블록 : 마지막 블록이 아니면 다음블록이 있다
+		if(endPage != totalPage) {
+			sb.append("<a class=\"page_right\" onclick=\"fn_page_list(" + (endPage + 1) + ");\">다음 ▶</a>");
+		}
+		
+		return sb.toString();
+		
+	}
+	
 }

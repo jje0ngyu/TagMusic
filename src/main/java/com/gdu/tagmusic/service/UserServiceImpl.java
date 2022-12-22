@@ -733,6 +733,34 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 		}
 	}
+	// 회원정보수정 - 비밀번호 체크
+	@Override
+	public Map<String, Object> checkPw(HttpServletRequest request, HttpServletResponse response) {
+		
+		// 사용자의 아이디
+		HttpSession session = request.getSession();
+		UserDTO User = (UserDTO)session.getAttribute("User");
+		int userNo = User.getUserNo();
+		
+		String pw = securityUtil.sha256(request.getParameter("pw"));
+		
+		// DB로 보낼 UserDTO 만들기
+		UserDTO user = UserDTO.builder()
+				.userNo(userNo)
+				.pw(pw)
+				.build();
+						
+		// 회원정보수정
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", userMapper.updateUserPassword(user));
+		return result;		
+	}
+	// 회원정보수정 - 비밀번호
+	@Override
+	public void modifyPw(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+	}
+	
 	// 회원정보수정 - 휴대폰
 	@Override
 	public void modifyMobile(HttpServletRequest request, HttpServletResponse response) {
@@ -866,33 +894,33 @@ public class UserServiceImpl implements UserService {
 		
 		// 검색된 결과가 있으면 탈퇴 진행
 		if (selectUser != null) {
-				// 탈퇴시킬 유저정보 저장
-				UserDTO loginUser = (UserDTO)session.getAttribute("loginUser");
-				
-				// 탈퇴할 회원 RetireUserDTO 생성
-				RetireUserDTO retireUser = RetireUserDTO.builder()
-						.userNo(loginUser.getUserNo())
-						.email(loginUser.getEmail())
-						.artist(loginUser.getArtist())
-						.build();
-				
-				// 탈퇴처리
-				int deleteResult = userMapper.deleteUser(loginUser.getUserNo());
-				int insertResult = userMapper.insertRetireUser(retireUser);
-				
-				// 응답
-				try {
-					response.setContentType("text/html; charset=UTF-8");
-					if(deleteResult > 0 && insertResult > 0) {
-						// session 초기화(로그인 사용자 loginUser 삭제를 위해서)
-						session.invalidate();
-						result.put("resData", 1);
-					}
-					
-				} catch(Exception e) {
+			// 탈퇴시킬 유저정보 저장
+			UserDTO loginUser = (UserDTO)session.getAttribute("loginUser");
+			
+			// 탈퇴할 회원 RetireUserDTO 생성
+			RetireUserDTO retireUser = RetireUserDTO.builder()
+					.userNo(loginUser.getUserNo())
+					.email(loginUser.getEmail())
+					.artist(loginUser.getArtist())
+					.build();
+			
+			// 탈퇴처리
+			int deleteResult = userMapper.deleteUser(loginUser.getUserNo());
+			int insertResult = userMapper.insertRetireUser(retireUser);
+			
+			// 응답
+			try {
+				response.setContentType("text/html; charset=UTF-8");
+				if(deleteResult > 0 && insertResult > 0) {
+					// session 초기화(로그인 사용자 loginUser 삭제를 위해서)
+					session.invalidate();
 					result.put("resData", 1);
-					e.printStackTrace();
 				}
+				
+			} catch(Exception e) {
+				result.put("resData", 1);
+				e.printStackTrace();
+			}
 		// 검색된 결과가 없다
 		} else {
 			result.put("resData", 0);

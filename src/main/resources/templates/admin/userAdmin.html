@@ -4,24 +4,51 @@
 <meta charset="UTF-8">
 <title>고객센터>관리자</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script th:src="@{/js/moment-with-locales.js}"></script>
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
 <script th:inline="javascript">
 
 	$(function(){
-		fn_user_list();
+		fn_page_list(page);
 	});
 	
-	function fn_user_list(){
-
+	
+	// 전역변수
+	var page = 1;
+	var totalPage = 0;
+	
+	function fn_page_list(realPage){
+		
 		$.ajax({
-			type : 'post',
+			type : 'get',
 			url : '/admin/user/list',
-			data : 'page=' + $('#page').val(),
+			data : 'page=' + realPage,
 			dataType : 'json',
 			success : function(resData){
-				alert('성공');
+				
+				$('#list_body').empty();
+				
+				$.each(resData.userList, function(i, user) {
+					
+					$('<tr>')
+					.append( $('<td>').append($('<input class="blind" type="checkbox" name="userCheck" value="'+ user.userNo +'">')))
+	                .append( $('<td>').append(user.userNo) )
+					.append( $('<td>').append($('<img class="thum" src="'+user.profileImage+'"></img>')))
+	                .append( $('<td>').append(user.name) )
+	                .append( $('<td>').append(user.artist) )
+					.append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+	                .appendTo('#list_body');
+	                
+				});
+				
+				$('.list_page_footer').empty();
+				$(resData.paging).appendTo('.list_page_footer');
 				
 				
+				
+			},
+			error : function(jqXHR){
+				console.log(jqXHR.status);
 			}
 		});
 	};
@@ -38,6 +65,9 @@
 		<div th:replace="~{layout/side.html::side_layout}"></div>
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
 		<div class="container">
+		
+		<div class="mainbox">
+			
 			<div class="title">관리자 페이지</div>
 			
 			<div class="top_bar">
@@ -60,8 +90,57 @@
 			<div class="user_list_container">
 			
 			
+				<table>
+					<thead>
+						<tr>
+							<td><input type="checkbox" class="blind"></td>
+							<td><span data-title="USER_NO">회원번호</span></td>
+							<td><span data-title="PROFILE_IMAGE">프로필이미지</span></td>
+							<td><span data-title="NAME">이름</span></td>
+							<td><span data-title="ARTIST" >아티스트명</span></td>
+							<td><span data-title="joinDate">가입일</span></td>
+						</tr>
+					</thead>
+					<tbody id="list_body">
+					
+					
+					
+					
+
+
+
+
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="6" class="list_page_footer">
+							   <input type="hidden" id="page" value="1">
+							   
+							   
+							   
+							</td>
+						</tr>
+					</tfoot>
+					
+					
+					
+					
+					
+					
+				</table>
+					
+					
+					
+			
+			
+			
 			
 			</div>
+		
+		
+		
+		</div>
+			
 			
 			
 

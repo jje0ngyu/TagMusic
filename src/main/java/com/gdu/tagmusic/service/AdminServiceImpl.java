@@ -1,5 +1,6 @@
 package com.gdu.tagmusic.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,30 +36,37 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public Map<String, Object> getChatListUsingScroll(HttpServletRequest request, Model model) {
 		
-		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
-		int page = Integer.parseInt(opt.orElse("1"));
-		
-		
-		// 전체 대화 갯수 구하기
-		int totalRecord = adminMapper.selectAllChatCount();
-		
-		
-		// PageUtil 계산하기
-		int recordPerPage = 6;  // 스크롤 한 번에 10개씩 가져가기
-		pageUtil.setPageUtil(page, recordPerPage, totalRecord);
-		
-		// Map 만들기(field, order, begin, end)
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
-		
 		// begin~end 목록 가져오기
-		List<ChatDTO> chatList = adminMapper.selectChatUsingScroll(map);
+		//List<ChatDTO> chatList = adminMapper.selectChatUsingScroll();
+		
+		
+		// 여기서부터임0
+
+		
+		List<ChatDTO> userList = adminMapper.existChatUserList();
+		ArrayList<List<ChatDTO>> arrayList = new ArrayList<>();
+		
+		
+		int size = userList.size();
+		for(int i=0; i<size; i++) {
+			int groupNo = (userList.get(i)).getGroupNo();
+			List<ChatDTO> chatchat = adminMapper.selectChatUsingScroll(groupNo);
+			arrayList.add(chatchat);
+			
+
+		}
+		
+		System.out.println(size);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		resultMap.put("arrayList", arrayList);
+		
+		//System.out.println(resultMap);
+		
 		
 		// 응답할 데이터
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("totalPage", pageUtil.getTotalPage());
-		resultMap.put("chatList", chatList);
+		//Map<String, Object> resultMap = new HashMap<String, Object>();
+		//resultMap.put("chatList", chatList);
 		
 		return resultMap;
 	}
@@ -111,12 +119,46 @@ public class AdminServiceImpl implements AdminService {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("insertChat", chatMapper.insertChat(chat) == 1);
+		map.put("groupNo", groupNo);
 		
+		
+		
+
 		
 		
 		
 		
 		return map;
+	}
+	
+	@Override
+	public Map<String, Object> getUserList(HttpServletRequest request, Model model) {
+		
+		// page 파라미터가 전달되지 않는 경우 page = 1로 처리한다.
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+		int page = Integer.parseInt(opt.orElse("1"));
+		
+		// 전체 레코드(직원) 개수 구하기
+		int totalRecord = adminMapper.countAllUser();
+		
+		// PageUtil 계산하기
+		int recordPerPage = 8;  
+		pageUtil.setPageUtil(page, recordPerPage, totalRecord);
+		
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("begin", pageUtil.getBegin());
+		map.put("end", pageUtil.getEnd());
+			
+		// begin~end 목록 가져오기
+		List<UserDTO> userList = adminMapper.selectUserList(map);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("userList", userList);
+		result.put("pageUtil", pageUtil);
+		result.put("beginNo", totalRecord - page * pageUtil.getRecordPerPage());
+		result.put("paging", pageUtil.getPagingForAjax("/admin/user/list"));
+		return result;
 	}
 	
 	

@@ -62,64 +62,63 @@
 </script>
 <body>
 	<img th:src="@{/images/background_login.jpg}" class="background_login">
-	<div class="backgroung_layer">
-		<div th:replace="~{layout/loginHeader.html::loginFragment}"></div>
-		<div class="agree_box">
-			<div class="container">
-				<form id="frm_agree" th:action="@{/user/join/write}">
-					<!-- 모두 동의 -->
-					<div class="lbl_bpx">
-						<input type="checkbox" id="check_all" class="blind">
-						<label for="check_all" class="lbl_all">
-							<span class="check_text">태그뮤직 이용약관, 개인정보 수집 및 이용, 위치기반서비스 이용약관(선택), 프로모션 정보 수신(선택)에 모두 동의합니다.</span>
-						</label>
+	<div class="backgroung_layer"></div>
+	<div th:replace="~{layout/loginHeader.html::loginFragment}"></div>
+	<div class="agree_box">
+		<div class="container">
+			<form id="frm_agree" th:action="@{/user/join/write}">
+				<!-- 모두 동의 -->
+				<div class="lbl_bpx">
+					<input type="checkbox" id="check_all" class="blind">
+					<label for="check_all" class="lbl_all">
+						<span class="check_text">태그뮤직 이용약관, 개인정보 수집 및 이용, 위치기반서비스 이용약관(선택), 프로모션 정보 수신(선택)에 모두 동의합니다.</span>
+					</label>
+				</div>
+				<!-- 개별 동의 -->
+				<div class="lbl_bpx">
+					<input type="checkbox" id="service" class="check_one blind">
+					<label for="service" class="lbl_one">
+						<span class="check_text">이용약관 동의(필수)</span>
+					</label>
+					<div>
+						<textarea>본 약관은 ...</textarea>
 					</div>
-					<!-- 개별 동의 -->
-					<div class="lbl_bpx">
-						<input type="checkbox" id="service" class="check_one blind">
-						<label for="service" class="lbl_one">
-							<span class="check_text">이용약관 동의(필수)</span>
-						</label>
-						<div>
-							<textarea>본 약관은 ...</textarea>
-						</div>
+				</div>
+				<div class="lbl_bpx">
+					<input type="checkbox" id="privacy" class="check_one blind">
+					<label for="privacy" class="lbl_one">
+						<span class="check_text">개인정보수집 동의(필수)</span>
+					</label>
+					<div>
+						<textarea>개인정보보호법에 따라 ...</textarea>
 					</div>
-					<div class="lbl_bpx">
-						<input type="checkbox" id="privacy" class="check_one blind">
-						<label for="privacy" class="lbl_one">
-							<span class="check_text">개인정보수집 동의(필수)</span>
-						</label>
-						<div>
-							<textarea>개인정보보호법에 따라 ...</textarea>
-						</div>
+				</div>
+				<div class="lbl_bpx">
+					<input type="checkbox" id="location" name="location" class="check_one blind">
+					<label for="location" class="lbl_one">
+						<span class="check_text">위치정보수집 동의(선택)</span>
+					</label>
+					<div>
+						<textarea>위치정보 ...</textarea>
 					</div>
-					<div class="lbl_bpx">
-						<input type="checkbox" id="location" name="location" class="check_one blind">
-						<label for="location" class="lbl_one">
-							<span class="check_text">위치정보수집 동의(선택)</span>
-						</label>
-						<div>
-							<textarea>위치정보 ...</textarea>
-						</div>
+				</div>
+				<div class="lbl_bpx">
+					<input type="checkbox" id="promotion" name="promotion" class="check_one blind">
+					<label for="promotion" class="lbl_one">
+						<span class="check_text">마케팅 동의(선택)</span>
+					</label>
+					<div>
+						<textarea>이벤트 ...</textarea>
 					</div>
-					<div class="lbl_bpx">
-						<input type="checkbox" id="promotion" name="promotion" class="check_one blind">
-						<label for="promotion" class="lbl_one">
-							<span class="check_text">마케팅 동의(선택)</span>
-						</label>
-						<div>
-							<textarea>이벤트 ...</textarea>
-						</div>
-					</div>
-					<!-- 버튼 -->
-					<div class="btn_box">
-						<input class="btn cancel" type="button" value="취소" onclick="history.back();">
-						<button class="btn next">다음</button>
-					</div>
-				</form>
-			</div>
+				</div>
+				<!-- 버튼 -->
+				<div class="btn_box">
+					<input class="btn cancel" type="button" value="취소" onclick="history.back();">
+					<button class="btn next">다음</button>
+				</div>
+			</form>
 		</div>
-		
 	</div>
+		
 </body>
 </html>

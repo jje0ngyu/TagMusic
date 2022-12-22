@@ -36,7 +36,7 @@ public class AdminController {
 		return adminService.getDetailChat(request);
 	}
 	
-	// 이거랑
+	// 관리자페이지로 이동하는 단순 매핑
 	@GetMapping("/admin/user/control")
 	public String userControl() {
 		return "admin/userAdmin";
@@ -44,9 +44,10 @@ public class AdminController {
 	
 	// (ajax)로 처리할 예정
 	@ResponseBody
-	@GetMapping("/admin/user/list")
-	public String getUserList() {
-		return "admin/userAdmin";
+	@GetMapping(value="/admin/user/list", produces="application/json")
+	public Map<String, Object> getUserList(HttpServletRequest request, Model model) {
+		return adminService.getUserList(request, model);
+		
 	}
 	
 	
