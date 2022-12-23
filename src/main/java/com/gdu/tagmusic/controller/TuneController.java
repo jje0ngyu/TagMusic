@@ -41,7 +41,6 @@ public class TuneController {
 	// 음원 상세보기 - 페이지 이동
 	@GetMapping("/tune/detail")
 	public String detailTune (@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, Model model) {
-		System.out.println("detail.musicNo: " + musicNo);
 		model.addAttribute("music", tuneService.getMusicByNo(musicNo));
 		return "tune/detail";
 	}
@@ -68,8 +67,14 @@ public class TuneController {
 	
 	// 음원 - iframe
 	@GetMapping("/tune/iframe")
-	public String musicPlayer(@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, Model model) {
+	public String musicPlayer(@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, HttpServletRequest request, Model model) {
 		System.out.println("iframe.musicNo: " + musicNo);
+		/*
+		if(musicNo == 0) {
+			Optional<String> opt = Optional.ofNullable(request.getSession().getAttribute("musicNo"));
+			musicNo = Integer.parseInt();
+		}
+		*/
 		model.addAttribute("music", tuneService.getMusicByNo(musicNo));
 		System.out.println(model);
 		return "/layout/musicPlayer";
