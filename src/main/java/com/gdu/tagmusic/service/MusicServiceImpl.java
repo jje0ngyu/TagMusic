@@ -10,7 +10,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.json.HTTP;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -92,7 +91,8 @@ public class MusicServiceImpl implements MusicService {
 				
 				HttpHeaders headers = new HttpHeaders();
 				headers.add("Content-Type", Files.probeContentType(file.toPath()));
-				File thumbnail = new File(music.getImgPath(),  "s_" + music.getImgFilesystem());
+				File thumbnail = new File("c:\\" + music.getImgPath(), music.getImgFilesystem());
+				//File thumbnail = new File(music.getImgPath(),  "s_" + music.getImgFilesystem());
 				result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(thumbnail), null, HttpStatus.OK);
 				return result;
 				
@@ -326,6 +326,7 @@ public class MusicServiceImpl implements MusicService {
 		//System.out.println(user.getEmail());
 		
 		
+		
 		// 3. 전달할 데이터를 담을 map
 		Map<String, Object> map = new HashMap<>();
 		map.put("email", email);
@@ -336,10 +337,26 @@ public class MusicServiceImpl implements MusicService {
 		int recordPerPage = 5;	// 5개만 조회
 		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
 		
+		// 플레이리스트 조회 : 음악이 0개인 플레이리스트도 조회
+		List<PlaylistDTO> userPlaylist = musicMapper.selectUserMusicList(map);
+		
+		// 5. 썸네일이 존재하는지 여부확인을 위한 처리
+		// -방법 : 플레이리스트의 listNo를 배열로 가져와, mymusic테이블과 music테이블을 조인
+		
+		// 반환한 listNo를 list타입 배열로 생성
+		/*
+		 * List<Integer> listNoList = new ArrayList<>(); for(int i = 0; i < 5; i++) {
+		 * int listNo = userPlaylist.get(i).getListNo(); listNoList.add(listNo); }
+		 */
+		
+		//map.put("listNoList", listNoList);
+		
+		
 		// 5. map에 플레이리스트 개수, 리스트 반환, 유저명
 		model.addAttribute("userPlaylistCnt", totalRecordCnt);
 		model.addAttribute("userName", name);
-		model.addAttribute("userPlaylist", musicMapper.selectUserMusicList(map));
+		model.addAttribute("userPlaylist", userPlaylist);
+		//model.addAttribute("userThumbnail", musicMapper.selectPlaylistMusicThumnail(map));
 	}
 	
 	
@@ -380,47 +397,127 @@ public class MusicServiceImpl implements MusicService {
 				return null;
 			}
 	
-	// 3. 플레이리스트 생성창 이동 + 유저이름 얻기
+			/*
+			 * // 3. 플레이리스트 생성창 이동 + 유저이름 얻기
+			 * 
+			 * @Override public void getUserName(HttpServletRequest request, Model model) {
+			 * 
+			 * HttpSession session = request.getSession(); UserDTO user = (UserDTO)
+			 * session.getAttribute("loginUser"); String name = user.getName();
+			 * 
+			 * 
+			 * Optional<String> opt = Optional.ofNullable(request.getParameter("listNo"));
+			 * int listNo = Integer.parseInt(opt.orElse("0"));
+			 * 
+			 * 
+			 * 
+			 * model.addAttribute("listNo", listNo); model.addAttribute("userName", name);
+			 * //model.addAttribute("listName", musicMapper.selectPlaylistName(listNo));
+			 * 
+			 * 
+			 * }
+			 */
+	
+	// 4. 플레이리스트 수정창 열기
 	@Override
-	public void getUserName(HttpServletRequest request, Model  model) {
+	public void getUserNameAndPlaylist(HttpServletRequest request, Model model) {
 		
+		// 파라미터 : listNo
+		Optional<String> opt = Optional.ofNullable(request.getParameter("listNo"));
+		int listNo = Integer.parseInt(opt.orElse("0"));
+		
+		// session에 저장된 name 전달
 		HttpSession session = request.getSession();
 		UserDTO user = (UserDTO) session.getAttribute("loginUser");
 		String name = user.getName();
 		
+		// 해당 플레이리스트의 이름 가져오기
+		String listName = musicMapper.selectUserPlaylistName(listNo);
+		//System.out.println(listName);
+		
+		model.addAttribute("listNo", listNo);
+		model.addAttribute("listName", listName);
+		model.addAttribute("name", name);
+	}
+	
+	// 5. 플레이리스트명 수정
+	@Override
+	public void modifyPlaylistName(HttpServletRequest request) {
+
 		
 		Optional<String> opt = Optional.ofNullable(request.getParameter("listNo"));
 		int listNo = Integer.parseInt(opt.orElse("0"));
-		
-		
-		
-		
-		model.addAttribute("userName", name);
-		model.addAttribute("listName", musicMapper.selectPlaylistName(listNo));
-		
-		
-	}
-	
-	// 구현 : 플레이리스트 추가
-	@Override
-	public void addPlaylist(HttpServletRequest request) {
-		
-		// 1. 파라미터 : 플레이리스트명
 		String listName = request.getParameter("listName");
+		System.out.println(listNo);
+		System.out.println(listName);
 		
-		// 2. session의 email과 user
+		// session에 저장된 name 전달
 		HttpSession session = request.getSession();
 		UserDTO user = (UserDTO) session.getAttribute("loginUser");
 		String email = user.getEmail();
 		
-		
-		// 3. map에 담기 : 플레이리스트에 필요한 칼럼 2가지
 		Map<String, Object> map = new HashMap<>();
 		map.put("email", email);
 		map.put("listName", listName);
+		map.put("listNo", listNo);
 		
-		// 4. INSERT
-		int result = musicMapper.insertPlaylist(map);
+		//System.out.println(map);
+		
+		int result = musicMapper.updateMusiclistName(map);
+		//System.out.println(map);
+		
+		
+	}
+
+//	// 구현 : 플레이리스트 추가
+//	@Override
+//	public void addPlaylist(HttpServletRequest request) {
+//		
+//		// 1. 파라미터 : 플레이리스트명
+//		String listName = request.getParameter("listName");
+//		
+//		// 2. session의 email과 user
+//		HttpSession session = request.getSession();
+//		UserDTO user = (UserDTO) session.getAttribute("loginUser");
+//		String email = user.getEmail();
+//		
+//		
+//		// 3. map에 담기 : 플레이리스트에 필요한 칼럼 2가지
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("email", email);
+//		map.put("listName", listName);
+//		
+//		// 4. INSERT
+//		int result = musicMapper.insertPlaylist(map);
+//		
+//	}
+	
+	
+	// 구현 : 플레이리스트 삭제
+	@Override
+	public Map<String, Object> deleteUserPlaylist(HttpServletRequest request) {
+		
+		
+		Optional<String> opt = Optional.ofNullable(request.getParameter("listNo"));
+		int listNo = Integer.parseInt(opt.orElse("0"));
+		HttpSession session = request.getSession();
+		UserDTO user = (UserDTO) session.getAttribute("loginUser");
+		String email = user.getEmail();
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+		map.put("listNo", listNo);
+		System.out.println("email" + email);
+		System.out.println("listNo" + listNo);
+		int result = musicMapper.deletePalylist(map);
+		
+	
+
+		System.out.println(result);
+		return map;
+		
+		
+		
 		
 	}
 	

@@ -101,6 +101,31 @@
 		<result column="EMAIL" property="email"></result>
 		<result column="LIST_NAME" property="listName"></result>
 		<result column="PLAYLIST_MUSIC_CNT" property="playlistMusicCnt"></result>
+		<result column="MUSIC_CNT" property="musicCnt"></result>
+		<association javaType="MyMusicDTO" property="myMusicDTO">
+			<id column="MY_MUSIC_NO" property="myMusicNo"></id>
+			<result column="LIST_NO" property="listNo"></result>
+			<result column="MUSIC_NO" property="musicNo"></result>
+			<association javaType="MusicDTO" property="musicDTO">
+				<id column="MUSIC_NO" property="musicNo"></id>
+				<result column="EMAIL" property="email"></result>
+				<result column="MUSIC_TITLE" property="musicTitle"></result>
+				<result column="MUSIC_CONTENT" property="musicContent"></result>
+				<result column="MUSIC_ALBUM" property="musicAlbum"></result>
+				<result column="MUSIC_GENRE" property="musicGenre"></result>
+				<result column="MUSIC_UPLOAD_DATE" property="musicUploadDate"></result>
+				<result column="MUSIC_MODIFY_DATE" property="musicModifyDate"></result>
+				<result column="IP" property="ip"></result>
+				<result column="IMG_ORIGIN" property="imgOrigin"></result>
+				<result column="IMG_FILESYSTEM" property="imgFilesystem"></result>
+				<result column="MUSIC_ORIGIN" property="musicOrigin"></result>
+				<result column="MUSIC_FILESYSTEM" property="musicFilesystem"></result>
+				<result column="DOWNLOAD_CNT" property="downloadCnt"></result>
+				<result column="IMAGE_PATH" property="imagePath"></result>
+				<result column="MUSIC_PATH" property="musicPath"></result>
+				<result column="HAS_THUMBNAIL" property="hasThumbNail"></result>
+			</association>
+		</association>
 		<association javaType="UserDTO" property="userDTO">
 			<id column="USER_NO" property="userNo"></id>
 			<result column="EMAIL" property="email"></result>
@@ -247,21 +272,30 @@
 
 	<!-- 1. 유저의 플레이리스트 개수   -->
 	<select id="selectUserMusicListCnt" parameterType="Map" resultType="int">
-		SELECT COUNT(P.LIST_NO)
-		FROM PLAYLIST P INNER JOIN USERS U
-		ON P.EMAIL = U.EMAIL
+	
+		SELECT COUNT(DISTINCT P.LIST_NO)  AS CNT
+			FROM PLAYLIST P INNER JOIN USERS U
+		    ON P.EMAIL = U.EMAIL INNER JOIN MY_MUSIC Y
+		    ON Y.LIST_NO = P.LIST_NO
 		WHERE U.USER_NO = #{userNo} AND U.EMAIL = #{email}
+		
 	</select>
 	
 	<!-- 2. 유저의 플레이리스트 목록 조회 -->
 	<select id="selectUserMusicList" parameterType="Map" resultMap="PlaylistMap">
-		SELECT B.ROW_NUM, B.LIST_NO, B.EMAIL, B.LIST_NAME
-			FROM (SELECT ROW_NUMBER() OVER(ORDER BY A.LIST_NO DESC) AS ROW_NUM, A.LIST_NO, A.EMAIL, A.LIST_NAME
-        			FROM ( SELECT P.LIST_NO, P.EMAIL, P.LIST_NAME
-                			FROM PLAYLIST P INNER JOIN USERS U
-               	 			ON U.EMAIL = P.EMAIL
-                			WHERE U.EMAIL = #{email} AND U.USER_NO = #{userNo}  ) A ) B
+	
+		SELECT B.ROW_NUM, B.LIST_NO, B.EMAIL, B.LIST_NAME, B.MUSIC_CNT
+			FROM ( SELECT ROW_NUMBER() OVER(ORDER BY A.LIST_NO DESC) AS ROW_NUM, A.LIST_NO, A.EMAIL, A.LIST_NAME, A.MUSIC_CNT
+        			FROM ( SELECT COUNT(C.MY_MUSIC_NO) AS MUSIC_CNT, C.LIST_NO, C.EMAIL, C.LIST_NAME
+                                FROM ( SELECT P.LIST_NO, P.EMAIL, P.LIST_NAME, Y.MY_MUSIC_NO
+                                        FROM PLAYLIST P INNER JOIN USERS U 
+                                        ON U.EMAIL = P.EMAIL INNER JOIN MY_MUSIC Y
+                                        ON Y.LIST_NO = P.LIST_NO INNER JOIN MUSIC M
+                                        ON Y.MUSIC_NO = M.MUSIC_NO
+                                        WHERE U.EMAIL = #{email} AND U.USER_NO = #{userNo} ) C
+        						GROUP BY C.LIST_NO, C.LIST_NO, C.EMAIL, C.LIST_NAME ) A ) B
 		WHERE B.ROW_NUM BETWEEN 1 AND 5
+		
 	</select>
 	
 	<!--  3. 유저 플레이리스트 썸네일 가져오기 -->
@@ -275,45 +309,49 @@
 			WHERE B.ROW_NUM = 1
 	</select>
 	
+	<!-- 4. 유저 플레이리스트명 받아오기  -->
+	<select id="selectUserPlaylistName" parameterType="int" resultType="String">
+		SELECT LIST_NAME
+		FROM PLAYLIST
+		WHERE LIST_NO = #{listNo}
+	</select>
+	
+	<!-- 5> 유저 플레이리스트 수정 -->
+	 <update id="updateMusiclistName" parameterType="Map">
+		
+		 UPDATE PLAYLIST SET LIST_NAME = #{listName} 
+		 WHERE LIST_NO = #{listNo} AND EMAIL = #{email}
+		 
+	</update>
+	
+	<!--  6. 유저 플레이리스트 삭제 -->
+	
+	 <delete id="deletePalylist" parameterType="Map">
+	
+		DELETE FROM PLAYLIST WHERE LIST_NO = #{listNo} AND EMAIL = #{email}
+		
+	</delete>
+	
+	
 	<!-- 4. 플레이리스트 추가 -->
-	<insert id="insertPlaylist" parameterType="map" >
+	<!-- <insert id="insertPlaylist" parameterType="map" >
 		INSERT INTO PLAYLIST VALUES (PLAYLIST_SEQ.NEXTVAL, #{email}, #{listName})
-	</insert>
+	</insert> -->
 	
 	<!-- 5. 플레이리스트 생성방지 -->
-	<select id="selectUserMusiclistCnt" parameterType="String" resultType="int" >
+	<select id="selectUserMusiclistCntInercet" parameterType="String" resultType="int" >
 		SELECT COUNT(*) 
 		FROM PLAYLIST
 		WHERE EMAIL = #{email}
 	
 	</select>
 	
-	<!-- 6. 플레이리스트명 받기 -->
 	
-	<select id="selectPlaylistName" parameterType="int" resultType="String" >
-		SELECT LIST_NAME
-		FROM PLAYLIST
-		WHERE LIST_NO = #{listNo}
-	</select>
+
 	
 	
 	
-	
-	
-	
-	
-	
-	<!--  3. 유저의 플레이리스트 곡수 -->
-	<select id="selectUserMusicListMusicCnt" parameterType="Map" resultType="int">
-		SELECT COUNT(M.MUSIC_NO) AS PLAYLIST_MUSIC_CNT, P.LIST_NO, P.EMAIL, P.LIST_NAME
-			FROM PLAYLIST P INNER JOIN MY_MUSIC Y 
-			ON P.LIST_NO = Y.LIST_NO INNER JOIN MUSIC M
-			ON Y.MUSIC_NO = M.MUSIC_NO INNER JOIN USERS U
-			ON U.EMAIL = P.EMAIL
-		WHERE U.EMAIL = #{email} AND U.USER_NO = #{userNo}
-        GROUP BY M.MUSIC_NO, P.LIST_NO, P.EMAIL, P.LIST_NAME
-	</select>
-	
+
 	
 
 	

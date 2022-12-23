@@ -29,12 +29,16 @@
 	 function fn_modifyPlaylist() {
 		 
 		$('#btn_cpl_update').click(function() {
-			location.href='/music/user/playlistModify?listName=' + $('#playlist_name').val();
-			opener.parent.location.reload();	// window 팝업창 새로고침
-			window.close();
+			
+			$('#frm_update').submit();
+			//opener.parent.location.reload();
+			//window.close();
+	 
 		});
-		 
 	 }
+			
+		
+
 	 
 	
 	
@@ -51,14 +55,24 @@
 				<div></div>
 			</div>
 			<div class="cpl_body">
+			
+			<form id="frm_update" method="POST" th:action="@{/music/user/playlistModify}">
+			
 				<div class="cpl_input_area">
-					<div class="cpl_input_del" th:text="|${userName} 님!, 원하는 플레이리스트 명을 입력하세요|"></div>
-					<input type="text" id="playlist_name" name="playlist_name" class="playlist_name">
+				
+					<div class="cpl_input_del" th:text="|${name} 님!, 바꾸실 플레이리스트 명을 입력하세요|"></div>
+		
+					<input type="text" id="listName" name="listName" th:value="${listName}"  class="playlist_name">
+					<input type="hidden" id="listNo" name="listNo" th:value="${listNo}">
 				</div>
+				
 				<div class="cpl_create_area">
-					<div id="btn_cpl_create btn_cpl_update" class="btn_cpl_create">수정</div>
+					<div id="btn_cpl_update" class="btn_cpl_create">수정</div>
 					<div id="btn_cpl_cancel" class="btn_cpl_cancel">취소</div>
 				</div>
+				
+			</form>
+			
 			</div>
 		</div>
 	

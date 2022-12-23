@@ -31,7 +31,7 @@ public class PreventCreatePlaylist implements HandlerInterceptor {
 			UserDTO user = (UserDTO) session.getAttribute("loginUser");
 			String email = user.getEmail();
 			
-			int result = musicMapper.selectUserMusiclistCnt(email);
+			int result = musicMapper.selectUserMusiclistCntInercet(email);
 		
 			if(result >= 5) {
 			

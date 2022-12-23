@@ -73,6 +73,8 @@
 .playlist_name {
 	
 	background-color: #545454;
+	color: #efefef;
+	font-weight: 800;
 }
 
 .cpl_input_del {

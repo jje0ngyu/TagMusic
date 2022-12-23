@@ -18,5 +18,7 @@ public class PlaylistDTO {
 	private String listName;
 	private UserDTO userDTO;
 	private int playlistMusicCnt;
+	private MyMusicDTO myMusicDTO;
+	private int musicCnt;
 	
 }

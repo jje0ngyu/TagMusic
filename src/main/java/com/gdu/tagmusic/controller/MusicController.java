@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gdu.tagmusic.service.MusicService;
@@ -101,7 +102,8 @@ public class MusicController {
 	
 	
 	
-	// [유저서비스 : 맵핑 : /music/user/**]
+	// [유저서비스]
+	
 	// 구현 : 플레이리스트 페이지 이동 
 	@GetMapping("/music/move/playlist")
 	public String movePlaylist(HttpServletRequest request, Model model) {
@@ -109,6 +111,7 @@ public class MusicController {
 		return "/musicUserService/playlistPage";
 	}
 	
+	// 기능 : 플레이리스트에 최신 추가된 게시글의 썸네일 가져오기
 	@ResponseBody
 	@GetMapping("/music/user/playlistThumbnail")
 	public ResponseEntity<byte[]> playlistThubnail (HttpServletRequest request) {
@@ -117,28 +120,42 @@ public class MusicController {
 	
 	// # 구현 : 플레이리스트 생성 페이지 열기
 	
-	@GetMapping("/music/move/playlistAdd") 
-	public String moveCreatePlaylist(HttpServletRequest request, Model model) {
-		musicService.getUserName(request, model);
-		return "/musicUserService/createPlaylistPage"; 
-	}
+	/*
+	 * @GetMapping("/music/move/playlistAdd") public String
+	 * moveCreatePlaylist(HttpServletRequest request, Model model) {
+	 * musicService.getUserName(request, model); return
+	 * "/musicUserService/createPlaylistPage"; }
+	 */
 	
 	// # 구현 : 플레이리스트 생성 : 팝업창 종료와 
 	
-	@GetMapping("/music/user/playlistAdd") 
-	public String addPlaylist(HttpServletRequest request) {
-		musicService.addPlaylist(request);
-		return "/musicUserService/createPlaylistPage"; 
-	}
+	/*
+	 * @GetMapping("/music/user/playlistAdd") public String
+	 * addPlaylist(HttpServletRequest request) { musicService.addPlaylist(request);
+	 * return "/musicUserService/createPlaylistPage"; }
+	 */
 	
-	// 구현 : 플레이리스트 수정 페이지 열기 : 
+	// 구현 : 플레이리스트 수정 페이지 열기  
 	@GetMapping("/music/move/playlistModify")
-	public String modifyPlaylist(HttpServletRequest request, Model model) {
-		musicService.getUserName(request, model);
+	public String moveUpdatePlaylist(HttpServletRequest request, Model model) {
+		musicService.getUserNameAndPlaylist(request, model);
 		return "/musicUserService/updatePlaylistPage"; 
 	}
-
 	
+	// 구현 : 플레이리스트명 수정
+	@PostMapping("/music/user/playlistModify") 
+	public String modifyPlaylist(HttpServletRequest request) {
+		musicService.modifyPlaylistName(request);
+		return "/musicUserService/updatePlaylistPage"; 
+	}
+	
+	// 구현 : 플레이리스트 삭제
+	@ResponseBody
+	@PostMapping(value="/music/user/playlistDelete", produces="application/json") 
+	public Map<String, Object> deletePlaylist(HttpServletRequest request) {
+		return musicService.deleteUserPlaylist(request);
+	}
+
 	
 	
 	// 구현 : 유저 플레이리스트 목록조회
