@@ -42,7 +42,7 @@
 				</div>
 				<div class="music_info">
 					<div class="iframe_msg_title" th:text="${music.musicTitle}"></div>
-					<div class="iframe_msg_content" th:text="|${music.email} - ${music.musicAlbum}|"></div>
+					<div class="iframe_msg_content" th:text="|${music.userDTO.artist} - ${music.musicAlbum}|"></div>
 				</div>
 				<div>
 					<img class="btn_side img_dot" th:src="@{/images/dot.png}">

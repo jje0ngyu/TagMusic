@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.FileSystemResource;
@@ -159,9 +157,17 @@ public class TuneServiceImpl implements TuneService {
 		return music;
 	}
 	
+	// 음원 상세보기 (Map)
+	@Override
+	public Map<String, Object> getMapByMusicNo(int musicNo) {
+		Map<String, Object> music = new HashMap<>();
+		music.put("music", getMapByMusicNo(musicNo));
+		return music;
+	}
+	
 	// 음원 상세보기 - 음악 display
 	@Override
-	public ResponseEntity<byte[]> display(int musicNo) {
+	public ResponseEntity<byte[]> displayMusic(int musicNo) {
 		MusicDTO music = tuneMapper.selectMusicByNo(musicNo);
 		File musicFile = new File(music.getMusicPath(), music.getMusicFilesystem());
 		ResponseEntity<byte[]> result = null;

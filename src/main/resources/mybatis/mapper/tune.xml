@@ -6,18 +6,69 @@
 
 <mapper namespace="com.gdu.tagmusic.mapper.TuneMapper">
 	
+	<resultMap id="MusicMap" type="MusicDTO">
+		<result column="MUSIC_NO" property="musicNo"/>
+		<result column="EMAIL" property="email"/>
+		<result column="MUSIC_TITLE" property="musicTitle"/>
+		<result column="MUSIC_CONTENT" property="musicContent"/>
+		<result column="MUSIC_ALBUM" property="musicAlbum"/>
+		<result column="MUSIC_GENRE" property="musicGenre"/>
+		<result column="MUSIC_UPLOAD_DATE" property="musicUploadDate"/>
+		<result column="MUSIC_MODIFY_DATE" property="musicModifyDate"/>
+		<result column="IP" property="ip"/>
+		<result column="IMG_ORIGIN" property="imgOrigin"/>
+		<result column="IMG_FILESYSTEM" property="imgFilesystem"/>
+		<result column="MUSIC_ORIGIN" property="musicOrigin"/>
+		<result column="MUSIC_FILESYSTEM" property="musicFilesystem"/>
+		<result column="DOWNLOAD_CNT" property="downloadCnt"/>
+		<result column="IMG_PATH" property="imgPath"/>
+		<result column="MUSIC_PATH" property="musicPath"/>
+		<result column="HAS_THUMBNAIL" property="hasThumbNail"/>
+		<collection resultMap="UserMap" property="userDTO"></collection>
+	</resultMap>
+	
+	
+	<resultMap id="UserMap" type="UserDTO">
+		<result column="USER_NO" property="userNo"/>
+		<result column="EMAIL" property="email"/>
+		<result column="ARTIST" property="artist"/>
+		<result column="NAME" property="name"/>
+		<result column="PW" property="pw"/>
+		<result column="PROFILE_IMAGE" property="profileImage"/>
+		<result column="MOBILE" property="mobile"/>
+		<result column="GENDER" property="gender"/>
+		<result column="BIRTHYEAR" property="birthyear"/>
+		<result column="BIRTHDAY" property="birthday"/>
+		<result column="POSTCODE" property="postcode"/>
+		<result column="ROAD_ADDRESS" property="roadAddress"/>
+		<result column="JIBUN_ADDRESS" property="jibunAddress"/>
+		<result column="DETAIL_ADDRESS" property="detailAddress"/>
+		<result column="EXTRA_ADDRESS" property="extraAddress"/>
+		<result column="SNS_TYPE" property="snsType"/>
+		<result column="SESSION_ID" property="sessionId"/>
+		<result column="SESSION_LIMIT_DATE" property="sessionLimitDate"/>
+		<result column="JOIN_DATE" property="joinDate"/>
+		<result column="PW_MODIFY_DATE" property="pwModifyDate"/>
+		<result column="INFO_MODIFY_DATE" property="infoModifyDate"/>
+		<result column="AGREE_CODE" property="agreeCode"/>
+	</resultMap>
 	
 	
 	
+	<select id="selectMusicByNo" parameterType="int" resultMap="MusicMap">
+	    SELECT MUSIC_NO, M.EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, U.ARTIST
+     	  FROM MUSIC M INNER JOIN USERS U
+    	    ON U.EMAIL = M.EMAIL
+    	 WHERE MUSIC_NO = #{musicNo}
+	</select>
 	
-	
-
-	<select id="selectMusicByNo" parameterType="int" resultType="MusicDTO">
+<!--
+	<select id="selectMapByMusicNo" parameterType="int" resultType="MusicDTO">
 		SELECT MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE
 		  FROM MUSIC
 		 WHERE MUSIC_NO = #{musicNo}
 	</select>
-
+-->
 	<insert id="insertMusic" parameterType="MusicDTO">
 		INSERT INTO MUSIC
 			(MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE) 

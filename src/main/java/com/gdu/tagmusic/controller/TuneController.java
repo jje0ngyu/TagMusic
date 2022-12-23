@@ -41,7 +41,7 @@ public class TuneController {
 	// 음원 상세보기 - 페이지 이동
 	@GetMapping("/tune/detail")
 	public String detailTune (@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, Model model) {
-		model.addAttribute("music", tuneService.getMusicByNo(musicNo));
+		model.addAttribute("music", tuneService.getMapByMusicNo(musicNo));
 		return "tune/detail";
 	}
 	
@@ -49,7 +49,7 @@ public class TuneController {
 	@ResponseBody
 	@GetMapping("/tune/display/music")
 	public ResponseEntity<byte[]> display(@RequestParam int musicNo){
-		return tuneService.display(musicNo);
+		return tuneService.displayMusic(musicNo);
 	}
 	// 음원 상세보기 - 앨범 이미지 정보 호출
 	@ResponseBody
