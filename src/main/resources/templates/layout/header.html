@@ -122,13 +122,14 @@ function fn_remainingDay(){
 
 </head>
 <body>
-	
-
 	<div th:fragment="header_layout" >
-	
 		<div class="header">
-		<div class="header_menu">
-			<div class="header_left_menu">
+			<!-- 헤더 왼쪽 -->
+			<div class="header_left_area">
+				<img class="tagmusic_logo" th:src="@{/images/TagMusic_logo.png}">
+			</div>
+			<!-- 헤더 중앙 -->
+			<div class="header_center_area">
 				<div class="header_search_area">
 					<div class="header_search_area_left">
 						<input type="text" id="query" name="query" placeholder="검색" class="header_search">
@@ -136,10 +137,9 @@ function fn_remainingDay(){
 						<input type="hidden" id="layout_page" value="1">
 					</div>
 					<div class="header_search_area_right">
-						<a class="header_search_btn" id="totalSearch">검</a>
+						<a class="header_search_btn" id="totalSearch">검색</a>
 					</div>
 				</div>
-				
 				<div class="header_rank">
 					<ol class="ranking_ol" id="ranking_ol">
 						
@@ -173,12 +173,12 @@ function fn_remainingDay(){
 
 				</script>
 			</div>
-			<div class="header_btn">
-				<input type="button" value="알람">
-				<span th:if="${session.loginUser == null}">
-					<a th:href="@{/user/login/form}">로그인</a>
-				</span>
+			<div class="header_right_area">
+				<div class="login_area" th:if="${session.loginUser == null}">
+					<a id="linkLogin" th:href="@{/user/login/form}">로그인</a>
+				</div>
 				<div th:if="${session.loginUser != null}">
+					<input type="button" value="알람">
 					<div>
 						<img class="profile_image" th:src="${session.loginUser.profileImage}" style="width:30px">
 					</div>
@@ -220,10 +220,19 @@ function fn_remainingDay(){
 					</div>
 				</div>
 			</div>
-			
+			<!--/*
+				<div class="header_left_menu">
+					
+					
+					
+				</div>
+				<div class="header_btn">
+					
+					
+				</div>
+				
+			*/-->
 		</div>
-		
-	</div>
 		
 	</div>
 	

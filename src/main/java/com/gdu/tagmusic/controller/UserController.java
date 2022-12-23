@@ -191,7 +191,7 @@ public class UserController {
 	// 회원탈퇴 - 비밀번호 확인 후 탈퇴
 	@ResponseBody
 	@PostMapping("/user/retire/checkPw")
-	public Map<String, Object> retire(HttpServletRequest request, HttpServletResponse response) {
+	public Map<String, Object> requiredLogin_retire(HttpServletRequest request, HttpServletResponse response) {
 		return userService.retire(request, response);
 	}
 	// 회원탈퇴 - 탈퇴 인사창
@@ -199,5 +199,6 @@ public class UserController {
 	public String retireMsg() {
 		return "user/retire";
 	}
+	
 	
 }
