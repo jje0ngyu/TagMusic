@@ -1,5 +1,5 @@
 @charset "UTF-8";
-html, body, div, input, a, form {
+html, body, div, input, a, form, textarea {
 	margin: 0;
 	padding: 0;
 }
@@ -9,6 +9,8 @@ html, body, div, input, a, form {
 /* 크기 공통 */
 .tune_container {
 	background-color: rgb(0,0,0);
+	width: 100%;
+	height: 100%;
 	color: whitesmoke;
 }
 .tune_album_title {
@@ -24,10 +26,25 @@ html, body, div, input, a, form {
 	border-bottom-width: 3px;
 	border-bottom-style: solid;
 }
-
+/* 가사박스 */
+.tune_lyrics_box {
+	height: 100%;
+}
+.tune_lyrics {
+	position: relative;
+	background-color: rgb(0,0,0);
+	color: white;
+	border: none;
+	width: 100%;
+	height: 100%;
+	resize: none;
+	outline: none;
+}
 /* 사진 크기 */
 .tune_album_img {
-	width: 100%;
+	position: relative;
+	max-width: 100%;
+	max-height: 100%;
 }
 @media only screen and (max-width: 940px) {
 	.header, .menu {
@@ -40,23 +57,23 @@ html, body, div, input, a, form {
 @media only screen and (min-width: 940px) {
 	.tune_container {
 		position: absolute;
-		z-index: -1;
 		padding-top: 100px;
 		padding-left: 220px;
-		width: 100%;
-		height: 100%;
+
 	}
 	.tune_content {
 		position: relative;
 		display: flex;
 		box-sizing: border-box;
 		padding: 32px 56px 0;
+		height: 100%;
 	}
 	.tune_main_panel {
 		position: relative;
-		display: inline-block;
+		display: flex;
+		align-items: center;
 		margin: auto;
-		padding: 3%;
+		padding-right: 3%;
 	    width: 60%;
 	    height: 100%;
 	}
@@ -70,12 +87,10 @@ html, body, div, input, a, form {
 	}
 	
 	.tune_tab{
-		background-color: green;
 		display: flex;
-		margin: 40px 0;
+		margin: 25px 0;
 	}
 	.tune_tab_content {
-		background-color: darkblue;
 		width: 40%;
 		height: 40px;
 		line-height: 40px;

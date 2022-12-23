@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.FileSystemResource;
@@ -37,7 +38,6 @@ public class TuneServiceImpl implements TuneService {
 	@Override
 	public int addMusic(MultipartHttpServletRequest request, HttpServletResponse response) {
 		// 파라미터
-		String userNo = request.getParameter("userNo");	// userNo 를 사용하지는 확인필요
 		String email = request.getParameter("email");
 		String musicAlbum = request.getParameter("musicAlbum"); // 앨범이름
 		String musicTitle = request.getParameter("musicTitle"); // 음원이름
@@ -163,7 +163,6 @@ public class TuneServiceImpl implements TuneService {
 	public ResponseEntity<byte[]> display(int musicNo) {
 		MusicDTO music = tuneMapper.selectMusicByNo(musicNo);
 		File musicFile = new File(music.getMusicPath(), music.getMusicFilesystem());
-		File imgFile = new File(music.getImgPath(), music.getImgFilesystem());
 		ResponseEntity<byte[]> result = null;
 
 		try {

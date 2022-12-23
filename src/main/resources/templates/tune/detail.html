@@ -4,15 +4,15 @@
 <meta charset="UTF-8">
 <title>Tag Music > 상세보기</title>
 <link rel="stylesheet" th:href="@{/css/musicIframe.css}">
+<link rel="stylesheet" th:href="@{/css/musicPlayer.css}">
 <link rel="stylesheet" th:href="@{/css/tuneDetail.css}">
 <script>
 	$(function(){
-		fn_click_album_image();
 		fn_tabContent();
 		fn_next_track_box();
 		fn_lyrics_box();
 	});
-	
+
 	function fn_tabContent(){
 		$('.tune_tab_content').click(function(){
 			$('.tune_tab_content').removeClass('border_bottom_solid_white');
@@ -40,6 +40,7 @@
 			$('#music_iframe').attr('src', imgSrc);
 		});
 	}
+
 </script>
 <style>
 
@@ -51,14 +52,11 @@
 	<div class="tune_container">
 		<div class="tune_content">
 			<div class="tune_main_panel">
-				<div class="tune_album_title">
-					<span th:text="${music.musicAlbum}"></span>
-				</div>
 				<img th:src="@{/tune/display/image(musicNo=${music.musicNo})}" name="image" class="tune_album_img">
 			</div>
 			<div class="tune_side_panel">
 				<div class="tune_tab">
-					<div class="tune_tab_content tab_next_track">
+					<div class="tune_tab_content tab_next_track border_bottom_solid_white">
 						다음 트랙
 					</div>
 					<div class="tune_tab_content tab_lyrics">
@@ -77,80 +75,17 @@
 					...
 				</div>
 				<div class="tune_lyrics_box blind">
-					<span>가사</span>
-					<textarea>가사 (music_content)</textarea>
+					<textarea class="tune_lyrics" th:text="${music.musicContent}"></textarea>
 			
 				</div>
 				<div>
-					음원 번호 <span th:text="${music.musicNo}"></span>
+					<a th:href="@{/tune/download(musicNo=${music.musicNo})}">음원 다운로드 하기</a>
 				</div>
-				<div>
-					<div>
-						닉네임 (DTO로 노출)
-					</div>
-					<input type="text" name="artist" th:value="${music.email}" readonly>-이 값은 artist를 불러오도록 수정할 것.
-				</div>
-				<div>
-					<div>
-						게시일 (music_upload_date) - sql에서 등록
-					</div>
-					<div>
-						<input type="text" th:value="${music.musicUploadDate}">
-					</div>
-				</div>
-				<div>
-					게시글 수정일 (music_modify_date) - sql에서 등록
-					<div>
-						<input type="text" th:value="${music.musicModifyDate}">
-					</div>
-				</div>
-				
-				
-				<div>
-					발매일
-				</div>
-				<div>
-					발매사
-				</div>
-				<div>
-					기획사
-				</div>
-				<div>
-					댓글수 - sql에서0으로 시작
-				</div>
-				<div>
-					아이피 (ip) - serviceimpl에서 등록
-				</div>
-				<div>
-					<div>
-						음원 이름 (music_title)
-					</div>
-					<input type="text" name="musicTitle" th:value="${music.musicTitle}">
-				</div>
-				<div>
-					<div>
-						장르 (music_genre)
-					</div>
-					<input type="text" name="musicGenre" th:value="${music.musicGenre}">
-				</div>
-				<div>
-					<div>
-						평점/좋아요 수 - sql에서 0으로 시작
-					</div>
-				</div>
-			
-				<div>
-					듣기 / 담기 / 다운 / 다운로드 수 (download_cont) / 선물하기(이용권)
-				</div>
-			
-			<h3>첨부 목록 및 다운로드</h3>
-			<div>
-				<a th:href="@{/tune/download(musicNo=${music.musicNo})}">음원 다운로드 하기</a>
 			</div>
 		</div>
+		
 	</div>
-	</div>
-	
-	<iframe id="music_iframe" th:src="@{/tune/iframe(musicNo=${music.musicNo})}" align width="100%" height="72px" bottom class="player" scrolling="no">음악</iframe> 
+
+	<iframe id="music_iframe" th:src="@{/tune/iframe(musicNo=${music.musicNo})}" align frameborder="0" width="100%" height="72px" bottom class="player" scrolling="no" name="musicNo" th:value="${music.musicNo}">음악</iframe> 
 </body>
 </html>
