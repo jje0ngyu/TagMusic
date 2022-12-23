@@ -66,6 +66,7 @@
 	.pass_btn {
 		position: relative;
 		display: inline-block;
+		margin-left: 40px;
 	}
 	
 	/* 선물 box */
@@ -112,6 +113,7 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 
+
 <script th:inline="javascript">
 $(document).ready(function(){
 	var userName = $('#userName').data('name');
@@ -121,7 +123,6 @@ $(document).ready(function(){
 		fn_isNotUser();
 	}
 	fn_init();
-	fn_paymentCoupon();
  });
 function fn_init(){
 	$('.backlayer').addClass('blind');
@@ -167,11 +168,7 @@ function fn_passList(){
 				txt += '<h2>'+pass.passName+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+pass.passPrice+' 원!</h2>';
 				txt += '</div>';
 				txt += '<div class="pass_btn">';
-				if(pass.passName == '30일쿠폰'){
-					txt += '<input type="button" value="결제하기" class="pay_coupon" data-ticket="'+ pass.passName+'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'">';
-				} else {
 					txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName+'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
-				}
 				if(pass.passName == "30일이용권"){
 					txt += '<input class="btn_gift_30days" type="button" value="선물하기" data-if="0" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
 				}
@@ -183,77 +180,12 @@ function fn_passList(){
 		}
 	});
 }
-function fn_paymentCoupon(){
-	$(document).on('click', '.pay_coupon', function(){
-		var musicAmount = $(this).data('amount');
-		var paymentPg = $(this).data('pg');
-		var ticketName = $(this).data('ticket');
-		var passNo = $(this).data('passno');
-		var userName = $('#userName').data('name');
-		var userEmail = $('#userEmail').data('email');
-		var userMobile = $('#userMobile').data('mobile');
-		var userAddr = '';
-		userAddr += $('#userAddr1').data('addr');
-		userAddr += $('#userAddr2').data('addr');
-		userAddr += $('#userAddr3').data('addr');
-		userAddr += $('#userAddr4').data('addr');
-		var userPostcode = $('#postcode').data('postcode');
-			
-		var IMP = window.IMP; 
-		IMP.init('imp66111374');
-		
-		var merchant_uid = 'TagMusic_' + new Date().getTime();
-		IMP.request_pay({ 
-			pg: "html5_inicis",
-			pay_method: 'card',
-			merchant_uid: merchant_uid,
-			name: ticketName, 
-			//name: '노래제목:'+firstCartMusicName+' 외'+ (muprice-1) +'곡',
-			amount: musicAmount,
-			buyer_email: userEmail,
-			buyer_name: userName,
-			buyer_tel: userMobile,
-			buyer_addr: '서울시',
-			buyer_postcode: '123-111',
-			m_redirect_url: 'https://www.yourdomain.com/payments/complete'
-			}, function (rsp) {
-				if (rsp.success) {
-					
-					 $.ajax({
-						type: 'post',
-						url: '/payment/coupon',
-						data: 'email=' + userEmail + '&price=' + musicAmount + '&passNo=' + passNo + '&payPg=' + paymentPg + '&ticketName=' + ticketName + '&merchantUid=' + merchant_uid,
-						dataType: 'json',
-						success: function(resData){
-							var msg = '';
-							console.log(resData);
-							if(resData.result == 1){
-								msg += '이용권 구매가 완료되었습니다.';
-							} else {
-								msg += '이용권 구매가 실패하였습니다..';
-							}
-							alert(msg);
-							fn_remainingDay();
-							
-						}
-						
-					}); 
-					 
-				} else {
-				var msg = '';
-				msg += rsp.error_msg;
-				alert(msg)
-			}
-				
-		});
-		
-		
-	});
-}
 
 function fn_login(){
-	alert('아직 로그인을 안하셨네요! 로그인 페이지로 이동합니다!');
-	$('#frm_login').submit();
+	
+	 if(confirm('아직 로그인을 안하셨네요. 로그인 페이지로 이동하겠습니까?')){
+		$('#frm_login').submit();
+	}
 }
 
 function fn_buyTicket(e){
@@ -299,7 +231,6 @@ function fn_buyTicket(e){
 					dataType: 'json',
 					success: function(resData){
 						var msg = '';
-						console.log(resData);
 						if(resData.result == 1){
 							msg += '이용권 구매가 완료되었습니다.';
 						} else {
@@ -363,7 +294,7 @@ function fn_presentTicket(e){
 			buyer_name: userName,
 			buyer_tel: userMobile,
 			buyer_addr: '서울시',
-			buyer_postcode: '123-111',
+			buyer_postcode: '	-111',
 			m_redirect_url: 'https://www.yourdomain.com/payments/complete'
 			}, function (rsp) {
 				if (rsp.success) {
@@ -403,7 +334,9 @@ function fn_presentTicket(e){
 	<div class="session">
 		<div th:replace="~{layout/side.html::side_layout}"></div>
 		<div class="payContent">
+		
 			<nav id="nav3">
+			
 				<h1>이용권 구매</h1>
 				<hr>
 				<ul>
@@ -412,6 +345,7 @@ function fn_presentTicket(e){
 					</li>
 				</ul>
 			</nav>
+			
 			<input type="hidden" id="isUser" th:data-user="${session}">
 			<div th:if="${session.loginUser != null}">
 				<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
