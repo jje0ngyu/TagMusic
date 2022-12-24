@@ -1,24 +1,29 @@
 @charset "UTF-8";
 
+	/* 공통영역 (header.html을 포함한 모든 html에 적용) */
 
 	/* 클래스 초기화  */
-	* {
-	box-sizing: border-box;
-	margin : 0;
-	padding : 0;
+	html, body, section, article, div, a, input, ul, li, input {
+		margin: 0px;
+		padding: 0px;
+		background-color: inherit;
+		color: inherit;
 	}
-	
-
-	body {
-		
-		zoom: 1;
-	}
-	
 	a {
-	text-decoration: none;
-	color: white;	
+		text-decoration: none;
+	}
+	input[type=button] {
+		background-color: #bdc2ce;
+		border: none;
+		border-radius: 30px;
+	}
+	input[type=button]:hover {
+		background-color: #20325A;
+		color: #fdfdfd;
+		border: none;
 	}
 	
+	/* ================================== */
 	/*
 	레이아웃(헤더)
 	 : 헤더영역 레이아웃 설정
@@ -27,10 +32,9 @@
 	*/
 	.header {
 	height : 100px;
-	background: linear-gradient(rgb(11, 11, 44), 2%, #111111);
-	box-shadow: 0 1px 10px 0 #bbbbbb;
+	background: linear-gradient(#ffffff, 2%,#fdfdfd);
+	box-shadow: 0 1px 10px 0 #37486b;
 	z-index: 2;
-	color: white;
 	
 	position : fixed;
 	top : 0; right: 0; left: 0;
@@ -144,19 +148,124 @@
 	/* 헤더_오른쪽 (로그인) */
 	.header_right_area {
 		display: flex;
-		text-align: right;
+		justify-content: right;
+		align-items: center;
 		margin-right: 30px;
+		width: 70px;	
+		height: 70px;
 	}
-	.login_area {
-		color: white;
+	/* 비회원 */
+	.unuser_area {
+		color: #fdfdfd;
+		background: linear-gradient(#37486b, 50%, #20325A);
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 60px;
-		height: 60px;
-		border: 3px solid white;
+		width: 65px;	
+		height: 65px;
+		border : none;
 		border-radius: 45px;
 	}
+	
+	@keyframes login_animation {
+		0% {
+			margin-top: 0;
+		}
+		50% {
+			margin-top: 15px;
+		}
+		100% {
+			margin-top: 0;
+		}
+	}
+	.unuser_area:hover {
+		font-weight: 600;
+		animation: login_animation 1.2s ease-in-out infinite;
+	}
+	
+	/* 회원 */
+	.user_area {
+		color: #fdfdfd;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 120px;
+		height: 60px;
+	}
+	.header_btn_alarm {
+		margin-right: 20px;
+	}
+	.profile_image_area {
+		width: 60px;
+		height: 60px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.profile_image {
+		width: 60px;
+		height: 60px;
+	}
+	@keyframes profile_animation {
+		0% {
+			width: 60px;
+			height: 60px;
+		}
+		50% {
+			width: 50px;
+			height: 50px;
+		}
+		100% {
+			width: 60px;
+			height: 60px;
+		}
+	}
+	.profile_image:hover {
+		border: 4px solid rgb(255, 255, 255);
+		border-radius: 30px;
+		cursor: pointer;
+		animation: profile_animation 1s ease-in-out infinite;
+	/*	animation-name: profile_animation;
+		animation-duration: 1s;
+		animation-timing-function: ease-in-out;	
+		animation-iteration-count: infinite;	
+	*/}
+	
+	/* 프로필 팝업창 */
+	.header_right_bottom_controller {
+		position: fixed;
+		top: 80px;
+		right: 0;
+		padding-top: 10px;
+		margin-right: 30px;
+	}
+	.profile_box {
+		padding: 20px 10px 30px;
+		border-radius: 10px;
+		width: 300px;
+		background-color: #474545;
+		text-align: center;
+		line-height: 30px;
+		color: #aaaaaa;
+	}
+	.profile_artist {
+		color: #fdfdfd;
+		font-weight: 700;
+		font-size: 16px;
+	}
+	.profile_box  input[type=button] {
+		font-size: 14px;
+		border-radius: 20px;
+		margin: 30px 5px 0;
+	}
+	.profile_box  input[type=button]:hover {
+		box-shadow: 0 3px 10px -3px #1f1f1f;
+	}
+	.profile_box  .btn_logout:hover {
+		background-color: #FF5361;
+	}
+	
+	
 	/* 레이아웃(사이드) : 상단 로고 영역설정 */
 	.menu_logo_area {
 	width : 190px;

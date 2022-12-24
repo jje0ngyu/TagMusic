@@ -6,7 +6,6 @@
 <title></title>
 <style>
 	ul,ol{list-style:none}
-	a{text-decoration:none;color:#fff962;font-size:15px}
 	nav{overflow:hidden;height:80px;}
 	#nav3 {
 	  width: 100%;
@@ -101,18 +100,20 @@ function fn_isNotUser(){
 			var txt = '';
 			$.each(resData.passList, function(i, pass){
 				txt += '<div class="pass_box">';
-				txt += '<div class="name_msg">';
+				txt += '<div class="pass_box_left">';
 				txt += '<div class="pass_name">'+pass.passName+'</div>';
+				txt += '<div class="pass_msg_price">';
 				txt += '<div class="pass_msg">무제한 듣기 + 무제한 다운로드</div>';
-				txt += '</div>';
 				txt += '<div class="pass_price">'+pass.passPrice+' 원!</div>';
 				txt += '</div>';
-				txt += '<div class="pass_btn">';
-				txt += '<input type="button" value="결제하기" onclick="fn_login()">';
-				if(pass.passName == "30일이용권"){
-					txt += '<input type="button" value="선물하기" id="btn_gift" onclick="fn_login()">';
-				}
 				txt += '</div>';
+				txt += '<div class="pass_bpx_right">';
+				txt += '<input type="button" value="결제하기" onclick="fn_login()">';
+				txt += '</div>';
+				txt += '</div>';
+			//	if(pass.passName == "30일이용권"){
+			//		txt += '<input type="button" value="선물하기" id="btn_gift" onclick="fn_login()">';
+			//	}
 			});
 			$('#buyPageDiv').append(txt);
 		}
@@ -127,18 +128,20 @@ function fn_passList(){
 			var txt = '';
 			$.each(resData.passList, function(i, pass){
 				txt += '<div class="pass_box">';
-				txt += '<div class="name_msg">';
+				txt += '<div class="pass_box_left">';
 				txt += '<div class="pass_name">'+pass.passName+'</div>';
+				txt += '<div class="pass_msg_price">';
 				txt += '<div class="pass_msg">무제한 듣기 + 무제한 다운로드</div>';
-				txt += '</div>';
 				txt += '<div class="pass_price">'+pass.passPrice+' 원!</div>';
 				txt += '</div>';
-				txt += '<div class="pass_btn">';
-					txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName+'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
-				if(pass.passName == "30일이용권"){
-					txt += '<input class="btn_gift_30days" type="button" value="선물하기" data-if="0" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
-				}
 				txt += '</div>';
+				txt += '<div class="pass_box_right">';
+					txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName+'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
+				txt += '</div>';
+				txt += '</div>';
+				//if(pass.passName == "30일이용권"){
+				//	txt += '<input class="btn_gift_30days" type="button" value="선물하기" data-if="0" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
+				//}
 			});
 			
 			$('#buyPageDiv').append(txt);
@@ -296,7 +299,6 @@ function fn_presentTicket(e){
 	<div th:replace="~{layout/header.html::header_layout}"></div>
 	<div th:replace="~{layout/side.html::side_layout}"></div>
 	<div class="back_content">
-		<img class="background_image" th:src="@{/images/payment_img.jpg}">
 		<div id="back_layer"></div>
 	</div>
 	<article class="payment_base_layer">
@@ -304,10 +306,10 @@ function fn_presentTicket(e){
 			<div class="pay_controllers">
 				<div class="payTitle">태그뮤직 이용권 구매</div>
 				<div class="payContent">
-					<nav id="nav3">
+					<nav id="nav3" class="tab_box_basic">
 						<ul class="top_pay_controller">
-							<li class="tab_payment">
-								<a th:href="@{/payment/buy}">태그뮤직 BEST</a>
+							<li class="tab_payment tab_box_click">
+								<a class="tab_text" th:href="@{/payment/buy}">BEST</a>
 							</li>
 							<li>
 								전체 이용권
