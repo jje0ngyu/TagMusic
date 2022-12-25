@@ -31,9 +31,9 @@ public class PreventCreatePlaylist implements HandlerInterceptor {
 			UserDTO user = (UserDTO) session.getAttribute("loginUser");
 			String email = user.getEmail();
 			
-			int result = musicMapper.selectUserMusiclistCntInercet(email);
+			//int result = musicMapper.selectUserMusiclistCntInercet(email);
 		
-			if(result >= 5) {
+			//if(result >= 5) {
 			
 				response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
@@ -44,14 +44,16 @@ public class PreventCreatePlaylist implements HandlerInterceptor {
 				out.println("</script>");
 				out.close();
 				
-				return false;  // 컨트롤러의 요청이 처리되지 않는다.	
-			
-		} else {
-			
-			return true;   // 컨트롤러의 요청이 처리된다.
-			
-		}
-		
+				/*
+				 * return null; // 컨트롤러의 요청이 처리되지 않는다.
+				 * 
+				 * } else {
+				 * 
+				 * return null; // 컨트롤러의 요청이 처리된다.
+				 * 
+				 * }
+				 */
+		return true;
 	}
 	
 }

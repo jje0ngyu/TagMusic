@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.tagmusic.domain.MusicDTO;
+import com.gdu.tagmusic.domain.MyMusicDTO;
 import com.gdu.tagmusic.domain.PlaylistDTO;
 
 @Mapper
@@ -46,38 +47,52 @@ public interface MusicMapper {
 	// # 유저 플레이리스트 페이지 이동
 	
 	// 1) 유저의 플레이리스트 개수
-		public int 	selectUserMusicListCnt(Map<String, Object> map);
-	
+	public int 	selectUserPlaylistCnt(Map<String, Object> map);
+		
 	// 2) 유저의 플레이리스트 조회
-	public List<PlaylistDTO> selectUserMusicList(Map<String, Object> map);
-		/*
-		 * // 1) 유저의 listNo 전부 반환 public List<Integer> selectMusicListNoList(Map<String,
-		 * Object> map);
-		 */
-	
-	// 2) 유저의 플레이리스트 썸네일 반환
-	public MusicDTO selectUserPlaylistThumbnail(int listNo);
+	public List<PlaylistDTO> selectUserPlaylist(Map<String, Object> map);
 
-	// 3) 플레이리스트 추가
-	public int insertPlaylist(Map<String, Object> map);
+	// 3) 플레이리스트 수록곡 수 조회
+	public int selectUserPlaylistMusicCnt(int listNo);
 	
-	// 4) 플레이리스트 개수 방지 : 인터셉터
-	public int selectUserMusiclistCntInercet(String email);
+	// 4) 플레이리스트 수록곡 목록 조회
+	public List<PlaylistDTO> selectUserPlaylistMusiclist(Map<String, Object> map);
 
-	// 5) 플레이리스트 이름 받기
-	//public String selectPlaylistName(int listNo);
+	// 5) 플레이리스트명 수정
+	public int updatePlaylistName(Map<String, Object> map);
+
+	// 6) 플레이리스트 삭제
+	public int deletePlaylist(Map<String, Object> map);
 	
-	// 6) 플레이리스트 썸네일 여부 조회하기
-	public List<PlaylistDTO> selectPlaylistMusicThumnail(Map<String, Object> map);
+	// 7) 수록곡 삭제
+	public int deletePlaylistMusic(Map<String, Object> map);
 	
-	// 7) 플레이리스트 리스트명 받아오기
-	public String selectUserPlaylistName(int listNo);
 	
-	// 8) 플레이리스트명 수정
-	public int updateMusiclistName(Map<String, Object> map);
 	
-	// 9) 플레이리스트 삭제
-	public int deletePalylist(Map<String, Object> map);
+	
+	
+	
+	
+	/*
+	 * // 2) 유저의 플레이리스트 썸네일 반환 public MusicDTO selectUserPlaylistThumbnail(int
+	 * listNo);
+	 * 
+	 * // 3) 플레이리스트 추가 public int insertPlaylist(Map<String, Object> map);
+	 * 
+	 * // 4) 플레이리스트 개수 방지 : 인터셉터 public int selectUserMusiclistCntInercet(String
+	 * email);
+	 * 
+	 * // 5) 플레이리스트 이름 받기 //public String selectPlaylistName(int listNo);
+	 * 
+	 * // 6) 플레이리스트 썸네일 여부 조회하기 public List<PlaylistDTO>
+	 * selectPlaylistMusicThumnail(Map<String, Object> map);
+	 * 
+	 * // 7) 플레이리스트 리스트명 받아오기 public String selectUserPlaylistName(int listNo);
+	 * 
+	 * // 8) 플레이리스트명 수정 public int updateMusiclistName(Map<String, Object> map);
+	 * 
+	 * // 9) 플레이리스트 삭제 public int deletePalylist(Map<String, Object> map);
+	 */
 	
 	
 	/*

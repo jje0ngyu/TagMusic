@@ -107,17 +107,58 @@ public class MusicController {
 	// 구현 : 플레이리스트 페이지 이동 
 	@GetMapping("/music/move/playlist")
 	public String movePlaylist(HttpServletRequest request, Model model) {
-		musicService.selectUserPlaylist(request, model);
-		return "/musicUserService/playlistPage";
+		//musicService.selectUserPlaylist(request, model);
+		return "/musicUserService/playlist";
 	}
 	
-	// 기능 : 플레이리스트에 최신 추가된 게시글의 썸네일 가져오기
+	// 구현 : 플레이리스트 목록조회
 	@ResponseBody
-	@GetMapping("/music/user/playlistThumbnail")
-	public ResponseEntity<byte[]> playlistThubnail (HttpServletRequest request) {
-		return musicService.selectPlaylistThumbnail(request);
+	@GetMapping(value="/music/user/playlist", produces="application/json")
+	public Map<String, Object> userPlaylist(HttpServletRequest request) {	
+		return musicService.selectUserPlaylist(request);
 	}
 	
+	// 구현: 플레이리스트에 수록된 곡 조회
+	@ResponseBody
+	@GetMapping(value="/music/user/playlistMusiclist", produces="application/json")
+	public Map<String, Object> userPlaylistMusic(HttpServletRequest request) {	
+		return musicService.selectUserPlaylistMusicList(request);
+	}
+	
+	// 구현 : 플레이리스트명 수정
+	@ResponseBody
+	@PostMapping(value="/music/user/modifyPlaylistName", produces="application/json")
+	public Map<String, Object> modifyPlaylistName(HttpServletRequest request) {	
+		return musicService.modifyUserPlaylistMusicList(request);
+	}
+	
+	// 구현 : 플레이리스트 삭제
+	@ResponseBody
+	@PostMapping(value="/music/user/deletePlaylist", produces="application/json")
+	public Map<String, Object> deletePlaylist(HttpServletRequest request) {	
+		return musicService.deleteUserPlaylist(request);
+	}
+	
+
+	// 구현 : 수록곡 삭제
+	@ResponseBody
+	@PostMapping(value="/music/user/deletePlaylistMusic", produces="application/json")
+	public Map<String, Object> deletePlaylistMusic(HttpServletRequest request) {	
+		return musicService.deletePlaylistMusic(request);
+	}
+	
+	
+
+	
+	/*
+	 * // 기능 : 플레이리스트에 최신 추가된 게시글의 썸네일 가져오기
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @GetMapping("/music/user/playlistThumbnail") public ResponseEntity<byte[]>
+	 * playlistThubnail (HttpServletRequest request) { return
+	 * musicService.selectPlaylistThumbnail(request); }
+	 */
 	// # 구현 : 플레이리스트 생성 페이지 열기
 	
 	/*
@@ -134,29 +175,30 @@ public class MusicController {
 	 * addPlaylist(HttpServletRequest request) { musicService.addPlaylist(request);
 	 * return "/musicUserService/createPlaylistPage"; }
 	 */
-	
-	// 구현 : 플레이리스트 수정 페이지 열기  
-	@GetMapping("/music/move/playlistModify")
-	public String moveUpdatePlaylist(HttpServletRequest request, Model model) {
-		musicService.getUserNameAndPlaylist(request, model);
-		return "/musicUserService/updatePlaylistPage"; 
-	}
-	
-	// 구현 : 플레이리스트명 수정
-	@PostMapping("/music/user/playlistModify") 
-	public String modifyPlaylist(HttpServletRequest request) {
-		musicService.modifyPlaylistName(request);
-		return "/musicUserService/updatePlaylistPage"; 
-	}
-	
-	// 구현 : 플레이리스트 삭제
-	@ResponseBody
-	@PostMapping(value="/music/user/playlistDelete", produces="application/json") 
-	public Map<String, Object> deletePlaylist(HttpServletRequest request) {
-		return musicService.deleteUserPlaylist(request);
-	}
-
-	
+	/*
+	 * // 구현 : 플레이리스트 수정 페이지 열기
+	 * 
+	 * @GetMapping("/music/move/playlistModify") public String
+	 * moveUpdatePlaylist(HttpServletRequest request, Model model) {
+	 * musicService.getUserNameAndPlaylist(request, model); return
+	 * "/musicUserService/updatePlaylistPage"; }
+	 * 
+	 * // 구현 : 플레이리스트명 수정
+	 * 
+	 * @PostMapping("/music/user/playlistModify") public String
+	 * modifyPlaylist(HttpServletRequest request) {
+	 * musicService.modifyPlaylistName(request); return
+	 * "/musicUserService/updatePlaylistPage"; }
+	 * 
+	 * // 구현 : 플레이리스트 삭제
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @PostMapping(value="/music/user/playlistDelete", produces="application/json")
+	 * public Map<String, Object> deletePlaylist(HttpServletRequest request) {
+	 * return musicService.deleteUserPlaylist(request); }
+	 * 
+	 */
 	
 	// 구현 : 유저 플레이리스트 목록조회
 	/*

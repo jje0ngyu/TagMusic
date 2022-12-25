@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<meta charset="UTF-8">
+<title></title>
+<!-- static 폴더 이후의 위치를 적으면 된다. -->
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+
+<script th:inline="javascript">
+
+	$(document).ready(function() {
+		
+		fn_Playlist_list();				// 구현 : 플레이리스트 목록(유저명 + 음악정보_썸네일_수록곡수)
+		fn_playlist_music();			// 구현 : 플레이리스트 수록곡 조회
+		fn_moveUpdatePlaylistName();	// 구현 : 플레이리스트명 수정화면
+		fn_modifyPlaylistName();		// 구현 : 플레이리스트명 수정
+		fn_deletePlaylist();			// 구현 : 플레이리스트 삭제
+		fn_deletePlaylistMusic();		// 구현 : 플레이리스트 음악삭제
+	});
+	
+
+	function fn_Playlist_list() {	// 플레이리스트 목록조회
+		
+		$.ajax({
+				type: 'get',
+				url: '/music/user/playlist',
+				dataType: 'json',
+				success: function(resData) {
+					
+					
+					// 유저정보 갱신 
+					
+					$('.playlist_header').empty();
+					$('.playlist_header').append('<div class="playlist_userName">'  + resData.userName + '님의 플레이리스트</div>');
+					$('.playlist_header').append('<div class="playlist_cnt">'  + resData.userPlaylistCnt + '개의 플레이리스트 보유중</div>');
+					$('.playlist_header').append('<div class="playlist_emp">※ 플레이리스트는 총 5개 생성할 수 있습니다</div>');
+					
+
+					// 플레이리스트 목록
+					$('.playlist_area').empty();	// 상단 리스트 최신화
+					
+					
+	
+					$.each(resData.userPlaylist, function(index, playlist) {
+						
+						// 썸네일 조건부여
+						//if(playlist.myMusicDTO.musicDTO.hasThumbNail == 1) {
+						//	//let thumbnail = '/music/user/playlistThumbnail';
+						//} else if (playlist.myMusicDTO.musicDTO.hasThumbNail == 0) {
+							let thumbnail = '/images/defaultImage.png';
+						//}
+						
+						
+						$('<div class="playlist_list"></div>')
+						.append($('<div class="playlist_list_top"></div>')
+							.append( $('<div class="playlist_list_left">')
+								.append('<img class="playlist_thumbnail" src="' + thumbnail + '"></div>') ) 
+							.append( $('<div class="playlist_list_middle"></div>')
+								.append('<div class="playlist_playlistName">' + playlist.listName +'</div>')
+								.append('<div class="playlist_musicCnt">'+ playlist.musicCnt+' 곡</div>') ) 
+							.append( $('<div class="playlist_list_right"></div>')
+								.append('<div class="playlist_updatePlaylistName playlist_btn" data-listno="'+playlist.listNo+'">변경</div>')
+								.append('<div class="playlist_deletePlaylist playlist_btn">삭제</div>') )						
+						 )
+						.append($('<div class="playlist_bottom"></div>')
+							.append('<div class="btn_playlist_musicBoard" data-listno="' + playlist.listNo + '">음악목록 버튼</div>') ) 
+						.append('<div id="playlist_musicBoard" class="playlist_musicBoard"></div>')
+						.appendTo('.playlist_area');
+					});
+			}
+		});
+	}
+
+	
+	function fn_playlist_music() {	// 각 플레이리스트 수록곡 조회
+	
+		// 동적이벤트
+
+		$(document).on('click', '.btn_playlist_musicBoard', function() {
+			
+			// 화면 확장
+			$(this).parent().parent().toggleClass('playlist_list');
+			$(this).parent().parent().toggleClass('playlist_list_click');
+			$(this).parent().next().toggleClass('playlist_musicBoard');
+			$(this).parent().next().toggleClass('playlist_musicBoard_click');
+			
+			
+			// ajax 응답에서는 this를 인식할수 없어서 변수로 만들어줘야한다
+			let board = $(this).parent().next();
+			let data = $(this).data('listno')
+			
+			$.ajax({
+				type: 'get',
+				url: '/music/user/playlistMusiclist',
+				data: 'listNo=' + data,
+				dataType: 'json',
+				success: function(resData) {
+						
+						
+						// 수록곡 목록 갱신
+						$(board).empty();
+					
+						// 수록곡 목록조회
+			
+						let body = $('<tbody>');
+						let thumbnail = '';
+
+						$.each(resData.PlaylistMusiclist, function(index, musicList) {
+							
+							if(musicList.myMusicDTO.musicDTO.hasThumbNail == 1) {
+								let thumbnail = '/music/thumbnail';
+							} else if (musicList.myMusicDTO.musicDTO.hasThumbNail == 0) {
+								let thumbnail = '/images/defaultImage.png';
+							}
+		
+							
+							$('<tr>')
+							.append('<td class="td_no">'+ (index + 1) +'</td>') 
+							.append( $('<td>').append('<img class="board_thumbnail" src="'+ thumbnail+'">') )
+							.append( $('<td class="">')
+								.append('<div class="playlist_musicTitle">'+ musicList.myMusicDTO.musicDTO.musicTitle +'</div>')
+								.append('<div class="playlist_musicArtist">'+ musicList.userDTO.artist +'</div>') )
+							.append( $('<td>').append('<div class="playlist_musicGenre">'+ musicList.myMusicDTO.musicDTO.musicGenre +'</div>') )
+							.append( $('<td>').append( '<input type="button" value="삭제" class="deletePlaylistMusic" data-listno="'+ musicList.myMusicDTO.listNo+ '" data-mymusicno="'+musicList.myMusicDTO.myMusicNo+'">') )
+							.appendTo($(body));
+						});
+					
+						$(board).append( $('<table>')
+							.append('<thead><tr><td>No</td><td colspan="3">곡 정보</td><td>삭제</td></tr></thead>')
+							.append($(body)));				
+				}	
+			});
+		});
+	}
+	
+	function fn_moveUpdatePlaylistName() {	// 플레이리스트명 수정화면
+		
+		$(document).on('click', '.playlist_updatePlaylistName', function() {
+			
+			$.ajax({
+				type: 'get',
+				url: '/music/user/playlist',
+				dataType: 'json',
+				success: function(resData) {
+					
+					
+					// 유저정보 갱신 
+					
+					$('.playlist_header').empty();
+					$('.playlist_header').append('<div class="playlist_userName">'  + resData.userName + '님의 플레이리스트</div>');
+					$('.playlist_header').append('<div class="playlist_cnt">'  + resData.userPlaylistCnt + '개의 플레이리스트 보유중</div>');
+					$('.playlist_header').append('<div class="playlist_emp">※ 플레이리스트는 총 5개 생성할 수 있습니다</div>');
+					
+
+					// 플레이리스트 목록
+					$('.playlist_area').empty();	// 상단 리스트 최신화
+					
+					
+	
+					$.each(resData.userPlaylist, function(index, playlist) {
+						
+						// 썸네일 조건부여
+						//if(playlist.myMusicDTO.musicDTO.hasThumbNail == 1) {
+						//	//let thumbnail = '/music/user/playlistThumbnail';
+						//} else if (playlist.myMusicDTO.musicDTO.hasThumbNail == 0) {
+							let thumbnail = '/images/defaultImage.png';
+						//}
+						
+						
+						$('<div class="playlist_list"></div>')
+						.append($('<div class="playlist_list_top"></div>')
+							.append( $('<div class="playlist_list_left">')
+								.append('<img class="playlist_thumbnail" src="' + thumbnail + '"></div>') ) 
+							.append( $('<div class="playlist_list_middle"></div>')
+								.append('<input type="text" id="listName" name="listName" value="'+playlist.listName+'">')
+								.append('<div class="playlist_musicCnt" data-musicCnt="'+playlist.musicCnt+'">'+ playlist.musicCnt+' 곡</div>') ) 
+							.append( $('<div class="playlist_list_right"></div>')
+								.append('<div class="playlist_modifyPlaylistName playlist_btn" data-listno="'+playlist.listNo+'">변경</div>')
+								.append('<div class="playlist_deletePlaylist playlist_btn">삭제</div>') )						
+						 )
+						.append($('<div class="playlist_bottom"></div>')
+							.append('<div class="btn_playlist_musicBoard" data-listno="' + playlist.listNo + '">음악목록 버튼</div>') ) 
+						.append('<div id="playlist_musicBoard" class="playlist_musicBoard"></div>')
+						.appendTo('.playlist_area');
+					});
+				}
+			});
+		});
+	}
+	function fn_modifyPlaylistName() {	// 플레이리스트명 수정
+		
+		$(document).on('click', '.playlist_modifyPlaylistName', function() {
+			
+			
+			
+			// 플레이리스트명 공백 방지
+			if(listName == '') {
+				alert('빈 이름으로 생성할 수 없습니다. 이름을 지어주세요');
+				return;
+			}
+			
+			$.ajax({
+				type: 'post',
+				url: '/music/user/modifyPlaylistName',
+				data : 'listName=' + $(this).parent().prev().children().val() + '&listNo=' + $(this).data('listno'),
+				dataType: 'json',
+				success: function(resData) {
+				fn_Playlist_list();	// 플레이리스트 최신화
+				}
+			});
+		});
+	}
+	
+	function fn_deletePlaylist() {	// 플레이리스트 삭제
+		
+		
+		$(document).on('click', '.playlist_deletePlaylist', function() {
+			
+			if(confirm('삭제하시겠습니까?') == false) {
+				return;
+			}
+			
+			let listNo= $(this).prev().data('listno');
+
+			$.ajax({
+				type: 'post',
+				url: '/music/user/deletePlaylist',
+				data : 'listNo=' + listNo,
+				dataType: 'json',
+				success: function(resData) {
+					
+					if(resData.result == 0) {
+						alert('삭제에 실패했습니다');
+						return;
+					} else if (resData.result == 1) {
+						alert('삭제에 성공했습니다');
+					}
+					fn_Playlist_list();	// 플레이리스트 최신화
+				}
+			});
+		});
+		
+	
+	}
+	
+	function fn_deletePlaylistMusic() {	// 수록곡 삭제
+		
+		$(document).on('click', '.deletePlaylistMusic', function() {
+			let myMusicCnt = $(this).parent().parent().parent().parent().parent().prev().prev().children().next().children().next().data('musicCnt');
+			
+			if(confirm('삭제하시겠습니까?') == false) {
+				return;
+			}
+			
+		
+			
+			let myMusicNo= $(this).data('mymusicno');
+			let listNo= $(this).data('listno');
+
+			$.ajax({
+				type: 'post',
+				url: '/music/user/deletePlaylistMusic',
+				data : 'myMusicNo=' + myMusicNo + '&listNo=' + listNo,
+				dataType: 'json',
+				success: function(resData) {
+					
+					if(resData.result == 0) {
+						alert('삭제에 실패했습니다');
+						return;
+					} else if (resData.result == 1) {
+
+						alert('삭제에 성공했습니다');
+					}
+				}
+			});
+		});	
+	}
+	
+	
+
+</script>
+</head>
+<body>
+
+	<!--  page : 최신리스트 게시판 -->
+	
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+
+	<div class="session">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+	
+		
+		<div class="playlist_container">
+		
+
+			<!-- 구현 : 플레이리스트 목록 -->
+		<div class="playlist">
+			<div class="playlist_header">
+			
+			
+			</div>
+			<div class="playlist_body">
+				<div class="playlist_area">
+					<div class="playlist_list">
+						<div class="playlist_list_top"><!--
+								<div class="playlist_list_left">
+									<div class="playlist_thumbnail">썸네일</div>
+								</div>
+								<div class="playlist_list_middle">
+									<div class="playlist_playlistName">플레이리스트명</div>
+									<div class="playlist_musicCnt">음악개수</div>
+								</div>
+								<div class="playlist_list_right">
+									<div class="playlist_updatePlaylistName">이름변경</div>
+									<div class="playlist_deletePlaylist">삭제</div>
+									
+									
+									
+									
+									
+									
+									
+									
+									
+								</div>-->
+						</div>
+						
+					</div>
+				</div>
+				<!-- 구현 : 각 플레이리스트 음악게시판 -->
+		
+		
+			</div>
+		</div>
+	</div>
+</body>
+</html>

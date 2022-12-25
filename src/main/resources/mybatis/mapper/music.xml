@@ -271,7 +271,7 @@
 
 
 	<!-- 1. 유저의 플레이리스트 개수   -->
-	<select id="selectUserMusicListCnt" parameterType="Map" resultType="int">
+	<select id="selectUserPlaylistCnt" parameterType="Map" resultType="int">
 	
 		SELECT COUNT(DISTINCT P.LIST_NO)  AS CNT
 			FROM PLAYLIST P INNER JOIN USERS U
@@ -282,7 +282,7 @@
 	</select>
 	
 	<!-- 2. 유저의 플레이리스트 목록 조회 -->
-	<select id="selectUserMusicList" parameterType="Map" resultMap="PlaylistMap">
+	<select id="selectUserPlaylist" parameterType="Map" resultMap="PlaylistMap">
 	
 		SELECT B.ROW_NUM, B.LIST_NO, B.EMAIL, B.LIST_NAME, B.MUSIC_CNT
 			FROM ( SELECT ROW_NUMBER() OVER(ORDER BY A.LIST_NO DESC) AS ROW_NUM, A.LIST_NO, A.EMAIL, A.LIST_NAME, A.MUSIC_CNT
@@ -298,8 +298,51 @@
 		
 	</select>
 	
-	<!--  3. 유저 플레이리스트 썸네일 가져오기 -->
-	<select id="selectUserPlaylistThumbnail" parameterType="int" resultType="MusicDTO">
+	<!-- 3.유저의 플레이리스트 내 수록곡 수 -->
+	<select id="selectUserPlaylistMusicCnt" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM PLAYLIST
+		WHERE LIST_NO = #{listNo}
+	</select>
+	
+	<!-- 4. 플레이리스트 수록곡 목록조회 -->
+	<select id="selectUserPlaylistMusiclist" parameterType="Map" resultMap="PlaylistMap">
+		SELECT R.ROW_NUM, R.MY_MUSIC_NO, R.LIST_NO, R.ARTIST, R.MUSIC_NO, R.MUSIC_TITLE, R.MUSIC_CONTENT, R.MUSIC_ALBUM, R.MUSIC_GENRE, R.MUSIC_UPLOAD_DATE, R.MUSIC_MODIFY_DATE, R.IP, R.IMG_ORIGIN, R.IMG_FILESYSTEM, R.MUSIC_ORIGIN, R.MUSIC_FILESYSTEM, R.DOWNLOAD_CNT, R.IMG_PATH, R.MUSIC_PATH, R.HAS_THUMBNAIL
+    		FROM (SELECT ROW_NUMBER() OVER(ORDER BY B.MUSIC_NO DESC) AS ROW_NUM, B.MY_MUSIC_NO, B.LIST_NO, B.ARTIST, B.MUSIC_NO, B.MUSIC_TITLE, B.MUSIC_CONTENT, B.MUSIC_ALBUM, B.MUSIC_GENRE, B.MUSIC_UPLOAD_DATE, B.MUSIC_MODIFY_DATE, B.IP, B.IMG_ORIGIN, B.IMG_FILESYSTEM, B.MUSIC_ORIGIN, B.MUSIC_FILESYSTEM, B.DOWNLOAD_CNT, B.IMG_PATH, B.MUSIC_PATH, B.HAS_THUMBNAIL
+            		FROM (  SELECT Y.MY_MUSIC_NO, Y.LIST_NO, U.ARTIST, M.MUSIC_NO, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
+                    		FROM MY_MUSIC Y INNER JOIN MUSIC M
+                    		ON Y.MUSIC_NO = M.MUSIC_NO INNER JOIN PLAYLIST P
+                    		ON P.LIST_NO = Y.LIST_NO INNER JOIN USERS U
+                    		ON U.EMAIL = P.EMAIL
+                    		WHERE Y.LIST_NO = #{listNo} ) B ) R
+		WHERE R.ROW_NUM BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<!-- 5. 플레이리스트명 수정 -->
+	<update id="updatePlaylistName" parameterType="Map">
+		UPDATE PLAYLIST SET LIST_NAME = #{listName} 
+		WHERE LIST_NO = #{listNo}
+	</update>
+	
+	<!-- 6. 플레이리스트 삭제 -->
+	<delete id="deletePlaylist" parameterType="Map">
+		DELETE FROM PLAYLIST WHERE LIST_NO = #{listNo}
+	</delete>
+	
+		
+	<!-- 7. 수록곡 삭제 -->
+	<delete id="deletePlaylistMusic" parameterType="Map">
+		DELETE FROM MY_MUSIC WHERE MY_MUSIC_NO = #{myMusicNo} AND LIST_NO = #{listNo}
+	</delete>
+	
+	
+
+	
+	
+	
+	
+	
+	<!--  3. 유저 플레이리스트 썸네일 가져오기	<select id="selectUserPlaylistThumbnail" parameterType="int" resultType="MusicDTO">
 		SELECT B.LIST_NO, B.MUSIC_NO, B.EMAIL, B.MUSIC_TITLE, B.MUSIC_CONTENT, B.MUSIC_ALBUM, B.MUSIC_GENRE, B.MUSIC_UPLOAD_DATE, B.MUSIC_MODIFY_DATE, B.IP, B.IMG_ORIGIN, B.IMG_FILESYSTEM, B.MUSIC_ORIGIN, B.MUSIC_FILESYSTEM, B.DOWNLOAD_CNT, B.IMG_PATH, B.MUSIC_PATH, B.HAS_THUMBNAIL
 			FROM (SELECT ROW_NUMBER() OVER(ORDER BY A.MUSIC_NO DESC) AS ROW_NUM, A.LIST_NO, A.MUSIC_NO, A.EMAIL, A.MUSIC_TITLE, A.MUSIC_CONTENT, A.MUSIC_ALBUM, A.MUSIC_GENRE, A.MUSIC_UPLOAD_DATE, A.MUSIC_MODIFY_DATE, A.IP, A.IMG_ORIGIN, A.IMG_FILESYSTEM, A.MUSIC_ORIGIN, A.MUSIC_FILESYSTEM, A.DOWNLOAD_CNT, A.IMG_PATH, A.MUSIC_PATH, A.HAS_THUMBNAIL
 			        FROM ( SELECT Y.LIST_NO, M.MUSIC_NO, M.EMAIL, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
@@ -307,46 +350,48 @@
 			                ON M.MUSIC_NO = Y.MUSIC_NO
 			                WHERE Y.LIST_NO = #{listNo}  ) A ) B
 			WHERE B.ROW_NUM = 1
-	</select>
+	</select> -->
+
 	
-	<!-- 4. 유저 플레이리스트명 받아오기  -->
-	<select id="selectUserPlaylistName" parameterType="int" resultType="String">
+	<!-- 4. 유저 플레이리스트명 받아오기	<select id="selectUserPlaylistName" parameterType="int" resultType="String">
 		SELECT LIST_NAME
 		FROM PLAYLIST
 		WHERE LIST_NO = #{listNo}
 	</select>
+	  -->
+
 	
-	<!-- 5> 유저 플레이리스트 수정 -->
-	 <update id="updateMusiclistName" parameterType="Map">
+	<!-- 5> 유저 플레이리스트 수정	 <update id="updateMusiclistName" parameterType="Map">
 		
 		 UPDATE PLAYLIST SET LIST_NAME = #{listName} 
 		 WHERE LIST_NO = #{listNo} AND EMAIL = #{email}
 		 
-	</update>
+	</update> -->
+
 	
-	<!--  6. 유저 플레이리스트 삭제 -->
-	
-	 <delete id="deletePalylist" parameterType="Map">
+	<!--  6. 유저 플레이리스트 삭제	
+	 <delete id="deletePalylist" parameterType="PMap">
 	
 		DELETE FROM PLAYLIST WHERE LIST_NO = #{listNo} AND EMAIL = #{email}
 		
-	</delete>
+	</delete> -->
 	
+
 	
 	<!-- 4. 플레이리스트 추가 -->
 	<!-- <insert id="insertPlaylist" parameterType="map" >
 		INSERT INTO PLAYLIST VALUES (PLAYLIST_SEQ.NEXTVAL, #{email}, #{listName})
 	</insert> -->
 	
-	<!-- 5. 플레이리스트 생성방지 -->
-	<select id="selectUserMusiclistCntInercet" parameterType="String" resultType="int" >
+	<!-- 5. 플레이리스트 생성방지 	<select id="selectUserMusiclistCntInercet" parameterType="String" resultType="int" >
 		SELECT COUNT(*) 
 		FROM PLAYLIST
 		WHERE EMAIL = #{email}
 	
 	</select>
 	
-	
+	-->
+
 
 	
 	
