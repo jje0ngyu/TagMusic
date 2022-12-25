@@ -107,10 +107,165 @@
 		 WHERE A.RN BETWEEN #{begin} AND #{end}
 	</select>
 	
+	
+	<select id="selectSleepUserList" resultType="UserDTO" parameterType="map">
+		SELECT A.*
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, JOIN_DATE, SLEEP_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
+		          FROM SLEEP_USERS
+	                 WHERE NOT USER_NO=1) A
+		 WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="selectRetireUserList" resultType="UserDTO" parameterType="map">
+		SELECT A.*
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO) AS RN, USER_NO, EMAIL, RETIRE_DATE, ARTIST
+		          FROM RETIRE_USERS
+	                 WHERE NOT USER_NO=1) A
+		 WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	
+	
+	
+	
 	<select id="countAllUser" resultType="int"> 
 		SELECT COUNT(*)
 		FROM USERS
 	</select>
+	
+	<select id="countSleppUser" resultType="int"> 
+		SELECT COUNT(*)
+		FROM SLEEP_USERS
+	</select>
+	
+	<select id="countRetireUser" resultType="int"> 
+		SELECT COUNT(*)
+		FROM RETIRE_USERS
+	</select>
+	
+	
+	<!-- 유저 검색용 매퍼 -->
+	
+	<select id="serchUserCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		  FROM USERS
+		<where>
+		    <if test="column=='USER_NO' or column=='SNS_TYPE'">
+		    	${column} = #{query}
+		    </if>
+		    <if test="column=='NAME' or column=='MOBILE' or column=='EMAIL' or column=='ARTIST'">
+		    	${column} LIKE '%' || #{query} || '%'
+		    </if>
+		    <if test="column=='JOIN_DATE'">
+		    	${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
+		    </if>
+		</where>
+	</select>
+
+	<select id="selectSearchEmployeeList" parameterType="Map" resultType="UserDTO">
+	
+		SELECT A.*
+ 		  FROM (   SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
+                   FROM USERS
+			        <where>
+			            <if test="column=='USER_NO' or column=='SNS_TYPE'">
+			                ${column} = #{query}
+			            </if>
+			            <if test="column=='NAME' or column=='MOBILE' or column=='EMAIL' or column=='ARTIST'">
+			                ${column} LIKE '%' || #{query} || '%'
+			            </if>
+			            <if test="column=='JOIN_DATE'">
+			                ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
+			            </if>
+			        </where>    ) A
+       	 WHERE A.RN BETWEEN #{begin} AND #{end} 
+	</select>
+	
+	
+	
+	<select id="selectAutoCompleteList" parameterType="Map" resultType="UserDTO">
+		SELECT DISTINCT ${column}
+		  FROM EMPLOYEES
+		 WHERE ${column} LIKE CONCAT(#{query}, '%')
+	</select>
+
+
+
+
+
+
+	<!-- 회원 강제 탈퇴 및 강제 휴면할 유저 정보 조회하기-->
+	<select id="selectUserByNo" parameterType="Map" resultType="UserDTO">
+		  SELECT USER_NO, EMAIL, PW, ARTIST, NAME, GENDER, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE,PROFILE_IMAGE
+		  	FROM USERS
+		  <where>
+		    <foreach item="item" collection="userNo" open="USER_NO in (" separator="," close=")" >
+		          #{item}
+		    </foreach>
+		  </where>
+	</select>
+	
+
+	<!-- 휴면계정으로 insert -->
+	<insert id="insertSleepUser" parameterType="Map">
+		INSERT INTO SLEEP_USERS (USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, JOIN_DATE, SLEEP_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE)
+		     SELECT  A.* FROM(
+			<foreach collection="sleepUsers" item="item" separator="UNION ALL ">
+				SELECT #{item.userNo,jdbcType=INTEGER} AS USER_NO,
+					   #{item.email,jdbcType=VARCHAR} AS EMAIL,
+					   #{item.artist,jdbcType=VARCHAR} AS ARTIST,
+				       #{item.name,jdbcType=VARCHAR} AS NAME,
+					   #{item.pw,jdbcType=VARCHAR} AS PW,
+					   #{item.profileImage,jdbcType=VARCHAR} AS PROFILE_IMAGE,
+					   #{item.mobile,jdbcType=VARCHAR} AS MOBILE,
+					   #{item.gender,jdbcType=VARCHAR} AS GENDER,
+					   #{item.birthyear,jdbcType=VARCHAR} AS BIRTHYEAR,
+					   #{item.birthday,jdbcType=VARCHAR} AS BIRTHDAY,
+					   #{item.postcode,jdbcType=VARCHAR} AS POSTCODE,
+					   #{item.roadAddress,jdbcType=VARCHAR} AS ROAD_ADDRESS,
+					   #{item.jibunAddress,jdbcType=VARCHAR} AS JIBUN_ADDRESS,
+					   #{item.detailAddress,jdbcType=VARCHAR} AS DETAIL_ADDRESS,
+					   #{item.extraAddress,jdbcType=VARCHAR} AS EXTRA_ADDRESS,
+					   #{item.snsType,jdbcType=VARCHAR} AS SNS_TYPE,
+					   #{item.joinDate,jdbcType=DATE} AS JOIN_DATE,
+					   SYSDATE,
+					   #{item.pwModifyDate,jdbcType=DATE} AS PW_MODIFY_DATE,
+					   #{item.infoModifyDate,jdbcType=DATE} AS INFO_MODIFY_DATE,
+					   #{item.agreeCode,jdbcType=INTEGER} AS AGREE_CODE
+				  FROM DUAL
+			</foreach>) A
+			
+	</insert>
+
+
+
+	<!-- 회원 강제 탈퇴 및 강제 휴면 1: USERS 테이블에서 제거-->
+	<delete id="deleteUserByNo" parameterType="Map">
+		DELETE
+		  FROM USERS
+		  <where>
+		    <foreach item="userNo" collection="userNo" open="USER_NO in (" separator="," close=")" >
+				 #{userNo}
+		  </foreach>
+		  </where>
+	</delete>
+	
+	
+	<!-- 회원 강제 탈퇴2: RETIRE_USERS 테이블에 추가 -->
+	<insert id="insertRetireUser" parameterType="Map">
+		INSERT INTO RETIRE_USERS (USER_NO, EMAIL, RETIRE_DATE, ARTIST)
+		SELECT A.* FROM(
+			<foreach collection="retireUsers" item="item" separator="UNION ALL ">
+		 SELECT    #{item.userNo} AS USER_NO,
+				   #{item.email} AS EMAIL,
+			         SYSDATE,
+				   #{item.artist} AS ARTIST
+		      FROM DUAL
+		  </foreach>) A
+	</insert>
+	
+	
+	<!-- 유저조회 -->
 
 
 </mapper>

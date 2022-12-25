@@ -5,58 +5,24 @@
 <title>고객센터>관리자</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
+<script th:src="@{/js/admin.js}"></script>
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
 <script th:inline="javascript">
 
-	$(function(){
+	$(document).ready(function(){
 		fn_page_list(page);
+		fn_checkAll();
+		fn_checkOne();
+		fn_user_search();
+		fn_autoComplete();
+		fn_sleepUser();
+		fn_retireUser();
+		fn_sleep_user_list();
+		fn_retire_user_list();
 	});
 	
-	
-	// 전역변수
-	var page = 1;
-	var totalPage = 0;
-	
-	function fn_page_list(realPage){
-		
-		$.ajax({
-			type : 'get',
-			url : '/admin/user/list',
-			data : 'page=' + realPage,
-			dataType : 'json',
-			success : function(resData){
-				
-				$('#list_body').empty();
-				
-				$.each(resData.userList, function(i, user) {
-					
-					$('<tr>')
-					.append( $('<td>').append($('<input class="blind" type="checkbox" name="userCheck" value="'+ user.userNo +'">')))
-	                .append( $('<td>').append(user.userNo) )
-					.append( $('<td>').append($('<img class="thum" src="'+user.profileImage+'"></img>')))
-	                .append( $('<td>').append(user.name) )
-	                .append( $('<td>').append(user.artist) )
-					.append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
-	                .appendTo('#list_body');
-	                
-				});
-				
-				$('.list_page_footer').empty();
-				$(resData.paging).appendTo('.list_page_footer');
-				
-				
-				
-			},
-			error : function(jqXHR){
-				console.log(jqXHR.status);
-			}
-		});
-	};
-
-
 
 	
-
 </script>
 <body>
 
@@ -84,21 +50,73 @@
 			    </ul>
 			</div>
 
-
-			<div>유저 관리</div>
+			<div class="admin_menu">
+				<div onclick="fn_page_list(1);">가입 유저 관리</div>
+				<div id="list_sleep_user">휴면 유저 관리</div>
+				<div id="list_retire_user">탈퇴 유저 관리</div>
+			</div>
+			
+			
+			<div>
+				<form id="frm_search1">
+					<select name="column" id="column1">
+						<option value="">:::선택:::</option>
+						<option value="USER_NO">회원번호</option>
+						<option value="NAME">이름</option>
+						<option value="GENDER">성별</option>
+						<option value="ARTIST">아티스트명</option>
+						<option value="EMAIL">이메일</option>
+						<option value="MOBILE">핸드폰번호</option>
+						<option value="SNS_TYPE">가입형태</option>
+					</select>
+					<input type="text" name="query" id="query" list="auto_complete">
+					<datalist id="auto_complete"></datalist>
+					<input type="button" value="조회" onclick="fn_user_search();">
+					<!-- <input type="hidden" id="page" value="1" name="page"> -->
+				</form>
+			</div>
+			<div>
+				<form id="frm_search2" action="@{/admin/user/search}">
+					<select name="column" id="column2">
+						<option value="">:::선택:::</option>
+						<option value="JOIN_DATE">가입일</option>
+						<option value="JOIN_DATE">생일</option>
+					</select>
+					<input type="text" name="start" id="start">
+					~
+					<input type="text" name="stop" id="stop">
+					<span>
+						<input type="submit" value="조회">
+					</span>
+					<input type="hidden" id="page" value="1" name="page">
+				</form>
+			</div>
+			
+			<div id="">
+				<input type="button" id="btn_sleepUser" value="휴면">
+				<input type="button" id="btn_retireUser" value="탈퇴">
+			</div>
+			
+			
 			
 			<div class="user_list_container">
-			
-			
 				<table>
 					<thead>
 						<tr>
-							<td><input type="checkbox" class="blind"></td>
+							<td><input type="checkbox" id="check_all" class="lbl_all"></td>
 							<td><span data-title="USER_NO">회원번호</span></td>
 							<td><span data-title="PROFILE_IMAGE">프로필이미지</span></td>
 							<td><span data-title="NAME">이름</span></td>
+							<td><span data-title="GENDER">성별</span></td>
 							<td><span data-title="ARTIST" >아티스트명</span></td>
-							<td><span data-title="joinDate">가입일</span></td>
+							<td><span data-title="">생일</span></td>
+							<td><span data-title="EMAIL">이메일</span></td>
+							<td><span data-title="MOBILE">MOBILE.NO</span></td>
+							<td><span data-title="JOIN_DATE">가입일</span></td>
+							<td><span data-title="SNS_TYPE">가입형태</span></td>
+							<td><span data-title="AGREE_CODE">위치동의</span></td>
+							<td><span data-title="AGREE_CODE">마케팅동의</span></td>
+							
 						</tr>
 					</thead>
 					<tbody id="list_body">
@@ -121,18 +139,10 @@
 							</td>
 						</tr>
 					</tfoot>
-					
-					
-					
-					
-					
-					
 				</table>
 					
 					
-					
-			
-			
+
 			
 			
 			</div>

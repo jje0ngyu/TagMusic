@@ -175,13 +175,19 @@
 	
 }
 
-
-
 .chat_detail_container > div{
 	padding: 8px;
 }
  
- 
  .thum{
  	width:60px;
  }
+ 
+ .admin_menu{
+	 display : flex;
+ }
+ 
+.admin_menu > div{
+	margin : 10px;
+}
+

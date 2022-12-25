@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.gdu.tagmusic.domain.ChatDTO;
+import com.gdu.tagmusic.domain.RetireUserDTO;
+import com.gdu.tagmusic.domain.SleepUserDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.AdminMapper;
 import com.gdu.tagmusic.mapper.ChatMapper;
@@ -56,7 +58,6 @@ public class AdminServiceImpl implements AdminService {
 
 		}
 		
-		System.out.println(size);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		resultMap.put("arrayList", arrayList);
@@ -122,49 +123,254 @@ public class AdminServiceImpl implements AdminService {
 		map.put("groupNo", groupNo);
 		
 		
-		
-
-		
-		
-		
-		
 		return map;
 	}
 	
+	
+	@Transactional
 	@Override
 	public Map<String, Object> getUserList(HttpServletRequest request, Model model) {
 		
 		// page 파라미터가 전달되지 않는 경우 page = 1로 처리한다.
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
-		int page = Integer.parseInt(opt.orElse("1"));
+		int page;
 		
-		// 전체 레코드(직원) 개수 구하기
-		int totalRecord = adminMapper.countAllUser();
+		try {
+			page = Integer.parseInt(opt.orElse("1"));
+			page = Integer.parseInt(request.getParameter("page"));
+		}catch (NumberFormatException n) {
+			page = 1;
+		}
 		
-		// PageUtil 계산하기
-		int recordPerPage = 8;  
-		pageUtil.setPageUtil(page, recordPerPage, totalRecord);
+		// 조회하고자 하는 유저타입
+		String userType = request.getParameter("list");
+		
+		int totalRecord=0;
+		int recordPerPage = 8; 
+		List<UserDTO> userList = null;
+		
+		switch (userType) {
+			case "nowUser":
+				
+				// 전체 레코드(직원) 개수 구하기
+				totalRecord = adminMapper.countAllUser();
+				
+				// PageUtil 계산하기
+				pageUtil.setPageUtil(page, recordPerPage, totalRecord);
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("begin", pageUtil.getBegin());
+				map.put("end", pageUtil.getEnd());
+				
+				// begin~end 목록 가져오기
+				userList = adminMapper.selectUserList(map);
+				break;
+			case "sleepUser":
+				// 전체 레코드(직원) 개수 구하기
+				totalRecord = adminMapper.countSleppUser();
+				
+				// PageUtil 계산하기
+				pageUtil.setPageUtil(page, recordPerPage, totalRecord);
+				Map<String, Object> map2 = new HashMap<String, Object>();
+				map2.put("begin", pageUtil.getBegin());
+				map2.put("end", pageUtil.getEnd());
+				
+				// begin~end 목록 가져오기
+				userList = adminMapper.selectSleepUserList(map2);
+				break;
+			case "retireuser":
+				// 전체 레코드(직원) 개수 구하기
+				totalRecord = adminMapper.countRetireUser();
+				
+				// PageUtil 계산하기
+				pageUtil.setPageUtil(page, recordPerPage, totalRecord);
+				Map<String, Object> map3 = new HashMap<String, Object>();
+				map3.put("begin", pageUtil.getBegin());
+				map3.put("end", pageUtil.getEnd());
+				
+				// begin~end 목록 가져오기
+				userList = adminMapper.selectRetireUserList(map3);
+				break;
+			default:
+				break;
+		}
 		
 		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
-			
-		// begin~end 목록 가져오기
-		List<UserDTO> userList = adminMapper.selectUserList(map);
+		
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("userList", userList);
 		result.put("pageUtil", pageUtil);
-		result.put("beginNo", totalRecord - page * pageUtil.getRecordPerPage());
 		result.put("paging", pageUtil.getPagingForAjax("/admin/user/list"));
 		return result;
 	}
 	
 	
-	
-	
+	@Override
+	public Map<String, Object> searchUser(HttpServletRequest request) {
+		
+		// page 파라미터가 전달되지 않는 경우 1로 처리한다.
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+		int page;
+		
+		try {
+			page = Integer.parseInt(opt.orElse("1"));
+			page = Integer.parseInt(request.getParameter("page"));
+		}catch (NumberFormatException n) {
+			page = 1;
+		}
+		
+		// 검색 대상
+		String column = request.getParameter("column");
+		
+		// 검색어
+		String query = request.getParameter("query");
 
+		
+		String start = request.getParameter("start");
+		String stop = request.getParameter("stop");
+		
+		// 조회와 검색된 사원수를 알아낼 때 사용하는 Map
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("column", column);
+		map.put("query", query);
+		map.put("start", start);
+		map.put("stop", stop);
+		
+		// 검색된 유저 갯수
+		int totalRecord = adminMapper.serchUserCount(map);
+		
+		// 페이징 계산	
+		int recordPerPage = 8;
+		pageUtil.setPageUtil(page, recordPerPage, totalRecord);
+		
+		// 조회에서 사용하는 Map
+		map.put("begin", pageUtil.getBegin());
+		map.put("end", pageUtil.getEnd());
+		
+		List<UserDTO> userList = adminMapper.selectSearchEmployeeList(map);
+		
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("userList", userList);
+		result.put("beginNo", totalRecord - page * pageUtil.getRecordPerPage());
+		result.put("pageUtil", pageUtil);
+
+		return result;
+		
+		
+		
+	}
+	
+	@Override
+	public Map<String, Object> getAutoCompleteList(HttpServletRequest request) {
+		
+		
+		String column = request.getParameter("column");
+		String query = request.getParameter("query");
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("column", column);
+		map.put("query", query);
+		
+		List<UserDTO> list = adminMapper.selectAutoCompleteList(map);
+
+		Map<String, Object> result = new HashMap<String, Object>();
+		if(list.size() == 0) {
+			result.put("status", 400);
+			result.put("list", null);
+		} else {
+			result.put("status", 200);
+			result.put("list", list);
+		}
+		
+		
+		switch(column) {
+		case "NAME": result.put("column", "name"); break;
+		case "GENDER": result.put("column", "gender"); break;
+		case "ARTIST": result.put("column", "artist"); break;
+		case "MOBILE": result.put("column", "mobile"); break;
+		case "EMAIL": result.put("column", "email"); break;
+		case "SNS_TYPE": result.put("column", "snsType"); break;
+		}
+		
+		
+		return result;
+	}
+	
+	@Transactional
+	@Override
+	public Map<String, Object> sleepUser(Map<String, Object> userNo) {
+		
+	      Map<String, Object> sleepUser = new HashMap<>();
+	      List<UserDTO> users = adminMapper.selectUserByNo(userNo);
+	      
+	      List<SleepUserDTO> sleepUserList = new ArrayList<>();
+	      for(int i = 0; i < users.size(); i++) {
+	         SleepUserDTO setSleepUser = SleepUserDTO.builder()
+	        		 .userNo(users.get(i).getUserNo())
+	        		 .email(users.get(i).getEmail())
+	        		 .artist(users.get(i).getArtist())
+	        		 .name(users.get(i).getName())
+	        		 .pw(users.get(i).getPw())
+	        		 .profileImage(users.get(i).getProfileImage())
+	        		 .mobile(users.get(i).getMobile())
+	        		 .gender(users.get(i).getGender())
+	        		 .birthyear(users.get(i).getBirthyear())
+	        		 .birthday(users.get(i).getBirthyear())
+	        		 .postcode(users.get(i).getPostcode())
+	        		 .roadAddress(users.get(i).getRoadAddress())
+	        		 .jibunAddress(users.get(i).getJibunAddress())
+	        		 .detailAddress(users.get(i).getDetailAddress())
+	        		 .extraAddress(users.get(i).getExtraAddress())
+	        		 .snsType(users.get(i).getSnsType())
+	        		 .joinDate(users.get(i).getJoinDate())
+	        		 // sleepDate
+	        		 .pwModifyDate(users.get(i).getPwModifyDate())
+	        		 .infoModifyDate(users.get(i).getInfoModifyDate())
+	        		 .agreeCode(users.get(i).getAgreeCode())
+	               .build();
+	         sleepUserList.add(i, setSleepUser);
+	      }
+	      
+	         
+	         Map<String, Object> sUser = new HashMap<>();
+	         sUser.put("sleepUsers", sleepUserList);
+	         
+	         int insertResult = adminMapper.insertSleepUser(sUser);
+	         int deleteResult = adminMapper.deleteUserByNo(userNo);
+	         
+	         sleepUser.put("isSleepUser", deleteResult);
+	         
+	         return sleepUser;
+
+	}
+	
+	@Transactional
+	@Override
+	public Map<String, Object> removeUser(Map<String, Object> userNo) {
+
+	      Map<String, Object> deleteUser = new HashMap<>();
+	      List<UserDTO> users = adminMapper.selectUserByNo(userNo);
+
+	      List<RetireUserDTO> retireUserList = new ArrayList<>();
+	      for(int i = 0; i < users.size(); i ++) {
+	         RetireUserDTO retireUser = RetireUserDTO.builder()
+	        		 .userNo(users.get(i).getUserNo())
+	        		 .email(users.get(i).getEmail())
+	        		 .artist(users.get(i).getArtist())
+	        		 // 탈퇴일
+	        		 .build();
+	         retireUserList.add(i, retireUser);
+	      }
+	      Map<String, Object> rUser = new HashMap<>();
+	      rUser.put("retireUsers", retireUserList);
+	      int insertResult = adminMapper.insertRetireUser(rUser);
+	      int deleteResult = adminMapper.deleteUserByNo(userNo);
+
+	      deleteUser.put("isRemove", deleteResult);
+	      
+	      return deleteUser;
+	}
 
 
 }
