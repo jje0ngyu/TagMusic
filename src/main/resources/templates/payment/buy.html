@@ -107,13 +107,14 @@ function fn_isNotUser(){
 				txt += '<div class="pass_price">'+pass.passPrice+' 원!</div>';
 				txt += '</div>';
 				txt += '</div>';
-				txt += '<div class="pass_bpx_right">';
+				txt += '<div class="pass_box_right">';
 				txt += '<input type="button" value="결제하기" onclick="fn_login()">';
 				txt += '</div>';
 				txt += '</div>';
-			//	if(pass.passName == "30일이용권"){
-			//		txt += '<input type="button" value="선물하기" id="btn_gift" onclick="fn_login()">';
-			//	}
+				if(pass.passName == "30일이용권"){
+					txt += '<input type="button" value="선물하기" id="btn_gift" onclick="fn_login()">';
+			
+				}
 			});
 			$('#buyPageDiv').append(txt);
 		}
@@ -139,9 +140,9 @@ function fn_passList(){
 					txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName+'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
 				txt += '</div>';
 				txt += '</div>';
-				//if(pass.passName == "30일이용권"){
-				//	txt += '<input class="btn_gift_30days" type="button" value="선물하기" data-if="0" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
-				//}
+				if(pass.passName == "30일이용권"){
+					txt += '<input class="btn_gift_30days" type="button" value="선물하기" data-if="0" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
+				}
 			});
 			
 			$('#buyPageDiv').append(txt);

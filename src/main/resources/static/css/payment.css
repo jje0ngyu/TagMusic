@@ -1,11 +1,5 @@
 @charset "UTF-8";
 
-body, section, div, a, input, ul, li, input {
-	margin: 0px;
-	padding: 0px;
-	background-color: inherit;
-	color: inherit;
-}
 /* 배경 레이어 */
 .back_content {
 	width: 100%;
@@ -169,6 +163,8 @@ body, section, div, a, input, ul, li, input {
 	display: flex;
 	align-items: center;
 	margin-right: 60px;
+	width: 100px;
+	font-size: 16px;
 }
 
 .pass_box_right input[type=button] {

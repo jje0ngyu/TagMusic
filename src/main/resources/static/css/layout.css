@@ -257,9 +257,13 @@
 		font-size: 14px;
 		border-radius: 20px;
 		margin: 30px 5px 0;
+		height: 30px;
+		color: #1f1f1f;
+		padding: 0 10px;
 	}
 	.profile_box  input[type=button]:hover {
 		box-shadow: 0 3px 10px -3px #1f1f1f;
+		color: #fdfdfd;
 	}
 	.profile_box  .btn_logout:hover {
 		background-color: #FF5361;
