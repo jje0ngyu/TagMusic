@@ -15,5 +15,6 @@ public class MyMusicDTO {
 	private int listNo;
 	private int musicNo;
 	private MusicDTO musicDTO;
+	private PlaylistDTO playlistDTO;
 
 }

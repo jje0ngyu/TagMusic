@@ -16,6 +16,8 @@
 		fn_modifyPlaylistName();		// 구현 : 플레이리스트명 수정
 		fn_deletePlaylist();			// 구현 : 플레이리스트 삭제
 		fn_deletePlaylistMusic();		// 구현 : 플레이리스트 음악삭제
+		fn_updatePage();				// 기능 : 페이지 최신화
+		//fn_updatePlaylist_music();		// 가능 : 플레이리스트 수록곡 최신화
 	});
 	
 
@@ -87,15 +89,18 @@
 			
 			// ajax 응답에서는 this를 인식할수 없어서 변수로 만들어줘야한다
 			let board = $(this).parent().next();
-			let data = $(this).data('listno')
+			let listNo = $(this).data('listno');
+			let page = $('#page').val();
+			
+			$('#listNo').val( $(this).data('listno') );
 			
 			$.ajax({
 				type: 'get',
 				url: '/music/user/playlistMusiclist',
-				data: 'listNo=' + data,
+				data: 'listNo=' + listNo,
 				dataType: 'json',
 				success: function(resData) {
-						
+						console.log(resData);
 						
 						// 수록곡 목록 갱신
 						$(board).empty();
@@ -107,9 +112,9 @@
 
 						$.each(resData.PlaylistMusiclist, function(index, musicList) {
 							
-							if(musicList.myMusicDTO.musicDTO.hasThumbNail == 1) {
+							if(musicList.musicDTO.hasThumbNail == 1) {
 								let thumbnail = '/music/thumbnail';
-							} else if (musicList.myMusicDTO.musicDTO.hasThumbNail == 0) {
+							} else if (musicList.musicDTO.hasThumbNail == 0) {
 								let thumbnail = '/images/defaultImage.png';
 							}
 		
@@ -118,16 +123,117 @@
 							.append('<td class="td_no">'+ (index + 1) +'</td>') 
 							.append( $('<td>').append('<img class="board_thumbnail" src="'+ thumbnail+'">') )
 							.append( $('<td class="">')
-								.append('<div class="playlist_musicTitle">'+ musicList.myMusicDTO.musicDTO.musicTitle +'</div>')
-								.append('<div class="playlist_musicArtist">'+ musicList.userDTO.artist +'</div>') )
-							.append( $('<td>').append('<div class="playlist_musicGenre">'+ musicList.myMusicDTO.musicDTO.musicGenre +'</div>') )
-							.append( $('<td>').append( '<input type="button" value="삭제" class="deletePlaylistMusic" data-listno="'+ musicList.myMusicDTO.listNo+ '" data-mymusicno="'+musicList.myMusicDTO.myMusicNo+'">') )
+								.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'</div>')
+								.append('<div class="playlist_musicArtist">'+ musicList.playlistDTO.userDTO.artist +'</div>') )
+							.append( $('<td>').append('<div class="playlist_musicGenre">'+ musicList.musicDTO.musicGenre +'</div>') )
+							.append( $('<td>').append( '<input type="button" value="삭제" class="deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'">') )
 							.appendTo($(body));
-						});
-					
+
+							});
+						
+						
+						// 페이징 처리
+						var pageUtil = resData.pageUtil;
+						var paging = '';
+
+						
+						if(pageUtil.beginPage != 1) {
+							paging += '<span class="page_left" data-page="' + (pageUtil.beginPage - 1) + '" data-listno="' + listNo + '">이전 ◀</span>';
+						}
+						// 페이지번호
+						for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+							
+							paging += '<span class="paging" data-page="' + p + '" data-listno="' + listNo + '">' + p + '</span>';
+							
+						}
+						// 다음 블록
+						if(pageUtil.endPage != pageUtil.totalPage){
+							paging += '<span class="page_right" data-page="' + (pageUtil.endPage + 1) + '" data-listno="' + listNo + '">이전 ◀</span>';
+						}
+						
+
 						$(board).append( $('<table>')
 							.append('<thead><tr><td>No</td><td colspan="3">곡 정보</td><td>삭제</td></tr></thead>')
-							.append($(body)));				
+							.append($(body)) )
+							.append( $('<div class="page_block">').append(paging) );				
+				}	
+			});
+		});
+	}
+	
+	function fn_updatePage() {	// 수록곡 페이지 이동
+		
+		$(document).on('click', '.paging', function(){
+
+			let page = $(this).data('page');
+			let board = $(this).parent().prev().parent();
+			let listNo = $(this).data('listno');
+			
+			$('#page').val( $(this).data('page'));
+			$('#listNo').val( $(this).data('listno') );
+			
+			
+			$.ajax({
+				type: 'get',
+				url: '/music/user/playlistMusiclist',
+				data: 'listNo=' + listNo + '&page=' + page,
+				dataType: 'json',
+				success: function(resData) {
+						
+						// 수록곡 목록 갱신
+						$(board).empty();
+					
+						// 수록곡 목록조회
+			
+						let body = $('<tbody>');
+						let thumbnail = '';
+
+						$.each(resData.PlaylistMusiclist, function(index, musicList) {
+							
+							if(musicList.musicDTO.hasThumbNail == 1) {
+								let thumbnail = '/music/thumbnail';
+							} else if (musicList.musicDTO.hasThumbNail == 0) {
+								let thumbnail = '/images/defaultImage.png';
+							}
+		
+							
+							$('<tr>')
+							.append('<td class="td_no">'+ (index + 1) +'</td>') 
+							.append( $('<td>').append('<img class="board_thumbnail" src="'+ thumbnail+'">') )
+							.append( $('<td class="">')
+								.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'</div>')
+								.append('<div class="playlist_musicArtist">'+ musicList.playlistDTO.userDTO.artist +'</div>') )
+							.append( $('<td>').append('<div class="playlist_musicGenre">'+ musicList.musicDTO.musicGenre +'</div>') )
+							.append( $('<td>').append( '<input type="button" value="삭제" class="deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'">') )
+							.appendTo($(body));
+
+							});
+						
+						
+						// 페이징 처리
+						var pageUtil = resData.pageUtil;
+						var paging = '<div>';
+						
+
+						if(pageUtil.beginPage != 1) {
+							paging += '<span class="page_left" data-page="' + (pageUtil.beginPage - 1) + '" data-listno="' + listNo + '">이전 ◀</span>';
+						}
+						// 페이지번호
+						for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+							
+							paging += '<span class="paging" data-page="' + p + '" data-listno="' + listNo + '">' + p + '</span>';
+							
+						}
+						// 다음 블록
+						if(pageUtil.endPage != pageUtil.totalPage){
+							paging += '<span class="page_right" data-page="' + (pageUtil.endPage + 1) + '" data-listno="' + listNo + '">이전 ◀</span>';
+						}
+						
+
+						$(board).append( $('<table>')
+							.append('<thead><tr><td>No</td><td colspan="3">곡 정보</td><td>삭제</td></tr></thead>')
+							.append($(body)) )
+							.append( $('<div class="page_block">').append(paging) );					
 				}	
 			});
 		});
@@ -187,6 +293,7 @@
 			});
 		});
 	}
+	
 	function fn_modifyPlaylistName() {	// 플레이리스트명 수정
 		
 		$(document).on('click', '.playlist_modifyPlaylistName', function() {
@@ -235,12 +342,11 @@
 					} else if (resData.result == 1) {
 						alert('삭제에 성공했습니다');
 					}
+					
 					fn_Playlist_list();	// 플레이리스트 최신화
 				}
 			});
 		});
-		
-	
 	}
 	
 	function fn_deletePlaylistMusic() {	// 수록곡 삭제
@@ -270,10 +376,86 @@
 					} else if (resData.result == 1) {
 
 						alert('삭제에 성공했습니다');
+						fn_Playlist_list();
+						// fn_updatePlaylist_music();
 					}
 				}
 			});
 		});	
+	}
+	
+	function fn_updatePlaylist_music() {	// 플레이리스트 수록곡 최신화
+		
+		
+		
+		let listNo = $('#listNo').val();
+		let page = $('#page').val();
+		
+		$.ajax({
+			type: 'get',
+			url: '/music/user/playlistMusiclist',
+			data: 'listNo=' + listNo + '&page=' + page,
+			dataType: 'json',
+			success: function(resData) {
+					
+					// 수록곡 목록 갱신
+					let board = $('.playlist_musicBoard');
+					$('.playlist_musicBoard').empty();
+				
+					// 수록곡 목록조회
+		
+					let body = $('<tbody>');
+					let thumbnail = '';
+
+					$.each(resData.PlaylistMusiclist, function(index, musicList) {
+						
+						if(musicList.musicDTO.hasThumbNail == 1) {
+							let thumbnail = '/music/thumbnail';
+						} else if (musicList.musicDTO.hasThumbNail == 0) {
+							let thumbnail = '/images/defaultImage.png';
+						}
+	
+						
+						$('<tr>')
+						.append('<td class="td_no">'+ (index + 1) +'</td>') 
+						.append( $('<td>').append('<img class="board_thumbnail" src="'+ thumbnail+'">') )
+						.append( $('<td class="">')
+							.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'</div>')
+							.append('<div class="playlist_musicArtist">'+ musicList.playlistDTO.userDTO.artist +'</div>') )
+						.append( $('<td>').append('<div class="playlist_musicGenre">'+ musicList.musicDTO.musicGenre +'</div>') )
+						.append( $('<td>').append( '<input type="button" value="삭제" class="deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'">') )
+						.appendTo($(body));
+
+						});
+					
+					
+					// 페이징 처리
+					var pageUtil = resData.pageUtil;
+					var paging = '';
+
+					
+					if(pageUtil.beginPage != 1) {
+						paging += '<span class="page_left" data-page="' + (pageUtil.beginPage - 1) + '" data-listno="' + listNo + '">이전 ◀</span>';
+					}
+					// 페이지번호
+					for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+						
+						paging += '<span class="paging" data-page="' + p + '" data-listno="' + listNo + '">' + p + '</span>';
+						
+					}
+					// 다음 블록
+					if(pageUtil.endPage != pageUtil.totalPage){
+						paging += '<span class="page_right" data-page="' + (pageUtil.endPage + 1) + '" data-listno="' + listNo + '">이전 ◀</span>';
+					}
+					
+
+					$(board).append( $('<table>')
+						.append('<thead><tr><td>No</td><td colspan="3">곡 정보</td><td>삭제</td></tr></thead>')
+						.append($(body)) )
+						.append( $('<div class="page_block">').append(paging) );				
+			}	
+		});
+		
 	}
 	
 	
@@ -291,6 +473,9 @@
 	
 		
 		<div class="playlist_container">
+		
+		<input type="hidden" th:value="1" id="page">
+		<input type="hidden" th:value="1" id="listNo">
 		
 
 			<!-- 구현 : 플레이리스트 목록 -->

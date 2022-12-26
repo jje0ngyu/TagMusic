@@ -48,7 +48,7 @@ public class MusicController {
 	@GetMapping("/music/board/updatedMusic")
 	public String updatedMusicBoard(HttpServletRequest request, Model model) {
 		musicService.selectUpdateMusicList(request, model);
-		return "/musicBoard/latestMusic";
+		return "/musicBoard/musicBoard";
 	}
 	
 	
@@ -66,7 +66,7 @@ public class MusicController {
 	@GetMapping("/music/board/popularMusic")
 	public String popularMusicBoard(HttpServletRequest request, Model model) {
 		musicService.selectPopularMusicList(request, model);
-		return "/musicBoard/popularMusic";
+		return "/musicBoard/musicBoard";
 	}
 	
 	
@@ -83,7 +83,7 @@ public class MusicController {
 	@GetMapping("/music/main/totalSearch")
 	public String totalSearch(HttpServletRequest request, Model model) {
 		musicService.selectSearchMusic(request, model);
-		return "/musicBoard/searchMusic";
+		return "/musicBoard/musicBoard";
 	}
 
 	// # 구현 : 음악랭킹(댓글수 + 좋아요수)
@@ -99,6 +99,7 @@ public class MusicController {
 	public String musicPlayer() {
 		return "/layout/musicPlayer";
 	}
+	
 	
 	
 	
@@ -146,6 +147,13 @@ public class MusicController {
 	public Map<String, Object> deletePlaylistMusic(HttpServletRequest request) {	
 		return musicService.deletePlaylistMusic(request);
 	}
+	
+	// 구현 : 모달창 아이프레임, 플레이리스트 목록조회
+	@GetMapping("/music/playlistModal")
+	public String playlistArea() {
+		return "/musicBoard/playlistModal";
+	}
+	
 	
 	
 

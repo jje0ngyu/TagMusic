@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 
 import com.gdu.tagmusic.domain.MusicDTO;
+import com.gdu.tagmusic.domain.MyMusicDTO;
 import com.gdu.tagmusic.domain.PlaylistDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.MusicMapper;
@@ -195,7 +196,7 @@ public class MusicServiceImpl implements MusicService {
 
 		// 4. model로 전달
 		model.addAttribute("paging", pageUtil.getPaging("/music/board/popularMusic"));
-		model.addAttribute("popularList", musicMapper.selectPopularMusicList(map));
+		model.addAttribute("musicList", musicMapper.selectPopularMusicList(map));
 		model.addAttribute("beginNo", totalRecordCnt - (page - 1) * pageUtil.getRecordPerPage());
 		// 게시글 가장 첫번째번호 : html에서 index값을 뺴서 no값을 출력
 		model.addAttribute("pageName", "인기리스트");
@@ -256,7 +257,7 @@ public class MusicServiceImpl implements MusicService {
 		map.put("query", query);
 
 		model.addAttribute("paging", pageUtil.getPaging("/music/main/totalSearch?query=" + query));
-		model.addAttribute("searchList", musicMapper.selectSearchMusicList(map));
+		model.addAttribute("musicList", musicMapper.selectSearchMusicList(map));
 		model.addAttribute("beginNo", totalRecordCnt - (page - 1) * pageUtil.getRecordPerPage());
 		// 게시글 가장 첫번째번호 : html에서 index값을 뺴서 no값을 출력
 		model.addAttribute("pageName", "검색어 :  " + query);
@@ -340,7 +341,7 @@ public class MusicServiceImpl implements MusicService {
 		 System.out.println(playlistMusicCnt);
 		 System.out.println(listNo);
 		 // 한 페이지당 10개의 게시글 조회
-		 pageUtil.setPageUtil(page, 10, userNo);
+		 pageUtil.setPageUtil(page, 5, playlistMusicCnt);
 		 
 		// map에 담기
 		 Map<String, Object> map = new HashMap<>();
@@ -350,10 +351,13 @@ public class MusicServiceImpl implements MusicService {
 		 map.put("email", email);
 		 map.put("userNo", userNo);
 		 
-		 List<PlaylistDTO> PlaylistMusiclist = musicMapper.selectUserPlaylistMusiclist(map);
+		 System.out.println( "end : "+ pageUtil.getEnd());
+		 List<MyMusicDTO> PlaylistMusiclist = musicMapper.selectUserPlaylistMusiclist(map);
 		 System.out.println(PlaylistMusiclist);
+		 //PlaylistMusiclist.stream().forEach(System.out::println);
 		 
 		 map.put("pageUtil", pageUtil);								// 페이지
+		 map.put("paging", pageUtil.getPaging("/music/user/playlistMusiclist"));								// 페이지
 		 map.put("playlistMusicCnt", playlistMusicCnt);				// 수록곡 수 
 		 map.put("PlaylistMusiclist", PlaylistMusiclist);			// 수록곡 리스트 
 		 

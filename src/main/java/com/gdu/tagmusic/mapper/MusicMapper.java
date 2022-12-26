@@ -56,7 +56,7 @@ public interface MusicMapper {
 	public int selectUserPlaylistMusicCnt(int listNo);
 	
 	// 4) 플레이리스트 수록곡 목록 조회
-	public List<PlaylistDTO> selectUserPlaylistMusiclist(Map<String, Object> map);
+	public List<MyMusicDTO> selectUserPlaylistMusiclist(Map<String, Object> map);
 
 	// 5) 플레이리스트명 수정
 	public int updatePlaylistName(Map<String, Object> map);

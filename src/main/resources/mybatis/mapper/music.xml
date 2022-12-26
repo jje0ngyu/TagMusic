@@ -151,6 +151,65 @@
 			<result column="AGREE_CODE" property="agreeCode"></result>
 		</association>
 	</resultMap>
+	
+	
+	<resultMap type="MyMusicDTO" id="MyMusicMap">
+		<id column="MY_MUSIC_NO" property="myMusicNo"></id>
+		<result column="LIST_NO" property="listNo"></result>
+		<result column="MUSIC_NO" property="musicNo"></result>
+		<association javaType="MusicDTO" property="musicDTO">
+			<id column="MUSIC_NO" property="musicNo"></id>
+			<result column="EMAIL" property="email"></result>
+			<result column="MUSIC_TITLE" property="musicTitle"></result>
+			<result column="MUSIC_CONTENT" property="musicContent"></result>
+			<result column="MUSIC_ALBUM" property="musicAlbum"></result>
+			<result column="MUSIC_GENRE" property="musicGenre"></result>
+			<result column="MUSIC_UPLOAD_DATE" property="musicUploadDate"></result>
+			<result column="MUSIC_MODIFY_DATE" property="musicModifyDate"></result>
+			<result column="IP" property="ip"></result>
+			<result column="IMG_ORIGIN" property="imgOrigin"></result>
+			<result column="IMG_FILESYSTEM" property="imgFilesystem"></result>
+			<result column="MUSIC_ORIGIN" property="musicOrigin"></result>
+			<result column="MUSIC_FILESYSTEM" property="musicFilesystem"></result>
+			<result column="DOWNLOAD_CNT" property="downloadCnt"></result>
+			<result column="IMAGE_PATH" property="imagePath"></result>
+			<result column="MUSIC_PATH" property="musicPath"></result>
+			<result column="HAS_THUMBNAIL" property="hasThumbNail"></result>
+		</association>
+		<association javaType="PlaylistDTO" property="playlistDTO">
+			<result column="LIST_NO" property="listNo"></result>
+			<result column="EMAIL" property="email"></result>
+			<result column="LIST_NAME" property="listName"></result>
+			<result column="PLAYLIST_MUSIC_CNT" property="playlistMusicCnt"></result>
+			<result column="MUSIC_CNT" property="musicCnt"></result>
+			<association javaType="UserDTO" property="userDTO">
+				<id column="USER_NO" property="userNo"></id>
+				<result column="EMAIL" property="email"></result>
+				<result column="ARTIST" property="artist"></result>
+				<result column="NAME" property="name"></result>
+				<result column="PW" property="pw"></result>
+				<result column="PROFILE_IMAGE" property="profileImage"></result>
+				<result column="MOBILE" property="mobile"></result>
+				<result column="GENDER" property="gender"></result>
+				<result column="BIRTHYEAR" property="birthyear"></result>
+				<result column="BIRTHDAY" property="birthday"></result>
+				<result column="POSTCODE" property="postcode"></result>
+				<result column="ROAD_ADDRESS" property="roadAddress"></result>
+				<result column="JIBUN_ADDRESS" property="jibunAddress"></result>
+				<result column="DETAIL_ADDRESS" property="detailAddress"></result>
+				<result column="EXTRA_ADDRESS" property="extraAddress"></result>
+				<result column="SNS_TYPE" property="snsType"></result>
+				<result column="SESSION_ID" property="sessionId"></result>
+				<result column="SESSION_LIMIT_DATE" property="sessionLimitDate"></result>
+				<result column="JOIN_DATE" property="joinDate"></result>
+				<result column="PW_MODIFY_DATE" property="pwModifyDate"></result>
+				<result column="INFO_MODIFY_DATE" property="infoModifyDate"></result>
+				<result column="AGREE_CODE" property="agreeCode"></result>
+			</association>
+		</association>
+	</resultMap>
+	
+	
 		
 	
 	
@@ -301,12 +360,12 @@
 	<!-- 3.유저의 플레이리스트 내 수록곡 수 -->
 	<select id="selectUserPlaylistMusicCnt" parameterType="int" resultType="int">
 		SELECT COUNT(*)
-		FROM PLAYLIST
+		FROM MY_MUSIC
 		WHERE LIST_NO = #{listNo}
 	</select>
 	
 	<!-- 4. 플레이리스트 수록곡 목록조회 -->
-	<select id="selectUserPlaylistMusiclist" parameterType="Map" resultMap="PlaylistMap">
+	<select id="selectUserPlaylistMusiclist" parameterType="Map" resultMap="MyMusicMap">
 		SELECT R.ROW_NUM, R.MY_MUSIC_NO, R.LIST_NO, R.ARTIST, R.MUSIC_NO, R.MUSIC_TITLE, R.MUSIC_CONTENT, R.MUSIC_ALBUM, R.MUSIC_GENRE, R.MUSIC_UPLOAD_DATE, R.MUSIC_MODIFY_DATE, R.IP, R.IMG_ORIGIN, R.IMG_FILESYSTEM, R.MUSIC_ORIGIN, R.MUSIC_FILESYSTEM, R.DOWNLOAD_CNT, R.IMG_PATH, R.MUSIC_PATH, R.HAS_THUMBNAIL
     		FROM (SELECT ROW_NUMBER() OVER(ORDER BY B.MUSIC_NO DESC) AS ROW_NUM, B.MY_MUSIC_NO, B.LIST_NO, B.ARTIST, B.MUSIC_NO, B.MUSIC_TITLE, B.MUSIC_CONTENT, B.MUSIC_ALBUM, B.MUSIC_GENRE, B.MUSIC_UPLOAD_DATE, B.MUSIC_MODIFY_DATE, B.IP, B.IMG_ORIGIN, B.IMG_FILESYSTEM, B.MUSIC_ORIGIN, B.MUSIC_FILESYSTEM, B.DOWNLOAD_CNT, B.IMG_PATH, B.MUSIC_PATH, B.HAS_THUMBNAIL
             		FROM (  SELECT Y.MY_MUSIC_NO, Y.LIST_NO, U.ARTIST, M.MUSIC_NO, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
