@@ -136,6 +136,7 @@ ul, ol {
 .pass_name {
 	position: relative;
 	display: flex;
+	justify-content: center;
 	align-items: center;
 	height: 180px;
 	padding: 40px 30px;
@@ -183,5 +184,15 @@ ul, ol {
 	width: 100px;
 	height: 50px;
 	font-size: 16px;
+}
+
+.coupon_input {
+	border: 0;
+	outline: none;
+	width: 400px;
+	height: 50px;
+	background-color: #fdfdfd;
+	font-weight: 600;
+	font-size: 21px;
 }
 	

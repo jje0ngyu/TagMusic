@@ -150,7 +150,7 @@ function fn_userLog(){
 				.appendTo('#list_body');
 			});
 			$('<tr>')
-		       .append($('<td id="paging" colspan="9"></td>'))
+		       .append($('<td id="paging" colspan="6"></td>'))
 		       .appendTo('#list_foot');
 		       
 		       
@@ -284,13 +284,13 @@ function fn_userLogSelect(){
 					<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
 					<input type="hidden" class="isUser" th:data-user="true">
 				</div> 
-				<div id="buyPageDiv">
-					<table>
-						<thead id="list_head">
+				<div id="buyPageDiv" style="text-align: center">
+					<table border="1">
+						<thead id="list_head" >
 						</thead>
-						<tbody id="list_body">
+						<tbody id="list_body" >
 						</tbody>
-						<tfoot id="list_foot">
+						<tfoot id="list_foot" >
 						</tfoot>
 					</table>
 				</div>
