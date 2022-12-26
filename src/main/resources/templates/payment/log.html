@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<head th:replace="~{layout/header::head('Tag Music > 결제이력')}"></head>
 <meta charset="UTF-8">
-
 <title></title>
+<link rel="stylesheet" th:href="@{/css/payment.css}">
 <style>
-	ul,ol{list-style:none}
-	a{text-decoration:none;color:#fff962;font-size:15px}
-	nav{overflow:hidden;height:80px;background-color:#1b2035; margin-top: 200px;}
+	nav{overflow:hidden;height:80px;}
 	#nav3 {
 	  width: 100%;
 	  height: 15%;
@@ -20,30 +18,17 @@
 	  font-size: 30px;
 	  font-weight: 900;
 	  position: absolute;
-	  left: 30px;
 	}
 	#nav3>select {
-	  padding: 0 20px;
 	  height: 30px;
 	  background-color: #1b2035;
 	  color: #fff;
 	  position: absolute;
-	  right: 30px;
-	  top: 50%;
 	  transform: translateY(-15px);
 	  border: 2px solid #fff;
 	  border-radius: 30px;
 	}
-	#nav3>ul {
-	  display: inline-block;
-	}
-	#nav3>ul li {
-	  float: left;
-	  padding: 0 30px;
-	}
-	
 	.payContent {
- 		margin: 50px 50px 50px 410px;
  		position: relative;
  		width: 1200px;
 	}
@@ -237,60 +222,81 @@ function fn_userLogSelect(){
 <body>
 	
 	<div th:replace="~{layout/header.html::header_layout}"></div>
-
-	<div class="session">
-		<div th:replace="~{layout/side.html::side_layout}"></div>
-		<div class="payContent">
-			<form id="frm_search">
-				<nav id="nav3">
-					<h1 th:text="|${session.loginUser.name} 님의 결제이력|"></h1>
-					<hr>
-					<ul>
-						<li>
-							<a th:href="@{#}" id="pass_log">전체 결제이력</a>
-						</li>
-						<li>
-							<a th:href="@{#}" id="purchased_pass">구매한 이력</a>
-						</li>
-						<li>
-							<a th:href="@{#}" id="gifted_pass">선물한 이력</a>
-						</li>
-					</ul>
-				</nav>
-					<select id="column" name="column" class="blind">
-				    	<option value=""></option>
-				    	<option value="BUY">구매한</option>
-				    	<option value="GIFT">선물한</option>
-    				</select>
-				<script>
+	<div th:replace="~{layout/side.html::side_layout}"></div>
+	<div class="back_content">
+		<div id="back_layer"></div>
+	</div>
+	<article class="payment_base_layer">
+		<div class="article_contain">
+			<div class="pay_controllers">
+				<h1 class="payTitle" th:text="|${session.loginUser.name} 님의 결제이력|"></h1>
+				<form id="frm_search">
+					<nav id="nav3" class="tab_box_basic">
+						<ul class="top_pay_controller">
+							<li id="pass_log" class="tab_payment tab_box_click">
+								전체 결제이력
+								<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
+								<script>
+									$('#pass_log').click(function(){
+										location.href="/";
+									})
+								</script>
+							</li>
+							<li id="purchased_pass" class="tab_payment">
+								구매한 이력
+								<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
+								<script>
+									$('#purchased_pass').click(function(){
+										location.href="/";
+									})
+								</script>
+							</li>
+							<li id="gifted_pass" class="tab_payment">
+								선물한 이력
+								<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
+								<script>
+									$('#gifted_pass').click(function(){
+										location.href="/";
+									})
+								</script>
+							</li>
+						</ul>
+					</nav>
+						<select id="column" name="column" class="blind">
+					    	<option value=""></option>
+					    	<option value="BUY">구매한</option>
+					    	<option value="GIFT">선물한</option>
+	    				</select>
+					<script>
+						
+					</script>
 					
-				</script>
-				
-			</form>
-			<input type="hidden" id="isUser" th:data-user="${session}">
-			<div th:if="${session.loginUser != null}">
-				<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
-				<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
-				<input type="hidden" id="userMobile" th:data-mobile="${session.loginUser.mobile}">
-				<input type="hidden" id="userAddr1" th:data-addr="${session.loginUser.roadAddress}">
-				<input type="hidden" id="userAddr2" th:data-addr="${session.loginUser.jibunAddress}">
-				<input type="hidden" id="userAddr3" th:data-addr="${session.loginUser.detailAddress}">
-				<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
-				<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
-				<input type="hidden" class="isUser" th:data-user="true">
-			</div> 
-			<div id="buyPageDiv">
-				<table>
-					<thead id="list_head">
-					</thead>
-					<tbody id="list_body">
-					</tbody>
-					<tfoot id="list_foot">
-					</tfoot>
-				</table>
+				</form>
+				<input type="hidden" id="isUser" th:data-user="${session}">
+				<div th:if="${session.loginUser != null}">
+					<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
+					<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
+					<input type="hidden" id="userMobile" th:data-mobile="${session.loginUser.mobile}">
+					<input type="hidden" id="userAddr1" th:data-addr="${session.loginUser.roadAddress}">
+					<input type="hidden" id="userAddr2" th:data-addr="${session.loginUser.jibunAddress}">
+					<input type="hidden" id="userAddr3" th:data-addr="${session.loginUser.detailAddress}">
+					<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
+					<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
+					<input type="hidden" class="isUser" th:data-user="true">
+				</div> 
+				<div id="buyPageDiv">
+					<table>
+						<thead id="list_head">
+						</thead>
+						<tbody id="list_body">
+						</tbody>
+						<tfoot id="list_foot">
+						</tfoot>
+					</table>
+				</div>
 			</div>
 		</div>
-	</div>
+	</article>
 	<form action="/user/login/form" id="frm_login"></form>
 	<input type="hidden" id="page" value="1">
 	

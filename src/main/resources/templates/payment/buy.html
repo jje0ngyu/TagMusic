@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<head th:replace="~{layout/header::head('Tag Music > 이용권')}"></head>
 <meta charset="UTF-8">
 <link rel="stylesheet" th:href="@{/css/payment.css}">
 <title></title>
 <style>
-	ul,ol{list-style:none}
+	
 	nav{overflow:hidden;height:80px;}
 	#nav3 {
 	  width: 100%;
@@ -309,16 +309,22 @@ function fn_presentTicket(e){
 				<div class="payContent">
 					<nav id="nav3" class="tab_box_basic">
 						<ul class="top_pay_controller">
-							<li class="tab_payment tab_box_click">
-								<a class="tab_text" th:href="@{/payment/buy}">BEST</a>
+							<li id="payBEST" class="tab_payment tab_box_click">
+								BEST
 							</li>
-							<li>
+							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
+							<script>
+								$('#payBEST').click(function(){
+									location.href="/payment/buy";
+								})
+							</script>
+							<li class="tab_payment">
 								전체 이용권
 							</li>
-							<li>
+							<li class="tab_payment">
 								이용권 선물
 							</li>
-							<li>
+							<li class="tab_payment">
 								쿠폰 등록
 							</li>
 						</ul>
@@ -370,6 +376,7 @@ function fn_presentTicket(e){
 		</div>
 	</article>
 	<form action="/user/login/form" id="frm_login"></form>
+	
 	<!-- 프로필 사진 클릭시 팝업 창 -->
 	<div class="backlayer blind"></div>
 	<div class="gift_session blind">

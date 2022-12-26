@@ -132,11 +132,11 @@ public class UserController {
 	
 	// 마이페이지 - 개인정보 관리
 	@GetMapping("/user/mypage/info")
-	public String myinfo() {
+	public String requiredLogin_myinfo() {
 		return "user/myinfo";
 	}
 	
-	//
+	// 마이페이지 - 프로필 사진 수정
 	// @ResponseBody
 	@PostMapping("/user/info/modifyImage")
 	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
@@ -144,6 +144,7 @@ public class UserController {
 	}
 
 	// 마이페이지 - 개인정보 수정
+	@ResponseBody
 	@PostMapping("/user/info/modifyArtist")
 	public void modifyArtist(HttpServletRequest request, HttpServletResponse response) {
 		userService.modifyArtist(request, response);

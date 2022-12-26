@@ -167,7 +167,9 @@ function fn_remainingDay(){
 					<a id="linkLogin" th:href="@{/user/login/form}">로그인</a>
 				</div>
 				<div class="user_area" th:if="${session.loginUser != null}">
-					<input class="header_btn_alarm" type="button" value="알람">
+					<div class="bell_area">
+						<img th:src="@{/images/bell_navy.png}" class="bell_img">
+					</div>
 					<div class="profile_image_area">
 						<img class="profile_image" th:src="${session.loginUser.profileImage}">
 					</div>

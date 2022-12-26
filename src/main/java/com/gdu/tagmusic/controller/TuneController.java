@@ -41,7 +41,7 @@ public class TuneController {
 	// 음원 상세보기 - 페이지 이동
 	@GetMapping("/tune/detail")
 	public String detailTune (@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, Model model) {
-		model.addAttribute("music", tuneService.getMapByMusicNo(musicNo));
+		model.addAttribute("music", tuneService.getMusicByNo(musicNo));
 		return "tune/detail";
 	}
 	
@@ -75,7 +75,7 @@ public class TuneController {
 			musicNo = Integer.parseInt();
 		}
 		*/
-		model.addAttribute("music", tuneService.getMusicByNo(musicNo));
+		model.addAttribute("music", tuneService.getMapByMusicNo(musicNo));
 		System.out.println(model);
 		return "/layout/musicPlayer";
 	}
