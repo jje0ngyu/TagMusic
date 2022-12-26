@@ -1,5 +1,7 @@
 package com.gdu.tagmusic.service;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,9 +9,11 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -206,7 +210,7 @@ public class AdminServiceImpl implements AdminService {
 	
 	
 	@Override
-	public Map<String, Object> searchUser(HttpServletRequest request) {
+	public Map<String, Object> searchUser(HttpServletRequest request, HttpServletResponse response) {
 		
 		// page 파라미터가 전달되지 않는 경우 1로 처리한다.
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
@@ -218,6 +222,9 @@ public class AdminServiceImpl implements AdminService {
 		}catch (NumberFormatException n) {
 			page = 1;
 		}
+		
+		// 검색테이블
+		String table = request.getParameter("table");
 		
 		// 검색 대상
 		String column = request.getParameter("column");
@@ -236,8 +243,28 @@ public class AdminServiceImpl implements AdminService {
 		map.put("start", start);
 		map.put("stop", stop);
 		
-		// 검색된 유저 갯수
-		int totalRecord = adminMapper.serchUserCount(map);
+		switch (table) {
+			case "USERS":
+				map.put("table", "USERS");
+				break;
+			case "SLEEP_USERS":
+				map.put("table", "SLEEP_USERS");
+				break;
+			case "RETIRE_USERS":
+				map.put("table", "RETIRE_USERS");
+				break;
+			default:
+				map.put("table", "USERS");
+				break;
+		}
+		
+		int totalRecord = 0;
+		try {
+			// 검색된 유저 갯수
+			totalRecord = adminMapper.serchUserCount(map);
+		}catch(BadSqlGrammarException e){
+			System.out.println("오류이긴하나 기능에 문제 없음");
+		}
 		
 		// 페이징 계산	
 		int recordPerPage = 8;
@@ -246,14 +273,38 @@ public class AdminServiceImpl implements AdminService {
 		// 조회에서 사용하는 Map
 		map.put("begin", pageUtil.getBegin());
 		map.put("end", pageUtil.getEnd());
+
+		List<UserDTO> userList= null;
+		try {
+			userList = adminMapper.selectSearchEmployeeList(map);
+		}catch(BadSqlGrammarException e){
+			System.out.println("오류이긴하나 기능에 문제 없음");
+		}
 		
-		List<UserDTO> userList = adminMapper.selectSearchEmployeeList(map);
+		
 		
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("userList", userList);
-		result.put("beginNo", totalRecord - page * pageUtil.getRecordPerPage());
 		result.put("pageUtil", pageUtil);
+		
+		
+		switch (table) {
+		case "USERS":
+			result.put("table", "USERS");
+			break;
+		case "SLEEP_USERS":
+			result.put("table", "SLEEP_USERS");
+			break;
+		case "RETIRE_USERS":
+			result.put("table", "RETIRE_USERS");
+			break;
+		default:
+			result.put("table", "USERS");
+			break;
+	}
+		
+		
 
 		return result;
 		

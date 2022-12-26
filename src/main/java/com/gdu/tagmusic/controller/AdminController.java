@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,8 +64,8 @@ public class AdminController {
 	//유저검색
 	@ResponseBody
 	@GetMapping(value="/admin/user/search", produces="application/json")
-	public Map<String, Object> searchUser(HttpServletRequest request){
-		return adminService.searchUser(request);
+	public Map<String, Object> searchUser(HttpServletRequest request, HttpServletResponse response){
+		return adminService.searchUser(request, response);
 	}
 	
 	// 자동완성

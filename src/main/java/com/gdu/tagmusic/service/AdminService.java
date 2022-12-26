@@ -3,6 +3,7 @@ package com.gdu.tagmusic.service;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.ui.Model;
 
@@ -17,7 +18,7 @@ public interface AdminService {
 	public Map<String, Object> getUserList(HttpServletRequest request, Model model);
 	
 	// 회원 검색 메소드
-	public Map<String, Object> searchUser(HttpServletRequest request);
+	public Map<String, Object> searchUser(HttpServletRequest request, HttpServletResponse response);
 
 	// 회원 검색 - 자동완성 서비스
 	public Map<String, Object> getAutoCompleteList(HttpServletRequest request);

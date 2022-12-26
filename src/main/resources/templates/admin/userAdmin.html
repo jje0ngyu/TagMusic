@@ -10,7 +10,6 @@
 <script th:inline="javascript">
 
 	$(document).ready(function(){
-		fn_page_list(page);
 		fn_checkAll();
 		fn_checkOne();
 		fn_user_search();
@@ -19,6 +18,7 @@
 		fn_retireUser();
 		fn_sleep_user_list();
 		fn_retire_user_list();
+		fn_page_list(page);
 	});
 	
 
@@ -50,7 +50,7 @@
 			    </ul>
 			</div>
 
-			<div class="admin_menu">
+			<div class="admin_menu" >
 				<div onclick="fn_page_list(1);">가입 유저 관리</div>
 				<div id="list_sleep_user">휴면 유저 관리</div>
 				<div id="list_retire_user">탈퇴 유저 관리</div>
@@ -60,19 +60,12 @@
 			<div>
 				<form id="frm_search1">
 					<select name="column" id="column1">
-						<option value="">:::선택:::</option>
-						<option value="USER_NO">회원번호</option>
-						<option value="NAME">이름</option>
-						<option value="GENDER">성별</option>
-						<option value="ARTIST">아티스트명</option>
-						<option value="EMAIL">이메일</option>
-						<option value="MOBILE">핸드폰번호</option>
-						<option value="SNS_TYPE">가입형태</option>
+
 					</select>
 					<input type="text" name="query" id="query" list="auto_complete">
 					<datalist id="auto_complete"></datalist>
 					<input type="button" value="조회" onclick="fn_user_search();">
-					<!-- <input type="hidden" id="page" value="1" name="page"> -->
+					<input type="hidden" name="table" id="search_for_table">
 				</form>
 			</div>
 			<div>
@@ -92,11 +85,10 @@
 				</form>
 			</div>
 			
-			<div id="">
-				<input type="button" id="btn_sleepUser" value="휴면">
+			<div id="various_functions">
 				<input type="button" id="btn_retireUser" value="탈퇴">
+				<input type="button" id="btn_sleepUser" value="휴면">
 			</div>
-			
 			
 			
 			<div class="user_list_container">
@@ -112,7 +104,9 @@
 							<td><span data-title="">생일</span></td>
 							<td><span data-title="EMAIL">이메일</span></td>
 							<td><span data-title="MOBILE">MOBILE.NO</span></td>
-							<td><span data-title="JOIN_DATE">가입일</span></td>
+							<td><span>가입일</span></td>
+							<td><span id="change_Date"></span></td>
+							<!-- 휴면일 -->
 							<td><span data-title="SNS_TYPE">가입형태</span></td>
 							<td><span data-title="AGREE_CODE">위치동의</span></td>
 							<td><span data-title="AGREE_CODE">마케팅동의</span></td>
@@ -131,7 +125,7 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="6" class="list_page_footer">
+							<td colspan="15" class="list_page_footer">
 							   <input type="hidden" id="page" value="1">
 							   
 							   

@@ -148,7 +148,7 @@
 	
 	<select id="serchUserCount" parameterType="Map" resultType="int">
 		SELECT COUNT(*)
-		  FROM USERS
+		  FROM ${table}
 		<where>
 		    <if test="column=='USER_NO' or column=='SNS_TYPE'">
 		    	${column} = #{query}
@@ -163,11 +163,28 @@
 	</select>
 
 	<select id="selectSearchEmployeeList" parameterType="Map" resultType="UserDTO">
-	
 		SELECT A.*
- 		  FROM (   SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
-                   FROM USERS
-			        <where>
+ 		  FROM (  
+                <choose>
+                    <when test="table == 'USERS'">
+                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
+                     FROM ${table}
+                    </when>
+                    <when test="table == 'SLEEP_USERS'">
+                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, MOBILE, JOIN_DATE, SLEEP_DATE, PROFILE_IMAGE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, PW_MODIFY_DATE, INFO_MODIFY_DATE
+                     FROM ${table}
+                    </when>
+                   	<when test="table == 'RETIRE_USERS'">
+                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, RETIRE_DATE
+                     FROM ${table}
+                    </when>
+                    <otherwise>
+                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
+                     FROM ${table}
+                    </otherwise>
+                  </choose>
+                  
+                    <where>
 			            <if test="column=='USER_NO' or column=='SNS_TYPE'">
 			                ${column} = #{query}
 			            </if>
@@ -178,6 +195,7 @@
 			                ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
 			            </if>
 			        </where>    ) A
+			        
        	 WHERE A.RN BETWEEN #{begin} AND #{end} 
 	</select>
 	

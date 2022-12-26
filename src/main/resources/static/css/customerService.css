@@ -25,7 +25,9 @@
  }
  
  
-
+.blind {
+	display: none;
+}
  
  
  
@@ -180,7 +182,7 @@
 }
  
  .thum{
- 	width:60px;
+ 	width:40px;
  }
  
  .admin_menu{

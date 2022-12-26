@@ -1,6 +1,8 @@
 /**
  * 
  */
+ 	
+
  
  	// 전역변수
 	var page = 1;
@@ -15,7 +17,22 @@
 			dataType : 'json',
 			success : function(resData){
 				
+				$('#various_functions').toggleClass('blind');
+				
 				$('#list_body').empty();
+				
+				$('#change_Date').text('');
+				
+				$('#column1').empty();
+				
+				$('#column1').append($('<option value="">:::선택:::</option>'))
+							.append($('<option value="USER_NO">회원번호</option>'))
+							.append($('<option value="NAME">이름</option>'))
+							.append($('<option value="GENDER">성별</option>'))
+							.append($('<option value="ARTIST">아티스트명</option>'))
+							.append($('<option value="EMAIL">이메일</option>'))
+							.append($('<option value="MOBILE">핸드폰번호</option>'))
+							.append($('<option value="SNS_TYPE">가입형태</option>'));
 				
 				$.each(resData.userList, function(i, user) {
 					
@@ -53,6 +70,7 @@
 	                .append( $('<td>').append(user.email) ) 
 	                .append( $('<td>').append(user.mobile) ) 
 					.append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+	                .append( $('<td>').append('')) 
 	                .append( $('<td>').append(user.snsType)) // 가입형태
 	                .append( $('<td>').append(location))
 	                .append( $('<td>').append(promotion))
@@ -62,9 +80,7 @@
 				$('.list_page_footer').empty();
 				$(resData.paging).appendTo('.list_page_footer');
 				
-			//	$('#didid').append('<input type="button" id="btn_sleepUser" value="휴면">');
-				//$('#didid').append('<input type="button" id="btn_retireUser" value="탈퇴">');
-				
+				$('#search_for_table').attr('value', 'USERS');
 				
 			},
 			error : function(jqXHR){
@@ -102,51 +118,128 @@
 				data : $('#frm_search1').serialize()+'&page='+realpage,
 				dataType : 'json',
 				success : function(resData){
+					
+					
+										
 					$('#list_body').empty();
 					$('#list_foot').empty();
-					
-		            $.each(resData.userList, function(index, user) {
+						
+					if(resData.table == 'USERS'){
+						
+			            $.each(resData.userList, function(index, user) {
+							
+						var location;
+						var promotion;
+						
+						switch(user.agreeCode){
+						case 0 : 
+							location = '';
+							promotion = '';
+							break;
+						case 1 : 
+							location = '';
+							promotion = 'O';
+							break;
+						case 2 : 
+							location = 'O';
+							promotion = '';
+							break;
+						case 3 : 
+							location = 'O';
+							promotion = 'O';
+							break;
+						default : break;
+						}
+						
+							$('<tr>')
+							.append( $('<td>').append($('<input class="check_one" type="checkbox" id="userCheck" name="userCheck" value="'+ user.userNo +'">')))
+							.append( $('<td>').append(user.userNo) )
+							.append( $('<td>').append($('<img class="thum" src="'+user.profileImage+'"></img>')))
+			                .append( $('<td>').append(user.name) )
+			                .append( $('<td>').append(user.gender) )
+			                .append( $('<td>').append(user.artist) )
+			                .append( $('<td>').append(user.birthyear+user.birthday)) 
+			                .append( $('<td>').append(user.email) ) 
+			                .append( $('<td>').append(user.mobile) ) 
+							.append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+			                .append( $('<td>').append('')) 
+			                .append( $('<td>').append(user.snsType)) // 가입형태
+			                .append( $('<td>').append(location))
+			                .append( $('<td>').append(promotion))
+							.appendTo('#list_body')
+						
+		            	 });
+					}else if (resData.table == 'SLEEP_USERS'){
+			            $.each(resData.userList, function(index, user) {
+							
+						var location;
+						var promotion;
+						
+						switch(user.agreeCode){
+						case 0 : 
+							location = '';
+							promotion = '';
+							break;
+						case 1 : 
+							location = '';
+							promotion = 'O';
+							break;
+						case 2 : 
+							location = 'O';
+							promotion = '';
+							break;
+						case 3 : 
+							location = 'O';
+							promotion = 'O';
+							break;
+						default : break;
+						}
+						$('<tr>')
+						.append( $('<td>').append($('<input class="check_one" type="checkbox" id="userCheck" name="userCheck" value="'+ user.userNo +'">')))
+						.append( $('<td>').append(user.userNo) )
+						.append( $('<td>').append($('<img class="thum" src="'+user.profileImage+'"></img>')))
+		                .append( $('<td>').append(user.name) )
+		                .append( $('<td>').append(user.gender) )
+		                .append( $('<td>').append(user.artist) )
+		                .append( $('<td>').append(user.birthyear+user.birthday)) 
+		                .append( $('<td>').append(user.email) ) 
+		                .append( $('<td>').append(user.mobile) ) 
+						.append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+						.append( $('<td>' +  moment(user.sleepDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+		                .append( $('<td>').append(user.snsType)) // 가입형태
+		                .append( $('<td>').append(location))
+		                .append( $('<td>').append(promotion))
+						.appendTo('#list_body')
+						
+		            	 });
 						
 						
-					var location;
-					var promotion;
-					
-					switch(user.agreeCode){
-					case 0 : 
-						location = '';
-						promotion = '';
-						break;
-					case 1 : 
-						location = '';
-						promotion = 'O';
-						break;
-					case 2 : 
-						location = 'O';
-						promotion = '';
-						break;
-					case 3 : 
-						location = 'O';
-						promotion = 'O';
-						break;
-					default : break;
+						
+					}else{
+						
+			            $.each(resData.userList, function(index, user) {
+							
+						$('<tr>')
+						.append( $('<td>').append($('<input class="check_one" type="checkbox" id="userCheck" name="userCheck" value="'+ user.userNo +'">')))
+						.append( $('<td>').append(user.userNo) )
+						.append( $('<td>').append(''))
+		                .append( $('<td>').append('') )
+		                .append( $('<td>').append('') )
+		                .append( $('<td>').append(user.artist) )
+		                .append( $('<td>').append('')) 
+		                .append( $('<td>').append(user.email) ) 
+		                .append( $('<td>').append('') ) 
+		                .append( $('<td>').append('')) 
+						.append( $('<td>' +  moment(user.retireDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+		                .append( $('<td>').append('')) // 가입형태
+		                .append( $('<td>').append(''))
+		                .append( $('<td>').append(''))
+						.appendTo('#list_body')
+						
+		            	 });
+						
 					}
-                
-					$('<tr>')
-					.append( $('<td>').append($('<input class="check_one" type="checkbox" id="userCheck" name="userCheck" value="'+ user.userNo +'">')))
-					.append( $('<td>').append(user.userNo) )
-					.append( $('<td>').append($('<img class="thum" src="'+user.profileImage+'"></img>')))
-	                .append( $('<td>').append(user.name) )
-	                .append( $('<td>').append(user.gender) )
-	                .append( $('<td>').append(user.artist) )
-	                .append( $('<td>').append(user.birthyear+user.birthday) ) 
-	                .append( $('<td>').append(user.email) ) 
-	                .append( $('<td>').append(user.mobile) ) 
-					.append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
-	                .append( $('<td>').append(user.snsType)) // 가입형태
-	                .append( $('<td>').append(location))
-	                .append( $('<td>').append(promotion))
-					.appendTo('#list_body')
-	             });
+					
 						
 					$('.list_page_footer').empty();
 						
@@ -171,18 +264,14 @@
              		}
                
                		$('.list_page_footer').append(paging);	
-						
-						
-					
 					
 				},
-				error : function(request,status,error){
-					
-					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-					alert('응?');
+				error : function(jqXHR){
+					//request,status,error
+					//console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					alert('일치하는 회원 정보가 없습니다.');
 				}
 			});
-		
 	}
 	
 	
@@ -304,7 +393,19 @@
 			dataType : 'json',
 			success : function(resData){
 				
+				$('#various_functions').addClass('blind');
 				$('#list_body').empty();
+				$('#change_Date').text('휴면일');
+				$('#column1').empty();
+				
+				$('#column1').append($('<option value="">:::선택:::</option>'))
+				.append($('<option value="USER_NO">회원번호</option>'))
+				.append($('<option value="NAME">이름</option>'))
+				.append($('<option value="GENDER">성별</option>'))
+				.append($('<option value="ARTIST">아티스트명</option>'))
+				.append($('<option value="EMAIL">이메일</option>'))
+				.append($('<option value="MOBILE">핸드폰번호</option>'))
+				.append($('<option value="SNS_TYPE">가입형태</option>'));
 				
 				$.each(resData.userList, function(i, user) {
 					
@@ -342,6 +443,7 @@
 	                .append( $('<td>').append(user.email) ) 
 	                .append( $('<td>').append(user.mobile) ) 
 					.append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+					.append( $('<td>' +  moment(user.sleepDate).format('YYYY.MM.DD hh:mm') + '</td>'))
 	                .append( $('<td>').append(user.snsType)) // 가입형태
 	                .append( $('<td>').append(location))
 	                .append( $('<td>').append(promotion))
@@ -371,22 +473,18 @@
          		}
            
            		$('.list_page_footer').append(paging);	
-					
-				
-				
-				
+				$('#search_for_table').attr('value', 'SLEEP_USERS');	
 			},
 			error : function(request,status,error){
 				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
 		});
-		
 	}
 		
 
  	function fn_retire_user_list(realPage){
-		
+		 
 		$('#list_retire_user').click(function(){
 			
 			$.ajax({
@@ -396,47 +494,36 @@
 			dataType : 'json',
 			success : function(resData){
 				
-				$('#list_body').empty();
+				$('#various_functions').addClass('blind');
 				
+				$('#list_body').empty();
+				$('#column1').empty();
+				
+				//$('#joinDate').after($('<td>').append('<span>').text('휴면일'));
+				$('#change_Date').text('탈퇴일');
+				
+				$('#column1').append($('<option value="">:::선택:::</option>'))
+				.append($('<option value="USER_NO">회원번호</option>'))
+				.append($('<option value="ARTIST">아티스트명</option>'))
+				.append($('<option value="EMAIL">이메일</option>'))
+
 				$.each(resData.userList, function(i, user) {
-					
-					var location;
-					var promotion;
-					
-					switch(user.agreeCode){
-					case 0 : 
-						location = '';
-						promotion = '';
-						break;
-					case 1 : 
-						location = '';
-						promotion = 'O';
-						break;
-					case 2 : 
-						location = 'O';
-						promotion = '';
-						break;
-					case 3 : 
-						location = 'O';
-						promotion = 'O';
-						break;
-					default : break;
-					}
 					
 					$('<tr>')
 					.append( $('<td>').append($('<input class="check_one" type="checkbox" id="userCheck" name="userCheck" value="'+ user.userNo +'">')))
 					.append( $('<td>').append(user.userNo) )
-					.append( $('<td>').append($('<img class="thum" src="'+user.profileImage+'"></img>')))
-	                .append( $('<td>').append(user.name) )
-	                .append( $('<td>').append(user.gender) )
+					.append( $('<td>').append(''))
+	                .append( $('<td>').append('') )
+	                .append( $('<td>').append('') )
 	                .append( $('<td>').append(user.artist) )
-	                .append( $('<td>').append(user.birthyear+user.birthday)) 
+	                .append( $('<td>').append('')) 
 	                .append( $('<td>').append(user.email) ) 
-	                .append( $('<td>').append(user.mobile) ) 
-					.append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
-	                .append( $('<td>').append(user.snsType)) // 가입형태
-	                .append( $('<td>').append(location))
-	                .append( $('<td>').append(promotion))
+	                .append( $('<td>').append('') ) 
+	                .append( $('<td>').append('')) 
+					.append( $('<td>' +  moment(user.retireDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+	                .append( $('<td>').append('')) // 가입형태
+	                .append( $('<td>').append(''))
+	                .append( $('<td>').append(''))
 					.appendTo('#list_body')
 				});
 				
@@ -464,15 +551,12 @@
            
            		$('.list_page_footer').append(paging);	
 					
-				
-				
-				
+				$('#search_for_table').attr('value', 'RETIRE_USERS');	
 			},
 			error : function(request,status,error){
 				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
 		});
-		
 	}
  
