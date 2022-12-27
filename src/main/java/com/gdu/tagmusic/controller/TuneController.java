@@ -26,7 +26,7 @@ public class TuneController {
 	
 	// 음원 등록 - 등록 페이지
 	@GetMapping("/tune/write")
-	public String write (HttpServletRequest request) {
+	public String requiredLogin_write (HttpServletRequest request) {
 		return "tune/write";
 	}
 	
@@ -35,7 +35,14 @@ public class TuneController {
 	public String uploadTune (MultipartHttpServletRequest request, HttpServletResponse response, RedirectAttributes redirect) {
 		int musicNo = tuneService.addMusic(request, response);
 		redirect.addAttribute("musicNo", musicNo);
-		return "redirect:/tune/detail";
+		return "redirect:/tune/iframe";
+	}
+	
+	// 음원 - iframe
+	@GetMapping("/tune/iframe")
+	public String requiredLogin_musicPlayer(@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, HttpServletRequest request, Model model) {
+		model.addAttribute("music", tuneService.getMusicByNo(musicNo));
+		return "layout/musicPlayer";
 	}
 	
 	// 음원 상세보기 - 페이지 이동
@@ -61,23 +68,8 @@ public class TuneController {
 	// 음원 상세보기 - 다운로드
 	@ResponseBody
 	@GetMapping("/tune/download")
-	public ResponseEntity<Resource> download(@RequestHeader("User-Agent") String userAgent, @RequestParam("musicNo") int musicNo) {
+	public ResponseEntity<Resource> requiredLogin_download(@RequestHeader("User-Agent") String userAgent, @RequestParam("musicNo") int musicNo) {
 		return tuneService.download(userAgent, musicNo);
-	}
-	
-	// 음원 - iframe
-	@GetMapping("/tune/iframe")
-	public String musicPlayer(@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, HttpServletRequest request, Model model) {
-		System.out.println("iframe.musicNo: " + musicNo);
-		/*
-		if(musicNo == 0) {
-			Optional<String> opt = Optional.ofNullable(request.getSession().getAttribute("musicNo"));
-			musicNo = Integer.parseInt();
-		}
-		*/
-		model.addAttribute("music", tuneService.getMapByMusicNo(musicNo));
-		System.out.println(model);
-		return "/layout/musicPlayer";
 	}
 	
 }

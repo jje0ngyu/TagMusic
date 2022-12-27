@@ -128,69 +128,82 @@
 					<div class="login_title">로그인</div>
 						<input type="hidden" name="url" th:value="${url}">
 						<div class="login_email">
-							<input type="text" name="email" id="email" class="login_input_box" placeholder="이메일 주소">
+							<input type="text" name="email" id="email" class="input_box" placeholder="이메일 주소">
 						</div>
 						<div>
 							<input type="text" class="msg_email msg_check blind" value="정확한 이메일 주소를 입력하세요.">
 						</div>
 						<div>
-							<input type="password" name="pw" id="pw" class="login_input_box" placeholder="비밀번호">
+							<input type="password" name="pw" id="pw" class="input_box" placeholder="비밀번호">
 						</div>
 						<div>
 							<!-- 패스워드 보여주기도 구현해 볼 것 -->
 							<input type="text" class="msg_pw msg_check blind" value="비밀번호는 4~60자 사이여야 합니다.">
 						</div>
+						<!-- 이메일 기억/자동로그인/계정찾기 -->
+						<div class="login_tom_middle_controller">
+							<!-- 왼쪽 정렬 -->
+							<div class="login_left">
+								<label for="rememberEmail">
+									<div class="remember_box"></div>
+										<input type="checkbox" id="rememberEmail">
+									<div class="msg_login_box">
+										이메일 기억하기
+									</div>
+								</label>
+								<label for="keepLogin">
+									<input type="checkbox" name="keepLogin" id="keepLogin">
+									<div class="msg_login_box">
+										자동로그인
+									</div>
+								</label>
+							</div>
+							<!-- 오른쪽 정렬 -->
+							<div class="login_right">
+								<div class="login_box_right">
+									<a class="msg_login_box msg_help" th:href="@{/user/loginHelp}">도움이 필요하신가요?</a>
+								</div>
+							</div>
+						</div>
 						<div>
 							<button class="btn_login">로그인</button>
 						</div>
-						<div>----- 또는 -----</div>
+						<div class="flex_center" style="margin-bottom: 15px;">
+							<div class="line_gray"></div><div style="color:#bdc2ce;">또는</div><div class="line_gray"></div>
+						</div>
 						<!-- 간편 로그인 : 네이버 -->
-						<div class="btNaver">
-							<a th:href="${apiURL}"><img class="login_icon" height="45px" th:src="@{/images/btnW_완성형.png}"/> 네이버 로그인</a>
+						<div class="flex_center">
+							<div class="login_naver_content login_api" th:data-url="${apiURL}">
+								<div class="login_naver_div">
+									<img style="width:25px" th:src="@{/images/login_naver.png}"/>
+								</div>
+								<script>
+									$('.login_naver_content').click(function(){
+										var url = $(this).data('url');
+										location.href=url;
+									})
+								</script>
+								<div>
+									네이버 로그인
+								</div>
+								<div></div>
+							</div>
+						</div>
+						<!-- 간편 로그인 : 카카오 -->
+						<div class="flex_center">
+							<div class="login_kakao_content login_api">
+								<a id="kakao-login-btn" href="javascript:loginWithKakao()">
+								  <img style="width:25px" th:src="@{/images/login_cacao.png}"
+								    alt="카카오 로그인 버튼" />
+								</a>
+								<div>
+									카카오 로그인
+								</div>
+								<p id="token-result"></p>
+							</div>
 						</div>
 				</div>
 			</div>
-			<!-- 이메일 기억/자동로그인/계정찾기 -->
-			<div class="login_tom_middle_controller">
-				<!-- 왼쪽 정렬 -->
-				<div class="login_left">
-					<label for="rememberEmail">
-						<div class="remember_box"></div>
-							<input type="checkbox" id="rememberEmail">
-						<div class="msg_login_box">
-							이메일 기억하기
-						</div>
-					</label>
-					<label for="keepLogin">
-						<input type="checkbox" name="keepLogin" id="keepLogin" style="margin-left:20px;">
-						<div class="msg_login_box">
-							자동로그인
-						</div>
-					</label>
-				</div>
-				<!-- 오른쪽 정렬 -->
-				<div class="login_right">
-					<div class="login_box_right">
-						<a class="msg_login_box msg_help" th:href="@{/user/loginHelp}">도움이 필요하신가요?</a>
-					</div>
-				</div>
-			</div>
-			
-			<!-- 로그인/간편로그인 -->
-			<div class="login_middle_controller">
-				
-				
-				
-				
-				<!-- 간편 로그인 : 카카오 -->
-				<div class="loginAPI">
-					<div id="kakaoLogin">
-						<a id="kakao-login-btn" href="javascript:loginWithKakao()">
-						  <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-						    alt="카카오 로그인 버튼" />
-						</a>
-						<p id="token-result"></p>
-						
 						<script>
 							function loginWithKakao() {
 							    Kakao.Auth.authorize({
@@ -223,16 +236,11 @@
 							}
 						
 						</script>
-	
-					</div>
-				</div>
-			</div>
+			
 			<div class="login_bottom_controller">
-				<div class="login_box_left">
-					<p class="msg_login_box">TagMusic 회원이 아닌가요?</p>
-				</div>
-				<div class="login_box_right">
-					<a th:href="@{/user/join/agree}">지금 가입하세요.</a>
+				<div class="msg_login_box">TagMusic 회원이 아닌가요?</div>
+				<div class="login_join_content">
+					<a th:href="@{/user/join/agree}" class="login_join_content">가입하기</a>
 				</div>
 			</div>
 		</form>

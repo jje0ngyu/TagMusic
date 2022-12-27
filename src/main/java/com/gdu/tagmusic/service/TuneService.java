@@ -1,7 +1,5 @@
 package com.gdu.tagmusic.service;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.Resource;
@@ -17,7 +15,6 @@ public interface TuneService {
 	
 	// 음원 상세보기
 	public MusicDTO getMusicByNo (int musicNo);
-	public Map<String, Object> getMapByMusicNo (int musicNo);
 	public ResponseEntity<byte[]> displayMusic(int musicNo);
 	public ResponseEntity<byte[]> displayImage(int musicNo);
 	
