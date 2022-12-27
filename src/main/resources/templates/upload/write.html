@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{layout/header::head('태그뮤직>고객센터')}"></head>
 <meta charset="UTF-8">
-<title th:text="${title}"></title>
+<title>고객센터>태그뮤직</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" th:href="@{/css/customerService.css}">
 <script>
-	
+
 	$(function(){
 		fn_fileCheck();
 	});
@@ -15,24 +15,19 @@
 		
 		$('#files').change(function(){
 			
-			// 첨부 가능한 파일의 최대 크기
-			let maxSize = 1024 * 1024 * 10;  // 10MB
+			let maxSize = 1024 * 1024 * 1000;
 			
-			// 첨부된 파일 목록
 			let files = this.files;
 			
-			// 첨부된 파일 순회
 			$('#file_list').empty();
 			$.each(files, function(i, file){
 				
-				// 크기 체크
 				if(file.size > maxSize){
-					alert('10MB 이하의 파일만 첨부할 수 있습니다.');
-					$(this).val('');  // 첨부된 파일을 모두 없애줌
+					alert('1000MB 이하의 파일만 첨부할 수 있습니다.');
+					$(this).val(''); 
 					return;
 				}
 				
-				// 첨부 목록 표시
 				$('#file_list').append('<div>' + file.name + '</div>');
 				
 			});
@@ -40,37 +35,85 @@
 		});
 		
 	}
-	
 </script>
-</head>
-<body>
+ <body>
+  <style>
+    table {	 
+	  width:100%; 
+	  table-layout: fixed;
+ 	      } 
+  </style>
 
-	<div>
-	
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+	<div class="session">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
+		<div class="container">
+			<div class="mainbox" >
+			
+				<div class="maintitle">태그뮤직 고객센터</div>
+				
+				<div class="top_bar">
+				    <ul>
+				        <li>
+				            <a th:href="@{/customerService/home}">홈</a>
+				        </li>
+				       <li>
+				            <a th:href="@{/board/list}">공지사항</a>
+				        </li>
+				        <li class="click">
+				            <a th:href="@{/upload/list}">자주 하는 질문</a>
+				        </li>
+				        <li>
+				            <a th:href="@{/customerService/chat}">1:1문의하기</a>
+				        </li>
+				    </ul>
+					
+				</div>
+				
 		<h1>작성화면</h1>
 		
-		<form th:action="@{/upload/add}" method="post" enctype="multipart/form-data">
-		
-			<div>
-				<label for="title">제목</label>
-				<input type="text" id="title" name="title" required="required">
-			</div>
-			<div>
+	<form id="frm_add" th:action="@{/upload/add}" method="post" enctype="multipart/form-data">
+		<table class="table table-striped">
+		 <thead>
+		   <tr>
+		    <td>
+				<label for="title">제목</label>	
+		    </td>	
+			<td style="height:100%;width:100%;">	
+				<input type="text" id="title" name="title" required="required" style="height:100%;width:100%;border: 0;">
+			 </td>
+		</thead>	 
+		 <tbody>
+		   <tr>
+		    <td>
 				<label for="content">내용</label>
-				<input type="text" id="content" name="content">
-			</div>
-			<div>
-				<label for="files">첨부</label>
+		    </td>
+		    <td style="height:100%;width:100%;">	
+			  <textarea type="content" id="content" name="content" style="height:100%;width:100%;border: 0;"></textarea>
+		    </td>
+		   </tr>
+		 </tbody>     
+		 	
+		<tfoot>
+		  <tr>
+			<td>
 				<input type="file" id="files" name="files" multiple="multiple">
-				<div id="file_list"></div>
-			</div>
-			<div>
-				<button>작성완료</button>
-				<input type="button" value="목록" onclick="location.href='/upload/list'">
-			</div>
-		</form>
-	
-	</div>
+				 <div id="file_list"></div> 
+			</td>	 
+			<td style="text-align:right;">
+				<input type="button" value="목록" onclick="location.href='/upload/list'"> 	
+				<input id="btn_submit" type="button" value="작성완료">
+		    </td>
+		 </tr>
+		</tfoot>
+	   </table>	   	
+	</form>
+	<script>
+		$('#btn_submit').click(function(){
+			$('#frm_add').submit();
+		});
+	</script>
 	
 </body>
 </html>

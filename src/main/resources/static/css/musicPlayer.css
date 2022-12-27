@@ -1,56 +1,131 @@
 @charset "UTF-8";
 
 
-	/* 클래스 초기화  */
-	* {
-	box-sizing: border-box;
-	margin : 0;
-	padding : 0;
-	}
-	
-	a {
-	text-decoration: none;
-	color: #222222;	
-	}
-	
-	.player {
+/* 클래스 초기화  */
+* {
+box-sizing: border-box;
+margin : 0;
+padding : 0;
+}
+
+a {
+text-decoration: none;
+color: whitesmoke;	
+}
+.blind {
+	display: none;
+}
+
+.iframe_page {
+position: fixed;
+left:0; bottom:0;
+background-color: #fdfdfd;
+display: flex;
+}
+
+.tune_album_img:hover {
+	cursor: pointer;		
+}
+
+.music_play_controller {
+	background-color: #37486b;
+	z-index: 100;
 	position: fixed;
-	left:0; bottom:0;
-	
-
-	
-	}
-	
-	.layout_tagMusic_player {
-		
-	height: 72vh;
-	width: 100%;
-	background-color: #777777;
-	min-height: 110px;
-	}
-	
-	.audio {
-	
-	width: 100%;;
-	height: 60px;
-	border-radius: 1px;
-
-	}
-	
-	.musicPlayer {
 	display: flex;
-	
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 72px;
+	right:0px; bottom:0;
+}
+/* 공통 */
+.left_controll:hover, .right_controll:hover {
+	cursor: pointer;
+	background-color: green;
+}
+
+/* 왼쪽 */
+.left_controlls {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 30%;
+}
+
+.left_controll {
+	margin: 0 16px;
+}
+
+.btn_main {
+	width: 40px;
+	height: 40px;
+}
+.btn_side {
+	width: 20px;
+	height: 20px;
+}
+
+/* 중앙 */
+.center_controlls {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 45%;
+}
+.music_info {
+	margin-left: 10px;
+	margin-right: 30px;
+}
+.album_image {
+	text-align: right;
+	width: auto;
+	height: 68px;
+}
+
+.iframe_msg_title {
+	font-weight: 700;
+	color: white;
+}
+.iframe_msg_content {
+	font-size: 14px;
+	color: rgb(192, 192, 192);
+}
+
+
+/* 오른쪽 */
+.right_controlls {
+	display: flex;
+	width: 20%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+}
+.right_controll {
+	margin: 0 14px;
+}
+
+@media only screen and (max-width: 940px) {
+	.right_controlls {
+		display: none;
 	}
-	
-	.player_thumbnail {
-	
-	background-color: pink;
-	width: 100vh;
-	height: 100vh;
+	.controlls_wrap {
+		position: relative;
+		display: flex;
+		align-items: center;
+		height: 100%;
+		right:0px; bottom:0;
 	}
-	
-	
-
-
-
+	.center_controlls {
+		width: 70%;
+	}
+}
+@media only screen and (min-width: 940px) {
+	.left_controlls {
+		width: 280px;
+	}
+	.center_controlls {
+		width: 60%;
+	}
+}
 	

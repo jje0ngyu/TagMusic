@@ -1,111 +1,111 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{layout/header::head('Tag Music')}"></head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" th:href="@{/css/mypage.css}">
+<title>Tag Music > 상세보기</title>
+<link rel="stylesheet" th:href="@{/css/tuneDetail.css}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 <script>
+	$(function(){
+		fn_tabContent();
+		fn_next_track_box();
+		fn_lyrics_box();
+		fn_icon();
+	});
+
+	function fn_tabContent(){
+		$('.tune_tab_content').click(function(){
+			$('.tune_tab_content').removeClass('border_bottom_solid_white');
+			$('.tune_next_track_box').addClass('blind');
+			$('.tune_lyrics_box').addClass('blind');
+			$(this).addClass('border_bottom_solid_white');
+		});
+	}
 	
+	function fn_next_track_box(){
+		$('.tab_next_track').click(function(){
+			$('.tune_next_track_box').removeClass('blind');
+		});
+	}
+	
+	function fn_lyrics_box(){
+		$('.tab_lyrics').click(function(){
+			$('.tune_lyrics_box').removeClass('blind');
+		});
+	}
+	
+	function fn_click_album_image(){
+		$('#albumImg').click(function(){
+			var imgSrc =  $(this).attr('src').val();
+			$('#music_iframe').attr('src', imgSrc);
+		});
+	}
+	
+	var i = 0;	// 플레이 중인지 아닌지 확인하는 변슈
+	function fn_icon() {
+		$('.tune_main_panel').on('click', function(){
+			if(i==0) {
+				$('i').attr('class', 'bi bi-pause-circle-fill');
+				$('i').css('animation-play-state','running');
+				i++;
+				location.href='/tune/iframe?musicNo=26';
+			} else {
+				$('i').attr('class', 'bi bi-play-circle-fill');
+				$('i').css('animation-play-state','running');
+				i--;
+			}
+		});
+	}
+
 </script>
+<style>
+
+</style>
 </head>
 <body>
-
-	<h1>음원 등록</h1>
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+	<div th:replace="~{layout/side.html::side_layout}"></div>
 	
-	<hr>
-	앨범정보 등록
-	<div>
-		<form id="frm_upload" th:action="@{/tune/upload}" method="post" enctype="multipart/form-data">
-			<div>
-				음원 번호 (music_no)_sequence
-			</div>
-			<div>
-				<div>
-					닉네임 (DTO로 노출)
+	<div class="tune_container">
+		<div class="tune_content">
+			<div class="tune_main_panel">
+				<div class="flex_center blind">
+					<i class="bi bi-play-circle-fill"></i>
 				</div>
-				<input type="text" name="artist" th:value="${music.email}" readonly>-이 값은 artist를 불러오도록 수정할 것.
+				<div class="flex_center">
+				</div>
+				<img th:src="@{/tune/display/image(musicNo=${music.musicNo})}" name="image" class="tune_album_img">
 			</div>
-			<div>
-				<div>
-					게시일 (music_upload_date) - sql에서 등록
+			<div class="tune_side_panel">
+				<div class="tune_tab">
+					<div class="tune_tab_content tab_next_track border_bottom_solid_white">
+						다음 트랙
+					</div>
+					<div class="tune_tab_content tab_lyrics">
+						가사
+					</div>
+					<div class="tune_tab_content">
+						댓글
+					</div>
+				</div>
+				<div class="tune_next_track_box">
+					다음 트랙
+					1
+					2
+					3
+					4
+					...
+				</div>
+				<div class="tune_lyrics_box blind">
+					<textarea class="tune_lyrics" th:text="${music.musicContent}"></textarea>
+			
 				</div>
 				<div>
-					<input type="text" th:value="${music.musicUploadDate}">
-				</div>
-			</div>
-			<div>
-				게시글 수정일 (music_modify_date) - sql에서 등록
-				<div>
-					<input type="text" th:value="${music.musicModifyDate}">
-				</div>
-			</div>
-			<div>
-				<div>
-					<img th:src="|../../../../../${music.imgPath}/${music.imgFilesystem}|">
-					<img th:src="|..\..\..\..\..\${music.imgPath}\${music.imgFilesystem}|">
-					앨범이미지 (has_thumbnail)
-				</div>
-				<img th:src="|..\..\..\${music.imgPath}/${music.imgFilesystem}|" name="image">
-			</div>
-			<div>
-				<div>
-					앨범이름 (music_album)
-				</div>
-				<input type="text" name="musicAlbum" th:value="${music.musicAlbum}">
-			</div>
-			<div>
-				<div>
-					음원(music)
-				</div>
-				<audio controls="controls">
-					 <source th:src="|${music.musicPath} + ${music.musicFilesystem}|" type="audio/mp3" />
-				</audio>
-			</div>
-			<div>
-				<div>
-					음원 이름 (music_title)
-				</div>
-				<input type="text" name="musicTitle" th:value="${music.musicTitle}">
-			</div>
-			<div>
-				<div>
-					장르 (music_genre)
-				</div>
-				<input type="text" name="musicGenre" th:value="${music.musicGenre}">
-			</div>
-			<div>
-				<div>
-					평점/좋아요 수 - sql에서 0으로 시작
+					<a th:href="@{/tune/download(musicNo=${music.musicNo})}">음원 다운로드 하기</a>
 				</div>
 			</div>
-			<div>
-				듣기 / 담기 / 다운 / 다운로드 수 (download_cont) / 선물하기(이용권)
-			</div>
-			<div>
-				
-				<textarea name="musicContent">가사 (music_content)</textarea>
-				<div>
-					가수
-				</div>
-				<div>
-					발매일
-				</div>
-				<div>
-					발매사
-				</div>
-				<div>
-					기획사
-				</div>
-				<div>
-					댓글수 - sql에서0으로 시작
-				</div>
-			</div>
-			<div>
-				아이피 (ip) - serviceimpl에서 등록
-			</div>
-			<input type="submit" id="btn_add" value="등록하기">
-		</form>
+		</div>
+		
 	</div>
-	<a th:href="@{/}">메인으로 이동하기</a>
 </body>
 </html>

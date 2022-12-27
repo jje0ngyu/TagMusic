@@ -7,8 +7,6 @@
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <link rel="stylesheet" th:href="@{/css/layout.css}">
 <link rel="stylesheet" th:href="@{/css/main.css}">
-<link rel="stylesheet" th:href="@{/css/musicBoard.css}">
-<link rel="stylesheet" th:href="@{/css/musicPlayer.css}">
 <link rel="stylesheet" th:href="@{/css/playlist.css}">
 <link rel="stylesheet" th:href="@{/css/popup.css}">
 
@@ -17,19 +15,7 @@
 	.blind {
 		display: none;
 	}
-	.profile_image:hover {
-		border: 2px solid white;
-		border-radius: 20px;
-		cursor: pointer;
-	}
-	.profile_box {
-		position: relative;
-		float: right;
-		margin-right: 30px;
-		width: 300px;
-		background-color: green;
-		text-align: center;
-	}
+
 </style>
 
 
@@ -122,13 +108,16 @@ function fn_remainingDay(){
 
 </head>
 <body>
-	
-
 	<div th:fragment="header_layout" >
-	
 		<div class="header">
-		<div class="header_menu">
-			<div class="header_left_menu">
+			<!-- 헤더 왼쪽 -->
+			<div class="header_left_area">
+				<a th:href="@{/}">
+					<img class="tagmusic_logo" th:src="@{/images/TagMusic_logo.png}">
+				</a>
+			</div>
+			<!-- 헤더 중앙 -->
+			<div class="header_center_area">
 				<div class="header_search_area">
 					<div class="header_search_area_left">
 						<input type="text" id="query" name="query" placeholder="검색" class="header_search">
@@ -136,10 +125,9 @@ function fn_remainingDay(){
 						<input type="hidden" id="layout_page" value="1">
 					</div>
 					<div class="header_search_area_right">
-						<a class="header_search_btn" id="totalSearch">검</a>
+						<a class="header_search_btn" id="totalSearch">검색</a>
 					</div>
 				</div>
-				
 				<div class="header_rank">
 					<ol class="ranking_ol" id="ranking_ol">
 						
@@ -173,57 +161,61 @@ function fn_remainingDay(){
 
 				</script>
 			</div>
-			<div class="header_btn">
-				<input type="button" value="알람">
-				<span th:if="${session.loginUser == null}">
-					<a th:href="@{/user/login/form}">로그인</a>
-				</span>
-				<div th:if="${session.loginUser != null}">
-					<div>
-						<img class="profile_image" th:src="${session.loginUser.profileImage}" style="width:30px">
+			<!-- 헤더 오른쪽 -->
+			<div class="header_right_area">
+				<div class="unuser_area" th:if="${session.loginUser == null}">
+					<a id="linkLogin" th:href="@{/user/login/form}">로그인</a>
+				</div>
+				<div class="user_area" th:if="${session.loginUser != null}">
+					<div class="bell_area">
+						<img th:src="@{/images/bell_navy.png}" class="bell_img">
+					</div>
+					<div class="profile_image_area">
+						<img class="profile_image" th:src="${session.loginUser.profileImage}">
 					</div>
 					<script>
 						$('.profile_image').click(function(){
 							$('.profile_box').toggleClass('blind');
 						});
-					</script>
-					<span th:utext="${loginUser}"></span>
+					</script>						
 					<!-- 프로필 사진 클릭시 팝업 창 -->
-					<div class="profile_box blind">
-						<div>
-							<span th:text="${session.loginUser.artist}"></span> 님
-						</div>
-						<div><span th:text="${session.loginUser.email}"></span></div>
-						<div>
-							<div>
-								<span id="remainingDay"></span>
+					<div class="header_right_bottom_controller">
+						<div class="profile_box blind">
+							<div class="profile_artist">
+								<span th:text="${session.loginUser.artist}"></span> 님
 							</div>
+							<div><span th:text="${session.loginUser.email}"></span></div>
 							<div>
-								<span id="dDay"></span>
+								<div>
+									<span id="remainingDay"></span>
+								</div>
+								<div>
+									<span id="dDay"></span>
+								</div>
+							</div>					
+							<div>
+								<input type="button" value="TagMusic 계정관리" class="account_manage">
+								<input type="button" value="로그아웃" class="btn_logout">
 							</div>
-						</div>					
-						<div>
-							<input type="button" value="TagMusic 계정관리" class="account_manage">
+							<script>
+								$('.account_manage').click(function(){
+									location.href='/user/mypage';
+								});
+								$('.btn_logout').click(function(){
+									location.href='/user/logout';
+								})
+							</script>
+							<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
 						</div>
-						<div>
-							<input type="button" value="로그아웃" class="btn_logout">
-						</div>
-						<script>
-							$('.account_manage').click(function(){
-								location.href='/user/mypage';
-							});
-							$('.btn_logout').click(function(){
-								location.href='/user/logout';
-							})
-						</script>
-						<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
 					</div>
 				</div>
+					
 			</div>
-			
+			<!--/*
+				<div class="header_left_menu"></div>
+				<div class="header_btn"></div>
+			*/-->
 		</div>
-		
-	</div>
 		
 	</div>
 	

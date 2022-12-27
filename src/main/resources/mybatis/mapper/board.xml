@@ -12,8 +12,8 @@
 	</select>
 
 	<select id="selectBoardListByMap" parameterType="Map" resultType="BoardDTO">
-		SELECT A.ROW_NUM, A.BOARD_NO, A.BOARD_TITLE, A.BOARD_CONTENT, A.BOARD_HIT, A.IP, A.BOARD_CREATE_DATE, A.GUBUN
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY BOARD_NO DESC) AS ROW_NUM, BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_HIT, IP, BOARD_CREATE_DATE, GUBUN
+		SELECT A.ROW_NUM, A.BOARD_NO, A.BOARD_TITLE, A.BOARD_CONTENT, A.BOARD_HIT, A.IP, A.BOARD_CREATE_DATE, A.GUBUN, A.BOARD_MODIFY_DATE
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY BOARD_NO DESC) AS ROW_NUM, BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_HIT, IP, BOARD_CREATE_DATE, GUBUN, BOARD_MODIFY_DATE
 		          FROM BOARD) A
 		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
@@ -32,9 +32,9 @@
 			  FROM DUAL
 		</selectKey>
 		INSERT INTO BOARD
-			(BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_CREATE_DATE, BOARD_HIT, IP)
+			(BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_CREATE_DATE, BOARD_HIT, IP, BOARD_MODIFY_DATE)
 		VALUES
-			(#{boardNo}, #{boardTitle}, #{boardContent}, SYSDATE, 0, #{ip})
+			(#{boardNo}, #{boardTitle}, #{boardContent}, SYSDATE, 0, #{ip}, SYSDATE)
 	</insert>
 	
 	<update id="updateHit" parameterType="int">
@@ -44,7 +44,7 @@
 	</update>
 	
 	<select id="selectBoardByNo" parameterType="int" resultType="BoardDTO">
-		SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_HIT, IP, BOARD_CREATE_DATE
+		SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_HIT, IP, BOARD_CREATE_DATE, BOARD_MODIFY_DATE
 		  FROM BOARD
 		 WHERE BOARD_NO = #{boardNo}
 	</select>
@@ -53,7 +53,7 @@
 		UPDATE BOARD
 		   SET BOARD_TITLE = #{boardTitle}
 		     , BOARD_CONTENT = #{boardContent}
-		     , BOARD_CREATE_DATE = SYSDATE
+		     , BOARD_MODIFY_DATE = SYSDATE
 		 WHERE BOARD_NO = #{boardNo}
 	</update>
 	
@@ -63,7 +63,7 @@
 		 WHERE BOARD_NO = #{boardNo}
 	</delete>
 	
-		<select id="selectSummernoteImageListInBoard" parameterType="int" resultType="SummernoteImageDTO">
+	<select id="selectSummernoteImageListInBoard" parameterType="int" resultType="SummernoteImageDTO">
 		SELECT BOARD_NO, FILESYSTEM
 		  FROM SUMMERNOTE_IMAGE
 		 WHERE BOARD_NO = #{boardNo}
@@ -82,15 +82,4 @@
 	</delete>
 	
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
 

@@ -1,15 +1,57 @@
 @charset "UTF-8";
 
+/* 공통영역 (header.html을 포함한 모든 html에 적용) */
+
+/* 클래스 초기화  */
+html, body, section, article, div, a, input, ul, li, input {
+	margin: 0px;
+	padding: 0px;
+	background-color: inherit;
+	color: inherit;
+}
+a {
+	text-decoration: none;
+}
+input[type=button] {
+	background-color: #bdc2ce;
+	border: none;
+	border-radius: 30px;
+}
 .blind {
 	display: none;
 }
 
-html body div{
-	margin:0;
-	padding: 0;
+
+
+header {
+	background: linear-gradient(#ffffff, 2%,#fdfdfd);
+	box-shadow: 0 1px 10px 0 #37486b;
+	z-index: 2;;
 }
-
-
+.flex_center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.login_api {
+	margin-top: 5px;
+	display: flex;
+	justify-content: space-between;
+	width: 85%;
+	background-color: #f8f9fa;
+	padding: 10px 40px;
+	border: 1px solid #e5e8eb;
+	border-radius: 5px;
+}
+.login_api:hover {
+	background-color: #e5e8eb;
+}
+.line_gray {
+	height: 1px;
+	background-color: #bdc2ce;
+	width: 130px;
+	margin: 10px;
+}
 @media only screen and (min-width: 740px) {
 	.body {
 		z-index: -2;
@@ -25,27 +67,28 @@ html body div{
 		background-image: url(../images/background_login.jpg);
 		background-position: center;
 	}
-	.login_box {
+	.login_controller {
+		display: flex;
+		flex-direction: column;
+		z-index: 0;
+		margin: 5% auto;
+		margin-bottom: 20px;
+		width: 460px;
+		text-align: center;
+	}
+	.login_top_controller {
 		z-index: 0;
 		position: relative;
 		display: block;
-		margin: 0 auto;
-		width: 420px;
-		height: 550px;
-		background-color: rgba(0, 0, 0, 0.7);
-		text-align: center;
-		padding-top: 30px;
+		background-color: #fdfdfd;
+		box-shadow: 0 1px 10px 0 #37486b;
 		border-radius: 10px;
+		padding-bottom: 30px;
 	}
-	.login_container {
-		width:290px;
+	.login_contents {
+		width:420px;
 		margin: auto;
-	}
-	
-	.login_box_left {
-		z-index: 100;
-		display: inline-block;
-		float: left;
+		padding-top: 20px;
 	}
 	
 	.btn_login_bottom {
@@ -57,73 +100,67 @@ html body div{
 		position: relative;
 		width: 100%;
 	}
-	.login_box_bottom {
+	.login_bottom_controller {
 		margin-top: 20px;
 	}
 }
 
+.login_tom_middle_controller {
+	display: flex;
+	justify-content: space-between;
+	margin: 5px 30px;
+}
 .backgroung_layer {
 	position: absolute;
 	display: inline-block;
 	width: 100%;
 	height: 100%;
-	color: #f1f2f3;
 	z-index: -1;
-	background-color: rgba(0,0,0, 0.6);
+	background-color:#f8f9fa;
 }
 
 .login_title {
-	color: #f1f2f3;
+	color: #1f1f1f;
 	font-size: 32px;
-	font-weight: 500;
-	margin-bottom: 20px;
-	margin-right: 160px;
+	font-weight: 600;
+	display: flex;
+	margin: 20px 0 10px 30px;
 }
 
-.login_input_box {
+.input_box {
+	font-size: 16px;
 	position: relative;
 	border: none;
-	border-radius: 4px;
-	color: #fff;
-	width: 100%;
+	color: #1f1f1f;
+	outline: none;
+	width: 85%;
 	height: 45px;
-	line-height: 45px;
-	padding: 0 20px;
-	margin: 7px 0;
-	background-color:  #333;
+	padding: 0 5px;
+	margin: 10px 0;
+	background-color: none;
+	border-bottom: 3px solid #37486b;
 }
 .btn_login {
 	position: relative;
-	width: 100%;
-	height: 45px;
-	margin-top: 10px;
+	width: 85%;
+	height: 50px;
+	font-size: 18px;
+	margin-top: 30px;
+	margin-bottom: 20px;
 	border-radius: 5px;
 	border: none;
-	background-color: #D0D3E2;
+	color: #fdfdfd;
+	font-weight: 600;
+	background-color: #1f1f1f;
 }
 
 .btn_login:hover {
-	color: #D0D3E2;
-	font-weight: 700;
-	background-color: #417CF2;
+	background-color: #37486b ;
+	border: 3px solid #37486b;
 }
 /* 간편로그인 */
-.btNaver {
-	position: relative;
-	width: 100%;
-	background-color: #03c75a;
-	color: white;
-	border-radius: 5px;
-	height: 45px;
-	line-height: 45px;
-}
-.login_icon {
-	position: relative;
-	top: 2px;
-	left: -30px;
-	width: 20px;
-	height: 20px;
-}
+
+
 
 .remember_box {
 	background-size: 15px;
@@ -139,4 +176,8 @@ html body div{
 	font-size: 13px;
 	font-weight: 400;
 	color: #b3b3b3;
+}
+.login_join_content {
+	font-weight: 600;
+	color: #37486b;
 }

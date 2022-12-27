@@ -23,13 +23,13 @@ public class UploadController {
 	@Autowired
 	private UploadService uploadService;
 	
-	
 	@GetMapping("/upload/list")
-	public String list(Model model) {
-		model.addAttribute("uploadList", uploadService.getUploadList());
+	public String list(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);  
+		uploadService.getUploadList(model);          
 		return "upload/list";
 	}
-	
+
 	@GetMapping("/upload/write")
 	public String write() {
 		return "upload/write";
@@ -38,6 +38,16 @@ public class UploadController {
 	@PostMapping("/upload/add")
 	public void add(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
 		uploadService.save(multipartRequest, response);
+	}
+	
+	@GetMapping("/upload/increse/hit")
+	public String increseHit(@RequestParam(value="uploadNo", required=false, defaultValue="0") int uploadNo) {
+		int result = uploadService.increseHit(uploadNo);
+		if(result > 0) {  
+			return "redirect:/upload/detail?uploadNo=" + uploadNo;
+		} else {          
+			return "redirect:/upload/list";
+		}
 	}
 	
 	@GetMapping("/upload/detail")
