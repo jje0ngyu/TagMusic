@@ -10,10 +10,18 @@
 		fn_displayArtist();
 		fn_modifyArtist();
 		fn_editArtist();
+		
+		// 이름 수정
 		fn_modifyName();
 		fn_editName();
+		
+		
+		fn_modifyPw();
+		fn_editPw();
 		fn_modifyMobile();
 		fn_editMobile();
+		fn_modifyAgreeCode();
+		fn_editAgreeCode();
 		fn_backlayer();
 		fn_retire();
 		
@@ -81,6 +89,36 @@
 		});
 	}
 	
+	// 비밀번호 수정
+	function fn_modifyPw(){
+		$('#info_pw').click(function(){
+			$('.modify_pw').removeClass('blind');
+		});
+	}
+	
+	// 비밀번호 수정 - 변경 버튼을 눌렀을 때
+	function fn_editPw(){
+		$('#btn_pw').click(function(){
+			$.ajax({
+				type: 'post',
+				url : '/user/info/modifyPw',
+				data: $('#frm_modifyUser').serialize(),
+				dataType: 'text',
+				success : function() {
+					$('#pw').val('');
+					$('.box_backlayer').addClass('blind');
+					$('.modify_box').addClass('blind');
+					$('.modify_pw').addClass('blind');
+					alert('회원정보가 변경되었습니다.');
+					
+				},
+				error : function(jqXHR){
+					console.log('error가 찍혔다');
+				}
+			})
+		});
+	}
+	
 	// 연락처 수정
 	function fn_modifyMobile(){
 		$('#info_mobile').click(function(){
@@ -110,19 +148,48 @@
 			})
 		});
 	}
-	
+	// 마케팅동의 수정
+	function fn_modifyAgreeCode(){
+		$('#info_agreeCode').click(function(){
+			$('.modify_agreeCode').removeClass('blind');
+		});
+	}
+	// 마케팅동의 수정 - 변경 버튼을 눌렀을 때
+	function fn_editAgreeCode(){
+		$('#btn_mobile').click(function(){
+			$.ajax({
+				type: 'post',
+				url : '/user/info/modifyMobile',
+				data: $('#frm_modifyUser').serialize(),
+				dataType: 'text',
+				success : function() {
+					$('#mobile').val('');
+					$('.box_backlayer').addClass('blind');
+					$('.modify_box').addClass('blind');
+					$('.modify_mobile').addClass('blind');
+					alert('회원정보가 변경되었습니다.');
+					
+				},
+				error : function(jqXHR){
+					console.log('error가 찍혔다');
+				}
+			})
+		});
+	}
 	
 	function fn_backlayer(){
 		$('.info').click(function(){
 			$('.box_backlayer').removeClass('blind');
 			$('.modify_box').removeClass('blind');
 		});
-		$('.box_backlayer').click(function(){
+		$('.cancel').click(function(){
 			$('.box_backlayer').addClass('blind');
 			$('.modify_box').addClass('blind');
 			$('.modify_artist').addClass('blind');
 			$('.modify_name').addClass('blind');
+			$('.modify_pw').addClass('blind');
 			$('.modify_mobile').addClass('blind');
+			$('.modify_agreeCode').addClass('blind');
 			$('.retire_box').addClass('blind');
 		})
 	}
@@ -151,8 +218,9 @@
 							$('#pw').val('');
 						}
 					},
-					error : function(jqXHR){
-						console.log('error가 찍혔다');
+					error : function() {
+						alert('세션이 만료되었습니다. 다시 시도해주세요.');
+						location.href='/user/login/form';
 					}
 				}); // ajax
 			});
@@ -162,110 +230,212 @@
 		$('#frm_goodbye').submit();
 	}
 	
+	function fn_checkPw(){
+		$('#btn_checkPw').click(function(){
+			$.ajax({
+				type: 'post',
+				url : '/user/info/checkPw',
+				data: $('#frm_checkPw').serialize(),
+				dataType: 'json',
+				success : function(resData) {
+					alert('일치합니다.')
+					if (resData.result > 0) {
+						console.log('조회완료');
+					} else {
+						console.log('조회실패');
+					}
+				},
+				error : function(){
+					console.log('에러떳다');
+				}
+			})
+		});
+	}
+	
 
 </script>
 </head>
 <body>
 	<nav th:replace="~{layout/mypageNav.html::mypageFragment}"></nav>
-	<div class="contain">
-		<div>
-			<h1>개인정보 관리</h1>
-			<span>멜론에 등록된 개인정보 정보를 확인할 수 있습니다. 최신 정보로 관리해주세요.</span>
+	
+	<div class="mypage_controller">
+		<div class="mypage_title">
+			개인정보 관리
 		</div>
+			<span>태그뮤직에 등록된 개인정보 정보를 확인할 수 있습니다. 최신 정보로 관리해주세요.</span>
 		<form id="frm_modifyUser" method="posy">
-			<input type="text" name="email" th:value="${session.loginUser.email}">
-			<div class="info_box">
-				<div class="info artist" id="info_artist">닉네임</div>
-				<div class="info name" id="info_name">이름/나이 확인</div>
-				<div class="info mobile" id="info_mobile">연락처</div>
-				<div class="info marketting" id="info_marketting">이벤트/마케팅 혜택알림</div>
-				<div class="info" id="retire">테그뮤직 탈퇴</div>
+			<input type="hidden" name="email" th:value="${session.loginUser.email}">
+			<div class="info_controller">
+				<!-- 정보창 3개씩, 2줄 (top, bottom) -->
+				<div class="info_top_contents">
+					<div class="info artist flex_cloumn" id="info_artist">
+						<div class="box_title">닉네임 변경</div>
+						<div class="box_msg">게시글 작성, 문의사항 등<br/>
+							태그뮤직 이용시 노출되는 닉네임입니다.</div>
+					</div>
+					<div class="info name flex_cloumn" id="info_name">
+						<div class="box_title">이름/생일 변경</div>
+						<div class="box_msg">게시글 작성, 문의사항 등<br/>
+							태그뮤직 이용시 노출되는 닉네임입니다.</div>
+					</div>
+					<div class="info pw flex_cloumn" id="info_pw">
+						<div class="box_title">비밀번호 변경</div>
+						<div class="box_msg">게시글 작성, 문의사항 등<br/>
+							태그뮤직 이용시 노출되는 닉네임입니다.</div>
+					</div>
+				</div>
+				<div class="info_bottom_contents">
+					<div class="info mobile flex_cloumn" id="info_mobile">
+						<div class="box_title">연락처 변경</div>
+						<div class="box_msg">게시글 작성, 문의사항 등<br/>
+							태그뮤직 이용시 노출되는 닉네임입니다.</div>
+					</div>
+					<div class="info flex_cloumn" id="info_agreeCode">
+						<div class="box_title">이벤트/마케팅 혜택알림</div>
+						<div class="box_msg">게시글 작성, 문의사항 등<br/>
+							태그뮤직 이용시 노출되는 닉네임입니다.</div>
+					</div>
+					<div class="info logout_box flex_cloumn" id="retire">
+						<div class="box_title">태그뮤직 탈퇴</div>
+						<div class="box_msg">탈퇴 시에 주의사항을 꼭!<br/> 확인해주시기 바랍니다.</div>
+					</div>
+				</div>
 			</div>
-			<div class="box_backlayer blind"></div>
-			<div class="modify_box blind">
-				<!-- 닉네임 관리 -->
-				<div class="modify_artist blind">
-					<div class="info_title">
-						댓글, 좋아요 등<br/> 태그뮤직 서비스 이용 시 노출되는<br/> 닉네임입니다.
-					</div>
-					<div class="input_artist">
-						<input type="text" id="artist" name="artist" placeholder="닉네임 입력">
-					</div>
-					<div class="msg_artist">
-						닉네임을 입력해 주세요. 닉네임은 2~15자로 한글, 영문, 숫자, 특수문자(-, _, .)만 사용가능합니다.
-					</div>
-					<div>
-						한글 및 영문, 숫자, 일부 특수문자(-,_,.) 만 사용 가능하며, 최대 15자까지만 등록 가능합니다.
-					</div>
-					<div>
-						* 닉네임을 변경하면 이전 작성한 글의 닉네임도 같이 변경 됩니다.
-					</div>
-					<div>
-						<input class="btn cancel" type="button" value="취소">
-						<input class="btn correct" id="btn_artist" type="button" value="변경">
-					</div>
-				</div>
-				<!-- 실명 관리 -->
-				<div class="modify_name blind">
-					<div class="info_title">
-						등록된 본인인증 정보를<br/> 확인해주세요.
-					</div>
-					<div>
-						<input type="text" id="name" name="name" placeholder="이름 입력">
-					</div>
-					<div class="msg_name">
-					</div>
-					<div>
-						* 본인인증 정보는 서비스 이용을 위한 나이확인 및 본인확인 용도로 활용됩니다. 본인인증을 통해 이름/나이 정보를 업데이트해 주세요.
-						<br/>
-						* 한번 등록된 정보는 삭제하거나 타인의 정보로 변경할 수 없으니 반드시 회원님의 정보로 본인인증해 주세요.
-					</div>
-					<div>
-						<input class="btn cancel" type="button" value="취소">
-						<input class="btn correct" id="btn_name" type="button" value="변경">
-					</div>
-				</div>
-				<!-- 휴대폰번호 관리 -->
-				<div class="modify_mobile blind">
-					<div class="info_title">
-						멜론에 등록된 연락처를<br/>확인해 주세요.
-					</div>
-					<div>
-						<span class="txt_mobile">이메일</span>
-						<input type="text" th:value="${session.loginUser.email}" readonly>이메일은 변경할 수 없습니다.
-					</div>
-					<div>
-						<span class="txt_mobile">휴대폰번호</span>
-						<input type="text" id="mobile" name="mobile" th:text="${session.loginUser.mobile}"> 하이푼(-) 없이 입력해주세요.
-					</div>
-					<div>
-						<div>
-							사용중인 연락처로 등록되어 있나요?
+			
+			
+			<!-- 모달창 -->
+			<div class="box_backlayer blind">
+				<div class="modify_box blind">
+					<!-- 닉네임 관리 -->
+					<div class="modify_artist blind">
+						<div class="info_title">
+							댓글, 좋아요 등<br/> 태그뮤직 서비스 이용 시 노출되는<br/> 닉네임입니다.
+						</div>
+						<div class="current_info">
+							현재 닉네임 : <span th:text="${session.loginUser.artist}"></span>
+						</div>
+						<div class="input_artist">
+							<input type="text" id="artist" name="artist" placeholder="닉네임 입력">
+						</div>
+						<div class="msg_artist">
+							닉네임을 입력해 주세요. 닉네임은 2~15자로 한글, 영문, 숫자, 특수문자(-, _, .)만 사용가능합니다.
 						</div>
 						<div>
-							연락처 정보가 변경되었다면, 현재 사용중인 정보로 변경해 주세요.
+							한글 및 영문, 숫자, 일부 특수문자(-,_,.) 만 사용 가능하며, 최대 15자까지만 등록 가능합니다.
 						</div>
 						<div>
+							* 닉네임을 변경하면 이전 작성한 글의 닉네임도 같이 변경 됩니다.
+						</div>
+						<div class="btn_box">
+							<input class="btn cancel" type="button" value="취소">
+							<input class="btn correct" id="btn_artist" type="button" value="변경">
+						</div>
+					</div>
+					<!-- 실명 관리 -->
+					<div class="modify_name blind">
+						<div class="info_title">
+							등록된 본인인증 정보를<br/> 확인해주세요.
+						</div>
+						<div>
+							<input type="text" id="name" name="name" placeholder="이름 입력">
+						</div>
+						<div class="msg_name">
+						</div>
+						<div>
+							* 본인인증 정보는 서비스 이용을 위한 나이확인 및 본인확인 용도로 활용됩니다. 본인인증을 통해 이름/나이 정보를 업데이트해 주세요.
+							<br/>
+							* 한번 등록된 정보는 삭제하거나 타인의 정보로 변경할 수 없으니 반드시 회원님의 정보로 본인인증해 주세요.
+						</div>
+						<div class="btn_box">
+							<input class="btn cancel" type="button" value="취소">
+							<input class="btn correct" id="btn_name" type="button" value="변경">
+						</div>
+					</div>
+					<!-- 비밀번호 관리 -->
+					<div class="modify_pw blind">
+						<div class="info_pw">
+							태그뮤직에 등록된 비밀번호를 확인해주세요.
+						</div>
+						<div>
+							<form id="frm_checkPw">
+								현재 비밀번호
+								<input type="text" id="originPw" name="pw"><input type="button" id="btn_checkPw" value="비밀번호 확인">
+							</form>
+						</div>
+						<div class="new_pw_box">
+							<form id="frm_modifyPw">
+								새로운 비밀번호
+								<input type="text" id="newPw" name="pw"><span>비밀번호는 4~16자</span>
+								<div>
+									비밀번호 재입력
+									<input type="text" id="reNewPw">
+								</div>
+								<div>
+									<input type="button">
+								</div>
+							</form>
+						</div>
+						<div class="btn_box">
+							<input class="btn cancel" type="button" value="취소">
+							<input class="btn correct" id="btn_artist" type="button" value="변경">
+						</div>
+						
+					</div>
+					<!-- 휴대폰번호 관리 -->
+					<div class="modify_mobile blind">
+						<div class="info_title">
+							멜론에 등록된 연락처를<br/>확인해 주세요.
+						</div>
+						<div>
+							<div class="txt_mobile">이메일</div>
+							<input type="text" id="email" th:value="${session.loginUser.email}" readonly>
+							<div>
+								이메일은 변경할 수 없습니다.
+							</div>
+						</div>
+						<div>
+							<div class="txt_mobile">휴대폰번호</div>
+							<div>현재 휴대폰 번호 : <span th:text="${session.loginUser.mobile}"></span></div>
+							<input type="text" id="mobile" name="mobile" th:text="${session.loginUser.mobile}"> 하이푼(-) 없이 입력해주세요.
+						</div>
+						<div>
+							<div>
+								사용중인 연락처로 등록되어 있나요?
+							</div>
+							<div>
+								연락처 정보가 변경되었다면, 현재 사용중인 정보로 변경해 주세요.
+							</div>
+							<div class="btn_box">
+								<input class="btn cancel" type="button" value="취소">
+								<input class="btn correct" id="btn_mobile" type="button" value="변경">
+							</div>
+						</div>
+					</div>
+					
+					<!-- 마케팅 정보이용 동의 -->
+					<div class="modify_agreeCode blind">
+						<div class="btn_box">
 							<input class="btn cancel" type="button" value="취소">
 							<input class="btn correct" id="btn_mobile" type="button" value="변경">
 						</div>
 					</div>
-				</div>
-				<!-- 탈퇴 전 비밀번호 재입력 -->
-				<div class="retire_box blind">
-					<div>
-						유저 확인을 위해 비밀번호를 입력해주세요.
-					</div>
-					<div>
-						비밀번호
-						<input type="text" id="pw" name="pw">						
-					</div>
-					<div>
-						<input class="btn cancel" type="button" value="취소">
-						<input class="btn correct" id="btn_retire" type="button" value="확인">
+					<!-- 탈퇴 전 비밀번호 재입력 -->
+					<div class="retire_box blind">
+						<div>
+							유저 확인을 위해 비밀번호를 입력해주세요.
+						</div>
+						<div>
+							비밀번호
+							<input type="text" id="pw" name="pw">						
+						</div>
+						<div class="btn_box">
+							<input class="btn cancel" type="button" value="취소">
+							<input class="btn correct" id="btn_retire" type="button" value="확인">
+						</div>
 					</div>
 				</div>
 			</div>
+		</div>
 		</form>
 		<form action="/user/retire/goodbye" id="frm_goodbye">
 			

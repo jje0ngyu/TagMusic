@@ -31,9 +31,8 @@ public class RequiredLoginAspect {
 		HttpServletResponse response = servletRequestAttributes.getResponse();
 		
 		HttpSession session = request.getSession();
-		
 		if(session.getAttribute("loginUser") == null) {
-			
+			System.out.println("loginUser-null");
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
 			

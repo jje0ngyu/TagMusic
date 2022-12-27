@@ -1,6 +1,6 @@
 package com.gdu.tagmusic.domain;
 
-import java.security.Timestamp;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +16,7 @@ public class UploadDTO {
 	private int uploadNo;
 	private String title;
 	private String content;
-	private Timestamp createDate;
-	private Timestamp modifyDate;
+	private Date createDate;
+	private Date modifyDate;
 	private int attachCnt;
 }

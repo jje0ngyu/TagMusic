@@ -4,32 +4,23 @@
 <meta charset="UTF-8">
 <title>고객센터>관리자</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script th:src="@{/js/moment-with-locales.js}"></script>
+<script th:src="@{/js/admin.js}"></script>
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
 <script th:inline="javascript">
 
-	$(function(){
-		fn_user_list();
+	$(document).ready(function(){
+		fn_checkAll();
+		fn_checkOne();
+		fn_user_search();
+		fn_autoComplete();
+		fn_sleepUser();
+		fn_retireUser();
+		fn_sleep_user_list();
+		fn_retire_user_list();
+		fn_page_list(1);
 	});
 	
-	function fn_user_list(){
-
-		$.ajax({
-			type : 'post',
-			url : '/admin/user/list',
-			data : 'page=' + $('#page').val(),
-			dataType : 'json',
-			success : function(resData){
-				alert('성공');
-				
-				
-			}
-		});
-	};
-
-
-
-	
-
 </script>
 <body>
 
@@ -38,6 +29,9 @@
 		<div th:replace="~{layout/side.html::side_layout}"></div>
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
 		<div class="container">
+		
+		<div class="mainbox">
+			
 			<div class="title">관리자 페이지</div>
 			
 			<div class="top_bar">
@@ -54,22 +48,88 @@
 			    </ul>
 			</div>
 
-
-			<div>유저 관리</div>
-			
-			<div class="user_list_container">
-			
-			
-			
+			<div class="admin_menu" >
+				<div onclick="fn_page_list(1);">가입 유저 관리</div>
+				<div onclick="fn_sleep_user_list(1);">휴면 유저 관리</div>
+				<div onclick="fn_retire_user_list(1);">탈퇴 유저 관리</div>
 			</div>
 			
 			
+			<div>
+				<form id="frm_search1">
+					<select name="column" id="column1">
 
+					</select>
+					<input type="text" name="query" id="query" list="auto_complete">
+					<datalist id="auto_complete"></datalist>
+					<input type="button" value="조회" onclick="fn_user_search();">
+					<input type="hidden" name="table" id="search_for_table">
+				</form>
+			</div>
+			<div>
+				<form id="frm_search2" action="@{/admin/user/search}">
+					<select name="column" id="column2">
+					
+					</select>
+					<input type="text" name="start" id="start">
+					~
+					<input type="text" name="stop" id="stop">
+					<span>
+						<input type="submit" value="조회">
+					</span>
+				</form>
+			</div>
 			
+			<div id="various_functions">
+				<input type="button" id="btn_retireUser" value="탈퇴">
+				<input type="button" id="btn_sleepUser" value="휴면">
+			</div>
+			
+			
+			<div class="user_list_container">
+				<table>
+					<thead>
+						<tr>
+							<td><input type="checkbox" id="check_all" class="lbl_all"></td>
+							<td><span data-title="USER_NO">회원번호</span></td>
+							<td><span data-title="PROFILE_IMAGE">프로필이미지</span></td>
+							<td><span data-title="NAME">이름</span></td>
+							<td><span data-title="GENDER">성별</span></td>
+							<td><span data-title="ARTIST" >아티스트명</span></td>
+							<td><span data-title="">생일</span></td>
+							<td><span data-title="EMAIL">이메일</span></td>
+							<td><span data-title="MOBILE">MOBILE.NO</span></td>
+							<td><span>가입일</span></td>
+							<td><span id="change_Date"></span></td>
+							<!-- 휴면일 -->
+							<td><span data-title="SNS_TYPE">가입형태</span></td>
+							<td><span data-title="AGREE_CODE">위치동의</span></td>
+							<td><span data-title="AGREE_CODE">마케팅동의</span></td>
+							
+						</tr>
+					</thead>
+					<tbody id="list_body">
+					
+					
+					
+					
 
-			
-			
-			
+
+
+
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="15" class="list_page_footer">
+							   
+							   
+							   
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
 		</div>
 	</div>
 	

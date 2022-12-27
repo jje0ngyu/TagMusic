@@ -2,8 +2,8 @@ package com.gdu.tagmusic.domain;
 
 import java.sql.Date;
 
-import groovy.transform.builder.Builder;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -33,5 +33,6 @@ public class MusicDTO {
 	private int hasThumbNail;
 	private ActiveLogDTO activeLogDTO;
 	private MusicLikeDTO musicLikeDTO;
+	private UserDTO userDTO;
 
 }

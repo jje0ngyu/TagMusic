@@ -1,26 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('Tag Music > 마이페이지')}"></head>
+<head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+</head>
 <body>
 	<nav th:fragment="mypageFragment" >
-		<h1 class="nav_top"><a th:href="@{/}">태그뮤직(로고)</a></h1>
+		<h1 class="nav_top"><a th:href="@{/}">
+			<img th:src="@{/images/TagMusic_logo.png}" width="180px">
+		</a></h1>
 		<!-- 멜론 마이페이지 참고사항, 추후 변경할 예정 -->
-		<div id="mypageHome" class="text_box">내 정보 홈</div>
-		<div class="text_box">개인정보 관리</div>
-		<div class="text_box">로그인 및 보안</div>
-		<div class="text_box">개인정보 이용</div>
-		<form th:action="@{/payment/history}" method="post">
+		<div class="nav_textBox_controller">
+			<div id="mypageHome" class="text_box text_box_click">
+				<span class="mypageNav_text">내 정보 홈</span>
+			</div>
+			<div class="text_box">
+				<span class="mypageNav_text">로그인 및 보안</span>
+			</div>
+			<div id="info" class="text_box">
+				<span class="mypageNav_text">개인정보 관리</span>
+			</div>
+			<div id="paymentHistory" class="text_box">
+				<span class="mypageNav_text">결제이력</span>
+			</div>
+			<div class="text_box">
+				<span class="mypageNav_text">내 글 관리</span>
+			</div>
+			<div class="text_box logout_box">
+				<span class="mypageNav_text">로그아웃</span>
+			</div>
+		</div>
+		<form th:action="@{/payment/history}" method="post" id="submit_history">
            <input type="hidden" name="userName" th:value="${session.loginUser.name}">
-           <input type="submit" value="결제이력">
         </form>
 		<script>
 			// 내 정보 홈
 			$('#mypageHome').click(function(){
 				location.href='/user/mypage';
 			});
+			// 개인정보 관리
+			$('#info').click(function(){
+				location.href="/user/mypage/info";
+			});
+			// 결제이력
+			$('#paymentHistory').click(function(){
+				$('#submit_history').submit();
+			});
+			// 로그아웃
+			$('.logout_box').click(function() {
+				location.href="/user/logout";
+			})
+		
+			
 		</script>
 	</nav>
 </body>

@@ -1,92 +1,103 @@
 @charset "UTF-8";
 
+	/* 공통영역 (header.html을 포함한 모든 html에 적용) */
 
 	/* 클래스 초기화  */
-	* {
-	box-sizing: border-box;
-	margin : 0;
-	padding : 0;
+	html, body, section, article, div, a, input, ul, li, input {
+		margin: 0px;
+		padding: 0px;
+		background-color: inherit;
+		color: inherit;
 	}
-	
-
-	body {
-		
-		zoom: 1;
-	}
-	
 	a {
-	text-decoration: none;
-	color: #222222;	
+		text-decoration: none;
+	}
+	input[type=button] {
+		background-color: #bdc2ce;
+		border: none;
+		border-radius: 30px;
+	}
+	input[type=button]:hover {
+		background-color: #20325A;
+		color: #fdfdfd;
+		border: none;
+		cursor: pointer;
 	}
 	
-	/* 레이아웃(헤더) : 헤더영역 레이아웃 설정 */
+	/* ================================== */
+	/*
+	레이아웃(헤더)
+	 : 헤더영역 레이아웃 설정
+	 : 상단 레이아웃 모든 기능을 감싸는 영역
+	   flex와 space-between으로 모든 상단 레이아웃 기능을 수평정렬
+	*/
 	.header {
 	height : 100px;
-	background-color: #D4D4D4;
-	border-bottom: 2px #888888 solid;
-	margin-left: 210px;
-
+	background: linear-gradient(#ffffff, 2%,#fdfdfd);
+	box-shadow: 0 1px 10px 0 #37486b;
+	z-index: 2;
 	
 	position : fixed;
 	top : 0; right: 0; left: 0;
 	
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 	}
 	
-	/* 레이아웃(헤더) : 상단 레이아웃 모든 기능을 감싸는 영역
-	flex와 space-between으로 모든 상단 레이아웃 기능을 수평정렬
-	 */
-	.header_menu {
-	
-	margin-top: 15px;
-	margin-left : 10px;
-	display : flex;
-	justify-content : space-between;
-	padding : 5px;
-	height: 50px;
-	
-
-	vertical-align: baseline;
-	text-align: center;
-
-	
-	
+	/* 헤더_왼쪽 (로고) */
+	.header_left_area {
+		display: flex;
+		align-items: center;
+		width: 240px;
+		height: 100%;
+		margin-left: 30px;
 	}
+	.tagmusic_logo {
+		width: 240px;
+	}
+	
 	/* 레이아웃(헤더) : 상단 레이아웃중 검색과 랭킹 기능을 묶은 영역
 	- header_left_menu : flex 정렬로 인해 랭킹이 페이지 가운데로 이동하므로, 
 	검색과 같은 블록 내에 위치시켜서 좌측으로 배치시키기 위해 사용하였다
 	  */
 	.header_left_menu {
-	display : flex;
-	width: 900px;
-	height: 120px;
+		display : flex;
+		width: 900px;
+		height: 120px;
 	}
 	
+	
+	/* 헤더_중앙 (검색, 실시간차트) */
+	.header_center_area {
+		display: flex;
+		width: 55%;
+	 }
 	/* 레이아웃(헤더) : 검색 + 버튼 영역
 	- flex : 검색영역과 버튼을 붙이기 위해 사용하였다
 	- 감싼이유 : 검색영역과 버튼을 감싸는 css를 꾸미기위해(ex 유튜브)
 	 */
 	.header_search_area {
-	margin-left: 20px;
-	margin-bottom: 10px;
-	background-color: #323232;
-	display : flex;
-	padding : 5px;
-	width : 390x;
-	height: 50px;
-	line-height: 40px;
-	border-radius: 25px;
+		background-color: #323232;
+		display : flex;
+		justify-content: space-between;
+		padding : 5px;
+		width : 50%;
+		height: 50px;
+		line-height: 40px;
+		border-radius: 25px;
 	
 	}
-	
 	
 	.header_search {
 		margin-left: 5px;
 		border: 0;
 		outline: none;
-		width: 430px;
+		width: 100%;
 		height: 35px;
 		background-color: #323232;
-		padding: 13px;
+		padding-left: 13px;
 		
 		font-weight: 600;
 		font-size: 17px;
@@ -103,7 +114,6 @@
 	
 	.header_search_area_right {
 		
-		margin-left: 20px;
 		margin-right: 30px;
 		
 	}
@@ -136,6 +146,142 @@
 
 	}
 	
+	/* 헤더_오른쪽 (로그인) */
+	.header_right_area {
+		display: flex;
+		justify-content: right;
+		align-items: center;
+		margin-right: 30px;
+		width: 70px;	
+		height: 70px;
+	}
+	/* 비회원 */
+	.unuser_area {
+		color: #fdfdfd;
+		background: linear-gradient(#37486b, 50%, #20325A);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 40px;	
+		height: 40px;
+		font-size: 10px;
+		border : none;
+		border-radius: 45px;
+	}
+	
+	@keyframes login_animation {
+		0% {
+			margin-top: 0;
+		}
+		50% {
+			margin-top: 15px;
+		}
+		100% {
+			margin-top: 0;
+		}
+	}
+	.unuser_area:hover {
+		font-weight: 600;
+		animation: login_animation 1.2s ease-in-out infinite;
+	}
+	
+	/* 회원 */
+	.user_area {
+		color: #fdfdfd;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 120px;
+		height: 60px;
+	}
+
+	.bell_area {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 50px;
+		height: 50px;
+		margin-right: 20px;
+	}
+	.bell_img {
+		width: 30px;
+	}
+	
+	.profile_image_area {
+		width: 60px;
+		height: 60px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.profile_image {
+		width: 40px;
+		height: 40px;
+	}
+	@keyframes profile_animation {
+		0% {
+			width: 60px;
+			height: 60px;
+		}
+		50% {
+			width: 50px;
+			height: 50px;
+		}
+		100% {
+			width: 60px;
+			height: 60px;
+		}
+	}
+	.profile_image:hover {
+		border: 4px solid rgb(255, 255, 255);
+		border-radius: 30px;
+		cursor: pointer;
+		animation: profile_animation 1s ease-in-out infinite;
+	/*	animation-name: profile_animation;
+		animation-duration: 1s;
+		animation-timing-function: ease-in-out;	
+		animation-iteration-count: infinite;	
+	*/}
+	
+	/* 프로필 팝업창 */
+	.header_right_bottom_controller {
+		position: fixed;
+		top: 80px;
+		right: 0;
+		padding-top: 10px;
+		margin-right: 30px;
+	}
+	.profile_box {
+		padding: 20px 10px 30px;
+		border-radius: 10px;
+		width: 300px;
+		background-color: #474545;
+		text-align: center;
+		line-height: 30px;
+		color: #aaaaaa;
+	}
+	.profile_artist {
+		color: #fdfdfd;
+		font-weight: 700;
+		font-size: 16px;
+	}
+	.profile_box  input[type=button] {
+		font-size: 14px;
+		border-radius: 20px;
+		margin: 30px 5px 0;
+		height: 30px;
+		color: #1f1f1f;
+		padding: 0 10px;
+	}
+	.profile_box  input[type=button]:hover {
+		box-shadow: 0 3px 10px -3px #1f1f1f;
+		color: #fdfdfd;
+	}
+	.profile_box  .btn_logout:hover {
+		background-color: #FF5361;
+	}
+	
+	
 	/* 레이아웃(사이드) : 상단 로고 영역설정 */
 	.menu_logo_area {
 	width : 190px;
@@ -159,6 +305,7 @@
 	background-color: #B0B0B0;
 	width : 220px;
 	height : 1000px;
+	z-index: 1;
 	
 	/* 레이아웃 설정 */
 	position : fixed;

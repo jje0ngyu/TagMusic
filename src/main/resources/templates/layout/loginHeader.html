@@ -6,7 +6,12 @@
 </head>
 <body>
 	<header th:fragment="loginFragment" >
-		<h1 style="height: 90px;"><a th:href="@{/}">태그뮤직(로고)</a></h1>
+		<h1 style="height: 90px;">
+		<div style="height: 90px; margin-left:30px; line-height: 90px;">
+			<a th:href="@{/}">
+				<img style="width:240px" th:src="@{/images/TagMusic_logo.png}">
+			</a></h1>
+		</div>
 	</header>
 </body>
 </html>
