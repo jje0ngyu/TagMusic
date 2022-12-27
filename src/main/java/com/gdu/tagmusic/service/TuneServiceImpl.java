@@ -157,14 +157,6 @@ public class TuneServiceImpl implements TuneService {
 		return music;
 	}
 	
-	// 음원 상세보기 (Map)
-	@Override
-	public Map<String, Object> getMapByMusicNo(int musicNo) {
-		Map<String, Object> music = new HashMap<>();
-		music.put("music", getMapByMusicNo(musicNo));
-		return music;
-	}
-	
 	// 음원 상세보기 - 음악 display
 	@Override
 	public ResponseEntity<byte[]> displayMusic(int musicNo) {

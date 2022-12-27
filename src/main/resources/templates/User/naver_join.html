@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Tag Music > 네이버 로그인</title>
-<link rel="stylesheet" th:href="@{/css/mypage.css}">
+<link rel="stylesheet" th:href="@{/css/naverJoin.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <script>
@@ -11,6 +11,8 @@
 	$(function(){
 		fn_emailCheck();
 		fn_join();
+		
+		fn_cancel();
 	});
 	
 	var emailPass = false;
@@ -53,100 +55,116 @@
 			}
 		});
 	}
+	function fn_cancel() {
+		$('#btn_cancel').click(function(){
+			location.href='/';
+		})
+	}
 	
 </script>
 </head>
 <body>
 
-	<div>
-	
-		<h1>네이버 간편 가입</h1>
-	
-		<div>* 표시는 필수 입력사항입니다.</div>
+	<div class="naver_join_controllers">
+		<div class="naver_join_contents">
 		
-		<form id="frm_join" th:action="@{/user/naver/join}" method="post">
-			<!-- 닉네임 (랜덤) -->
-			<input type="text" name="artist" id="artist" th:value="${profile.artist}">
-			<!-- 이름(프로필에 포함-2) -->
-			<div>
-				<label for="name">이름*</label>
-				<input type="text" name="name" id="name" th:value="${profile.name}">
-			</div>
-			<!-- 성별(프로필에 포함-3) -->
-			<div>
-				<span>성별*</span>
-				<input type="radio" name="gender" id="none" value="NO" checked="checked">
-				<label for="none">선택 안함</label>
-				<input type="radio" name="gender" id="male" value="M">
-				<label for="male">남자</label>
-				<input type="radio" name="gender" id="female" value="F">
-				<label for="female">여자</label>
-				<script>
-					$(':radio[name="gender"][value="${profile.gender}"]').prop('checked', true);
-				</script>
-			</div>
-			<!-- 휴대전화(프로필에 포함-4) -->
-			<div>
-				<label for="mobile">휴대전화*</label>
-				<input type="text" name="mobile" id="mobile" th:value="${profile.mobile}">
-			</div>
-			<!-- 생년월일(프로필에 포함-5) -->
-			<div>
-				<label for="birthyear">생년월일*</label>
-				<input type="text" name="birthyear" id="birthyear" th:value="${profile.birthyear}">
-				<input type="text" name="birthmonth" id="birthmonth" th:value="${profile.birthday.substring(0,2)}">
-				<input type="text" name="birthdate" id="birthdate" th:value="${profile.birthday.substring(2)}">
-			</div>
-			<!-- 이메일(프로필에 포함-6) -->
-			<div>
-				<label for="email">이메일*</label>
-				<input type="text" name="email" id="email" th:value="${profile.email}">
-				<input type="button" value="중복체크" id="btn_check">
-				<span id="msg_email"></span>
-			</div>
+			<h1>네이버 간편 가입</h1>
+		
+			<div class="right">* 표시는 필수 입력사항입니다.</div>
 			
-			
-			
-			<!-- 약관 -->
-			<div>
-				<input type="checkbox" id="check_all" class="blind">
-				<label for="check_all" class="lbl_all">모두 동의</label>
-			</div>
-			<div>
-				<input type="checkbox" id="service" class="check_one blind">
-				<label for="service" class="lbl_one">이용약관 동의(필수)</label>
+			<form id="frm_join" th:action="@{/user/naver/join}" method="post">
+				<!-- 닉네임 (랜덤) -->
+				<input type="hidden" name="artist" id="artist" th:value="${profile.artist}">
+				<!-- 이름(프로필에 포함-2) -->
 				<div>
-					<textarea>본 약관은 ...</textarea>
+					<div>
+						<label for="name">이름*</label>
+					</div>
+					<input type="text" name="name" id="name" th:value="${profile.name}">
 				</div>
-			</div>
-			<div>
-				<input type="checkbox" id="privacy" class="check_one blind">
-				<label for="privacy" class="lbl_one">개인정보수집 동의(필수)</label>
+				<!-- 성별(프로필에 포함-3) -->
 				<div>
-					<textarea>개인정보보호법에 따라 ...</textarea>
+					<span>성별*</span>
+					<input type="radio" name="gender" id="none" value="NO" checked="checked">
+					<label for="none">선택 안함</label>
+					<input type="radio" name="gender" id="male" value="M">
+					<label for="male">남자</label>
+					<input type="radio" name="gender" id="female" value="F">
+					<label for="female">여자</label>
+					<script>
+						$(':radio[name="gender"][value="${profile.gender}"]').prop('checked', true);
+					</script>
 				</div>
-			</div>
-			<div>
-				<input type="checkbox" id="location" name="location" class="check_one blind">
-				<label for="location" class="lbl_one">위치정보수집 동의(선택)</label>
+				<!-- 휴대전화(프로필에 포함-4) -->
 				<div>
-					<textarea>위치정보 ...</textarea>
+					<label for="mobile">휴대전화*</label>
 				</div>
-			</div>
-			<div>
-				<input type="checkbox" id="promotion" name="promotion" class="check_one blind">
-				<label for="promotion" class="lbl_one">마케팅 동의(선택)</label>
 				<div>
-					<textarea>이벤트 ...</textarea>
+					<input type="text" name="mobile" id="mobile" th:value="${profile.mobile}">
 				</div>
-			</div>
-			
-			<!-- 버튼 -->
-			<div>
-				<button>가입하기</button>
-				<input type="button" value="취소하기" onclick="location.href='${contextPath}'">
-			</div>
-		</form>
+				<!-- 생년월일(프로필에 포함-5) -->
+				<div class="input_15">
+					<div>
+						<label for="birthyear">생년월일*</label>
+					</div>
+					<input type="text" name="birthyear" id="birthyear" th:value="${profile.birthyear}">년
+					<input type="text" name="birthmonth" id="birthmonth" th:value="${profile.birthday.substring(0,2)}">월
+					<input type="text" name="birthdate" id="birthdate" th:value="${profile.birthday.substring(2)}">일
+				</div>
+				<!-- 이메일(프로필에 포함-6) -->
+				<div>
+					<div>
+						<label for="email">이메일*</label>
+					</div>
+					<input type="text" name="email" id="email" th:value="${profile.email}">
+					<input type="button" value="중복체크" id="btn_check">
+					<span id="msg_email"></span>
+				</div>
+				
+				
+				
+				<!-- 약관 -->
+				<div>
+					<input type="checkbox" id="check_all" class="blind">
+					<label for="check_all" class="lbl_all">모두 동의</label>
+				</div>
+				<div>
+					<input type="checkbox" id="service" class="check_one blind">
+					<label for="service" class="lbl_one">이용약관 동의(필수)</label>
+					<div>
+						<textarea>본 약관은 ...</textarea>
+					</div>
+				</div>
+				<div>
+					<input type="checkbox" id="privacy" class="check_one blind">
+					<label for="privacy" class="lbl_one">개인정보수집 동의(필수)</label>
+					<div>
+						<textarea>개인정보보호법에 따라 ...</textarea>
+					</div>
+				</div>
+				<div>
+					<input type="checkbox" id="location" name="location" class="check_one blind">
+					<label for="location" class="lbl_one">위치정보수집 동의(선택)</label>
+					<div>
+						<textarea>위치정보 ...</textarea>
+					</div>
+				</div>
+				<div>
+					<input type="checkbox" id="promotion" name="promotion" class="check_one blind">
+					<i class="bi bi-check-square-fill"></i>
+					<label for="promotion" class="lbl_one">마케팅 동의(선택)</label>
+					<div>
+						<textarea>이벤트 ...</textarea>
+					</div>
+				</div>
+				
+				<!-- 버튼 -->
+				<div class="join_bottom_controller">
+					<input type="button" class="btn" id="btn_cancel" value="취소하기">
+					<button class="btn" id="btn_join">가입하기</button>
+				</div>
+			</form>
+		</div>
 	</div>
 	
 </body>

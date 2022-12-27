@@ -12,23 +12,14 @@ a {
 text-decoration: none;
 color: whitesmoke;	
 }
-
-#iframe_audio {
-	z-index: 100;
-	border: none;
-}
-
-.iframe_audio {
-	display: none;
-}
 .blind {
 	display: none;
 }
 
-.player {
+.iframe_page {
 position: fixed;
 left:0; bottom:0;
-background-color: #212121;
+background-color: #fdfdfd;
 display: flex;
 }
 
@@ -36,10 +27,10 @@ display: flex;
 	cursor: pointer;		
 }
 
-.controlls_wrap {
-	background-color: #212121;
+.music_play_controller {
+	background-color: #37486b;
 	z-index: 100;
-	position: absolute;
+	position: fixed;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -121,12 +112,9 @@ display: flex;
 	.controlls_wrap {
 		position: relative;
 		display: flex;
-		justify-content: start;
 		align-items: center;
 		height: 100%;
-	}
-	.left_controlls {
-		background-color: #212121;
+		right:0px; bottom:0;
 	}
 	.center_controlls {
 		width: 70%;

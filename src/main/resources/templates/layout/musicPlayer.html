@@ -5,21 +5,21 @@
 
 <title>Tag Music > 상세보기</title>
 <link rel="stylesheet" th:href="@{/css/musicPlayer.css}">
-<link rel="stylesheet" th:href="@{/css/tuneDetail.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 </head>
 <body>
-
-	<iframe id="music_iframe" th:src="@{/}" align frameborder="0" width="100%" height="100%" bottom class="player">음악</iframe> 
+	<article>
+		<iframe id="music_iframe" th:src="@{/tune/detail(musicNo=${music.musicNo})}" align frameborder="0" width="100%" height="100%" bottom class="iframe_page">음악</iframe> 
+	</article>
 	<!-- 음원 재생 바(bar) -->
-	<footer>
+	<footer class="music_play_bar">
 		<div>
-			<audio controls="controls" autoplay controlsList="nodownload" id="iframe_audio" class="iframe_audio">
+			<audio controls="controls" autoplay controlsList="nodownload" id="iframe_audio" class="iframe_audio blind">
 				<source th:src="@{/tune/display/music(musicNo=${music.musicNo})}" type="audio/mp3" />
 			</audio>
 		</div>
 		
-		<div class="controlls_wrap">
+		<div class="music_play_controller">
 			<div class="left_controlls">
 				<div class="left_controll">
 					<img class="btn_side img_previous" th:src="@{/images/previous.png}">
@@ -72,6 +72,9 @@
 			</div>
 		</div>
 	
+	</footer>
+	
+</body>
 	<script>
 		setInterval(function() {
 		    var current = document.getElementById('iframe_audio').currentTime;
@@ -168,7 +171,4 @@
 		});
 	}
 </script>
-	</footer>
-	
-</body>
 </html>
