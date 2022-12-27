@@ -102,7 +102,7 @@ body {
 		top: 0;
 		left: 0;
 		margin-left: 250px;
-		padding: 80px 40px 0 40px;
+		padding: 60px 50px 0 40px;
 	}
 	.mypage_top_controller, .mypage_middle_controller, .mypage_bottom_controller {
 		display: flex;

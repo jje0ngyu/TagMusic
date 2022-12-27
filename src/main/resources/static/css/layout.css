@@ -21,6 +21,7 @@
 		background-color: #20325A;
 		color: #fdfdfd;
 		border: none;
+		cursor: pointer;
 	}
 	
 	/* ================================== */
@@ -471,7 +472,55 @@
 	display: none;
 }
 
+/* 모달창 */
 
+  .modal_table {
+    width: 400px;
+    border-top: 1px solid #444444;
+    border-collapse: collapse;
+  }
+  .modal_td, .modal_tr {
+    border-bottom: 1px solid #444444;
+    padding: 10px;
+  }
+
+#modal {
+  position:fixed;
+  top:250px;
+  left: 0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  display: none;
+}
+
+#modal h2 {
+  margin:0;   
+}
+
+#modal button {
+  display:inline-block;
+  width:100px;
+  margin-left:calc(100% - 100px - 10px);
+}
+
+#modal .modal_content {
+  width:450px;
+  margin:50px auto;
+  padding:20px 10px;
+  background:#fff;
+  border:2px solid #666;
+}
+
+#modal .modal_layer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.8);
+  z-index:-1;
+}   
 
 
 

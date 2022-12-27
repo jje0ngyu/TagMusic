@@ -10,12 +10,18 @@
 		fn_displayArtist();
 		fn_modifyArtist();
 		fn_editArtist();
+		
+		// 이름 수정
 		fn_modifyName();
 		fn_editName();
+		
+		
 		fn_modifyPw();
 		fn_editPw();
 		fn_modifyMobile();
 		fn_editMobile();
+		fn_modifyAgreeCode();
+		fn_editAgreeCode();
 		fn_backlayer();
 		fn_retire();
 		
@@ -142,7 +148,34 @@
 			})
 		});
 	}
-	
+	// 마케팅동의 수정
+	function fn_modifyAgreeCode(){
+		$('#info_agreeCode').click(function(){
+			$('.modify_agreeCode').removeClass('blind');
+		});
+	}
+	// 마케팅동의 수정 - 변경 버튼을 눌렀을 때
+	function fn_editAgreeCode(){
+		$('#btn_mobile').click(function(){
+			$.ajax({
+				type: 'post',
+				url : '/user/info/modifyMobile',
+				data: $('#frm_modifyUser').serialize(),
+				dataType: 'text',
+				success : function() {
+					$('#mobile').val('');
+					$('.box_backlayer').addClass('blind');
+					$('.modify_box').addClass('blind');
+					$('.modify_mobile').addClass('blind');
+					alert('회원정보가 변경되었습니다.');
+					
+				},
+				error : function(jqXHR){
+					console.log('error가 찍혔다');
+				}
+			})
+		});
+	}
 	
 	function fn_backlayer(){
 		$('.info').click(function(){
@@ -257,7 +290,7 @@
 						<div class="box_msg">게시글 작성, 문의사항 등<br/>
 							태그뮤직 이용시 노출되는 닉네임입니다.</div>
 					</div>
-					<div class="info marketting flex_cloumn" id="info_marketting">
+					<div class="info flex_cloumn" id="info_agreeCode">
 						<div class="box_title">이벤트/마케팅 혜택알림</div>
 						<div class="box_msg">게시글 작성, 문의사항 등<br/>
 							태그뮤직 이용시 노출되는 닉네임입니다.</div>
@@ -313,7 +346,7 @@
 							<br/>
 							* 한번 등록된 정보는 삭제하거나 타인의 정보로 변경할 수 없으니 반드시 회원님의 정보로 본인인증해 주세요.
 						</div>
-						<div>
+						<div class="btn_box">
 							<input class="btn cancel" type="button" value="취소">
 							<input class="btn correct" id="btn_name" type="button" value="변경">
 						</div>
@@ -372,7 +405,7 @@
 							<div>
 								연락처 정보가 변경되었다면, 현재 사용중인 정보로 변경해 주세요.
 							</div>
-							<div>
+							<div class="btn_box">
 								<input class="btn cancel" type="button" value="취소">
 								<input class="btn correct" id="btn_mobile" type="button" value="변경">
 							</div>
@@ -380,12 +413,10 @@
 					</div>
 					
 					<!-- 마케팅 정보이용 동의 -->
-					<div class="modify_agreeCode">
-						<div>
-							<div>
-								<input class="btn cancel" type="button" value="취소">
-								<input class="btn correct" id="btn_mobile" type="button" value="변경">
-							</div>
+					<div class="modify_agreeCode blind">
+						<div class="btn_box">
+							<input class="btn cancel" type="button" value="취소">
+							<input class="btn correct" id="btn_mobile" type="button" value="변경">
 						</div>
 					</div>
 					<!-- 탈퇴 전 비밀번호 재입력 -->
@@ -397,7 +428,7 @@
 							비밀번호
 							<input type="text" id="pw" name="pw">						
 						</div>
-						<div>
+						<div class="btn_box">
 							<input class="btn cancel" type="button" value="취소">
 							<input class="btn correct" id="btn_retire" type="button" value="확인">
 						</div>

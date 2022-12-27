@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<meta charset="UTF-8">
+<title></title>
+<link rel="stylesheet" th:href="@{/css/musicBoard.css}">
+<!-- static 폴더 이후의 위치를 적으면 된다. -->
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+
+
+<script th:inline="javascript">
+
+	$(function() {
+	
+		fn_modal();						// 구현 : 플레이리스트 목록 조회 모달창
+		fn_addMusicToPlaylist();		// 구현 : 플레이리스트 추가 
+		fn_modal_createPlaylist();		// 기능 : 플레이리스트 생성 모달창
+		fn_createPlaylist();			// 구현 : 플레이리스트 생성
+		fn_modalClose();				// 기능 : 모달창 종료
+		
+	});
+	
+    function fn_modal() {	// 플레이리스트 목록창
+    	
+    		$('.modal_open_btn').click(function() {
+    			
+    			$('#modal').css('display', 'block');
+    			
+    			let musicNo = $(this).data('musicno');
+    			
+    			$.ajax({
+    				type: 'get',
+    				url: '/music/user/playlist',
+    				dataType: 'json',
+    				success: function(resData) {
+    					
+    					if(resData.result == 0) {
+    						
+    						alert('로그인한 유저만 요청가능합니다');
+    						if(confirm('로그인하시겠습니까?') == true) {
+    							location.href= "/user/login/form";
+    						} else {
+    							$('#modal').css('display', 'none');
+    						}
+    						
+    					} else {
+    						
+	    					// 플레이리스트 목록
+	    					$('.modal_content').empty();	// 상단 리스트 최신화
+	   						
+	    					$('.modal_content').append(' <h2>플레이리스트를 선택하세요</h2>');	// 제목
+	    				
+	    					
+	    					var body = $('<tbody class="modal_body">');
+	    					
+	    					$.each(resData.userPlaylist, function(index, playlist) {
+	    						
+	    						$('<tr class="modal_tr">')
+	    							.append('<td class="modal_td">'+(index + 1)+'</td>')
+	    							.append( $('<td class="modal_td">').append('<div class="playlistName">'+playlist.listName+'</div>') )
+	    							.append( $('<td class="modal_td">').append('<div class="select_playlist" data-musicno="'+musicNo+'" data-listno="'+playlist.listNo+'">선택</div>') )
+	    							.appendTo($(body) );
+	  
+	    					});
+	    					
+	    					$('.modal_content').append( 
+	    	    					$('<div class="playlist_items">')
+	    	    					.append( $('<table class="modal_table">')
+	    							.append('<thead class="modal_table_head"><tr class="modal_tr"><td>No</td><td class="modal_td">플레이리스트명</td><td class="modal_td">선택</td></tr></thead>')
+	    							.append($(body)) ) ) ;
+	    	    					
+   	    					$('.modal_content')
+   	    					.append(' <div class="modal_btn_area"><div class="btn_createPlaylist">리스트 생성</div><div class="btn_modal_close">닫기</div></div>');
+    							
+    						}
+    					}
+    				});
+    			});
+
+    }
+    
+    function fn_modalClose() {	// 종료버튼 클릭시 모달창 종료
+    	
+    
+    	$(document).on('click', '.btn_modal_close', function() {
+			$('#modal').css('display', 'none');	
+		});
+    	
+    }
+    
+    function fn_addMusicToPlaylist() {	// 플레이리스트 선택시, 해당 음악 저장
+    	
+    	$(document).on('click', '.select_playlist', function() {
+    		
+    		let listNo = $(this).data('listno');		// 담으려는 list명
+    		let musicNo = $(this).data('musicno');		// hidden에 저장된 해당 musicNo값
+    		
+
+			$.ajax({
+				type: 'get',
+				url: '/music/user/playlistAddMusic',
+				data: 'listNo=' + listNo + '&musicNo=' + musicNo ,
+				dataType: 'json',
+				success: function(resData) {
+					
+					if(resData.result == 0) {
+						alert('해당 음악은 이미 존재합니다');
+					} else {
+						alert('추가했습니다');
+						$('#modal').css('display', 'none');	// 추가 후 모달창 종료
+						
+					}
+				}
+			});	
+    	});
+    }
+    
+    function fn_modal_createPlaylist() {	// 플레이리스트 생성화면
+    	
+    	$(document).on('click', '.btn_createPlaylist', function() {
+    	
+    		$('.modal_content').empty();
+    		
+    		// 플레이리스트 생성화면으로 재구성
+    		
+    		$('.modal_content')
+    		.append('<div class="createPlaylist_header"><h2>플레이리스트 이름을 입력하세요</h2></div>')
+    		.append('<div class="createPlaylist_body"><input type="text" class="playlist_name" id="playlist_name"></div>')
+    		.append( $('<div class="createPlaylist_btn_area">')
+    				.append('<div class="createPlaylist_btn">생성</div>')
+    				.append('<div class="createPlaylist_btn_cancel">뒤로가기</div>')
+    		)
+    	});
+    	
+    }
+    
+    function fn_createPlaylist() {	// 플레이리스트 생성
+    	
+    	$(document).on('click', '.createPlaylist_btn', function() {
+    		
+    		let listName = $(this).parent().prev().children().val();
+    		
+    		if(listName == '') {
+				alert('빈 이름으로 생성할 수 없습니다. 이름을 지어주세요');
+				return;
+			}
+    		
+    		
+    		$.ajax({
+				type: 'get',
+				url: '/music/user/createPlaylist',
+				data: 'listName=' + listName,
+				dataType: 'json',
+				success: function(resData) {
+					
+
+					if(resData.result == 0) {	
+						alert('플레이리스트는 5개 넘게 생성할 수 없습니다');		
+					} else if (resData.result == 2) {
+						alert('해당 플레이리스트명으로 지어린 리스트가 이미 존재합니다');	
+					} else  {
+						alert('플레이리스트를 생성했습니다');
+						fn_reModal();
+				
+					}
+
+				}
+			});
+    	});
+
+    	$(document).on('click', '.createPlaylist_btn_cancel', function() {	// 뒤로가기
+    		
+    	
+    	});	
+    }
+    
+    function fn_reModal() {	// 플레이리스트 모달창 재요청
+    	
+    	$('#modal').css('display', 'block');
+		
+		let musicNo = $('.musicNo').val();
+		
+		$.ajax({
+			type: 'get',
+			url: '/music/user/playlist',
+			dataType: 'json',
+			success: function(resData) {
+				
+				if(resData.result == 0) {
+					
+					alert('로그인한 유저만 요청가능합니다');
+					if(confirm('로그인하시겠습니까?') == true) {
+						location.href= "/user/login/form";
+					} else {
+						$('#modal').css('display', 'none');
+					}
+					
+				} else {
+					
+					// 플레이리스트 목록
+					$('.modal_content').empty();	// 상단 리스트 최신화
+						
+				
+					
+					var body = $('<tbody class="modal_body">');
+					
+					$('.modal_content').append(' <h2>플레이리스트를 선택하세요</h2>');	// 제목
+
+					
+					$.each(resData.userPlaylist, function(index, playlist) {			// 플레이리스트 목록
+						
+						$('<tr class="modal_tr">')
+							.append('<td class="modal_td">'+(index + 1)+'</td>')
+							.append( $('<td class="modal_td">').append('<div class="playlistName">'+playlist.listName+'</div>') )
+							.append( $('<td class="modal_td">').append('<div class="select_playlist" data-musicno="'+musicNo+'" data-listno="'+playlist.listNo+'">선택</div>') )
+							.appendTo($(body) );
+
+					});
+					
+					$('.modal_content').append( 
+					$('<div class="playlist_items">')
+					.append( $('<table class="modal_table">')
+					.append('<thead class="modal_table_head"><tr class="modal_tr"><td>No</td><td class="modal_td">플레이리스트명</td><td class="modal_td">선택</td></tr></thead>')
+					.append($(body)) ) ) ;
+					
+					$('.modal_content')
+					.append(' <div class="modal_btn_area"><div class="btn_createPlaylist">리스트 생성</div><div class="btn_modal_close">닫기</div></div>');
+						
+					}
+				}
+			});
+    	
+    }
+    		
+    		
+
+
+</script>
+</head>
+<body>
+
+	<!--  page : 최신리스트 게시판 -->
+	
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+
+	<div class="session">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+		
+			<div class="list_container">
+				<div class="list_page">
+				
+					<div class="page_title">
+					<!-- 구현 : 요청마다 게시판 이름 변경하기  -->
+						<p th:text="${pageName}"></p>
+					</div>
+				
+					<div class="list_page_header">
+					<!--  구현 : 장르별 조회하기 -->
+						<div class="select_genre">
+							<div class="select_genre_title">장르별 선택하기</div>
+							<ul class="list_select_ul">
+								<li class="list_select_li">전체</li>
+								<li class="list_select_li">발라드</li>
+								<li class="list_select_li">팝송</li>
+								<li class="list_select_li">ost</li>
+								<li class="list_select_li">트로트</li>
+								<li class="list_select_li">기타</li>
+								<li class="list_select_li">기타</li>
+							</ul>
+						</div>
+					</div>
+					<div class="select_all_btn_area">
+						<input type="button" value="전체선택" class="btn_all">	
+					</div>
+					<div class="list_page_table">
+						<table>
+							<thead>
+								<tr>
+									<td><div class="td">선택</div></td>
+									<td><div class="td">No</div></td>
+									<td colspan="3"><div class="td_music">곡정보</div></td>
+									
+									
+									<td><div class="td">좋아요</div></td>
+									<td><div class="td">
+									리스트에 담기</div></td>
+									<td><div class="td">다운로드</div></td>
+								</tr>
+						</thead>
+						<tbody>
+							<tr th:each="music,vs:${musicList}">
+								<td>
+									<input type="checkbox">
+								</td>
+								<td class="td_no" th:text="${beginNo -vs.index}"></td>
+								<!-- # 구현 : 썸네일 가져오기 -->
+								<!-- 방법 : 타임리프 if else(unless)를 통해 해결  -->
+								
+								<td>
+									<span th:if="${music.hasThumbNail == 1}" >
+										<img class="board_thumbnail" th:src="@{/music/thumbnail(musicNo=${music.musicNo})}">
+									</span>
+									<span th:unless="${music.hasThumbNail == 1}" >
+										<img class="board_thumbnail" th:src="@{/images/defaultImage.png}">
+									</span>
+								<td>
+									
+									<div th:text="${music.musicTitle}" class="title_artist"></div>
+									<div th:text="${music.activeLogDTO.userDTO.artist}" class="title_artist"></div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
+								</td>
+								
+								<td>
+									<div th:text="${music.musicGenre}"></div>
+								</td>
+								<td>
+									<input type="button" value="좋아요">
+								</td>
+								<td class="board_playlist_area">
+									<div class="playlist_hidden">
+										
+										<!-- # 구현 : 모달창 -->
+										
+										
+										<div id="root">   
+										    <button type="button" th:data-musicno="${music.musicNo}" class="modal_open_btn">플레이리스트에 담기</button>
+										    <input type="hidden" class="musicNo" th:value="${music.musicNo}">
+										</div>
+										
+										
+										<div id="modal">
+   
+										    <div class="modal_content">
+										        <h2>플레이리스트를 선택하세요</h2>
+										        	<div class="playlist_items">
+										        	
+										        		<table class="modal_table">
+										        			<thead class="modal_table_head">
+										        				<tr class="modal_tr">
+										        					<td class="modal_td">no</td>
+										        					<td class="modal_td" >플레이리스트명</td>
+										        					<td class="modal_td">선택</td>
+										        				</tr>
+										        			</thead>
+										        			<tbody  class="modal_body">
+										        				<tr class="modal_tr">
+										        					<td class="modal_td">1</td>
+										        					<td class="modal_td">
+										        						<div class="playlistName"></div>
+										        					</td>
+										        					<td class="modal_td">
+										        						<div class="select_playlist"></div>
+										        					</td>
+										        				</tr>
+										        			</tbody>
+										        		</table>
+										        		<!-- <iframe src="/music/playlistModal" align bottom class="" scrolling="no"></iframe>  -->
+
+										        	</div>
+										        
+										        <div class="modal_btn_area">
+											     	<div class="btn_createPlaylist">리스트 생성</div> 
+											     	<div class="btn_modal_close">닫기</div> 				        
+										        </div>
+										    </div>
+										    <div class="modal_layer"></div>
+										</div>
+										
+										
+									</div>
+									
+									
+								</td>
+								<td>
+									<input type="button" id="modal_close" value="다운받기">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					
+					<!-- 구현 : 게시글 업로드 -->
+					<div class="btn_area">
+						<input type="button" value="삭제" class="upload_btn">
+						<div>
+							<input type="button" value="업로드" class="delete_btn">
+							<input type="button" value="전부다운받기" class="delete_btn">
+						</div>
+					</div>
+					
+					<!-- 구현 : 게시글 페이징 처리 + 검색기능 -->
+					<div class="list_page_footer">
+						<div class="page_block" th:utext="${paging}" ></div>
+						<div class="list_page_search">
+							<input type="text" placeholder="검색" class="list_page_search_text">
+							<input type="button" value="검색" class="list_page_search_btn">
+						</div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

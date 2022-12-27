@@ -53,36 +53,28 @@
                 FROM CHAT_ADMIN )
 	</select>
 	
-	<select id="selectChatUsingScroll" parameterType="Map" resultMap="ChatMap">
-		
-  
-    SELECT C.CHAT_NO, C.USER_NO, C.CHAT_DATE, C.IP, C.CONTENT,C.STATE,C.DEPTH,C.GROUP_NO,C.GROUP_ORDER, U.NAME, U.PROFILE_IMAGE
-      FROM CHAT_ADMIN C INNER JOIN USERS U
-        ON C.USER_NO = U.USER_NO
-        WHERE C.GROUP_ORDER = 1
-        
-        
-     UNION
-     
- 	SELECT A.CHAT_NO,A.USER_NO,A.CHAT_DATE,A.IP,A.CONTENT,A.STATE,A.DEPTH,A.GROUP_NO,A.GROUP_ORDER, U.NAME, U.PROFILE_IMAGE
-	  FROM (  SELECT *
-                FROM CHAT_ADMIN 
-               WHERE (GROUP_NO,GROUP_ORDER) IN (  SELECT GROUP_NO, MIN(GROUP_ORDER) AS GROUP_ORDER
-                                                    FROM CHAT_ADMIN 
-                                                   WHERE NOT USER_NO = 1 
-                                                     AND NOT DEPTH = 0  
-                                                   GROUP BY GROUP_NO )      )A INNER JOIN USERS U
-         ON A.USER_NO = U.USER_NO
-         ORDER BY CHAT_DATE DESC
-	
+	<select id="selectChatUsingScroll" parameterType="int" resultMap="ChatMap">
+		    SELECT C.CHAT_NO, C.USER_NO, C.CHAT_DATE, C.IP, C.CONTENT,C.STATE,C.DEPTH,C.GROUP_NO,C.GROUP_ORDER, U.NAME, U.PROFILE_IMAGE
+		      FROM CHAT_ADMIN C INNER JOIN USERS U
+		        ON C.USER_NO = U.USER_NO
+		     WHERE C.GROUP_ORDER = 1
+			   AND C.GROUP_NO = #{groupNo}
+		  
+		  
+		   UNION
+		     
+		  SELECT A.CHAT_NO,A.USER_NO,A.CHAT_DATE,A.IP,A.CONTENT,A.STATE,A.DEPTH,A.GROUP_NO,A.GROUP_ORDER, U.NAME, U.PROFILE_IMAGE
+		    FROM (  SELECT *
+		              FROM CHAT_ADMIN 
+		             WHERE (GROUP_NO,GROUP_ORDER) IN (  SELECT GROUP_NO, MIN(GROUP_ORDER) AS GROUP_ORDER
+		                                                  FROM CHAT_ADMIN 
+		                                                 WHERE NOT USER_NO = 1 
+		                                                   AND NOT DEPTH = 0  
+		                                                 GROUP BY GROUP_NO )      )A INNER JOIN USERS U
+		      ON A.USER_NO = U.USER_NO
+			 AND A.GROUP_NO = #{groupNo}
+		  
 	</select>
-	
-	
-
-	
-	
-	
-	
 	
 	<select id="getChatDetail" parameterType="int" resultMap="ChatMap">
 	
@@ -94,10 +86,204 @@
 	
 	</select>
 	
+	<select id="existChatUserList" resultType="ChatDTO">
+	  SELECT GROUP_NO, MAX(CHAT_DATE)
+	    FROM CHAT_ADMIN
+	GROUP BY GROUP_NO
+    ORDER BY MAX(CHAT_DATE)
+	</select>
 	
 	
+	
+	
+	
+	<!-- 유저관리페이지용 매퍼 -->
+	
+	<select id="selectUserList" resultType="UserDTO" parameterType="map">
+		SELECT A.*
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO) AS RN, USER_NO, EMAIL, PW, ARTIST, NAME, GENDER, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE, PROFILE_IMAGE
+		          FROM USERS
+	                 WHERE NOT USER_NO=1) A
+		 WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	
+	<select id="selectSleepUserList" resultType="UserDTO" parameterType="map">
+		SELECT A.*
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, JOIN_DATE, SLEEP_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
+		          FROM SLEEP_USERS
+	                 WHERE NOT USER_NO=1) A
+		 WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	<select id="selectRetireUserList" resultType="UserDTO" parameterType="map">
+		SELECT A.*
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO) AS RN, USER_NO, EMAIL, RETIRE_DATE, ARTIST
+		          FROM RETIRE_USERS
+	                 WHERE NOT USER_NO=1) A
+		 WHERE A.RN BETWEEN #{begin} AND #{end}
+	</select>
+	
+	
+	
+	
+	
+	<select id="countAllUser" resultType="int"> 
+		SELECT COUNT(*)
+		FROM USERS
+	</select>
+	
+	<select id="countSleppUser" resultType="int"> 
+		SELECT COUNT(*)
+		FROM SLEEP_USERS
+	</select>
+	
+	<select id="countRetireUser" resultType="int"> 
+		SELECT COUNT(*)
+		FROM RETIRE_USERS
+	</select>
+	
+	
+	<!-- 유저 검색용 매퍼 -->
+	
+	<select id="serchUserCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		  FROM ${table}
+		<where>
+		    <if test="column=='USER_NO' or column=='SNS_TYPE'">
+		    	${column} = #{query}
+		    </if>
+		    <if test="column=='NAME' or column=='MOBILE' or column=='EMAIL' or column=='ARTIST'">
+		    	${column} LIKE '%' || #{query} || '%'
+		    </if>
+		    <if test="column=='JOIN_DATE'">
+		    	${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
+		    </if>
+		</where>
+	</select>
+
+	<select id="selectSearchEmployeeList" parameterType="Map" resultType="UserDTO">
+		SELECT A.*
+ 		  FROM (  
+                <choose>
+                    <when test="table == 'USERS'">
+                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
+                     FROM ${table}
+                    </when>
+                    <when test="table == 'SLEEP_USERS'">
+                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, MOBILE, JOIN_DATE, SLEEP_DATE, PROFILE_IMAGE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, PW_MODIFY_DATE, INFO_MODIFY_DATE
+                     FROM ${table}
+                    </when>
+                   	<when test="table == 'RETIRE_USERS'">
+                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, RETIRE_DATE
+                     FROM ${table}
+                    </when>
+                    <otherwise>
+                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
+                     FROM ${table}
+                    </otherwise>
+                  </choose>
+                  
+                    <where>
+			            <if test="column=='USER_NO' or column=='SNS_TYPE'">
+			                ${column} = #{query}
+			            </if>
+			            <if test="column=='NAME' or column=='MOBILE' or column=='EMAIL' or column=='ARTIST'">
+			                ${column} LIKE '%' || #{query} || '%'
+			            </if>
+			            <if test="column=='JOIN_DATE'">
+			                ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
+			            </if>
+			        </where>    ) A
+			        
+       	 WHERE A.RN BETWEEN #{begin} AND #{end} 
+	</select>
+	
+	
+	
+	<select id="selectAutoCompleteList" parameterType="Map" resultType="UserDTO">
+		SELECT DISTINCT ${column}
+		  FROM EMPLOYEES
+		 WHERE ${column} LIKE CONCAT(#{query}, '%')
+	</select>
+
+
+
+
+
+
+	<!-- 회원 강제 탈퇴 및 강제 휴면할 유저 정보 조회하기-->
+	<select id="selectUserByNo" parameterType="Map" resultType="UserDTO">
+		  SELECT USER_NO, EMAIL, PW, ARTIST, NAME, GENDER, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE,PROFILE_IMAGE
+		  	FROM USERS
+		  <where>
+		    <foreach item="item" collection="userNo" open="USER_NO in (" separator="," close=")" >
+		          #{item}
+		    </foreach>
+		  </where>
+	</select>
 	
 
+	<!-- 휴면계정으로 insert -->
+	<insert id="insertSleepUser" parameterType="Map">
+		INSERT INTO SLEEP_USERS (USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, JOIN_DATE, SLEEP_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE)
+		     SELECT  A.* FROM(
+			<foreach collection="sleepUsers" item="item" separator="UNION ALL ">
+				SELECT #{item.userNo,jdbcType=INTEGER} AS USER_NO,
+					   #{item.email,jdbcType=VARCHAR} AS EMAIL,
+					   #{item.artist,jdbcType=VARCHAR} AS ARTIST,
+				       #{item.name,jdbcType=VARCHAR} AS NAME,
+					   #{item.pw,jdbcType=VARCHAR} AS PW,
+					   #{item.profileImage,jdbcType=VARCHAR} AS PROFILE_IMAGE,
+					   #{item.mobile,jdbcType=VARCHAR} AS MOBILE,
+					   #{item.gender,jdbcType=VARCHAR} AS GENDER,
+					   #{item.birthyear,jdbcType=VARCHAR} AS BIRTHYEAR,
+					   #{item.birthday,jdbcType=VARCHAR} AS BIRTHDAY,
+					   #{item.postcode,jdbcType=VARCHAR} AS POSTCODE,
+					   #{item.roadAddress,jdbcType=VARCHAR} AS ROAD_ADDRESS,
+					   #{item.jibunAddress,jdbcType=VARCHAR} AS JIBUN_ADDRESS,
+					   #{item.detailAddress,jdbcType=VARCHAR} AS DETAIL_ADDRESS,
+					   #{item.extraAddress,jdbcType=VARCHAR} AS EXTRA_ADDRESS,
+					   #{item.snsType,jdbcType=VARCHAR} AS SNS_TYPE,
+					   #{item.joinDate,jdbcType=DATE} AS JOIN_DATE,
+					   SYSDATE,
+					   #{item.pwModifyDate,jdbcType=DATE} AS PW_MODIFY_DATE,
+					   #{item.infoModifyDate,jdbcType=DATE} AS INFO_MODIFY_DATE,
+					   #{item.agreeCode,jdbcType=INTEGER} AS AGREE_CODE
+				  FROM DUAL
+			</foreach>) A
+			
+	</insert>
+
+
+
+	<!-- 회원 강제 탈퇴 및 강제 휴면 1: USERS 테이블에서 제거-->
+	<delete id="deleteUserByNo" parameterType="Map">
+		DELETE
+		  FROM USERS
+		  <where>
+		    <foreach item="userNo" collection="userNo" open="USER_NO in (" separator="," close=")" >
+				 #{userNo}
+		  </foreach>
+		  </where>
+	</delete>
+	
+	
+	<!-- 회원 강제 탈퇴2: RETIRE_USERS 테이블에 추가 -->
+	<insert id="insertRetireUser" parameterType="Map">
+		INSERT INTO RETIRE_USERS (USER_NO, EMAIL, RETIRE_DATE, ARTIST)
+		SELECT A.* FROM(
+			<foreach collection="retireUsers" item="item" separator="UNION ALL ">
+		 SELECT    #{item.userNo} AS USER_NO,
+				   #{item.email} AS EMAIL,
+			         SYSDATE,
+				   #{item.artist} AS ARTIST
+		      FROM DUAL
+		  </foreach>) A
+	</insert>
+	
+	
+	<!-- 유저조회 -->
 
 
 </mapper>

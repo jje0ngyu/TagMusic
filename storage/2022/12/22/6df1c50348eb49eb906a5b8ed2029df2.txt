@@ -1,0 +1,70 @@
+## jsp를 html로 변환하는법
+
+표현방법
+(1) 링크 표현법 : @{}
+(2) 변수 표현법
+(3) 필드값 표현법 
+
+
+
+변환규칙
+(1) el변수를 처리하는 방식이 다르다
+-
+
+	== 파라미터
+		
+		1.  파라미터 표현 : 파라미터=${}
+		2. 파라미터가 복수인경우 : ,를 사용
+		(파라미터=${}, 파라미터=${})
+	
+	=
+
+	
+	== form 태그
+	
+		1. input type="hidden"의 value 속성 : <input th:value=${}>
+		
+		2. 경로 : 컨텍스트 패스 없이 
+		ex) location.href='/blog/list';
+		또는 location.href = '[[@{/blog/write}]]';
+		- 배포시 배포파일명을 root로 하면 컨텍스트 패스없이 실행	
+
+		* 컨텍스트 패스가 필요없는 이유
+		- 부트를 쓰기 때문 컨텍스트패스가 필요없다
+
+		3. value값 처리
+
+	=
+
+
+	== 자바스크립트
+
+		1. <script> 태그 안에서 thimeleaf 속성을 사용하기 위한 설정
+		- 세팅 : <script th:inline="javascript"></script>
+		
+		2. js에서 el변수를 thymeleaf속성으로 표현할 때 : [[]] 대괄호 두개로 감싼다
+		
+	=
+
+
+	== 타임리프 주석
+
+		<!--/*	*/-->
+		* 주석에 표현식이 존재할 경우 없애기
+
+	=
+
+	== 레이아웃(조각) 처리
+		
+		1. 레이아웃
+		(1) <head th:fragment="head"> : fragment를 조각이라하며, 조각명을 head라 한다
+		2. 참조하는 화면
+		<head th:replace="~{layout/header::head}"
+		- <head>태그를 layout폴더의 header 파일의 head란 이름의 조각으로 교체
+		
+		
+		
+	
+
+
+#
