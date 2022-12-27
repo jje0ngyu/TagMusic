@@ -107,6 +107,7 @@ tbody tr {
 
 tbody td {
 	height: 40px;
+	text-align: center;
 }
 thead td:first-child {
 	width: 10%;
@@ -157,9 +158,10 @@ thead td:nth-child(4) {
 	display: flex;
 	justify-content: right;
 }
-#btn_remove_board:hover {
+/* board/detail , upload/detail 순 */
+#btn_remove_board:hover, #btn_upload_remove:hover {
 	background-color: indianred;
 }
-#btn_edit_board:hover {
+#btn_edit_board:hover, #btn_upload_edit:hover {
 	background-color: green;
 }
