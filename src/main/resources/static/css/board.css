@@ -1,0 +1,135 @@
+@charset "UTF-8";
+
+body {
+	width: 100%;
+	height: 100%;
+}
+table {
+	margin: 0px;
+	padding: 0px;
+	background-color: inherit;
+	color: inherit;
+	width: 100%;
+}
+.blind {
+	display: none;
+}
+.flex {
+	display: flex;
+	height: 60px;
+	align-items: center;
+}
+
+.board_controller {
+	margin: 100px 0 0 230px;
+	max-width: 100%;
+	padding: 50px 70px;
+}
+.board_title {
+	font-size: 32px;
+	font-weight: 600;
+}
+/* 페이지 상단 */
+.board_top_controller {
+	display: flex;
+	flex-direction: column;
+	margin-top: 50px;	
+}
+.board_tab_controller {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 60px;
+	
+	font-weight: 600;
+	color: #bdc2ce;
+}
+.board_tab {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 25%;
+	height: 100%;
+	margin:0; padding: 0;
+	border-top: 2px solid #bdc2ce;
+	border-bottom: 2px solid #bdc2ce;
+}
+.board_tab:hover {
+	cursor: pointer;
+	color: #fdfdfd;
+	background-color: #20325A;
+}
+.tab_click {
+	display: flex;
+	align-items: center;
+	color: #20325A;
+	height: 100%;
+	border-top: 2px solid #37486b;
+	border-bottom: 2px solid #37486b;
+}
+
+/* 중간 (작성, 목록) */
+.middle_top {
+	margin: 40px 0 10px;
+	display: flex;
+	justify-content: right;
+}
+#btn_write, #btn_id {
+	width: 100px;
+	height: 40px;
+	border-radius: 0px;
+}
+#btn_write:hover, #btn_id:hover {
+	background-color: lightcoral;
+}
+/* 중간 - 테이블 */
+table {
+	border-collapse: collapse;
+	padding: 0 20px;
+}
+.table_head {
+	background-color: #37486b;
+	width: 100%;
+	height: 50px;
+	font-size: 16px;
+	font-weight: 500;
+	color: #fdfdfd;
+	text-align: center;
+	padding: 0;
+}
+tbody tr {
+	border-bottom: 1px solid #bdc2ce;
+	padding: 0;
+}
+
+tbody td {
+	height: 40px;
+}
+thead td:first-child {
+	width: 10%;
+	text-align: center;
+}
+thead td:nth-child(2) {
+	width: 60%;
+	padding: 0 30px;
+}
+thead td:nth-child(3) {
+	width: 15%;
+	text-align: center;
+} 
+thead td:nth-child(4) {
+	width: 15%;
+	text-align: center;
+}
+.table_foot {
+	text-align: center;
+	justify-content: space-evenly;
+	width: 100%;
+}
+.paging {
+	display: inline-block;
+	color: #20325A;
+	width: 30px;
+	height: 100px;
+	line-height: 100px;
+}
