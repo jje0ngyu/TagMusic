@@ -64,7 +64,7 @@
 							<thead>
 								<tr>
 									<td><div class="td">선택</div></td>
-									<td><div class="td">No</div></td>
+									<td><div class="td">인기순</div></td>
 									<td colspan="3"><div class="td_music">곡정보</div></td>
 									
 									
@@ -74,28 +74,28 @@
 								</tr>
 						</thead>
 						<tbody>
-							<tr th:each="music,vs:${musicList}">
+							<tr th:each="popular,vs:${popularList}">
 								<td>
 									<input type="checkbox">
 								</td>
-								<td class="td_no" th:text="${beginNo -vs.index}"></td>
+								<td class="td_no" th:text="${vs.index + 1}"></td>
 								<!-- # 구현 : 썸네일 가져오기 -->
 								<!-- 방법 : 타임리프 if else(unless)를 통해 해결  -->
 								<td>
-									<span th:if="${music.hasThumbNail == 1}" >
-										<img class="board_thumbnail" th:src="@{/music/thumbnail(musicNo=${music.musicNo})}">
+									<span th:if="${popular.hasThumbNail == 1}" >
+										<img class="board_thumbnail" th:src="@{/music/thumbnail(musicNo=${popular.musicNo})}">
 									</span>
-									<span th:unless="${music.hasThumbNail == 1}" >
+									<span th:unless="${popular.hasThumbNail == 1}" >
 										<img class="board_thumbnail" th:src="@{/images/defaultImage.png}">
 									</span>
 								<td>
 									
-									<div th:text="${music.musicTitle}" class="title_artist"></div>
-									<div th:text="${music.activeLogDTO.userDTO.artist}" class="title_artist"></div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
+									<div th:text="${popular.musicTitle}" class="title_artist"></div>
+									<div th:text="${popular.userDTO.artist}" class="title_artist"></div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
 								</td>
 								
 								<td>
-									<div th:text="${music.musicGenre}"></div>
+									<div th:text="${popular.musicGenre}"></div>
 								</td>
 								<td>
 									<input type="button" value="좋아요">

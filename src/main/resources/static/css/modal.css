@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+/* 클래스 초기화  */
+	* {
+	box-sizing: border-box;
+	margin : 0;
+	padding : 0;
+	}
+	
+	a {
+	text-decoration: none;
+	color: #222222;	
+	}
+	
+	
+	.modal_container {
+	
+	background-color: #323232;
+	}

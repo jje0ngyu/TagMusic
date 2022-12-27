@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<meta charset="UTF-8">
+<title></title>
+<!-- static 폴더 이후의 위치를 적으면 된다. -->
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+
+<script th:inline="javascript">
+
+	$(document).ready(function() {
+		
+	
+		fn_deletePlaylist();		// 구현 : 플레이리스트 삭제
+		fn_moveModifyPlaylist();	// 구현 : 수정창 이동
+	});
+	
+	function fn_moveModifyPlaylist() {
+		
+		// * 윈도우함수: 반복문에서 얻은 val값을 얻고싶을경우 : (1) 클래스 타입을 이벤트 대상으로 삼는다 (2) 이벤트 대상을 기준으로 함수로 대상태그를 찾는다
+		$('.btn_playlist_modify').click(function() {
+			window.open('/music/move/playlistModify?listNo=' + $(this).next().val() , 'page', 'scrollbars=no, width=600px, height=400px, top=290px, left=575px, resizable=no');
+			// 전체 너비 1650, 높이 900
+			// 팝업창 너비 600, 높이 400
+			// left : 525, top : 250
+		});	
+	}
+	
+	function fn_deletePlaylist() {
+		
+		$('.btn_playlist_delete').click(function () {
+			
+			 $.ajax({
+					type: 'post',
+					url: '/music/user/playlistDelete',
+					data : 'listNo=' + $(this).prev().val(),
+					dataType: 'json',
+					success: function(resData) {
+						location.reload();
+					}
+			 });
+		});
+	}
+	
+
+
+		
+	// 구현 : 유저의 플레이리스트 목록 조회
+
+	
+ 	
+	function fn_userPlaylist() {
+		
+			$.ajax({
+				type: 'get',
+				url: '/music/user/playlist',
+				dataType: 'json',
+				success: function(resData) {
+					
+					// 유저명
+					$('#playlist_title').empty();		
+					$('#playlist_title')
+					.append( $('<p class="playlist_title_username">' + resData.userName + '님의 플레이리스트</p>') )
+					.append( $('<div class="playlist_cnt">※ 총 <span class="playlist_cnt_emp">' + resData.userPlaylistCnt + ' </span> 개의 플레이리스트를 보유하고 있습니다</div>') )
+					// 플레이리스트 총 개수
+					//$('#playlist_header').empty();
+					
+					// 플레이리스트 목록
+					$('.playlist_item_area').empty();	
+					$.each(resData.userPlaylist, function(index, playlist) {	
+						
+						$('<div class="playlist_item">')
+						.append( $('<div class="playlist_item_area_left"><div class="playlist_thumbnail"></div></div>') )
+						.append( $('<div class="playlist_item_area_middle">')
+								.append( $('<div class="playlist_item_area_right_item">').text(playlist.listName) ) )
+								//.append( $('<div class="playlist_item_area_right_item userPlaylist_cnt">').text(playlist.playlistMusicCnt) ) )			// 기능 : 플레이리스트별 수록곡 수
+			
+						.append( $('<div class="playlist_item_area_right"><div class="btn_playlist_delete">삭제</div></div>') )
+						.appendTo('.playlist_item_area');
+						//fn_playlistCnt();			// 기능 : 플레이리스트별 수록곡 수
+					}); 
+				}
+			});	
+	}  
+	
+	/* function fn_playlistCnt() {	
+		
+		$.ajax({
+			type: 'get',
+			url: '/music/user/playlistMusicCnt',
+			dataType: 'json',
+			success: function(resData) {
+				
+				$('.playlist_item_area_right').empty();	// 음악수 초기화
+				
+				$.each(resData.userPlaylistMusicCntList, function(index, cnt) {
+
+					$('.playlist_item_area_right').text(cnt + ' 곡');
+				});  
+			}
+		});	
+	}   */
+	
+	/* function fn_playlist_thumbnail() {	// 기능 : 플레이리스트별 썸네일
+		
+		$.ajax({
+			type: 'get',
+			url: '/music/user/playlistThumbnail',
+			data : 'listNo=' + $('#listNo').val(),
+			dataType: 'json',
+			success: function(resData) {
+				
+				$('.userPlaylist_cnt').empty();	// 음악수 초기화
+				
+				
+				alert('a');
+			}
+		});	
+		
+		
+	} */
+	
+
+
+</script>
+</head>
+<body>
+
+	<input type="hidden" id="page" value="1">
+
+	<!--  page : 최신리스트 게시판 -->
+	
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+
+	<div class="session">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+	
+		
+		<div class="playlist_container">
+			<div class="playlist">
+				<!-- 기능 : 유저명  -->
+				<div id="playlist_title" class="playlist_title">
+					<p class="playlist_title_username" th:text="|${userName} 님의 플레이리스트|"></p>
+					<div class="playlist_cnt">※ 총 <span class="playlist_cnt_emp" th:text="${userPlaylistCnt}"></span>개의 플레이리스트를 보유중</div>
+					<div class="">플레이리스트는 최대 5개 생성할 수 있습니다</div>
+				</div>
+				
+				<!-- 기능 : 유저 플레이리스트 총 개수  -->
+				<div id="playlist_header" class="playlist_header">
+					<div class="btn_playlist_add">+    플레이리스트기</div>
+					<div class="btn_playlist_edit">+  음악넣으러 가기</div>    
+					<script>
+					
+						// * 윈도우함수
+						$('.btn_playlist_add').click(function() {
+							window.open('/music/move/playlistAdd', 'page', 'scrollbars=no, width=600px, height=400px, top=290px, left=575px, resizable=no');
+							// 전체 너비 1650, 높이 900
+							// 팝업창 너비 600, 높이 400
+							// left : 525, top : 250
+						});
+						
+					
+						
+						
+					
+					</script>
+				</div>
+				
+				<div class="playlist_body">
+					<div class="playlist_item_area">
+					
+		
+						<!--  # 구현 : 플레이리스트 목록 불러오기 -->
+						<div class="playlist_item" th:each="playlist,vs:${userPlaylist}">
+						
+							
+							<div class="playlist_item_area_left">
+								<input type="checkbox" class="playlist_box">
+								<div class="playlist_thumbnail">
+								
+										<!--  # 기능 : 썸네일 -->
+										<!--  1) 음악이 없으면 디폴트 이미지 -->
+										<!--  <span th:if="${playlist.myMusicDTO.musicDTO == ''}">
+											<img class="playlist_thumbnail" th:src="@{/images/defaultImage.png}">									
+										</span>
+										 1) 음악이 존재하면 최신 추가된 음악의 이미지
+										<span th:unless="${playlist.myMusicDTO == ''}">
+										 	<img class="playlist_thumbnail" th:src="@{/music/user/playlistThumbnail(musicNo=${playlist.myMusicDTO.musicDTO.musicNo})}">
+										</span> 
+									
+								 -->
+									
+								</div>
+							</div>
+							
+							<div class="playlist_item_area_middle">
+								<div class="playlist_item_area_right_item" th:text="${playlist.listName}"></div>
+								<div class="playlist_item_area_right_item" th:text="|${playlist.musicCnt} 곡 |"></div>
+								<div class="playlist_item_area_right_item userPlaylist_cnt"></div>
+							</div>
+							<div>
+								<div class="playlist_item_area_right">  
+									
+									<div class="btn_playlist btn_playlist_modify" th:value="${playlist.listNo}">이름변경</div>
+									<input type="hidden" id="listNo" th:value="${playlist.listNo}">
+									<div class="btn_playlist btn_playlist_delete" th:value="${playlist.listNo}">삭제</div>
+								</div>
+							</div>
+						</div>
+								
+					</div>
+				</div>
+			</div>
+		</div>
+		
+			
+	</div>
+</body>
+</html>
