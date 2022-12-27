@@ -73,7 +73,7 @@
 				
 		<h1>작성화면</h1>
 		
-	<form th:action="@{/upload/add}" method="post" enctype="multipart/form-data">
+	<form id="frm_add" th:action="@{/upload/add}" method="post" enctype="multipart/form-data">
 		<table class="table table-striped">
 		 <thead>
 		   <tr>
@@ -90,7 +90,7 @@
 				<label for="content">내용</label>
 		    </td>
 		    <td style="height:100%;width:100%;">	
-			  <input type="content" id="content" name="content" style="height:100%;width:100%;border: 0;">
+			  <textarea type="content" id="content" name="content" style="height:100%;width:100%;border: 0;"></textarea>
 		    </td>
 		   </tr>
 		 </tbody>     
@@ -103,12 +103,17 @@
 			</td>	 
 			<td style="text-align:right;">
 				<input type="button" value="목록" onclick="location.href='/upload/list'"> 	
-		     	<button>작성완료</button>	 
+				<input id="btn_submit" type="button" value="작성완료">
 		    </td>
 		 </tr>
 		</tfoot>
 	   </table>	   	
 	</form>
+	<script>
+		$('#btn_submit').click(function(){
+			$('#frm_add').submit();
+		});
+	</script>
 	
 </body>
 </html>
