@@ -24,5 +24,3 @@ public interface BoardMapper {
 	public int deleteSummernoteImage(String filesystem);
 	
 }
-	
-

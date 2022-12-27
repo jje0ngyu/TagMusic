@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public interface UploadService {
 	
 	public void getUploadList(Model model);
+
 	public void save(MultipartHttpServletRequest multipartRequest, HttpServletResponse response);
 	public void getUploadByNo(int uploadNo, Model model);
 	public ResponseEntity<byte[]> display(int attachNo);
@@ -21,6 +22,5 @@ public interface UploadService {
 	public void modifyUpload(MultipartHttpServletRequest multipartRequest, HttpServletResponse response);
 	public void removeAttachByAttachNo(int attachNo);
 	public void removeUpload(HttpServletRequest multipartRequest, HttpServletResponse response);
-	
+	public int increseHit(int uploadNo);
 }
-
