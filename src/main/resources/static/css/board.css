@@ -17,6 +17,16 @@ li {
 .blind {
 	display: none;
 }
+.flex0 {
+	display: flex;
+	align-items: center;
+}
+.create_date {
+	display: flex;
+	align-items: center;
+	height: 40px;
+	margin-left: 20px;
+}
 .flex {
 	display: flex;
 	height: 60px;
@@ -72,6 +82,30 @@ li {
 }
 
 /* 중간 (작성, 목록) */
+.board_middle_controller {
+	margin-top: 50px;
+}
+.detail_title {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #37486b;
+	height: 50px;
+	font-size: 24px;
+	font-weight: 600;
+	color: #fdfdfd;
+}
+.detail_info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 30px;
+	color: #989796;
+	border-bottom: 1px solid #bdc2ce;
+}
+.detail_content {
+	padding: 30px;
+}
 .middle_top {
 	margin: 40px 0 10px;
 	display: flex;
