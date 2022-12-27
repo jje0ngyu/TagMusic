@@ -1,0 +1,92 @@
+
+
+	==
+
+		html
+
+			1. audio 태그 사용
+			2. audio 태그의 src : 음악파일 경로와 파일명 + 확장자
+			(음악파일의 경로 : storage/파일명)
+
+			3. 요청방법 : ajax
+			4.  
+
+
+		service
+
+
+		자바스크립트
+			1. audio 태그를 다루기 위한 audio 객체 획득
+			- const audio = document.getElementById('tagAudio');
+			- audio태그에 id를 부여해 js객체를 생성
+
+			2. audio 태그의 메서드
+			- play() : 재생
+			- pause() : 일시정지
+			
+			3. audio 태그 속성
+			- src : 경로/ 파일명. 확장자
+			- volume : 볼륨
+			- autoplay : 자동재생
+			- muted : 음소거여부
+			- paused : 일시정지 여부
+			- loop 반복여부
+			- 	
+
+
+			4. 오디오 처음부터 다시 실행시키기
+			- audio.pause(); // 일시 정지
+			audio.currentTime = 0; // 재생 위치를 처음으로 설정
+			audio.play(); // 처음부터 다시 재생됨
+
+			5. 오디오 객체 이벤트
+			- play : 재생이 시작될때
+			- playing : 재생중일때
+			-  ended : 재생이 완료되었을 때
+			- puase : 일시정지되었을때
+			-
+	
+			6. 주의점
+			- 크롬브라우저는 액션없이 음원재생을 허용하지않는다
+			- 클릭시 이벤트가 발생하도록 설정
+			- 예시
+			<body>
+    <!-- 버튼 태그 생성 -->
+    <button id="btnPlay">재생 버튼</button>
+    <button id="btnPause">일시정지 버튼</button>
+    <button id="btnStop">정지 버튼</button>
+
+</body>
+
+<script>
+    // Audio 객체 설정
+    const myAudio = new Audio();
+    myAudio.src = "./sounds/bg.mp3";
+
+    // 오디오 재생: 크롬브라우저에서 작동 안함
+    myAudio.play();
+
+    // 버튼 취득
+    const btnPlay = document.getElementById("btnPlay");
+    const btnPause = document.getElementById("btnPause");
+    const btnStop = document.getElementById("btnStop");
+
+    // 재생 버튼
+    btnPlay.onclick = function () {
+        myAudio.play();
+    }
+
+    // 일시정지 버튼
+    btnPause.onclick = function () {
+        myAudio.pause();
+    }
+
+    // 정지 버튼
+    btnStop.onclick = function () {
+        myAudio.pause();
+        myAudio.currentTime = 0; // 재생시간을 처음으로 설정
+    }
+
+</script>
+
+	=

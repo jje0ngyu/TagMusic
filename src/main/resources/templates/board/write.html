@@ -8,13 +8,12 @@
 <script th:src="@{/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js}"></script>
 <link rel="stylesheet" th:href="@{/summernote-0.8.18-dist/summernote-lite.css}">
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
-</head>
 <script>
 	
 	$(document).ready(function(){
 		$('#content').summernote({
-			width: 800,
-			height: 400,
+			width: 1250,
+			height: 600,
 			lang: 'ko-KR',
 			toolbar: [
 			    
@@ -90,52 +89,41 @@
 				            <a th:href="@{/board/list}">공지사항</a>
 				        </li>
 				        <li>
-				            <a th:href="@{/customerService/FAQ}">자주 하는 질문</a>
+				            <a th:href="@{/upload/list}">자주 하는 질문</a>
 				        </li>
 				        <li>
 				            <a th:href="@{/customerService/chat}">1:1문의하기</a>
 				        </li>
 				    </ul>
-					
 				</div>
-				
-				
-				
+			
 	<h1>공지 작성</h1>
-	
-	
+	  <hr>
 	<form id="frm_write" th:action="@{/board/add}" method="post">
 	
 		<div>
 			<label for="title">제목</label>
-			<input type="text" name="title" id="title">
+			<input type="text" name="title" id="title" style="height:100%;width:100%;border: 0;">
 		</div>
-		
+
 		<div>
 			<label for="content">내용</label>
 			<textarea name="content" id="content"></textarea>				
 		</div>
 		
-		
 		<div id="summernote_image_list"></div>
-		
+	
 		<div>
 			<button>작성완료</button>
 			<input id="reset" type="reset" value="입력초기화">
 			<input type="button" value="목록" id="btn_list">
 		</div>
-		
-		
+				
 	</form>
+	
 			</div>
 		</div>
 	</div>
-	<script>
-			
-	</script>
-
-
-
 
 </body>
 </html>

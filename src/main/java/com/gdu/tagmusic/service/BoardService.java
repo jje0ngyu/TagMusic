@@ -1,6 +1,5 @@
 package com.gdu.tagmusic.service;
 
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,4 +22,3 @@ public interface BoardService {
 	public void removeBoard(HttpServletRequest request, HttpServletResponse response);
 	
 }
-

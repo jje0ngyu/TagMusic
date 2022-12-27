@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<meta charset="UTF-8">
+<title></title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+
+<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script>
+
+	$('#modal').click(function(event) {
+	    event.preventDefault();
+	
+	    $(this).modal({
+	      fadeDuration: 250
+	    });
+	  });
+	
+	
+$(document).ready(function() {
+		
+		fn_userPlaylist();
+		
+	});
+	
+	function fn_userPlaylist() {
+		
+		$.ajax({
+			type: 'get',
+			url: '/music/user/playlist',
+			dataType: 'json',
+			success: function(resData) {
+				
+
+				// 플레이리스트 목록
+				$('.playlist_area').empty();	// 상단 리스트 최신화
+				
+				$.each(resData.userPlaylist, function(index, playlist) {
+					
+					$('<div class="list_header">')
+					.append('<div class="no">No</div>')
+					.append('<div class="playlist_name">플레이리스트명</div>')
+					.append('<div class="playlist_select">선택</div>')
+					appendTo('.playlist_area');
+					
+					$('<div class="list_body">')
+					.append('<div class="no">'+(index + 1)+'</div>')
+					.append('<div class="playlist_name">'+playlist.listName+'</div>')
+					.append('<div class="playlist_select"><input type="button" data-listNo="'+playlist.listNo+'"></div>')
+					appendTo('.playlist_area');
+					
+				});
+			}
+				
+			
+		});
+	
+	}
+
+</script>
+
+</head>
+<body>
+
+	<div id="ex1" class="modal">
+	  <p>안녕하세요. 모달창안의 내용부분입니다.</p>
+	  
+	  <div class="playlist_modal_container">
+		
+			<div class="playlist_area"></div></div>
+	  <a href="#" rel="modal:close">닫기</a>
+	</div>
+ 
+<p><a id="modal" href="#ex1" rel="modal:open">모달창띄우기</a></p>
+
+
+	
+</body>
+</html>
