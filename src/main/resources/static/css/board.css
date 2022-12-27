@@ -11,6 +11,9 @@ table {
 	color: inherit;
 	width: 100%;
 }
+li {
+	list-style: none;
+}
 .blind {
 	display: none;
 }
@@ -74,7 +77,7 @@ table {
 	display: flex;
 	justify-content: right;
 }
-#btn_write, #btn_id {
+#btn_write, #btn_id, .btn {
 	width: 100px;
 	height: 40px;
 	border-radius: 0px;
@@ -126,10 +129,37 @@ thead td:nth-child(4) {
 	justify-content: space-evenly;
 	width: 100%;
 }
+
+/* 중간 - detail */
+.detail_tr {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.detail_td {
+	width: 100%;
+}
+.detail_li {
+	width: 100%;
+}
+
+/* 중간 - 페이징(공통) */
 .paging {
 	display: inline-block;
 	color: #20325A;
 	width: 30px;
 	height: 100px;
 	line-height: 100px;
+}
+
+/* board_bottom_controller */
+.board_bottom_controller {
+	display: flex;
+	justify-content: right;
+}
+#btn_remove_board:hover {
+	background-color: indianred;
+}
+#btn_edit_board:hover {
+	background-color: green;
 }
