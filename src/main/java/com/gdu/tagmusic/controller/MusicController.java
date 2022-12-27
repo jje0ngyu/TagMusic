@@ -148,11 +148,27 @@ public class MusicController {
 		return musicService.deletePlaylistMusic(request);
 	}
 	
-	// 구현 : 모달창 아이프레임, 플레이리스트 목록조회
-	@GetMapping("/music/playlistModal")
-	public String playlistArea() {
-		return "/musicBoard/playlistModal";
+	// 구현 : 플레이리스트에 음악 추가
+	@ResponseBody
+	@GetMapping(value="/music/user/playlistAddMusic", produces="application/json")
+	public Map<String, Object> addPlaylistMusic(HttpServletRequest request) {	
+		return musicService.addPlaylistMusic(request);
 	}
+	
+	// 구현: 플레이리스트 생성
+	@ResponseBody
+	@GetMapping(value="/music/user/createPlaylist", produces="application/json")
+	public Map<String, Object> createPlaylist(HttpServletRequest request) {	
+		return musicService.createPlaylist(request);
+	}
+	
+	
+	/*
+	 * // 구현 : 모달창 아이프레임, 플레이리스트 목록조회
+	 * 
+	 * @GetMapping("/music/playlistModal") public String playlistArea() { return
+	 * "/musicBoard/playlistModal"; }
+	 */
 	
 	
 	

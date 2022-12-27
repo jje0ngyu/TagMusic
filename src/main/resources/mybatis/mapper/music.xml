@@ -388,17 +388,54 @@
 		DELETE FROM PLAYLIST WHERE LIST_NO = #{listNo}
 	</delete>
 	
-		
 	<!-- 7. 수록곡 삭제 -->
 	<delete id="deletePlaylistMusic" parameterType="Map">
 		DELETE FROM MY_MUSIC WHERE MY_MUSIC_NO = #{myMusicNo} AND LIST_NO = #{listNo}
 	</delete>
 	
+	<!-- 8. 수록곡 추가  -->
+	<insert id="insertMusicToPlaylist" parameterType="Map">
+		INSERT INTO MY_MUSIC VALUES (MY_MUSIC_SEQ.NEXTVAL, #{listNo} , #{musicNo})
+	</insert>
 	
+	<!-- 9. 수록곡 조회  -->
+	 <select id="checkMusicInPlaylist" parameterType="Map" resultType="MyMusicDTO">
+		SELECT MY_MUSIC_NO, LIST_NO, MUSIC_NO
+		FROM MY_MUSIC
+		WHERE LIST_NO = #{listNo} AND MUSIC_NO = #{musicNo}
+	</select>
 
+	<!-- 10. 플레이리스트 추가 -->
+	<insert id="insertPlaylist" parameterType="Map">
+		INSERT INTO PLAYLIST VALUES (MY_MUSIC_SEQ.NEXTVAL, #{email} , #{listName})
+	</insert>
 	
+	<!-- 11. 유저 플레이리스트 조회 -->
+	<select id="selectPlaylistNo" parameterType="Map" resultType="int">
+		SELECT LIST_NO
+		FROM PLAYLIST
+		WHERE LIST_NAME = #{listName} AND EMAIL = #{email}
+	</select>
+
+	<!-- 12. 플레이리스트 생성시 디폴트곡 추가  -->
+	<insert id="insertDefaultMusicToPlaylist" parameterType="Map">
+		INSERT INTO MY_MUSIC VALUES (MY_MUSIC_SEQ.NEXTVAL, #{listNo} , 1)
+	</insert>
 	
+	<!-- 13. 플레이리스트 존재여부 확인 -->
+	<select id="checkPlaylistAtUser" parameterType="Map" resultType="PlaylistDTO">
+		SELECT LIST_NO, EMAIL, LIST_NAME
+		FROM PLAYLIST
+		WHERE LIST_NAME = #{listName} AND EMAIL = #{email}
+	</select>
 	
+	<!-- 14. 플레이리스트 개수 확인 -->
+	<select id="checkUserPlaylistCnt" parameterType="Map" resultType="int">
+		SELECT COUNT(LIST_NO)
+		FROM PLAYLIST
+		WHERE EMAIL = #{email}
+	</select>
+
 	
 	
 	<!--  3. 유저 플레이리스트 썸네일 가져오기	<select id="selectUserPlaylistThumbnail" parameterType="int" resultType="MusicDTO">

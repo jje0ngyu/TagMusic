@@ -57,7 +57,11 @@ public interface MusicService {
 	// 5. 수록곡 삭제
 	public Map<String, Object> deletePlaylistMusic(HttpServletRequest request);
 	
+	// 6. 수록곡 추가
+	public Map<String, Object> addPlaylistMusic(HttpServletRequest request);
 	
+	// 7. 플레이리스트 생성
+	public Map<String, Object> createPlaylist(HttpServletRequest request);
 	
 
 	/*

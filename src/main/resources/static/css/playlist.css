@@ -32,15 +32,36 @@
 	
 	.playlist_header {
 		
+		display: flex;
+		
 		background-color: #efefef;
 		height: 120px;
 		
 		font-size: 20px;
 		font-weight: 800;
 		color: 212121;
-		padding: 20px;
+		padding: 15px;
 		margin-bottom: 20px;	
 	}
+	
+	.playlist_header_left {
+	
+	margin-right: 600px;
+	
+	}
+	
+	.playlist_add {
+	
+	background-color: #dddddd;
+	border: 1px solid #888888;
+	width: 200px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	
+	}
+	
+	
 	
 	.playlist_body {
 		
@@ -241,8 +262,6 @@ tbody {
 	
 	
 }
-	
-	
 
 	/*
 	

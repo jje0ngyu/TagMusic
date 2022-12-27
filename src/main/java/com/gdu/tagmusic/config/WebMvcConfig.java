@@ -37,15 +37,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(preventLoginInterceptor)
 			.addPathPatterns("/user/login/form")
 			.addPathPatterns("/user/join/*");
+			
 		
 		// 비로그인 유저방지 인터셉터
 		registry.addInterceptor(pleaseLogininterceptor)
-		.addPathPatterns("/music/move/playlist");	// 플레이리스트
+		.addPathPatterns("/music/move/playlist")	
+		.addPathPatterns("/music/move/playlistModal");	// 플레이리스트
 		
 		// 플레이리스트 5개 초과방지 
 		registry.addInterceptor(preventCreatePlaylist)
 		.addPathPatterns("/music/move/playlistCreate");	// 플레이리스트
+		
 
+		
 	}
 	
 	@Override

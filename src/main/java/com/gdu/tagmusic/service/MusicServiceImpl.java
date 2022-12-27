@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 
@@ -88,7 +89,7 @@ public class MusicServiceImpl implements MusicService {
 
 				HttpHeaders headers = new HttpHeaders();
 				headers.add("Content-Type", Files.probeContentType(file.toPath()));
-				File thumbnail = new File("c:\\" + music.getImgPath(), music.getImgFilesystem());
+				File thumbnail = new File(music.getImgPath(), music.getImgFilesystem());
 				// File thumbnail = new File(music.getImgPath(), "s_" +
 				// music.getImgFilesystem());
 				result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(thumbnail), null, HttpStatus.OK);
@@ -293,23 +294,40 @@ public class MusicServiceImpl implements MusicService {
 		// 유저정보 : email, userNo
 		 HttpSession session = request.getSession(); 
 		 UserDTO user = (UserDTO)session.getAttribute("loginUser"); 
-		 String email = user.getEmail();
-		 int userNo = user.getUserNo(); 
 		 
-		 // 반환할 유저명
-		 String userName = user.getName();
+		 // 1.로그인이 안됬을 경우 이벤트 실패
+		 if(user == null) {
+			 
+			 Map<String, Object> map = new HashMap<>();
+			 map.put("result", 0);
+			 return map;
+
+		 } else {
+			 
+			 String email = user.getEmail();
+			 int userNo = user.getUserNo(); 
+			 
+			 // 반환할 유저명
+			 String userName = user.getName();
+			 
+			 // map에 담기
+			 Map<String, Object> map = new HashMap<>();
+			 map.put("email", email);
+			 map.put("userNo", userNo);
+			 
+			 // 반환할 데이터
+			 map.put("userName", userName);										// 유저명
+			 map.put("userPlaylistCnt",musicMapper.selectUserPlaylistCnt(map)); // 플레이리스트 개수
+			 map.put("userPlaylist", musicMapper.selectUserPlaylist(map));		// 플레이리스트 목록
+			 map.put("result", 1);
+			 
+			return map;
+			 
+			 
+		 }
 		 
-		 // map에 담기
-		 Map<String, Object> map = new HashMap<>();
-		 map.put("email", email);
-		 map.put("userNo", userNo);
-		 
-		 // 반환할 데이터
-		 map.put("userName", userName);										// 유저명
-		 map.put("userPlaylistCnt",musicMapper.selectUserPlaylistCnt(map)); // 플레이리스트 개수
-		 map.put("userPlaylist", musicMapper.selectUserPlaylist(map));		// 플레이리스트 목록
-	
-		return map;
+		 // 2. 로그인 되었을 경우 이벤트 실행
+		
 	}
 	
 	// # 구현 : 플레이리스트 수록곡 조회
@@ -422,6 +440,113 @@ public class MusicServiceImpl implements MusicService {
 		map.put("result", result);
 		
 		return map;
+		
+	}
+	
+	// 구현 : 플레이리스트에 음악 추가
+	@Override
+	public Map<String, Object> addPlaylistMusic(HttpServletRequest request) {
+		
+		// 1.파라미터
+		Optional<String> opt = Optional.ofNullable(request.getParameter("musicNo")); 
+		int musicNo = Integer.parseInt(opt.orElse("1"));
+		Optional<String> opt2 = Optional.ofNullable(request.getParameter("listNo")); 
+		int listNo = Integer.parseInt(opt2.orElse("1"));
+		
+		// 2.map
+		Map<String, Object> map = new HashMap<>();
+		map.put("musicNo", musicNo);
+		map.put("listNo", listNo);
+		
+		
+		// 3.. 요청한 음악이 해당 플레이리스트에 존재하는지 확인
+		MyMusicDTO myMusic = musicMapper.checkMusicInPlaylist(map);
+		System.out.println(myMusic);
+		
+		// 1) 존재하는 경우
+		if(myMusic != null) {
+	
+			map.put("result", 0);
+			return map;
+			
+		} else {
+			
+		// 2) 존재하지 않는 경우
+			
+			// insert
+			int result = musicMapper.insertMusicToPlaylist(map);
+			map.put("result", 1);
+			return map;
+			
+		}
+	}
+	
+	// 구현 : 플레이리스트 생성
+	@Transactional
+	@Override
+	public Map<String, Object> createPlaylist(HttpServletRequest request) {
+				
+		// 파라미터 : 플레이리스트명
+		String listName = request.getParameter("listName");
+		System.out.println(listName);
+		
+		// session의 email과 user
+		HttpSession session = request.getSession();
+		UserDTO user = (UserDTO) session.getAttribute("loginUser");
+		String email = user.getEmail();
+		
+		// map에 담기 : 플레이리스트에 필요한 칼럼 2가지
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+		map.put("listName", listName);
+		
+		
+		// 제약 : 플레이리스트가 5개 존재하는경우
+		int playlistCnt = musicMapper.checkUserPlaylistCnt(map);
+		if(playlistCnt >= 5) {
+			
+			map.put("result", 0);
+			return map;
+			
+		}
+		
+		// 제약: 해당 유저가 지은 플레이리스트명이 이미 존재하는경우 : 이벤트 X
+		PlaylistDTO playlist = musicMapper.checkPlaylistAtUser(map);
+		
+		if(playlist != null) {
+			
+			map.put("result", 2);
+			return map;
+			
+		} else {
+			
+			// 2. 해당 유저가 지은 플레이리스트명이 처음인 경우 : 이벤트 발생
+			
+			// 1) 플레이리스트 생성
+			int result = musicMapper.insertPlaylist(map);
+			
+			// 2) 생성한 플레이리스트명과 이메일이 동일한 리스트 pk값 가져오기
+			int listNo = musicMapper.selectPlaylistNo(map);
+			map.put("listNo", listNo);
+			
+			// 3) 해당 플레이리스트에 디폴트곡 추가
+			int result2 = musicMapper.insertDefaultMusicToPlaylist(map);
+			
+			map.put("result", 1);
+			return map;
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 	}
 

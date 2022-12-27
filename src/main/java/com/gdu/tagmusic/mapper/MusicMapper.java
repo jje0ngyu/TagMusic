@@ -67,8 +67,26 @@ public interface MusicMapper {
 	// 7) 수록곡 삭제
 	public int deletePlaylistMusic(Map<String, Object> map);
 	
+	// 8) 수록곡 추가
+	public int insertMusicToPlaylist(Map<String, Object> map);
 	
+	// 9) 제약 : 플레이리스트에 해당 음악존재여부
+	public MyMusicDTO checkMusicInPlaylist(Map<String, Object> map);
 	
+	// 10) 플레이리스트 생성
+	public int insertPlaylist(Map<String, Object> map);
+	
+	// 11) 유저의 플레이리스트 번호조회 : 디폴트곡 넣기용
+	public int selectPlaylistNo(Map<String, Object> map);
+	
+	// 12) 디폴트곡 넣기
+	public int insertDefaultMusicToPlaylist(Map<String, Object> map);
+	
+	// 13) 제약 : 플레이리스트명 확인
+	public PlaylistDTO checkPlaylistAtUser(Map<String, Object> map);
+
+	// 14) 제약 : 플레이리스트 개수 확인
+	public int checkUserPlaylistCnt(Map<String, Object> map);
 	
 	
 	
