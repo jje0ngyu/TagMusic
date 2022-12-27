@@ -295,19 +295,23 @@ public class MusicServiceImpl implements MusicService {
 		// 유저정보 : email, userNo
 		 HttpSession session = request.getSession(); 
 		 UserDTO user = (UserDTO)session.getAttribute("loginUser"); 
-		 String email = user.getEmail();
-		 int userNo = user.getUserNo(); 
-		 String userName = user.getName();
-		 Map<String, Object> map = new HashMap<>();
-		 map.put("email", email);
 		 
+		 
+		 Map<String, Object> map = new HashMap<>();
+	 
 		 // 제약 : 로그인이 안됬을 경우 이벤트 실패
 		 if(user == null) {
 
 			 map.put("result", 0);
 			 return map;
 		 }
-		 
+	
+		 // * 위의 제약이 실행되기전에 비회원일 경우 email이 null값이 발생하니 제약 뒤에서 값을 호출
+		 int userNo = user.getUserNo(); 
+		 String userName = user.getName();
+		 String email = user.getEmail();
+		 map.put("email", email);
+			
 		 // 제약 : 유저의 플레이리스트가 0개일 경우 별도의 창 생성
 		 
 		 int playlistCnt = musicMapper.checkUserPlaylistCnt(map);
@@ -399,20 +403,41 @@ public class MusicServiceImpl implements MusicService {
 	@Override
 	public Map<String, Object> modifyUserPlaylistMusicList(HttpServletRequest request) {
 		
+		// 1. 기초데이터
 		// 파라미터
 		Optional<String> opt = Optional.ofNullable(request.getParameter("listNo")); 
 		int listNo = Integer.parseInt(opt.orElse("1"));
 		String listName = request.getParameter("listName");
 		
+		// 유저정보 : email, userNo
+		 HttpSession session = request.getSession(); 
+		 UserDTO user = (UserDTO)session.getAttribute("loginUser"); 
+		 String email = user.getEmail();
+		
+		// 제약
+		
 		// map
 		Map<String, Object> map = new HashMap<>();
 		map.put("listNo", listNo);
 		map.put("listName", listName);
+		map.put("email", email);
 		
-		// 
-		int result = musicMapper.updatePlaylistName(map);
+		// 제약 : 해당 플레이리스트명이 이미 존재하는 경우 방지 
+		PlaylistDTO playlist = musicMapper.checkPlaylistAtUserByListName(map);
 		
-		return map;
+		if(playlist != null) {
+			
+			map.put("result", 0);
+			return map;
+			
+		} else {
+		
+		
+			int result = musicMapper.updatePlaylistName(map);
+			map.put("result", 1);
+			return map;
+		}
+		
 	}
 	
 	// 구현 : 플레이리스트 삭제
