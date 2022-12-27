@@ -16,17 +16,27 @@
 		fn_autoComplete();
 		fn_sleepUser();
 		fn_retireUser();
-		fn_sleep_user_list();
-		fn_retire_user_list();
+		//fn_sleep_user_list();
+		//fn_retire_user_list();
 		fn_page_list(1);
 	});
+	
+	// 고전이벤트
+	// $(document).on('click', .class명', function() {
+		
+		// 사용하는경우
+		// 1. 선행 ajax의 응답으로 만든 태그를 대상으로 이벤트를 만들고싶을때
+		// 2. 대상이 한개일때는 id(#), 대상이 복수일경우 클래스(.)를 대상으로 삼는다
+		
+	// })';
+	
 	
 </script>
 <body>
 
 	<div th:replace="~{layout/header.html::header_layout}"></div>
 	<div class="session">
-		<div th:replace="~{layout/side.html::side_layout}"></div>
+		<div th:replace="~{layout/side.ㅜhtml::side_layout}"></div>
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
 		<div class="container">
 		
