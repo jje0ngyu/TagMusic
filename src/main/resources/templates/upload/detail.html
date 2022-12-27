@@ -29,12 +29,14 @@
 </script>
 
 <body>		
-
 <style>
  	table {
 	 	width:100%;
 	 	table-layout: fixed;
 		  }
+	 th, td {
+    border: 1px solid #FFFFFF;
+       }	   
 </style>
 
 <div th:replace="~{layout/header.html::header_layout}"></div>
@@ -69,8 +71,8 @@
 	  <ul>
 		 <table class="table table-striped"> 
 			<thead>
-				<tr bgcolor="#F6F6F6">
-			   <td>
+				<tr bgcolor="#DCDCDC">
+			   <td background-color:"#FFFFFF">
 			     <li th:text="|제목 : ${upload.title}|"></li>
 			   </td>
 			   <td>
@@ -92,12 +94,15 @@
 			     </td>
 			  </tr>   
 			</tbody>  
-			
+	
 		 <tfoot>
-			<tr>
-			  <td></td>
-				<td align=left>
-				 <h2>첨부파일 및 다운로드</h2>
+		  </tfoot>   
+         </table>
+	    </ul> 	 
+	   </div>
+	
+		  <hr>
+				<h2>첨부파일 및 다운로드</h2>
 			        <div th:each="attach : ${attachList}">
 				     <a th:href="@{/upload/download(attachNo=${attach.attachNo})}">
 					  <div th:if="${attach.hasThumbnail == 1}">
@@ -108,18 +113,7 @@
 					 </div>
 				     </a>
 			       </div>
-				</td>   
-			     <td align=left>
-			       <h3><a th:href="@{/upload/downloadAll(uploadNo=${upload.uploadNo})}">모두 다운로드</a></h3>
-				</td> 
-	        </tr>
-		  </tfoot>   
-         </table>
-	    </ul> 	 
-	   </div>
-	
-		  <hr>
-	
+			<hr>
 		<div>
 			<form id="frm_upload" method="post">
 				<input type="hidden" name="uploadNo" th:value="${upload.uploadNo}">
