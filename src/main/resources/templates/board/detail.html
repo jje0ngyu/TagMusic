@@ -11,6 +11,9 @@
 	 width:100%;
 	 table-layout: fixed;
  }
+  th, td {
+    border: 1px solid #FFFFFF;
+  }
 </style>
 
 <div th:replace="~{layout/header.html::header_layout}"></div>
@@ -45,16 +48,16 @@
 	  <ul>
 		  <table class="table table-striped"> 
 			<thead>
-			 	<tr bgcolor="#F6F6F6">
-			   <td>
+			 	<tr bgcolor="#DCDCDC">
+			  <td>
 			     <li th:text="|제목 : ${board.boardTitle}|"></li>
-			   </td>		
-		      <td>
+			  </td>
+			  <td>
 		        <li th:text="|작성일 : ${#dates.format(board.boardCreateDate,'yyyy. M. d HH:mm')}"></li>
-		      </td>
-		      <td>
+			  </td>
+			  <td>
 		        <li th:text="|조회수 : ${#numbers.formatInteger(board.boardHit,1,'COMMA')}|"></li>
-		      </td>	
+			  </td>
 			  <td>
 			  	<li th:text="|수정일 : ${#dates.format(board.boardModifyDate,'yyyy. M. d HH:mm')}"></li>
 			  </td>
