@@ -22,8 +22,6 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
-	
-	
 	@GetMapping("/board/list")
 	public String list(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);  
@@ -36,7 +34,6 @@ public class BoardController {
 		return "board/write";
 	}
 	
-	
 	@ResponseBody
 	@PostMapping(value="/board/uploadImage", produces="application/json")
 	public Map<String, Object> uploadImage(MultipartHttpServletRequest multipartRequest) {
@@ -47,8 +44,6 @@ public class BoardController {
 	public void add(HttpServletRequest request, HttpServletResponse response) {
 		boardService.saveBoard(request, response);
 	}
-	
-	
 	
 	@GetMapping("/board/increse/hit")
 	public String increseHit(@RequestParam(value="boardNo", required=false, defaultValue="0") int boardNo) {

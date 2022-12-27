@@ -75,10 +75,12 @@ public class UploadServiceImpl implements UploadService {
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("uploadList", uploadMapper.selectUploadListByMap(map));
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/board/list"));
+		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/upload/list"));
 		model.addAttribute("recordPerPage", recordPerPage);
 		
 	}
+	
+	
 	
 	@Transactional
 	@Override
@@ -109,10 +111,10 @@ public class UploadServiceImpl implements UploadService {
 			
 			try {
 				
-				if(multipartFile != null && multipartFile.isEmpty() == false) {  // 둘 다 필요함
+				if(multipartFile != null && multipartFile.isEmpty() == false) {  
 					
 					String origin = multipartFile.getOriginalFilename();
-					origin = origin.substring(origin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
+					origin = origin.substring(origin.lastIndexOf("\\") + 1); 
 					
 					String filesystem = myFileUtil.getFilename(origin);
 					
@@ -509,5 +511,9 @@ public class UploadServiceImpl implements UploadService {
 		}
 		
 	}
-
+	
+	@Override
+	public int increseHit(int uploadNo) {
+		return uploadMapper.updateHit(uploadNo);		
+	}
 }

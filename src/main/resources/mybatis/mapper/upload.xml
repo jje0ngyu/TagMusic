@@ -12,11 +12,12 @@
 	</select>
 
 	<select id="selectUploadListByMap" parameterType="Map" resultType="UploadDTO">
-		SELECT A.ROW_NUM, A.UPLOAD_NO, A.TITLE, A.CONTENT, A.CREATE_DATE, A.MODIFY_DATE
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_NO DESC) AS ROW_NUM, UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE
+		SELECT A.ROW_NUM, A.UPLOAD_NO, A.TITLE, A.CONTENT, A.CREATE_DATE, A.MODIFY_DATE, A.HIT
+		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_NO DESC) AS ROW_NUM, UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE, HIT
 		          FROM UPLOAD) A
 		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
 	</select>
+
 	
 	<!-- 게시글의 첨부 개수를 확인하기 위한 쿼리 -->
 	<select id="selectAttachCnt" parameterType="int" resultType="int">
@@ -31,10 +32,17 @@
 			  FROM DUAL
 		</selectKey>
 		INSERT INTO UPLOAD
-			(UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE)
+			(UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE, HIT)
 		VALUES
-			(#{uploadNo}, #{title}, #{content}, SYSDATE, SYSDATE)
+			(#{uploadNo}, #{title}, #{content}, SYSDATE, SYSDATE, 0)
 	</insert>
+	
+	<update id="updateHit" parameterType="int">
+		UPDATE UPLOAD
+		   SET HIT = HIT + 1
+		 WHERE UPLOAD_NO = #{uploadNo}
+	</update>
+	
 	
 	<insert id="insertAttach" parameterType="AttachDTO">
 		INSERT INTO ATTACH
@@ -44,7 +52,7 @@
 	</insert>
 	
 	<select id="selectUploadByNo" parameterType="int" resultType="UploadDTO">
-		SELECT UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE
+		SELECT UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE, HIT
 		  FROM UPLOAD
 		 WHERE UPLOAD_NO = #{uploadNo}
 	</select>
@@ -92,5 +100,6 @@
 		  FROM ATTACH
 		 WHERE PATH = CONCAT('storage\\', TO_CHAR(SYSDATE - 1, 'yyyy\\mm\\dd'))
 	</select>
+
 	
 </mapper>
