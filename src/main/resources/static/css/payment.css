@@ -1,5 +1,9 @@
 @charset "UTF-8";
 
+ul, ol {
+	list-style:none
+}
+
 /* 배경 레이어 */
 .back_content {
 	width: 100%;
@@ -53,6 +57,8 @@
 /* 이용권 - 상단 */
 .payTitle {
 	font-size: 32px;
+	font-weight: 700;
+	padding: 30px 0;
 }
 
 /* 이용권 - 상단 제외 모든 부분*/
@@ -67,15 +73,21 @@
   justify-content: space-between;
   margin : 30px 0;
 }
-#nav3>ul li, .tab_text {
+#nav3>ul li {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 25%;
+	width: 22%;
 	height: 46px;
 	font-size: 24px;
 	font-weight: 600;
    /* padding: 0 30px;*/
+}
+.tab_payment:hover {
+	cursor: pointer;
+	background: linear-gradient(to right top,#697590, #20325A);
+    color: transparent;
+    -webkit-background-clip: text;
 }
 
 /* nav 기본 글자 */
@@ -124,6 +136,7 @@
 .pass_name {
 	position: relative;
 	display: flex;
+	justify-content: center;
 	align-items: center;
 	height: 180px;
 	padding: 40px 30px;
@@ -171,5 +184,15 @@
 	width: 100px;
 	height: 50px;
 	font-size: 16px;
+}
+
+.coupon_input {
+	border: 0;
+	outline: none;
+	width: 400px;
+	height: 50px;
+	background-color: #fdfdfd;
+	font-weight: 600;
+	font-size: 21px;
 }
 	

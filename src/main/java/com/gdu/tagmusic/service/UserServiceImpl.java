@@ -670,7 +670,6 @@ public class UserServiceImpl implements UserService {
 		// 정보 일치용 (where)
 		String email = request.getParameter("email");
 		String artist = request.getParameter("artist");
-		
 		// 일부 파라미터는 DB에 넣을 수 있도록 가공
 		artist = securityUtil.preventXSS(artist);
 		
@@ -679,14 +678,10 @@ public class UserServiceImpl implements UserService {
 				.email(email)
 				.artist(artist)
 				.build();
-				
 		// 회원정보수정
 		int result = userMapper.updateUser(user);
-		
 		// 응답
 		try {
-			
-			response.setContentType("text/html; charset=UTF-8");
 			if(result > 0) {
 				// 조회 조건으로 사용할 Map
 				Map<String, Object> map = new HashMap<String, Object>();

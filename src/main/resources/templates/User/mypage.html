@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Tag Music > 마이페이지</title>
-<link rel="stylesheet" th:href="@{/css/musicPlayer.css}">
 <link rel="stylesheet" th:href="@{/css/mypage.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script>
@@ -11,6 +10,10 @@
 		fn_popupProfileImage();
 		//fn_changeImage();
 		fn_closePopup();
+		
+		// 페이지 이동
+		fn_myinfo();		 // 개인정보관리
+		fn_paymentHistory(); // 결제이력
 	});
 	// 이미지 노출
 	function fn_displayImage(){
@@ -64,48 +67,94 @@
 		});
 	}
 	
+	
+	// 페이지 이동 function()
+	function fn_myinfo() {
+		$('#myinfo').click(function(){
+			location.href="/user/mypage/info";
+		})
+	}
+	function fn_paymentHistory(){
+		$('#mypaymentHistory').click(function(){
+			$('#submit_history').submit();
+		});
+	}
 </script>
 </head>
 <body>
 	<nav th:replace="~{layout/mypageNav.html::mypageFragment}"></nav>
 	
-	<section class="container">
-		<div>
+	<div class="mypage_controller">
+		<div class="mypage_title">
 			내 정보
 		</div>
-		<div>
-			<img id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">
-			
+		
+		<!-- 3단 마이페이지 (top, middle, bottom) -->
+		<!-- 마이페이지 - top -->
+		<div class="mypage_top_controller flex_cloumn">
+			<div class="mypage_bix_box mypage_profile_box">
+				<img id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">				
+				<div class="flex_cloumn">
+					<div class="artist_title" th:text="|${session.loginUser.artist}님 안녕하세요.|"></div>
+					<div class="artist_msg" th:text="${session.loginUser.email}"></div>
+				</div>
+			</div>
 		</div>
-		<div>
-			<span th:text="${session.loginUser.artist}"></span>님 안녕하세요.
+		<!-- 마이페이지 - middle -->
+		<div class="mypage_middle_controller">
+			<div id="myinfo" class="mypage_small_box mypage_box">
+				<div class="flex_cloumn">
+					<div class="box_title">개인정보 관리</div>
+					<div class="box_msg">태그뮤직 닉네임, 연락처 등<br/>
+						개인정보를 확인하고관리합니다.</div>
+				</div>
+			</div>
+			<div class="mypage_small_box mypage_box">
+				<div class="flex_cloumn">
+					<div class="box_title">로그인 및 보안</div>
+					<div class="box_msg">로그인 시 비밀번호를 재설정하고<br/>
+						로그인 보안 기능을 사용합니다.</div>
+				</div>
+			</div>
+			<div id="mypaymentHistory" class="mypage_small_box mypage_box ">
+				<div class="flex_cloumn">
+					<div class="box_title">결제이력</div>
+					<div class="box_msg">태그뮤직에 보유한 이용권/선물<br/>
+						내역을 확인하고관리합니다.</div>
+				</div>
+				<form th:action="@{/payment/history}" method="post" id="submit_history">
+		           <input type="hidden" name="userName" th:value="${session.loginUser.name}">
+		        </form>
+			</div>
 		</div>
-		<div>
-			로그인 및 보안
-		</div>
-		<div>
-			<a th:href="@{/user/mypage/info}">
-				개인정보 관리
-			</a>
-		</div>
-		<div>
-			<a th:href="@{/payment/history}">
-				결제정보
-			</a>
-		</div>
-		<div>
-			내가 쓴 글
-		</div>
-		<div>
-			내가 쓴 댓글
-		</div>
-		<div>
-			내가 문의한 글
+		<!-- 마이페이지 - bottom -->
+		<div class="mypage_bottom_controller">
+			<div class="mypage_small_box mypage_box">
+				<div class="flex_cloumn">
+					<div class="box_title">내가 쓴 글</div>
+					<div class="box_msg">태그뮤직에 작성한 게시글<br/>
+						내역을 확인하고관리합니다.</div>
+				</div>
+			</div>
+			<div class="mypage_small_box mypage_box">
+				<div class="flex_cloumn">
+					<div class="box_title">내가 쓴 댓글</div>
+					<div class="box_msg">태그뮤직에 작성한 댓글<br/>
+						내역을 확인하고관리합니다.</div>
+				</div>
+			</div>
+			<div class="mypage_small_box mypage_box">
+				<div class="flex_cloumn">
+					<div class="box_title">내가 문의한 글</div>
+					<div class="box_msg">태그뮤직에 문의한 내역을<br/>
+						확인하고관리합니다.</div>
+				</div>
+			</div>
 		</div>
 		<div>
 			<a th:href="@{/tune/write}">음원 등록하기</a>
 		</div>
-	</section>
+	</div>
 	
 	<!-- 프로필 이미지 변경 -->
 	<div class="box_backlayer blind"></div>

@@ -117,106 +117,117 @@
 </style>
 </head>
 <body>
-	<img th:src="@{/images/background_login.jpg}" class="background_login">
+	<!-- 배경이미지 -->
+	<!--<img th:src="@{/images/background_login.jpg}" class="background_login">-->
 	<div class="backgroung_layer"></div>
 	<div th:replace="~{layout/loginHeader.html::loginFragment}"></div>
-		
-	<div class="login_box">
-		<div class="login_container">
-			<div class="login_title">로그인</div>
-			<form id="frm_login" th:action="@{/user/login}" method="post">
-				<input type="hidden" name="url" th:value="${url}">
-				<div class="login_email">
-					<input type="text" name="email" id="email" class="login_input_box" placeholder="이메일 주소">
+	<div class="login_controller">
+		<form id="frm_login" th:action="@{/user/login}" method="post">
+			<div class="login_top_controller">
+				<div class="login_contents">
+					<div class="login_title">로그인</div>
+						<input type="hidden" name="url" th:value="${url}">
+						<div class="login_email">
+							<input type="text" name="email" id="email" class="login_input_box" placeholder="이메일 주소">
+						</div>
+						<div>
+							<input type="text" class="msg_email msg_check blind" value="정확한 이메일 주소를 입력하세요.">
+						</div>
+						<div>
+							<input type="password" name="pw" id="pw" class="login_input_box" placeholder="비밀번호">
+						</div>
+						<div>
+							<!-- 패스워드 보여주기도 구현해 볼 것 -->
+							<input type="text" class="msg_pw msg_check blind" value="비밀번호는 4~60자 사이여야 합니다.">
+						</div>
+						<div>
+							<button class="btn_login">로그인</button>
+						</div>
+						<div>----- 또는 -----</div>
+						<!-- 간편 로그인 : 네이버 -->
+						<div class="btNaver">
+							<a th:href="${apiURL}"><img class="login_icon" height="45px" th:src="@{/images/btnW_완성형.png}"/> 네이버 로그인</a>
+						</div>
 				</div>
-				<div>
-					<input type="text" class="msg_email msg_check blind" value="정확한 이메일 주소를 입력하세요.">
+			</div>
+			<!-- 이메일 기억/자동로그인/계정찾기 -->
+			<div class="login_tom_middle_controller">
+				<!-- 왼쪽 정렬 -->
+				<div class="login_left">
+					<label for="rememberEmail">
+						<div class="remember_box"></div>
+							<input type="checkbox" id="rememberEmail">
+						<div class="msg_login_box">
+							이메일 기억하기
+						</div>
+					</label>
+					<label for="keepLogin">
+						<input type="checkbox" name="keepLogin" id="keepLogin" style="margin-left:20px;">
+						<div class="msg_login_box">
+							자동로그인
+						</div>
+					</label>
 				</div>
-				<div>
-					<input type="password" name="pw" id="pw" class="login_input_box" placeholder="비밀번호">
-				</div>
-				<div>
-					<!-- 패스워드 보여주기도 구현해 볼 것 -->
-					<input type="text" class="msg_pw msg_check blind" value="비밀번호는 4~60자 사이여야 합니다.">
-				</div>
-				
-				<div class="btn_login_bottom">
-					<div class="login_box_left">
-						<label for="rememberEmail">
-							<div class="remember_box"></div>
-								<input type="checkbox" id="rememberEmail">
-							<div class="msg_login_box">
-								이메일 기억하기
-							</div>
-						</label>
-						<label for="keepLogin">
-							<input type="checkbox" name="keepLogin" id="keepLogin" style="margin-left:20px;">
-							<div class="msg_login_box">
-								자동로그인
-							</div>
-						</label>
+				<!-- 오른쪽 정렬 -->
+				<div class="login_right">
+					<div class="login_box_right">
+						<a class="msg_login_box msg_help" th:href="@{/user/loginHelp}">도움이 필요하신가요?</a>
 					</div>
-					
-					
 				</div>
-			<div>
-				<button class="btn_login">로그인</button>
-			</div>
-			</form>
-			<!-- 간편 로그인 : 네이버 -->
-			<div class="btNaver">
-				<a th:href="${apiURL}"><img class="login_icon" height="45px" th:src="@{/images/login_naver.png}"/> 네이버 로그인</a>
 			</div>
 			
-			
-			<!-- 간편 로그인 : 카카오 -->
-			<div class="loginAPI">
-				<div id="kakaoLogin">
-					<a id="kakao-login-btn" href="javascript:loginWithKakao()">
-					  <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-					    alt="카카오 로그인 버튼" />
-					</a>
-					<p id="token-result"></p>
-					
-					<script>
-						function loginWithKakao() {
-						    Kakao.Auth.authorize({
-						      redirectUri: 'http://localhost:9090',
-						    });
-						}
-					    Kakao.Auth.setAccessToken('${ACCESS_TOKEN}');
-						displayToken();
-					    function displayToken() {
-					    	var token = getCookie('authorize-access-token');
-					    	
-					    	if(token) {
-								Kakao.Auth.setAccessToken(token);
-								Kakao.Auth.getStatusInfo()
-								    .then(function(res) {
-								    if (res.status === 'connected') {
-								        document.getElementById('token-result').innerText
-								             = 'login success, token: ' + Kakao.Auth.getAccessToken();
-								        }
-								    })
-								    .catch(function(err) {
-								        Kakao.Auth.setAccessToken(null);
-								    });
-							}
-						}
+			<!-- 로그인/간편로그인 -->
+			<div class="login_middle_controller">
+				
+				
+				
+				
+				<!-- 간편 로그인 : 카카오 -->
+				<div class="loginAPI">
+					<div id="kakaoLogin">
+						<a id="kakao-login-btn" href="javascript:loginWithKakao()">
+						  <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
+						    alt="카카오 로그인 버튼" />
+						</a>
+						<p id="token-result"></p>
 						
-						function getCookie(name) {
-						    var parts = document.cookie.split(name + '=');
-						    if (parts.length === 2) { return parts[1].split(';')[0]; }
-						}
-					
-					</script>
-
+						<script>
+							function loginWithKakao() {
+							    Kakao.Auth.authorize({
+							      redirectUri: 'http://localhost:9090',
+							    });
+							}
+						    Kakao.Auth.setAccessToken('${ACCESS_TOKEN}');
+							displayToken();
+						    function displayToken() {
+						    	var token = getCookie('authorize-access-token');
+						    	
+						    	if(token) {
+									Kakao.Auth.setAccessToken(token);
+									Kakao.Auth.getStatusInfo()
+									    .then(function(res) {
+									    if (res.status === 'connected') {
+									        document.getElementById('token-result').innerText
+									             = 'login success, token: ' + Kakao.Auth.getAccessToken();
+									        }
+									    })
+									    .catch(function(err) {
+									        Kakao.Auth.setAccessToken(null);
+									    });
+								}
+							}
+							
+							function getCookie(name) {
+							    var parts = document.cookie.split(name + '=');
+							    if (parts.length === 2) { return parts[1].split(';')[0]; }
+							}
+						
+						</script>
+	
+					</div>
 				</div>
 			</div>
-			<div class="login_box_right">
-				<a class="msg_login_box msg_help" th:href="@{/user/loginHelp}">도움이 필요하신가요?</a>
-			</div>
-			<div class="login_box_bottom">
+			<div class="login_bottom_controller">
 				<div class="login_box_left">
 					<p class="msg_login_box">TagMusic 회원이 아닌가요?</p>
 				</div>
@@ -224,7 +235,7 @@
 					<a th:href="@{/user/join/agree}">지금 가입하세요.</a>
 				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 
 </body>
