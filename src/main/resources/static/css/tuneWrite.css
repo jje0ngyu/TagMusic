@@ -1,0 +1,79 @@
+@charset "UTF-8";
+html, body, div, input, a, form, textarea {
+	margin: 0;
+	padding: 0;
+}
+.blind {
+	display: none;
+}
+.flex {
+	display: flex;
+	height: 60px;
+	align-items: center;
+}
+
+.write_title {
+	width: 100px;
+	font-size: 18px;
+	font-weight: 600;
+	display: flex;
+}
+
+/* 크기 공통 */
+.tune_controller {
+	max-width: 100%;
+	height: 100%;
+}
+
+#btn_add, #btn_cancel {
+	width: 160px;
+	height: 60px;
+	margin: 20px;
+	border: none;
+	border-radius: 300px;
+	background-color: #bdc2de;
+}
+#btn_add:hover {
+	color: #fdfdfd;
+	background-color: green;
+}
+#btn_cancel:hover {
+	color: #fdfdfd;
+	background-color: #FF5361;
+}
+.write_top_controller, .write_bottom_controller {
+	padding: 30px;
+	border-radius: 10px;
+	box-shadow: 1px 1px 3px 1px #37486b;
+	margin: 20px 0;
+}
+
+/* bottom_controller */
+.write_bottom_controller {
+	display: flex;
+	flex-direction: column;
+}
+.albumImg {
+	display: flex;
+}
+
+@media only screen and (max-width: 940px) {
+	.header, .menu {
+		display: none;
+	}
+	.tune_container {
+		position: relative;
+	}
+}
+@media only screen and (min-width: 940px) {
+	.tune_controller {
+		position: relative;
+		margin-top: 100px;
+		margin-left: 240px;
+	}
+	.write_controller {
+		max-width: 90%;
+		margin: 140px 10% 0 20px;
+		padding-left: 30px;
+	}
+}

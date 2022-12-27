@@ -8,7 +8,13 @@ import com.gdu.tagmusic.domain.MusicDTO;
 public interface TuneMapper {
 	
 	public MusicDTO selectMusicByNo (int musicNo);
+	
+	// 음원 등록
 	public int insertMusic (MusicDTO music);
+	public int selectMaxmMsicNoByEmail (String email);
+	
+	// 음원 다운로드
+	public int updateDownloadCnt(int musicNo);
 }
 	
 

@@ -5,18 +5,83 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gdu.tagmusic.mapper.TuneMapper">
-
-	<select id="selectMusicByNo" parameterType="int" resultType="MusicDTO">
-		SELECT MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE
-		  FROM MUSIC
-		 WHERE MUSIC_NO = #{musicNo}
+	
+	<resultMap id="MusicMap" type="MusicDTO">
+		<result column="MUSIC_NO" property="musicNo"/>
+		<result column="EMAIL" property="email"/>
+		<result column="MUSIC_TITLE" property="musicTitle"/>
+		<result column="MUSIC_CONTENT" property="musicContent"/>
+		<result column="MUSIC_ALBUM" property="musicAlbum"/>
+		<result column="MUSIC_GENRE" property="musicGenre"/>
+		<result column="MUSIC_UPLOAD_DATE" property="musicUploadDate"/>
+		<result column="MUSIC_MODIFY_DATE" property="musicModifyDate"/>
+		<result column="IP" property="ip"/>
+		<result column="IMG_ORIGIN" property="imgOrigin"/>
+		<result column="IMG_FILESYSTEM" property="imgFilesystem"/>
+		<result column="MUSIC_ORIGIN" property="musicOrigin"/>
+		<result column="MUSIC_FILESYSTEM" property="musicFilesystem"/>
+		<result column="DOWNLOAD_CNT" property="downloadCnt"/>
+		<result column="IMG_PATH" property="imgPath"/>
+		<result column="MUSIC_PATH" property="musicPath"/>
+		<result column="HAS_THUMBNAIL" property="hasThumbNail"/>
+		<collection resultMap="UserMap" property="userDTO"></collection>
+	</resultMap>
+	
+	
+	<resultMap id="UserMap" type="UserDTO">
+		<result column="USER_NO" property="userNo"/>
+		<result column="EMAIL" property="email"/>
+		<result column="ARTIST" property="artist"/>
+		<result column="NAME" property="name"/>
+		<result column="PW" property="pw"/>
+		<result column="PROFILE_IMAGE" property="profileImage"/>
+		<result column="MOBILE" property="mobile"/>
+		<result column="GENDER" property="gender"/>
+		<result column="BIRTHYEAR" property="birthyear"/>
+		<result column="BIRTHDAY" property="birthday"/>
+		<result column="POSTCODE" property="postcode"/>
+		<result column="ROAD_ADDRESS" property="roadAddress"/>
+		<result column="JIBUN_ADDRESS" property="jibunAddress"/>
+		<result column="DETAIL_ADDRESS" property="detailAddress"/>
+		<result column="EXTRA_ADDRESS" property="extraAddress"/>
+		<result column="SNS_TYPE" property="snsType"/>
+		<result column="SESSION_ID" property="sessionId"/>
+		<result column="SESSION_LIMIT_DATE" property="sessionLimitDate"/>
+		<result column="JOIN_DATE" property="joinDate"/>
+		<result column="PW_MODIFY_DATE" property="pwModifyDate"/>
+		<result column="INFO_MODIFY_DATE" property="infoModifyDate"/>
+		<result column="AGREE_CODE" property="agreeCode"/>
+	</resultMap>
+	
+	
+	
+	<select id="selectMusicByNo" parameterType="int" resultMap="MusicMap">
+	    SELECT MUSIC_NO, M.EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, U.ARTIST
+     	  FROM MUSIC M INNER JOIN USERS U
+    	    ON U.EMAIL = M.EMAIL
+    	 WHERE MUSIC_NO = #{musicNo}
 	</select>
-
+	
 	<insert id="insertMusic" parameterType="MusicDTO">
 		INSERT INTO MUSIC
 			(MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE) 
 		VALUES
 			(MUSIC_SEQ.NEXTVAL, #{email}, #{musicTitle}, #{musicContent}, #{musicAlbum}, #{musicGenre}, #{ip}, #{imgOrigin}, #{imgFilesystem}, #{musicOrigin}, #{musicFilesystem}, 0, #{imgPath}, #{musicPath}, #{hasThumbNail}, SYSDATE)
-	</insert>	
+	</insert>
+	
+	<!-- 음원 작성 후 상세보기로 이동할 MUSIC_NO 출력 -->
+	<select id="selectMaxmMsicNoByEmail" parameterType="String" resultType="int">
+		SELECT MAX(A.MUSIC_NO)
+  		  FROM (SELECT EMAIL, MUSIC_NO
+		          FROM MUSIC
+		         WHERE EMAIL = #{email}) A
+	</select>
+	
+	<!-- 음원 다운로드 - 다운 횟수 증가 -->
+	<update id="updateDownloadCnt" parameterType="int">
+		UPDATE MUSIC
+		   SET DOWNLOAD_CNT = DOWNLOAD_CNT + 1
+		 WHERE MUSIC_NO = #{musicNo}
+	</update>
 	
 </mapper>

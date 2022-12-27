@@ -1,56 +1,166 @@
 @charset "UTF-8";
 
-html, body, nav, section {
-	padding: 0px;
+/* 클래스 초기화 - layout.css와 동일 */
+html, body, section, article, div, a, input, ul, li, input {
 	margin: 0px;
+	padding: 0px;
+	background-color: inherit;
+	color: inherit;
+	text-decoration: none;
 }
-/* mypageNav */
-@media (max-width: 600px) {
+body {
+	width: 100%;
+	background-color: #f8f9fa;
+	
+}
+.blind {
+	display: none;
+}
+/* 공통 */
+.box_title {
+	font-size: 20px;
+	font-weight: 700;
+	margin: 10px 0 30px;
+}
+.box_msg {
+	color: #989796;
+	font-size: 14px;
+}
+
+@media (max-width: 800px) {
+	/* mypageNav */
 	nav {
 		display: none;
 	}
+	/* mypage */
+	.mypage_top_controller, .mypage_middle_controller, .mypage_bottom_controller {
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+	}
+	.mypage_bix_box {
+		width: 80%;
+	}
+	.mypage_small_box {
+		width: 80%;
+	}
 }
-@media (min-width: 600px) {
+@media (min-width: 800px) {
+	/* mypageNav */
 	.nav_top {
-		margin-bottom: 30px;
+		margin-bottom: 60px;
+		text-align: center;
 	}
 	nav {
+		z-index: 1;
 		position: fixed;
-		width: 200px;
+		align-items: center;
+		width: 220px;
 		height: 100%;
-		background-color: black;
-		color: whitesmoke;
+		background-color: #fdfdfd;
+		box-shadow: 1px 0px 10px 0 #37486b;
+		color: #989796;
 		font-size: 16px;
 		font-weight: 500;
 		padding-top: 20px;
-		padding-left: 30px;	
 		top: 0;
 		left: 0;
 	}
+	.nav_textBox_controller {
+		display: flex;
+		flex-direction: column;
+		align-items: center;		
+	}
 	.text_box {
-		margin: 20px 0;
-	}
-	.container {
-		position: absolute;
+		display: flex;
+		align-items: center;
 		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 230px;
-		padding: 60px;
+		height: 60px;
+		font-size: 18px;
+		
 	}
-	/* mypage 콘테이너*/
-	.contain {
-		position: absolute;
+	/* mypageNav 현재 위치 */
+	.text_box_click {
+		color: #37486b;
+		font-weight: 700;
+		background-color: rgb(243, 243, 243);
+	}
+	.text_box:hover {
+		background-color: #37486b;
+		color: #fdfdfd;
+		font-weight: 700;
+		cursor: pointer;
+	}
+	
+	.mypageNav_text {
+		padding: 30px;
+	}
+
+	/* mypage */
+	.mypage_controller {
+		position: relative;
 		top: 0;
-		left: 230px;
+		left: 0;
+		margin-left: 250px;
+		padding: 60px 50px 0 40px;
+	}
+	.mypage_top_controller, .mypage_middle_controller, .mypage_bottom_controller {
+		display: flex;
+		margin: 10px 0;
+	}
+	.mypage_middle_controller {
+		margin-top: 30px;
+	}
+	.mypage_profile_box {
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		text-align: center;
+	}
+	.mypage_bix_box {
 		width: 100%;
+	}
+	.mypage_small_box {
+		width: 33%;
 	}
 }
 
-
 /* mypage */
-.container {
-	background-color: chocolate;
+.mypage_box {
+	display: flex;
+	align-items: center;
+	margin : 2%;
+	background-color: #ffffff;
+	box-shadow: 1px 1px 3px 1px #37486b;
+	border-radius: 10px;
+	padding: 20px;
+}
+.flex_cloumn {
+	display: flex;
+	flex-direction: column;
+}
+
+.mypage_box:hover {
+	cursor: pointer;
+	background-color: #37486b;
+	color: #fdfdfd;
+	font-weight: 600;
+}
+
+.mypage_title {
+	font-size: 32px;
+	font-weight: 700;
+	margin-bottom: 20px;
+}
+.artist_title {
+	font-size: 24px;
+	font-weight: 700;
+	padding-left: 20px;
+}
+.artist_msg {
+	font-size: 18px;
+	padding-left: 20px;
+	color: #989796;
 }
 
 /* mypage_프로필 사진 수정 화면 */
@@ -64,14 +174,37 @@ html, body, nav, section {
 	color: white;
 }
 
-
-.info_box {
+/* myinfo ---------------------------------------------------------------- */
+.info_controller {
 	position: relative;
-	background-color: lime; 	
+	display: flex;
+	flex-direction: column;
+	color: #1f1f1f;
+	font-size: 16px;
+	width: 95%;
+	margin-top: 50px;
+}
+.info_top_contents, .info_bottom_contents {
+	display: flex;
+	justify-content: center;
 }
 .info {
-	padding: 10px 0 10px 30px;
+	display: flex;
+	padding: 20px 30px;
+	width: 300px;
+	box-shadow: 1px 1px 3px 1px rgb(241, 241, 241);
+	margin: 10px 10px;
+	background-color: #fdfdfd;
+	border-radius: 10px;
 }
+.info:hover {
+	background-color: #37486b;
+	font-weight: 600;
+	color: #fdfdfd;
+	cursor: pointer;
+}
+
+/* 모달창 */
 .box_backlayer {
 	position: fixed;
 	z-index: 100;
@@ -84,29 +217,51 @@ html, body, nav, section {
     left: 0;
 }
 .modify_box {
-	position: fixed;
+	position: relative;
 	width: 600px;
-	z-index: 101;
 	background-color: white;
 	margin: 0 auto;	
-	padding:  50px 30px;
-	top: 230px;
+	padding:  50px 50px;
+	top: 180px;
+	border-radius: 10px;
 }
-.blind {
-	display: none;
+
+.btn_box {
+	display: flex;
+	justify-content: center;
+	margin-top: 40px;
 }
 .btn {
-	width: 100px;
+	width: 240px;
 	height: 48px;
 	border-radius: 4px;
-	background-color: #d4d4d4;
+	background-color: #bdc2ce;
 	font-size: 15px;
 	font-weight: 500;
 	vertical-align: middle;
 	border: none;
+	margin: 0 10px;
 }
 .info_title {
 	font-size: 20px;
 	font-weight: bold;
 	margin-bottom: 30px;
+}
+
+/* myinfo - input 타입 모음 */
+#artist, #name, #originPw, #newPw, #reNewPw, #pw, #email ,#mobile {
+	width: 90%;
+	height: 30px;
+	outline: none;
+	border: none;
+	font-size: 18px;
+	border-bottom: 3px solid #37486b;
+}
+
+/* 로그아웃 버튼 (user 전역 공통) */
+.logout_box:hover, .cancel:hover {
+	background-color: #FF5361;
+}
+.correct:hover {
+	background-color: green;
 }
