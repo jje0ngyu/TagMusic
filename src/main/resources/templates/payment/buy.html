@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('Tag Music')}"></head>
+<head th:replace="~{layout/header::head('Tag Music > 이용권')}"></head>
 <meta charset="UTF-8">
 <link rel="stylesheet" th:href="@{/css/payment.css}">
 <title></title>
 <style>
-	ul,ol{list-style:none}
+	
 	nav{overflow:hidden;height:80px;}
 	#nav3 {
 	  width: 100%;
@@ -77,6 +77,7 @@
 
 <script th:inline="javascript">
 $(document).ready(function(){
+	fn_couponInput();
 	var userName = $('#userName').data('name');
 	if(userName != null){
 		fn_passList();
@@ -111,10 +112,10 @@ function fn_isNotUser(){
 				txt += '<input type="button" value="결제하기" onclick="fn_login()">';
 				txt += '</div>';
 				txt += '</div>';
-				if(pass.passName == "30일이용권"){
+				/* if(pass.passName == "30일이용권"){
 					txt += '<input type="button" value="선물하기" id="btn_gift" onclick="fn_login()">';
 			
-				}
+				} */
 			});
 			$('#buyPageDiv').append(txt);
 		}
@@ -140,9 +141,39 @@ function fn_passList(){
 					txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName+'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
 				txt += '</div>';
 				txt += '</div>';
-				if(pass.passName == "30일이용권"){
-					txt += '<input class="btn_gift_30days" type="button" value="선물하기" data-if="0" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
-				}
+				/* if(pass.passName == "30일이용권"){
+					txt += '<div class="pass_box_right">';
+						txt += '<input class="btn_gift_30days" type="button" value="선물하기" data-if="0" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
+					txt += '</div>';
+				} */
+			});
+			
+			$('#buyPageDiv').append(txt);
+		}
+	});
+}
+function fn_passGiftList(){
+	$.ajax({
+		type: 'post',
+		url: '/pass/list',
+		dataType: 'json',
+		success: function(resData){
+			var txt = '';
+			$.each(resData.passList, function(i, pass){
+				 if(pass.passName == "30일이용권"){
+					 txt += '<div class="pass_box">';
+					txt += '<div class="pass_box_left">';
+					txt += '<div class="pass_name">'+pass.passName+'</div>';
+					txt += '<div class="pass_msg_price">';
+					txt += '<div class="pass_msg">무제한 듣기 + 무제한 다운로드</div>';
+					txt += '<div class="pass_price">'+pass.passPrice+' 원!</div>';
+					txt += '</div>';
+					txt += '</div>';
+					txt += '<div class="pass_box_right">';
+						txt += '<input class="btn_gift_30days" type="button" value="선물하기" data-if="0" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
+					txt += '</div>';
+					txt += '</div>';
+				} 
 			});
 			
 			$('#buyPageDiv').append(txt);
@@ -150,11 +181,23 @@ function fn_passList(){
 	});
 }
 
+
 function fn_login(){
 	
 	 if(confirm('아직 로그인을 안하셨네요. 로그인 페이지로 이동하겠습니까?')){
 		$('#frm_login').submit();
 	}
+}
+
+function fn_registerCoupon(){
+	var coupon = $('#coupon_input').val();
+	if(coupon.length < 16){
+		alert('정확한 쿠폰번호를 입력해주세요');
+		return;
+	}
+	
+	console.log('asd');
+	
 }
 
 function fn_buyTicket(e){
@@ -309,20 +352,93 @@ function fn_presentTicket(e){
 				<div class="payContent">
 					<nav id="nav3" class="tab_box_basic">
 						<ul class="top_pay_controller">
-							<li class="tab_payment tab_box_click">
-								<a class="tab_text" th:href="@{/payment/buy}">BEST</a>
+							<li id="payBEST" class="tab_payment tab_box_click">
+								BEST
 							</li>
-							<li>
+							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
+							<li id="payAllList" class="tab_payment">
 								전체 이용권
 							</li>
-							<li>
+							<li id="passGiftList"class="tab_payment">
 								이용권 선물
 							</li>
-							<li>
+							<li id="useCoupon" class="tab_payment">
 								쿠폰 등록
 							</li>
 						</ul>
 					</nav>
+					<script>
+						$('#payBEST').click(function(){
+							$('.tab_payment').removeClass('tab_box_click');
+							$(this).addClass('tab_box_click');
+							$('#buyPageDiv').empty();
+							var userName = $('#userName').data('name');
+							if(userName != null){
+								fn_passList();
+							} else {
+								fn_isNotUser();
+							}
+							fn_init();
+						});
+						$('#passGiftList').click(function(){
+							$('.tab_payment').removeClass('tab_box_click');
+							$(this).addClass('tab_box_click');
+							$('#buyPageDiv').empty();
+							fn_passGiftList();
+						});
+						$('#payAllList').click(function(){
+							$('.tab_payment').removeClass('tab_box_click');
+							$(this).addClass('tab_box_click');
+							$('#buyPageDiv').empty();
+						});
+						$('#useCoupon').click(function(){
+							$('.tab_payment').removeClass('tab_box_click');
+							$(this).addClass('tab_box_click');
+							$('#buyPageDiv').empty();
+							var userName = $('#userName').data('name');
+							var txt = '';
+							txt += '<div class="pass_box">';
+							txt += '<div class="pass_box_left">';
+							txt += '<div class="pass_name">쿠폰번호입력</div>';
+							txt += '<div class="pass_msg_price">';
+							txt += '<div class="pass_msg"><input type="text" class="coupon_input" id="coupon_input" maxlength="16" placeholder="이용하실 쿠폰 16자리를 입력해주세요!" ></div>';
+							txt += '<div class="pass_price"></div>';
+							txt += '</div>';
+							txt += '</div>';
+							txt += '<div class="pass_box_right">';
+							if(userName != null){
+								txt += '<input id="couponRegister" type="button" value="쿠폰등록"  onclick="fn_registerCoupon()">';
+							} else {
+								txt += '<input id="couponRegister" type="button" value="쿠폰등록" onclick="fn_login()">';
+							}
+							txt += '</div>';
+							txt += '</div>';
+							
+							txt += '<div>';
+							txt += '<li>쿠폰 번호는 대문자와 숫자로 이루어져 있습니다.</li>';
+							txt += '<li>쿠폰에 표기된 유효기간을 꼭 확인해주세요.</li>';
+							txt += '</div>';
+							
+							$('#buyPageDiv').append(txt);
+							
+							
+						});
+					</script>
+					<script>
+					function fn_couponInput(){
+						$(document).on('blur keyup', '#coupon_input', function(){
+							var str = $(this).val();
+							var reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
+							var reg2 = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
+							var regResult = str.replace(reg,'');
+							var regResult = regResult.replace(reg2,'');
+							$(this).val(regResult.toUpperCase()); 
+						});
+						
+						
+					}
+					
+					</script>
 					
 					<input type="hidden" id="isUser" th:data-user="${session}">
 					<div th:if="${session.loginUser != null}">
@@ -370,6 +486,7 @@ function fn_presentTicket(e){
 		</div>
 	</article>
 	<form action="/user/login/form" id="frm_login"></form>
+	
 	<!-- 프로필 사진 클릭시 팝업 창 -->
 	<div class="backlayer blind"></div>
 	<div class="gift_session blind">
