@@ -1,21 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{layout/header::head('태그뮤직>고객센터')}"></head>
 <meta charset="UTF-8">
-<title th:text="${title}"></title>
+<title>고객센터>태그뮤직</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/summernote-lite.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js}"></script>
 <link rel="stylesheet" th:href="@{/summernote-0.8.18-dist/summernote-lite.css}">
-</head>
+<link rel="stylesheet" th:href="@{/css/customerService.css}">
 <script>
 	
 	$(document).ready(function(){
-		
-		
 		$('#content').summernote({
-			width: 800,
-			height: 400,
+			width: 1250,
+			height: 600,
 			lang: 'ko-KR',
 			toolbar: [
 			    
@@ -71,33 +69,54 @@
 </script>
 
 <body>
-<div>
 
-	
-
+<div th:replace="~{layout/header.html::header_layout}"></div>
+	<div class="session">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
+		<div class="container">
+			<div class="mainbox" >
+			
+				<div class="maintitle">태그뮤직 고객센터</div>
+				
+				<div class="top_bar">
+				    <ul>
+				        <li>
+				            <a th:href="@{/customerService/home}">홈</a>
+				        </li>
+				        <li class="click">
+				            <a th:href="@{/board/list}">공지사항</a>
+				        </li>
+				        <li>
+				            <a th:href="@{/upload/list}">자주 하는 질문</a>
+				        </li>
+				        <li>
+				            <a th:href="@{/customerService/chat}">1:1문의하기</a>
+				        </li>
+				    </ul>
+				</div>
+			 
 	<h1>수정 화면</h1>
-	
+	  <hr>
 	<form id="frm_edit" th:object="${board}" th:action="@{/board/modify}" method="post">
 	
 		<input type="hidden" name="boardNo" th:field="*{boardNo}">
 	
 		<div>
 			<label for="title">제목</label>
-			<input type="text" name="title" id="title" th:value="${board.boardTitle}">
-		</div>
 		
+			<input type="text" name="title" id="title" th:value="${board.boardTitle}" style="height:100%;width:100%;border: 0;">
+		</div>
+	  
 		<div>
-			<label for="content">내용</label>
+			<label for="content">게시글 내용</label>
 			<textarea name="content" id="content" th:text="${board.boardContent}"></textarea>				
 		</div>
 		
-		
-		<div id="summernote_image_list"></div>
-		
 		<div>
-			<button>수정완료</button>
-			<input type="reset" value="작성초기화">
 			<input type="button" value="목록" id="btn_list">
+			<input type="reset" value="작성초기화">
+			<button>수정완료</button>
 		</div>
 		
 	</form>

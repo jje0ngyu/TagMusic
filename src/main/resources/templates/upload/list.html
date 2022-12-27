@@ -2,103 +2,88 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{layout/header::head('태그뮤직>FAQ')}"></head>
 <meta charset="UTF-8">
-<title>고객센터>태그뮤직</title>
+<title th:text="${title}"></title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-
 <body>
-
-	<div th:replace="~{layout/header.html::header_layout}"></div>
 	
-		<div class="session">
+<style>
+ table {
+	 width:100%;
+	 table-layout: fixed;
+	 }
+</style>
+	
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+	<div class="session">
 		<div th:replace="~{layout/side.html::side_layout}"></div>
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
 		<div class="container">
-		
-		
-		<div class="mainbox">
+			<div class="mainbox" >
+			
+				<div class="maintitle">태그뮤직 고객센터</div>
+				
+				<div class="top_bar">
+				    <ul>
+				        <li>
+				            <a th:href="@{/customerService/home}">홈</a>
+				        </li>
+				       <li>
+				            <a th:href="@{/board/list}">공지사항</a>
+				        </li>
+				        <li class="click">
+				            <a th:href="@{/upload/list}">자주 하는 질문</a>
+				        </li>
+				        <li>
+				            <a th:href="@{/customerService/chat}">1:1문의하기</a>
+				        </li>
+				    </ul>
+					
+				</div>
+				
 
-			<div class="maintitle">태그뮤직 고객센터</div>
-			
-			<div class="top_bar">
-			    <ul>
-			        <li>
-			            <a th:href="@{/customerService/home}">홈</a>
-			        </li>
-			        <li>
-			            <a th:href="@{/board/list}">공지사항</a>
-			        </li>
-			        <li class="click">
-			            <a th:href="@{/upload/list}">자주 하는 질문</a>
-			        </li>
-			        <li>
-			            <a th:href="@{/customerService/chat}">1:1문의하기</a>
-			        </li>
-			    </ul>
-			</div>
-			
-			
-
-			<h1>업로드</h1>
-			<div>
-		
 			 <div>
-				<input type="button" value="새글 작성" id="btn_write">
+				<input type="button" value="새글 작성" id="btn_id">
 				<script>
-					$('#btn_write').click(function(){
+					$('#btn_id').click(function(){
 						location.href = '/upload/write';
 					});
 				</script>
 			</div>
-				
-				<hr>
-				
-				
+	
+				<div>	
 					<table class="table table-striped">
 						<thead>
-							<tr>
+							<tr bgcolor="#F6F6F6">
 								<td>번호</td>
-								<td>테이블번호</td>
 								<td>제목</td>
-								<td>작성일</td>
+								<td align=right>작성일</td>
+								<td align=right>조회</td>
+								<td></td>
 							</tr>
 						</thead>
+						
 						<tbody>	
-							<tr th:each="upload,vs:${uploadList}">
+						<tr th:each="upload,vs:${uploadList}">
 							<td th:text="${beginNo - vs.index}"></td>
-							<td th:text="${upload.uploadNo}"></td>
-							<td><a th:href="@{/upload/detail(uploadNo=${upload.uploadNo})}" th:text="${upload.title}"></a></td>
-							<td th:text="${#dates.format(upload.createDate, 'yyyy-MM-dd')}"></td>
-							
+						   <td><a th:href="@{/upload/increse/hit(uploadNo=${upload.uploadNo})}" th:text="${upload.title}"></a></td>
+							<td align=right><a th:text="${#dates.format(upload.createDate, 'yyyy-MM-dd')}"></a></td>
+							<td align=right><a th:text="${upload.hit}"><a></td>
+							<td align=right>
 						</tr>
 						</tbody>
+						
 						<tfoot>
 							<tr>
 							<td colspan="5" th:utext="${paging}"></td>
 							</tr>	
 						</tfoot>
 					</table>
-				
-				
+					
 			</div>
+			  </div>
+				</div>
+				   </div>
 	
-				
-				
-
-
-			
-
-
-		</div>
-
-		</div>
-	</div>
-	
-	
-	
-	
-
 </body>
 </html>

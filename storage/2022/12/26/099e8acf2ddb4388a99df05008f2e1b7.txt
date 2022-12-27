@@ -5,6 +5,7 @@
 <title>고객센터>태그뮤직</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
+
 <script>
 
 	$(function(){
@@ -26,6 +27,7 @@
 		});
 		
 	});
+	
 </script>
 
 <body>		
@@ -33,7 +35,6 @@
 <style>
  	table {
 	 	width:100%;
-	 	table-layout: fixed;
 		  }
 </style>
 
@@ -64,39 +65,26 @@
 					
 				</div>	
 			
+			
+	
 		<h1>업로드 게시글 정보</h1>
 	<div>	
 	  <ul>
 		 <table class="table table-striped"> 
 			<thead>
-				<tr bgcolor="#F6F6F6">
-			   <td>
-			     <li th:text="|제목 : ${upload.title}|"></li>
-			   </td>
-			   <td>
-			     <li th:text="|작성일 : ${#dates.format(upload.createDate, 'yyyy-MM-dd HH:mm:ss')}|"></li>
-			   </td>
-			  <td>
-			    <li th:text="|조회수 : ${#numbers.formatInteger(upload.Hit,1,'COMMA')}|"></li>
-			  </td>	
-			  <td>
-			    <li th:text="|첨부파일 개수 : ${attachCnt}|"></li>
-			   </td>
+			  <tr>	
+			   <td><li th:text="|제목 : ${upload.title}|"></li></td>
+			   <td><li th:text="|작성일 : ${#dates.format(upload.createDate, 'yyyy-MM-dd HH:mm:ss')}|"></li></td>
 			  </tr>	
-			</thead>
-			  
 			<tbody>
 			  <tr>
 			 	 <td align=left valign=top> 
 			      <li th:text="|${upload.content}|"></li>
 			     </td>
 			  </tr>   
-			</tbody>  
-			
-		 <tfoot>
+		<tfoot>
 			<tr>
-			  <td></td>
-				<td align=left>
+				<td align=light>
 				 <h2>첨부파일 및 다운로드</h2>
 			        <div th:each="attach : ${attachList}">
 				     <a th:href="@{/upload/download(attachNo=${attach.attachNo})}">
@@ -108,18 +96,17 @@
 					 </div>
 				     </a>
 			       </div>
+			       <div th:text="|첨부파일 개수 : ${attachCnt}|"></div>
 				</td>   
 			     <td align=left>
 			       <h3><a th:href="@{/upload/downloadAll(uploadNo=${upload.uploadNo})}">모두 다운로드</a></h3>
 				</td> 
 	        </tr>
-		  </tfoot>   
          </table>
-	    </ul> 	 
-	   </div>
+	        </ul> 	 
+	     </div>
 	
-		  <hr>
-	
+	<hr>
 		<div>
 			<form id="frm_upload" method="post">
 				<input type="hidden" name="uploadNo" th:value="${upload.uploadNo}">
@@ -128,7 +115,9 @@
 				<input type="button" value="게시글목록" id="btn_upload_list"> 			
 			</form>
 		</div>
-	   </div>
-	  </div>
+	
+	
+		</div>
+			</div>
 </body>
 </html>

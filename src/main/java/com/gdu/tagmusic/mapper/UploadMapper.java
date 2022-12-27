@@ -13,6 +13,7 @@ public interface UploadMapper {
 	
 	public int selectUploadListCount();
 	public List<UploadDTO> selectUploadListByMap(Map<String, Object> map);
+	
 	public int insertUpload(UploadDTO upload);
 	public int insertAttach(AttachDTO attach);
 	public UploadDTO selectUploadByNo(int uploadNo);
@@ -24,4 +25,5 @@ public interface UploadMapper {
 	public int deleteUpload(int uploadNo);
 	public List<AttachDTO> selectAttachListInYesterday();
 	public int selectAttachCnt(int uploadNo);
+	public int updateHit(int uploadNo);
 }
