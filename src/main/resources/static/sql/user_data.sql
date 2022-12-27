@@ -335,4 +335,4 @@ VALUES
     (CHAT_SEQ.NEXTVAL, 29, SYSDATE ,'0:0:0:0:0:0:0:1', 'I just keep on wishin that the money made you stay', 1, 1, 29, 1);      
 
 
-commit; 
+COMMIT; 
