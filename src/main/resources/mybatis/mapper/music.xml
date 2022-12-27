@@ -422,13 +422,13 @@
 		INSERT INTO MY_MUSIC VALUES (MY_MUSIC_SEQ.NEXTVAL, #{listNo} , 1)
 	</insert>
 	
-	<!-- 13. 플레이리스트 존재여부 확인 -->
-	<select id="checkPlaylistAtUser" parameterType="Map" resultType="PlaylistDTO">
+	<!-- 13. 플레이리스트 존재여부 확인 : 플레이리스트명 있게 -->
+	<select id="checkPlaylistAtUserByListName" parameterType="Map" resultType="PlaylistDTO">
 		SELECT LIST_NO, EMAIL, LIST_NAME
 		FROM PLAYLIST
 		WHERE LIST_NAME = #{listName} AND EMAIL = #{email}
 	</select>
-	
+
 	<!-- 14. 플레이리스트 개수 확인 -->
 	<select id="checkUserPlaylistCnt" parameterType="Map" resultType="int">
 		SELECT COUNT(LIST_NO)

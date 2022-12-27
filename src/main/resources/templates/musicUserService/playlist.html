@@ -4,12 +4,16 @@
 <meta charset="UTF-8">
 <title></title>
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
+<link rel="stylesheet" th:href="@{/css/playlist.css}">
+<link rel="stylesheet" th:href="@{/css/popup.css}">
+<link rel="stylesheet" th:href="@{/css/musicBoard.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 
 <script th:inline="javascript">
 
 	$(document).ready(function() {
 		
+		//fn_checkUserPlaylistZero();	// 구현 : 플레이리스트가 0개일경우 생성유도화면 띄우기
 		fn_Playlist_list();				// 구현 : 플레이리스트 목록(유저명 + 음악정보_썸네일_수록곡수)
 		fn_playlist_music();			// 구현 : 플레이리스트 수록곡 조회
 		fn_moveUpdatePlaylistName();	// 구현 : 플레이리스트명 수정화면
@@ -22,7 +26,7 @@
 		fn_createPlaylist();			// 구현 : 플레이리스트 생성
 		fn_modalClose();				// 구현 : 모달창 닫기
 	});
-	
+
 
 	function fn_Playlist_list() {	// 플레이리스트 목록조회
 		
@@ -32,54 +36,102 @@
 				dataType: 'json',
 				success: function(resData) {
 					
-					
-					// 유저정보 갱신 
-					
-					$('.playlist_header').empty();
-					$('.playlist_header')
-					.append( $('<div class="playlist_header_left">')
-						.append('<div class="playlist_userName">'  + resData.userName + '님의 플레이리스트</div>')
-						.append('<div class="playlist_cnt">'  + resData.userPlaylistCnt + '개의 플레이리스트 보유중</div>')
-						.append('<div class="playlist_emp">※ 플레이리스트는 총 5개 생성할 수 있습니다</div>') )
-					
-					$('.playlist_header').append( $('<div class="playlist_header_right">').append('<div class="playlist_add">플레이리스트 생성</div>') )  
-					
+					if(resData.result == 0) {
+						
+						// 1) 로그인이 안된경우
+						//alert('');
+						
+					} else if (resData.result == 2) {
+						
+						alert('플레이리스트가 없습니다. 플레이리스트를 생성하세요');
+						
+						$('.playlist_header').empty();
+						$('.playlist_body').empty();
 
-					// 플레이리스트 목록
-					$('.playlist_area').empty();	// 상단 리스트 최신화
-					
-					
+						$('.playlist_header')
+						.append( $('<div class="playlistZero_area">') 
+								.append( $('<div class="playlistZero_left">')
+										.append('<div class="playlistZero_left_logo">물음표!</div>')
+										.append('<div class="playlistZero_left_content">플레이리스트에 음악이 없습니다. 생성버튼으로 플레이리스트를 생성하실 수 있습니다</div>') 
+										.append('<div class="playlist_add">생성하기</div>') )
+								.append( $('<div class="playlistZero_right">')
+										.append('<div class="playlistZero_right_btn">게시판 이동</div>')
+										.append('<div class="playlistZero_right_content">게시판에서 음악을 등록하실수 있습니다.</div>') )
+								
+						
+						);
+						
+						
+					} else {
+						
+						// 3) 제대로 요청된경우 
+						
+						
+						
+						// 유저정보 갱신 
+						
+						$('.playlist_header').empty();
+						$('.playlist_header')
+						.append( $('<div class="playlist_header_left">')
+							.append('<div class="playlist_userName">'  + resData.userName + '님의 플레이리스트</div>')
+							.append('<div class="playlist_cnt">'  + resData.userPlaylistCnt + '개의 플레이리스트 보유중</div>')
+							.append('<div class="playlist_emp">※ 플레이리스트는 총 5개 생성할 수 있습니다</div>') )
+						
+						$('.playlist_header').append( $('<div class="playlist_header_right">').append('<div class="playlist_add">플레이리스트 생성</div>') )  
+						
+
+						// 플레이리스트 목록
+						
+						$('.playlist_body').empty();	// 상단 리스트 최신화
 	
-					$.each(resData.userPlaylist, function(index, playlist) {
 						
-						// 썸네일 조건부여
-						//if(playlist.myMusicDTO.musicDTO.hasThumbNail == 1) {
-						//	//let thumbnail = '/music/user/playlistThumbnail';
-						//} else if (playlist.myMusicDTO.musicDTO.hasThumbNail == 0) {
-							let thumbnail = '/images/defaultImage.png';
-						//}
+		
+						$.each(resData.userPlaylist, function(index, playlist) {
+							
+							// 썸네일 조건부여
+							//if(playlist.myMusicDTO.musicDTO.hasThumbNail == 1) {
+							//	//let thumbnail = '/music/user/playlistThumbnail';
+							//} else if (playlist.myMusicDTO.musicDTO.hasThumbNail == 0) {
+								let thumbnail = '/images/defaultImage.png';
+							//}
+							
+							$('<div class="playlist_area">')
+							.append( $('<div class="playlist_list">')
+									.append( $('<div class="playlist_list_top"></div>')
+											.append( $('<div class="playlist_list_left">')
+													.append('<img class="playlist_thumbnail" src="' + thumbnail + '"></div>') ) 
+											.append( $('<div class="playlist_list_middle"></div>')
+												.append('<div class="playlist_playlistName">' + playlist.listName +'</div>')
+												.append('<div class="playlist_musicCnt">'+ playlist.musicCnt+' 곡</div>') ) 
+												.append( $('<div class="playlist_list_right"></div>')
+														.append('<div class="playlist_updatePlaylistName playlist_btn" data-listno="'+playlist.listNo+'">변경</div>')
+														.append('<div class="playlist_deletePlaylist playlist_btn">삭제</div>') ) ) 
+							.append($('<div class="playlist_bottom"></div>')
+								.append('<div class="btn_playlist_musicBoard" data-listno="' + playlist.listNo + '">음악목록 버튼</div>') ) 
+							.append('<div id="playlist_musicBoard" class="playlist_musicBoard"></div>') )
+							.appendTo( $('.playlist_body') );
+						});
 						
 						
-						$('<div class="playlist_list"></div>')
-						.append($('<div class="playlist_list_top"></div>')
-							.append( $('<div class="playlist_list_left">')
-								.append('<img class="playlist_thumbnail" src="' + thumbnail + '"></div>') ) 
-							.append( $('<div class="playlist_list_middle"></div>')
-								.append('<div class="playlist_playlistName">' + playlist.listName +'</div>')
-								.append('<div class="playlist_musicCnt">'+ playlist.musicCnt+' 곡</div>') ) 
-							.append( $('<div class="playlist_list_right"></div>')
-								.append('<div class="playlist_updatePlaylistName playlist_btn" data-listno="'+playlist.listNo+'">변경</div>')
-								.append('<div class="playlist_deletePlaylist playlist_btn">삭제</div>') )						
-						 )
-						.append($('<div class="playlist_bottom"></div>')
-							.append('<div class="btn_playlist_musicBoard" data-listno="' + playlist.listNo + '">음악목록 버튼</div>') ) 
-						.append('<div id="playlist_musicBoard" class="playlist_musicBoard"></div>')
-						.appendTo('.playlist_area');
-					});
+						
+					}
+					
+					
+					
 			}
 		});
 	}
 
+	
+	function fn_totalMusicBoard() {	// 클릭시 전체게시판 이동 버튼
+		
+		$(document).on('click', '.playlistZero_right_btn', function() {
+			
+			location.href='/music/board/updatedMusic';
+			
+		});
+		
+	}
 	
 	function fn_playlist_music() {	// 각 플레이리스트 수록곡 조회
 	

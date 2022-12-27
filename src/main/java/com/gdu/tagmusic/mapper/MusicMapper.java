@@ -82,8 +82,8 @@ public interface MusicMapper {
 	// 12) 디폴트곡 넣기
 	public int insertDefaultMusicToPlaylist(Map<String, Object> map);
 	
-	// 13) 제약 : 플레이리스트명 확인
-	public PlaylistDTO checkPlaylistAtUser(Map<String, Object> map);
+	// 13) 제약 : 플레이리스트명 확인_이름으로확인
+	public PlaylistDTO checkPlaylistAtUserByListName(Map<String, Object> map);
 
 	// 14) 제약 : 플레이리스트 개수 확인
 	public int checkUserPlaylistCnt(Map<String, Object> map);

@@ -1,0 +1,91 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box;
+	margin : 0;
+	padding : 0;
+	
+	}
+	
+
+.musicLike_container {
+	
+	width: 100%;
+	background-color: #efefef;
+	 margin: 35px auto;
+	padding: 60px 270px;	
+
+}
+
+.musicLike_page {
+	
+
+	background-color: #ffffff;
+	margin: 35px auto;
+	width : 1300px;
+	height: 1300px;
+	padding: 30px;
+	
+	
+}
+
+.musicLike_header {
+	
+	
+		
+		background-color: #efefef;
+		height: 120px;
+		width: 1240px;
+		font-size: 20px;
+		font-weight: 800;
+		color: 212121;
+		padding: 30px 20px;
+		margin-bottom: 20px;
+	
+
+}
+
+.musicLike_body {
+	
+	background-color: #efefef;
+	height: 1200px;
+	
+	font-size: 20px;
+	font-weight: 800;
+	color: 212121;
+	padding: 20px;
+	
+}
+
+.musicLike_table {
+	
+	background-color: white;
+	width: 1150px;
+    padding: 10px;
+    height : 300px;
+   
+    border-collapse: collapse;
+    font-size: 15px;
+    color : #333333;
+    text-align: center;
+	
+	
+}
+
+.musicLike_tr {
+	
+	
+	
+	
+	
+}
+
+.musicLike_td {
+	
+	 font-size: 13px;
+  	height: 30px;
+    border-top: 1px solid #888888;
+    padding: 10px;
+	
+	
+}

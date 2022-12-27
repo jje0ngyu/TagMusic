@@ -478,6 +478,7 @@
     width: 400px;
     border-top: 1px solid #444444;
     border-collapse: collapse;
+    height: 400px;
   }
   .modal_td, .modal_tr {
     border-bottom: 1px solid #444444;

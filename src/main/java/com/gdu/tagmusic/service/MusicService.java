@@ -63,6 +63,10 @@ public interface MusicService {
 	// 7. 플레이리스트 생성
 	public Map<String, Object> createPlaylist(HttpServletRequest request);
 	
+	// # 유저 좋아요 
+	public Map<String, Object> selectMusicLikeList(HttpServletRequest request);
+
+	
 
 	/*
 	 * // 1. 유저의 listNo 가져오기 public void selectUserPlaylist(HttpServletRequest

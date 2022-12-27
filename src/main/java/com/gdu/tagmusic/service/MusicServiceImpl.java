@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 
 import com.gdu.tagmusic.domain.MusicDTO;
+import com.gdu.tagmusic.domain.MusicLikeDTO;
 import com.gdu.tagmusic.domain.MyMusicDTO;
 import com.gdu.tagmusic.domain.PlaylistDTO;
 import com.gdu.tagmusic.domain.UserDTO;
@@ -294,24 +295,33 @@ public class MusicServiceImpl implements MusicService {
 		// 유저정보 : email, userNo
 		 HttpSession session = request.getSession(); 
 		 UserDTO user = (UserDTO)session.getAttribute("loginUser"); 
+		 String email = user.getEmail();
+		 int userNo = user.getUserNo(); 
+		 String userName = user.getName();
+		 Map<String, Object> map = new HashMap<>();
+		 map.put("email", email);
 		 
-		 // 1.로그인이 안됬을 경우 이벤트 실패
+		 // 제약 : 로그인이 안됬을 경우 이벤트 실패
 		 if(user == null) {
-			 
-			 Map<String, Object> map = new HashMap<>();
+
 			 map.put("result", 0);
 			 return map;
+		 }
+		 
+		 // 제약 : 유저의 플레이리스트가 0개일 경우 별도의 창 생성
+		 
+		 int playlistCnt = musicMapper.checkUserPlaylistCnt(map);
 
+		 if(playlistCnt == 0) {
+			
+			map.put("result", 2);
+			return map;
+		
+		 
 		 } else {
-			 
-			 String email = user.getEmail();
-			 int userNo = user.getUserNo(); 
-			 
-			 // 반환할 유저명
-			 String userName = user.getName();
+
 			 
 			 // map에 담기
-			 Map<String, Object> map = new HashMap<>();
 			 map.put("email", email);
 			 map.put("userNo", userNo);
 			 
@@ -325,6 +335,8 @@ public class MusicServiceImpl implements MusicService {
 			 
 			 
 		 }
+		 
+		 
 		 
 		 // 2. 로그인 되었을 경우 이벤트 실행
 		
@@ -461,7 +473,6 @@ public class MusicServiceImpl implements MusicService {
 		
 		// 3.. 요청한 음악이 해당 플레이리스트에 존재하는지 확인
 		MyMusicDTO myMusic = musicMapper.checkMusicInPlaylist(map);
-		System.out.println(myMusic);
 		
 		// 1) 존재하는 경우
 		if(myMusic != null) {
@@ -488,7 +499,6 @@ public class MusicServiceImpl implements MusicService {
 				
 		// 파라미터 : 플레이리스트명
 		String listName = request.getParameter("listName");
-		System.out.println(listName);
 		
 		// session의 email과 user
 		HttpSession session = request.getSession();
@@ -511,7 +521,7 @@ public class MusicServiceImpl implements MusicService {
 		}
 		
 		// 제약: 해당 유저가 지은 플레이리스트명이 이미 존재하는경우 : 이벤트 X
-		PlaylistDTO playlist = musicMapper.checkPlaylistAtUser(map);
+		PlaylistDTO playlist = musicMapper.checkPlaylistAtUserByListName(map);
 		
 		if(playlist != null) {
 			
@@ -537,17 +547,52 @@ public class MusicServiceImpl implements MusicService {
 			
 			
 		}
+	}
+	
+	// # 유저 좋아요
+	
+	// 1. 좋아요 전체 조회
+	// 해당 유저가 좋아요를 누른 목록을 조회
+	@Override
+	public Map<String, Object> selectMusicLikeList(HttpServletRequest request) {
 		
+		// 1. 기초데이터
+		// 파라미터 : page
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page")); 
+		int page = Integer.parseInt(opt.orElse("1"));
+			
+		// 유저 : email
+		HttpSession session = request.getSession();
+		UserDTO user = (UserDTO) session.getAttribute("loginUser");
+				String email = user.getEmail();
 		
+		// map
+		Map<String, Object> map = new HashMap<>();
+		map.put("page", page);
+		map.put("email", email);
 		
+		// 2. 좋아요 수 조회
+		int musicLikeCnt = musicMapper.selectUserMusicLikeCnt(map);
 		
+		// 제약 : 좋아요 수가 0일경우 result = 0 반환
+		if(musicLikeCnt == 0) {
+			
+			map.put("result", 0);
+			return map;
+			
+		}
 		
+		// 3. 페이징 처리
+		pageUtil.setPageUtil(page, 10, musicLikeCnt);
 		
+		// 4. 좋아요 목록 조회
+		List<MusicLikeDTO> musicLikeList = musicMapper.selectUserMusicLikeList(map);
 		
+		map.put("pageUtil", pageUtil);
+		map.put("selectUserMusicLikeList", musicLikeList);
+		map.put("result", 1);
 		
-		
-		
-		
+		return null;
 	}
 
 	// 1. 유저 플레이리스트 페이지 이동 및 조회
