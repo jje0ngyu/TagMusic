@@ -15,6 +15,10 @@ public class PlaylistDTO {
 
 	private int listNo;
 	private String email;
-	private String groupName;
+	private String listName;
+	private UserDTO userDTO;
+	private int playlistMusicCnt;
+	private MyMusicDTO myMusicDTO;
+	private int musicCnt;
 	
 }

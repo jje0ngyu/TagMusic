@@ -14,7 +14,7 @@
 	<!-- 음원 재생 바(bar) -->
 	<footer class="music_play_bar">
 		<div>
-			<audio controls="controls" autoplay controlsList="nodownload" id="iframe_audio" class="iframe_audio blind">
+			<audio controls="controls" controlsList="nodownload" id="iframe_audio" class="iframe_audio blind">
 				<source th:src="@{/tune/display/music(musicNo=${music.musicNo})}" type="audio/mp3" />
 			</audio>
 		</div>
@@ -83,10 +83,10 @@
 		}, 1000);
 		$(function(){
 			fn_hiding();
-			fn_audio_play();
 			fn_audio_pause();
 			fn_muted();
 			fn_repeat();
+			isPassHave();
 		})
 		
 		// 보여지는 부분들
@@ -151,6 +151,7 @@
 		</script>	
 		
 <script>
+	function isPass() {}
 	function isPassHave(){
 		$.ajax({
 			type: 'post',
@@ -158,11 +159,12 @@
 			dataType: 'json',
 			success: function(resData){
 				if(resData.result == 0){
-					if(confirm('이용권이 없는 회원입니다. 이용권을 구매하러 가시겠습니까?')){
-						location.href="/payment/buy";
-					}
+					
+				} else {
+					fn_audio_play();
+					
 				}
-				if(resData.isNotLogin == 'loginPlz'){
+				 if(resData.isNotLogin == 'loginPlz'){
 					if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
 						location.href="/user/login/form";
 					}
