@@ -1,94 +1,6 @@
 /**
  * 
  */
- 	
-
- 
- 	// 전역변수
-	var page = 1;
-	var totalPage = 0;
-	
-	function fn_page_list(realPage){
-		
-		$.ajax({
-			type : 'get',
-			url : '/admin/user/list',
-			data : 'page=' + realPage + "&list=nowUser",
-			dataType : 'json',
-			success : function(resData){
-				
-				$('#various_functions').toggleClass('blind');
-				
-				$('#list_body').empty();
-				
-				$('#change_Date').text('');
-				
-				$('#column1').empty();
-				
-				$('#column1').append($('<option value="">:::선택:::</option>'))
-							.append($('<option value="USER_NO">회원번호</option>'))
-							.append($('<option value="NAME">이름</option>'))
-							.append($('<option value="GENDER">성별</option>'))
-							.append($('<option value="ARTIST">아티스트명</option>'))
-							.append($('<option value="EMAIL">이메일</option>'))
-							.append($('<option value="MOBILE">핸드폰번호</option>'))
-							.append($('<option value="SNS_TYPE">가입형태</option>'));
-				
-				$.each(resData.userList, function(i, user) {
-					
-					var location;
-					var promotion;
-					
-					switch(user.agreeCode){
-					case 0 : 
-						location = '';
-						promotion = '';
-						break;
-					case 1 : 
-						location = '';
-						promotion = 'O';
-						break;
-					case 2 : 
-						location = 'O';
-						promotion = '';
-						break;
-					case 3 : 
-						location = 'O';
-						promotion = 'O';
-						break;
-					default : break;
-					}
-					
-					$('<tr>')
-					.append( $('<td>').append($('<input class="check_one" type="checkbox" id="userCheck" name="userCheck" value="'+ user.userNo +'">')))
-					.append( $('<td>').append(user.userNo) )
-					.append( $('<td>').append($('<img class="thum" src="'+user.profileImage+'"></img>')))
-	                .append( $('<td>').append(user.name) )
-	                .append( $('<td>').append(user.gender) )
-	                .append( $('<td>').append(user.artist) )
-	                .append( $('<td>').append(user.birthyear+user.birthday)) 
-	                .append( $('<td>').append(user.email) ) 
-	                .append( $('<td>').append(user.mobile) ) 
-					.append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
-	                .append( $('<td>').append('')) 
-	                .append( $('<td>').append(user.snsType)) // 가입형태
-	                .append( $('<td>').append(location))
-	                .append( $('<td>').append(promotion))
-					.appendTo('#list_body')
-				});
-				
-				$('.list_page_footer').empty();
-				$(resData.paging).appendTo('.list_page_footer');
-				
-				$('#search_for_table').attr('value', 'USERS');
-				
-			},
-			error : function(jqXHR){
-				console.log(jqXHR.status);
-			}
-		});
-	};
- 
  
  	// checkbox 전체체크하면 개별체크 한꺼번에 됨
 	function fn_checkAll(){
@@ -96,7 +8,6 @@
 			$('.check_one').prop('checked', $(this).prop('checked'));
 		});
 	}
-	
  
 	//	개별체크 모두 되면 전체체크박스에 체크 들어감
 	function fn_checkOne(){
@@ -108,7 +19,6 @@
 			$('#check_all').prop('checked', $('.check_one').length == checkCount);
 		});
 	}
- 
  
  	function fn_user_search(realpage){
 		 
@@ -384,7 +294,7 @@
 	
 	function fn_sleep_user_list(realPage){
 		
-		$('#list_sleep_user').click(function(){
+		//$('#list_sleep_user').click(function(){
 			
 			$.ajax({
 			type : 'get',
@@ -479,13 +389,13 @@
 				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
-		});
+		//});
 	}
 		
 
  	function fn_retire_user_list(realPage){
 		 
-		$('#list_retire_user').click(function(){
+		//$('#list_retire_user').click(function(){
 			
 			$.ajax({
 			type : 'get',
@@ -557,6 +467,89 @@
 				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
+		//});
+	};
+	
+		function fn_page_list(realPage){
+		
+		$.ajax({
+			type : 'get',
+			url : '/admin/user/list',
+			data : 'page=' + realPage + "&list=nowUser",
+			dataType : 'json',
+			success : function(resData){
+				
+				$('#various_functions').toggleClass('blind');
+				
+				$('#list_body').empty();
+				
+				$('#change_Date').text('');
+				
+				$('#column1').empty();
+				
+				$('#column1').append($('<option value="">:::선택:::</option>'))
+							.append($('<option value="USER_NO">회원번호</option>'))
+							.append($('<option value="NAME">이름</option>'))
+							.append($('<option value="GENDER">성별</option>'))
+							.append($('<option value="ARTIST">아티스트명</option>'))
+							.append($('<option value="EMAIL">이메일</option>'))
+							.append($('<option value="MOBILE">핸드폰번호</option>'))
+							.append($('<option value="SNS_TYPE">가입형태</option>'));
+				
+				$.each(resData.userList, function(i, user) {
+					
+					var location;
+					var promotion;
+					
+					switch(user.agreeCode){
+					case 0 : 
+						location = '';
+						promotion = '';
+						break;
+					case 1 : 
+						location = '';
+						promotion = 'O';
+						break;
+					case 2 : 
+						location = 'O';
+						promotion = '';
+						break;
+					case 3 : 
+						location = 'O';
+						promotion = 'O';
+						break;
+					default : break;
+					}
+					
+					$('<tr>')
+					.append( $('<td>').append($('<input class="check_one" type="checkbox" id="userCheck" name="userCheck" value="'+ user.userNo +'">')))
+					.append( $('<td>').append(user.userNo) )
+					.append( $('<td>').append($('<img class="thum" src="'+user.profileImage+'"></img>')))
+	                .append( $('<td>').append(user.name) )
+	                .append( $('<td>').append(user.gender) )
+	                .append( $('<td>').append(user.artist) )
+	                .append( $('<td>').append(user.birthyear+user.birthday)) 
+	                .append( $('<td>').append(user.email) ) 
+	                .append( $('<td>').append(user.mobile) ) 
+					.append( $('<td>' +  moment(user.joinDate).format('YYYY.MM.DD hh:mm') + '</td>'))
+	                .append( $('<td>').append('')) 
+	                .append( $('<td>').append(user.snsType)) // 가입형태
+	                .append( $('<td>').append(location))
+	                .append( $('<td>').append(promotion))
+					.appendTo('#list_body')
+				});
+				
+				$('.list_page_footer').empty();
+				$(resData.paging).appendTo('.list_page_footer');
+				
+				$('#search_for_table').attr('value', 'USERS');
+				
+			},
+			error : function(jqXHR){
+				console.log(jqXHR.status);
+			}
 		});
-	}
- 
+	};
+	
+	
+	fn_page_list(1);

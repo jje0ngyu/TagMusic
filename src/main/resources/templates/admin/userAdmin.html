@@ -18,10 +18,8 @@
 		fn_retireUser();
 		fn_sleep_user_list();
 		fn_retire_user_list();
-		fn_page_list(page);
+		fn_page_list(1);
 	});
-	
-
 	
 </script>
 <body>
@@ -52,8 +50,8 @@
 
 			<div class="admin_menu" >
 				<div onclick="fn_page_list(1);">가입 유저 관리</div>
-				<div id="list_sleep_user">휴면 유저 관리</div>
-				<div id="list_retire_user">탈퇴 유저 관리</div>
+				<div onclick="fn_sleep_user_list(1);">휴면 유저 관리</div>
+				<div onclick="fn_retire_user_list(1);">탈퇴 유저 관리</div>
 			</div>
 			
 			
@@ -126,7 +124,6 @@
 					<tfoot>
 						<tr>
 							<td colspan="15" class="list_page_footer">
-							   <input type="hidden" id="page" value="1">
 							   
 							   
 							   
@@ -134,6 +131,7 @@
 						</tr>
 					</tfoot>
 				</table>
+			   <input type="hidden" id="page" value="1">
 					
 					
 

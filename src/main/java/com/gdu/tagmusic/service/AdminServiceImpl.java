@@ -198,9 +198,6 @@ public class AdminServiceImpl implements AdminService {
 				break;
 		}
 		
-		
-		
-		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("userList", userList);
 		result.put("pageUtil", pageUtil);
