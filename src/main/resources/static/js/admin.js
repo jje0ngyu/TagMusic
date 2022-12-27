@@ -306,8 +306,8 @@
 				$('#various_functions').addClass('blind');
 				$('#list_body').empty();
 				$('#change_Date').text('휴면일');
-				$('#column1').empty();
 				
+				$('#column1').empty();
 				$('#column1').append($('<option value="">:::선택:::</option>'))
 				.append($('<option value="USER_NO">회원번호</option>'))
 				.append($('<option value="NAME">이름</option>'))
@@ -316,6 +316,11 @@
 				.append($('<option value="EMAIL">이메일</option>'))
 				.append($('<option value="MOBILE">핸드폰번호</option>'))
 				.append($('<option value="SNS_TYPE">가입형태</option>'));
+			
+				$('#column2').empty();
+				$('#column2').append($('<option value="">:::선택:::</option>'))
+				.append($('<option value="JOIN_DATE">가입일</option>'))
+				.append($('<option value="RETIRE_DATE">휴면일</option>'))
 				
 				$.each(resData.userList, function(i, user) {
 					
@@ -407,16 +412,22 @@
 				$('#various_functions').addClass('blind');
 				
 				$('#list_body').empty();
-				$('#column1').empty();
 				
 				//$('#joinDate').after($('<td>').append('<span>').text('휴면일'));
 				$('#change_Date').text('탈퇴일');
 				
+				$('#column1').empty();
 				$('#column1').append($('<option value="">:::선택:::</option>'))
 				.append($('<option value="USER_NO">회원번호</option>'))
 				.append($('<option value="ARTIST">아티스트명</option>'))
 				.append($('<option value="EMAIL">이메일</option>'))
-
+				
+				$('#column2').empty();
+				$('#column2').append($('<option value="">:::선택:::</option>'))
+				.append($('<option value="JOIN_DATE">가입일</option>'))
+				.append($('<option value="RETIRE_DATE">탈퇴일</option>'))
+				//.append($('<option value="JOIN_DATE">생일</option>'))
+				
 				$.each(resData.userList, function(i, user) {
 					
 					$('<tr>')
@@ -495,6 +506,11 @@
 							.append($('<option value="EMAIL">이메일</option>'))
 							.append($('<option value="MOBILE">핸드폰번호</option>'))
 							.append($('<option value="SNS_TYPE">가입형태</option>'));
+				
+				$('#column2').empty();
+				$('#column2').append($('<option value="">:::선택:::</option>'))
+				.append($('<option value="JOIN_DATE">가입일</option>'))
+				//.append($('<option value="RETIRE_DATE">생일</option>'))
 				
 				$.each(resData.userList, function(i, user) {
 					
