@@ -11,13 +11,11 @@
 
 	$(function(){
 		
-		// 게시글 수정화면으로 이동
 		$('#btn_upload_edit').click(function(event){
 			$('#frm_upload').attr('action', '/upload/edit');
 			$('#frm_upload').submit();
 		});
 		
-		// 게시글 삭제
 		$('#btn_upload_remove').click(function(event){
 			if(confirm('첨부된 모든 파일이 함께 삭제됩니다. 삭제할까요?')){
 				$('#frm_upload').attr('action', '/upload/remove');
@@ -25,12 +23,9 @@
 			}
 		});
 		
-		// 게시글 목록
 		$('#btn_upload_list').click(function(event){
 			location.href = '/upload/list';
 		});
-		
-		
 		
 	});
 	
@@ -41,10 +36,10 @@
 	<div>
 		<h1>업로드 게시글 정보</h1>
 		<ul>
-			<li th:text="${upload.title}">제목 : </li>
-			<li th:text="${upload.content}">내용 : </li>
-			<li th:text="${upload.createDate}">작성일 :  </li>
-			<li th:text="${upload.modifyDate}">수정일 : </li>
+			<li th:text="|제목 : ${upload.title}|"></li>
+			<li th:text="|내용 : ${upload.content}|"></li>
+			<li th:text="|작성일 : ${#dates.format(upload.createDate, 'yyyy-MM-dd HH:mm:ss')}|"></li>
+			
 		</ul>
 		<div>
 			<form id="frm_upload" method="post">
@@ -60,6 +55,7 @@
 	
 	<div>
 		<h3>첨부 목록 및 다운로드</h3>
+		<span th:text="|첨부파일 개수 : ${attachCnt}|"></span>
 		<div>
 			<div th:each="attach : ${attachList}">
 				<a th:href="@{/upload/download(attachNo=${attach.attachNo})}">
