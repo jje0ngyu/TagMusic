@@ -28,7 +28,6 @@ import com.gdu.tagmusic.util.PageUtil;
 @Service
 public class BoardServiceImpl implements BoardService {
 	
-	
 	private BoardMapper boardMapper;
 	private PageUtil pageUtil;
 	private MyFileUtil myFileUtil;
@@ -42,7 +41,6 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public void getBoardList(Model model) {
-		
 		
 		Map<String, Object> modelMap = model.asMap();  
 		HttpServletRequest request = (HttpServletRequest) modelMap.get("request");

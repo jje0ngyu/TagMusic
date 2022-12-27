@@ -15,6 +15,7 @@ public class UploadDTO {
 	
 	private int uploadNo;
 	private String title;
+	private int Hit;
 	private String content;
 	private Date createDate;
 	private Date modifyDate;

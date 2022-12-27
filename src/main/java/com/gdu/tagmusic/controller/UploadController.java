@@ -40,6 +40,16 @@ public class UploadController {
 		uploadService.save(multipartRequest, response);
 	}
 	
+	@GetMapping("/upload/increse/hit")
+	public String increseHit(@RequestParam(value="uploadNo", required=false, defaultValue="0") int uploadNo) {
+		int result = uploadService.increseHit(uploadNo);
+		if(result > 0) {  
+			return "redirect:/upload/detail?uploadNo=" + uploadNo;
+		} else {          
+			return "redirect:/upload/list";
+		}
+	}
+	
 	@GetMapping("/upload/detail")
 	public String detail(@RequestParam(value="uploadNo", required=false, defaultValue="0") int uploadNo, Model model) {
 		uploadService.getUploadByNo(uploadNo, model);
