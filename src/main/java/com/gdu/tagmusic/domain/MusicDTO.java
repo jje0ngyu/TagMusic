@@ -33,5 +33,6 @@ public class MusicDTO {
 	private int hasThumbNail;
 	private ActiveLogDTO activeLogDTO;
 	private MusicLikeDTO musicLikeDTO;
+	private UserDTO userDTO;
 
 }
