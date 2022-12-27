@@ -40,7 +40,7 @@ public class TuneController {
 	
 	// 음원 - iframe
 	@GetMapping("/tune/iframe")
-	public String requiredLogin_musicPlayer(@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, HttpServletRequest request, Model model) {
+	public String musicPlayer(@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, HttpServletRequest request, Model model) {
 		model.addAttribute("music", tuneService.getMusicByNo(musicNo));
 		return "layout/musicPlayer";
 	}
