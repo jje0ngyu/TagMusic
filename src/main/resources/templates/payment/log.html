@@ -223,77 +223,73 @@ function fn_userLogSelect(){
 	
 	<div th:replace="~{layout/header.html::header_layout}"></div>
 	<div th:replace="~{layout/side.html::side_layout}"></div>
-	<div class="back_content">
-		<div id="back_layer"></div>
-	</div>
-	<article class="payment_base_layer">
+	
+	<article class="pay_controllers">
 		<div class="article_contain">
-			<div class="pay_controllers">
-				<h1 class="payTitle" th:text="|${session.loginUser.name} 님의 결제이력|"></h1>
-				<form id="frm_search">
-					<nav id="nav3" class="tab_box_basic">
-						<ul class="top_pay_controller">
-							<li id="pass_log" class="tab_payment tab_box_click">
-								전체 결제이력
-								<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
-								<script>
-									$('#pass_log').click(function(){
-										location.href="/";
-									})
-								</script>
-							</li>
-							<li id="purchased_pass" class="tab_payment">
-								구매한 이력
-								<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
-								<script>
-									$('#purchased_pass').click(function(){
-										location.href="/";
-									})
-								</script>
-							</li>
-							<li id="gifted_pass" class="tab_payment">
-								선물한 이력
-								<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
-								<script>
-									$('#gifted_pass').click(function(){
-										location.href="/";
-									})
-								</script>
-							</li>
-						</ul>
-					</nav>
-						<select id="column" name="column" class="blind">
-					    	<option value=""></option>
-					    	<option value="BUY">구매한</option>
-					    	<option value="GIFT">선물한</option>
-	    				</select>
-					<script>
-						
-					</script>
+			<h1 class="payTitle" th:text="|${session.loginUser.name} 님의 결제이력|"></h1>
+			<form id="frm_search">
+				<nav id="nav3" class="tab_box_basic">
+					<ul class="top_pay_controller">
+						<li id="pass_log" class="tab_payment tab_box_click">
+							전체 결제이력
+							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
+							<script>
+								$('#pass_log').click(function(){
+									location.href="/";
+								})
+							</script>
+						</li>
+						<li id="purchased_pass" class="tab_payment">
+							구매한 이력
+							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
+							<script>
+								$('#purchased_pass').click(function(){
+									location.href="/";
+								})
+							</script>
+						</li>
+						<li id="gifted_pass" class="tab_payment">
+							선물한 이력
+							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
+							<script>
+								$('#gifted_pass').click(function(){
+									location.href="/";
+								})
+							</script>
+						</li>
+					</ul>
+				</nav>
+					<select id="column" name="column" class="blind">
+				    	<option value=""></option>
+				    	<option value="BUY">구매한</option>
+				    	<option value="GIFT">선물한</option>
+    				</select>
+				<script>
 					
-				</form>
-				<input type="hidden" id="isUser" th:data-user="${session}">
-				<div th:if="${session.loginUser != null}">
-					<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
-					<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
-					<input type="hidden" id="userMobile" th:data-mobile="${session.loginUser.mobile}">
-					<input type="hidden" id="userAddr1" th:data-addr="${session.loginUser.roadAddress}">
-					<input type="hidden" id="userAddr2" th:data-addr="${session.loginUser.jibunAddress}">
-					<input type="hidden" id="userAddr3" th:data-addr="${session.loginUser.detailAddress}">
-					<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
-					<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
-					<input type="hidden" class="isUser" th:data-user="true">
-				</div> 
-				<div id="buyPageDiv" style="text-align: center">
-					<table border="1">
-						<thead id="list_head" >
-						</thead>
-						<tbody id="list_body" >
-						</tbody>
-						<tfoot id="list_foot" >
-						</tfoot>
-					</table>
-				</div>
+				</script>
+				
+			</form>
+			<input type="hidden" id="isUser" th:data-user="${session}">
+			<div th:if="${session.loginUser != null}">
+				<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
+				<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
+				<input type="hidden" id="userMobile" th:data-mobile="${session.loginUser.mobile}">
+				<input type="hidden" id="userAddr1" th:data-addr="${session.loginUser.roadAddress}">
+				<input type="hidden" id="userAddr2" th:data-addr="${session.loginUser.jibunAddress}">
+				<input type="hidden" id="userAddr3" th:data-addr="${session.loginUser.detailAddress}">
+				<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
+				<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
+				<input type="hidden" class="isUser" th:data-user="true">
+			</div> 
+			<div id="buyPageDiv" style="text-align: center">
+				<table border="1">
+					<thead id="list_head" >
+					</thead>
+					<tbody id="list_body" >
+					</tbody>
+					<tfoot id="list_foot" >
+					</tfoot>
+				</table>
 			</div>
 		</div>
 	</article>
