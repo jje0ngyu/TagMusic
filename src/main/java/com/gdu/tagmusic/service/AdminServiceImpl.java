@@ -1,7 +1,5 @@
 package com.gdu.tagmusic.service;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -162,8 +160,8 @@ public class AdminServiceImpl implements AdminService {
 				// PageUtil 계산하기
 				pageUtil.setPageUtil(page, recordPerPage, totalRecord);
 				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("begin", pageUtil.getBegin());
-				map.put("end", pageUtil.getEnd());
+				map.put("begin", pageUtil.getBegin() - 1);
+				map.put("recordPerPage", pageUtil.getRecordPerPage());
 				
 				// begin~end 목록 가져오기
 				userList = adminMapper.selectUserList(map);
@@ -175,8 +173,8 @@ public class AdminServiceImpl implements AdminService {
 				// PageUtil 계산하기
 				pageUtil.setPageUtil(page, recordPerPage, totalRecord);
 				Map<String, Object> map2 = new HashMap<String, Object>();
-				map2.put("begin", pageUtil.getBegin());
-				map2.put("end", pageUtil.getEnd());
+				map2.put("begin", pageUtil.getBegin() - 1);
+				map2.put("recordPerPage", pageUtil.getRecordPerPage());
 				
 				// begin~end 목록 가져오기
 				userList = adminMapper.selectSleepUserList(map2);
@@ -188,8 +186,8 @@ public class AdminServiceImpl implements AdminService {
 				// PageUtil 계산하기
 				pageUtil.setPageUtil(page, recordPerPage, totalRecord);
 				Map<String, Object> map3 = new HashMap<String, Object>();
-				map3.put("begin", pageUtil.getBegin());
-				map3.put("end", pageUtil.getEnd());
+				map3.put("begin", pageUtil.getBegin() - 1);
+				map3.put("recordPerPage", pageUtil.getRecordPerPage());
 				
 				// begin~end 목록 가져오기
 				userList = adminMapper.selectRetireUserList(map3);
@@ -269,7 +267,7 @@ public class AdminServiceImpl implements AdminService {
 		
 		// 조회에서 사용하는 Map
 		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 
 		List<UserDTO> userList= null;
 		try {

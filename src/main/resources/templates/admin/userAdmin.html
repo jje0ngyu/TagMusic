@@ -12,7 +12,7 @@
 	$(document).ready(function(){
 		fn_checkAll();
 		fn_checkOne();
-		fn_user_search();
+		fn_user_search1();
 		fn_autoComplete();
 		fn_sleepUser();
 		fn_retireUser();
@@ -20,6 +20,8 @@
 		//fn_retire_user_list();
 		fn_page_list(1);
 	});
+	
+	
 	
 	// 고전이벤트
 	// $(document).on('click', .class명', function() {
@@ -36,7 +38,7 @@
 
 	<div th:replace="~{layout/header.html::header_layout}"></div>
 	<div class="session">
-		<div th:replace="~{layout/side.ㅜhtml::side_layout}"></div>
+		<div th:replace="~{layout/side.html::side_layout}"></div>
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
 		<div class="container">
 		
@@ -72,12 +74,12 @@
 					</select>
 					<input type="text" name="query" id="query" list="auto_complete">
 					<datalist id="auto_complete"></datalist>
-					<input type="button" value="조회" onclick="fn_user_search();">
+					<input type="button" value="조회" onclick="fn_user_search1();">
 					<input type="hidden" name="table" id="search_for_table">
 				</form>
 			</div>
 			<div>
-				<form id="frm_search2" action="@{/admin/user/search}">
+				<form id="frm_search2">
 					<select name="column" id="column2">
 					
 					</select>
@@ -85,14 +87,14 @@
 					~
 					<input type="text" name="stop" id="stop">
 					<span>
-						<input type="submit" value="조회">
+						<input type="button" value="조회" onclick="fn_user_search2();">
 					</span>
 				</form>
 			</div>
 			
 			<div id="various_functions">
-				<input type="button" id="btn_retireUser" value="탈퇴">
-				<input type="button" id="btn_sleepUser" value="휴면">
+			
+			
 			</div>
 			
 			
@@ -115,7 +117,6 @@
 							<td><span data-title="SNS_TYPE">가입형태</span></td>
 							<td><span data-title="AGREE_CODE">위치동의</span></td>
 							<td><span data-title="AGREE_CODE">마케팅동의</span></td>
-							
 						</tr>
 					</thead>
 					<tbody id="list_body">
