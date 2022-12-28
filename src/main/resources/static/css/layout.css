@@ -3,7 +3,8 @@
 	/* 공통영역 (header.html을 포함한 모든 html에 적용) */
 
 	/* 클래스 초기화  */
-	html, body, section, article, div, a, input, ul, li, input {
+	html, body, section, article, div, a, input, ul, li, input, ol, span {
+		box-sizing: border-box;
 		margin: 0px;
 		padding: 0px;
 		background-color: inherit;
@@ -478,6 +479,7 @@
     width: 400px;
     border-top: 1px solid #444444;
     border-collapse: collapse;
+    height: 400px;
   }
   .modal_td, .modal_tr {
     border-bottom: 1px solid #444444;

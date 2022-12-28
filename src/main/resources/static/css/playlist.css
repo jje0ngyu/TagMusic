@@ -36,7 +36,7 @@
 		
 		background-color: #efefef;
 		height: 120px;
-		
+		width: 1240px;
 		font-size: 20px;
 		font-weight: 800;
 		color: 212121;
@@ -44,9 +44,15 @@
 		margin-bottom: 20px;	
 	}
 	
+	.playlist_area {
+	
+		
+	
+	}
+	
 	.playlist_header_left {
 	
-	margin-right: 600px;
+	margin-right: 100px;
 	
 	}
 	
@@ -142,7 +148,7 @@
 	
 	.playlist_bottom {
 		
-		width : 1300px;
+		width : 1100px;
 		margin-top: 10px;
 		padding-left: 490px;
 		
@@ -263,194 +269,71 @@ tbody {
 	
 }
 
-	/*
+.playlistZero_area {
 	
-	.playlist_thumbNailimage {
-	
-		
-	
-	}
-	
-	.playlist {
-	
-	margin: 35px auto;
-	margin-top: 75px;
-	background-color: #212121;
-	width : 1300px;
-	height: 1300px;
-
-	padding: 80px 150px;
-	
-	
-	}
-	
-	.playlist_title_username { 
-	
-	color: #eeeeee;
-	font-weight: 800;
-	
-	
-	}
-	
-	playlist_header {
-	
-	margin: 50px auto 20px;
-	background-color: #323232;
-	height: 50px;
-	line-height: 50px;
-	border-radius: 10px;
-	padding: 0 20px;
-	
-	}
-	*/
-	/*
-	.playlist_cnt {
-	
-	display: inline-block;
-	margin-right: 50px;
-	margin-top: 30px;
-	font-weight: 800;
-	font-size: 20px;
-	}
-	
-	.playlist_cnt_emp {
-	
-	display: inline-block;
-	text-align: center;
-	font-size: 30px;
-	}
-	
-	.btn_playlist_add {
-	
-	
-	background-color: #efefef;
-	color: #232323;
-	display: inline-block;
-	width: 230px;
-	height: 35px;
-	line-height: 35px;
-	border-radius: 6px;
-	text-align: center;
-	cursor: pointer;
-	font-weight: 900;
-	padding: 0 10px;
-
-	}
-	
-	.btn_playlist_edit {
-	
-	background-color: #efefef;
-	color: #232323;
-	display: inline-block;
-	width: 150px;
-	height: 35px;
-	line-height: 35px;
-	border-radius: 6px;
-	text-align: center;
-	cursor: pointer;
-	font-weight: 900;
-	padding: 0 10px;
-	margin-left: 570px;
-	
-	}
-	
-	.playlist_body {
-	
-	margin: 30px auto;
-	background-color: #323232;
-	height: 1050px;
-	padding : 20px;
-	border-radius: 6px;
-
-	}
-	
-	.playlist_item {
-	
-	display: flex;
-	background-color: #232323;
+	background-color: #dddddd;
 	padding: 20px;
-	/* width: 1310px; */
-	/*
-	height: 190px;
-	border-radius: 10px;
+	width: 1200px;
+	height: 500px;
+	text-align:center;
+	display: flex;
+	padding-top: 250px;
+	
+
+}
+
+.playlistZero_left {
+	
+	width: 1100px;
+	height: 500px;
+	
+	
+	
+}
+
+.playlistZero_left_content {
+	
 	margin-bottom: 20px;
 	
+}
+
+.playlistZero_right {
+	
+	
+	width: 200px;
+	height: 500px;
+}
+
+.playlist_add {
+	
+	margin-left: 520px;
+	
+}
+
+.playlistZero_right_btn {
+	
+	margin-top: 200px;
+	background-color: #dddddd;
+	border: 1px solid #888888;
+	width: 50px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	
+	font-size: 14px;
+	margin-left:50px;
+	
+	
+}
+
+.playlistZero_right_content {
+	
+	font-size: 12px;
+	width: 150px;
+	height: 40px;
+	
+}
 
 
-	
-	}
-	
-	.playlist_item_area_left {
 
-		width: 220px;
-		height: 150px;
-		border-right: 2px solid #676767;
-		
-	}
-	
-	.playlist_thumbnail {
-		
-		border-radius: 10px;
-		display: inline-block;
-		width: 160px;
-		height: 150px;
-		
-		margin-right: 5px;
-	
-	}
-	
-	.playlist_item_area_middle {
-	
-		width: 560px;
-		margin-left: 30px;
-		
-	}
-	
-	.playlist_item_area_right {
-		
-		display: flex;
-		
-	
-		
-	
-	}
-	
-	.btn_playlist {
-	
-		background-color: #efefef;
-		color: #232323;
-		display: inline-block;
-		width: 60px;
-		height: 35px;
-		line-height: 35px;
-		border-radius: 6px;
-		text-align: center;
-		cursor: pointer;
-		font-weight: 900;
-		padding: 0 10px;
-		list-style: none;
-		margin-right: 15px;
-		
-	
-	}
-	.playlist_item_area_right_item {
-	
-		margin: 5px 0;
-		font-size: 20px;
-		font-weight: 800;
-	
-	}
-	
-	.playlist_box {
-		
-		width: 20px;
-		height: 150px;
-		display: inline-block;
-		text-align: center;
-		margin-right: 10px;
-		
-		
-		
-	}
-	
-	*/
+

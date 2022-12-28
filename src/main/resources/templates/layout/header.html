@@ -6,9 +6,7 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <link rel="stylesheet" th:href="@{/css/layout.css}">
-<link rel="stylesheet" th:href="@{/css/main.css}">
-<link rel="stylesheet" th:href="@{/css/playlist.css}">
-<link rel="stylesheet" th:href="@{/css/popup.css}">
+
 
 <style>
 	
@@ -54,7 +52,7 @@
 						
 					$.each(resData.rankingList, function(index, rank) {
 						
-						$('<li class="ranking_li">').append('<a class="ranking_link" id="ranking_link" href="/music/detail?musicNo=' + rank.musicNo + '">'+ (index + 1) + '&nbsp;&nbsp;&nbsp;' + rank.musicTitle + '&nbsp;&nbsp;&nbsp;' + rank.activeLogDTO.userDTO.artist + '</a>')
+						$('<li class="ranking_li">').append('<a class="ranking_link" id="ranking_link" href="/music/detail?musicNo=' + rank.musicNo + '">'+ (index + 1) + '&nbsp;&nbsp;&nbsp;' + rank.musicTitle + '&nbsp;&nbsp;&nbsp;' + rank.userDTO.artist + '</a>')
 						.appendTo('#ranking_ol');
 					});
 				}
