@@ -125,9 +125,13 @@
 		<div class="board_bottom_controller">
 			<input type="button" value="목록" id="btn_list" class="btn">
 			<input type="reset" value="입력초기화" id="reset" class="btn">
-			<button class="btn">작성완료</button>
+			<input type="button" id="btn_submit" class="btn" value="작성완료">
 		</div>
-		
+		<script>
+			$('#btn_submit').click(function(){
+				$('#frm_write').submit();
+			});
+		</script>
 	</div> <!-- board_controller -->
 
 </body>
