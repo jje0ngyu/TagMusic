@@ -155,11 +155,14 @@ public class UserController {
 		userService.modifyName(request, response);
 	}
 	// 마이페이지 - 비밀번호 확인
+	@ResponseBody
 	@PostMapping("/user/info/checkPw")
 	public Map<String, Object> checkPw(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("컨트롤러에 왔다." + request.getParameter("originPw"));
 		return userService.checkPw(request, response);
 	}
 	// 마이페이지 - 비밀번호 수정
+	@ResponseBody
 	@PostMapping("/user/info/modifyPw")
 	public void modifyPw(HttpServletRequest request, HttpServletResponse response) {
 		userService.modifyPw(request, response);
