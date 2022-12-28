@@ -40,20 +40,24 @@
 	<div th:replace="~{layout/side.html::side_layout}"></div>
 		
 	<div class="board_controller">
-		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
 		
 			<div class="board_title">관리자 페이지</div>
 			
 			<div class="board_top_controller">
 				<div class="board_tab_controller">
-				    	<div class="board_tab tab_click"><a th:href="@{/admin/user/control}">유저관리</a></div>
-				    	<div class="board_tab"><a th:href="@{/admin/music/control}">음원관리</a></div>
-				    	<div class="board_tab"><a th:href="@{/admin/chatUserList}">1:1문의 관리</a></div>
+				    	<div class="board_tab tab_click" id="admin_control">유저관리</div>
+				    	<div class="board_tab" id="music_control">음원관리</div>
+				    	<div class="board_tab" id="admin_chatUserList">1:1문의 관리</div>
 				</div>
 			</div>
 
-	
+			<div class="admin_menu" >
+				<div onclick="fn_page_list(1);">가입 유저 관리</div>
+				<div onclick="fn_sleep_user_list(1);">휴면 유저 관리</div>
+				<div onclick="fn_retire_user_list(1);">탈퇴 유저 관리</div>
+			</div>
 			
+			<div></div>
 			
 			<div>
 				<form id="frm_search1">
@@ -86,10 +90,10 @@
 			</div>
 			
 			
-			<div class="user_list_container">
-				<table>
+			<div class="container">
+				<table class="rwd-table">
 					<thead>
-						<tr>
+						<tr class="list_body">
 							<td><input type="checkbox" id="check_all" class="lbl_all"></td>
 							<td><span data-title="USER_NO">회원번호</span></td>
 							<td><span data-title="PROFILE_IMAGE">프로필이미지</span></td>
@@ -119,7 +123,7 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="15" class="list_page_footer">
+							<td colspan="14" class="list_page_footer">
 							   
 							   
 							   
