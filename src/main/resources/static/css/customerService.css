@@ -11,6 +11,41 @@
      margin: 0;
  }
  
+ .board_controller {
+	margin: 100px 0 0 230px;
+	max-width: 100%;
+	padding: 50px 70px;
+}
+
+.board_title {
+	font-size: 32px;
+	font-weight: 600;
+}
+
+.board_tab_controller {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 60px;
+	
+	font-weight: 600;
+	color: #bdc2ce;
+}
+.tab_click {
+	display: flex;
+	align-items: center;
+	color: #20325A;
+	height: 100%;
+	border-top: 2px solid #37486b;
+	border-bottom: 2px solid #37486b;
+}
+
+.board_top_controller {
+	display: flex;
+	flex-direction: column;
+	margin-top: 50px;	
+}
+ 
  .container{
  	margin-left: 250px;
  	margin-top: 50px;

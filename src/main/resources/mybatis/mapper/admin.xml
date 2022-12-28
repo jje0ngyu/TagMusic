@@ -180,12 +180,15 @@
                     <where>
 			            <if test="column=='USER_NO' or column=='SNS_TYPE'">
 			                ${column} = #{query}
+			                AND NOT USER_NO = 1 
 			            </if>
 			            <if test="column=='NAME' or column=='MOBILE' or column=='EMAIL' or column=='ARTIST'">
 			                ${column} LIKE '%' || #{query} || '%'
+			                AND NOT USER_NO = 1 
 			            </if>
 			            <if test="column=='JOIN_DATE'">
 			                ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
+			                AND NOT USER_NO = 1 
 			            </if>
 			        </where>
        	 LIMIT #{begin}, #{recordPerPage};

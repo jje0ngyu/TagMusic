@@ -37,34 +37,22 @@
 <body>
 
 	<div th:replace="~{layout/header.html::header_layout}"></div>
-	<div class="session">
-		<div th:replace="~{layout/side.html::side_layout}"></div>
-		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
-		<div class="container">
+	<div th:replace="~{layout/side.html::side_layout}"></div>
 		
-		<div class="mainbox">
+	<div class="board_controller">
+		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
+		
+			<div class="board_title">관리자 페이지</div>
 			
-			<div class="title">관리자 페이지</div>
-			
-			<div class="top_bar">
-			    <ul>
-			        <li class="click">
-			            <a th:href="@{/admin/user/control}">유저관리</a>
-			        </li>
-			        <li>
-			            <a th:href="@{/admin/music/control}">음원관리</a>
-			        </li>
-			        <li>
-			            <a th:href="@{/admin/chatUserList}">1:1문의 관리</a>
-			        </li>
-			    </ul>
+			<div class="board_top_controller">
+				<div class="board_tab_controller">
+				    	<div class="board_tab tab_click"><a th:href="@{/admin/user/control}">유저관리</a></div>
+				    	<div class="board_tab"><a th:href="@{/admin/music/control}">음원관리</a></div>
+				    	<div class="board_tab"><a th:href="@{/admin/chatUserList}">1:1문의 관리</a></div>
+				</div>
 			</div>
 
-			<div class="admin_menu" >
-				<div onclick="fn_page_list(1);">가입 유저 관리</div>
-				<div onclick="fn_sleep_user_list(1);">휴면 유저 관리</div>
-				<div onclick="fn_retire_user_list(1);">탈퇴 유저 관리</div>
-			</div>
+	
 			
 			
 			<div>
@@ -140,8 +128,6 @@
 					</tfoot>
 				</table>
 			</div>
-		</div>
-		</div>
 	</div>
 	
 

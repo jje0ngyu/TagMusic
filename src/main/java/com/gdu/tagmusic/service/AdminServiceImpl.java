@@ -266,7 +266,7 @@ public class AdminServiceImpl implements AdminService {
 		pageUtil.setPageUtil(page, recordPerPage, totalRecord);
 		
 		// 조회에서 사용하는 Map
-		map.put("begin", pageUtil.getBegin());
+		map.put("begin", pageUtil.getBegin()-1);
 		map.put("recordPerPage", pageUtil.getRecordPerPage());
 
 		List<UserDTO> userList= null;

@@ -28,6 +28,11 @@
 				data : $('#frm_search1').serialize()+'&page='+realpage,
 				dataType : 'json',
 				success : function(resData){
+					
+					
+					console.log(resData.table);
+					console.log(resData.userList);
+
 										
 					$('#list_body').empty();
 					$('#list_foot').empty();
