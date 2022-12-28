@@ -101,7 +101,7 @@
 <script th:inline="javascript">
 $(document).ready(function(){
 	var userName = $('#userName').data('name');
-	fn_userLog();
+	//fn_userLog();
 	fn_logRemove();
 	if(userName != null){
 		fn_userLog();
@@ -119,10 +119,13 @@ function fn_userLog(){
 		data: 'email=' + userEmail + '&page=' + $('#page').val(),
 		dataType: 'json',
 		success: function(resData){
+			console.log(resData.logCount);
 			$('#list_head').empty();
 		    $('#list_body').empty();
 		    $('#list_foot').empty();
-		  	
+		    $('#logCountDiv').empty();
+		    $('#logCountDiv').append('전체 결제건 ' + resData.logCount +'개');
+		    
 		    $('<tr>')
 		    	.append($('<th>').text("주문번호"))	
 		    	.append($('<th>').text("이용권이름"))
@@ -136,6 +139,7 @@ function fn_userLog(){
 		    	.append( $('<td colspan="6">').text('결제 내역이 없습니다!'))
 		    	.appendTo('#list_body');
 		  	}
+		    
 			$.each(resData.logList, function(i, buyLog){
 				
 				const logDate = moment(buyLog.payLogDate).format('YYYY년 MM월 DD일 (HH시 mm분)');
@@ -174,7 +178,169 @@ function fn_userLog(){
 				}
 				
 				$('#paging').append(paging);
+				
+				
 		}
+		
+	});
+}
+function fn_userBuyLog(){
+	var userEmail = $('#userEmail').data('email');
+	var userName = $('#userName').data('name');
+	$.ajax({
+		type: 'post',
+		url: '/payment/buyLogList',
+		data: 'email=' + userEmail + '&page=' + $('#page').val(),
+		dataType: 'json',
+		success: function(resData){
+			console.log(resData.logCount);
+			$('#list_head').empty();
+		    $('#list_body').empty();
+		    $('#list_foot').empty();
+		    $('#logCountDiv').empty();
+		    
+		    
+		    $('<tr>')
+		    	.append($('<th>').text("주문번호"))	
+		    	.append($('<th>').text("이용권이름"))
+		    	.append($('<th>').text("결제날짜(시간)"))
+		    	.append($('<th>').text("결제방식"))
+		    	.append($('<th>').text("결제가격"))
+		    	.append($('<th>').append('<input type="button" value="결제이력삭제" class="btn_logRemove">'))
+		    	.appendTo('#list_head');
+		    if(resData.logList.length == 0){
+		    	$('<tr>')
+		    	.append( $('<td colspan="6">').text('결제 내역이 없습니다!'))
+		    	.appendTo('#list_body');
+		  	}
+		    var count = 0;
+			$.each(resData.logList, function(i, buyLog){
+				if (buyLog.payLogName.endsWith(')') == false) {
+				count += 1;
+				 
+				
+				const logDate = moment(buyLog.payLogDate).format('YYYY년 MM월 DD일 (HH시 mm분)');
+				$('<tr>')
+				.append( $('<td>').text(buyLog.payLogNo))
+				//.append( $('<td>').text(buyLog.payLogName.substr(0, 6)))
+				.append( $('<td>').text(buyLog.payLogName))
+				.append( $('<td>').text(logDate))
+				.append( $('<td>').text(buyLog.payLogPg))
+				.append( $('<td>').text('₩' + buyLog.payLogPrice))
+				.append($('<td>').append($('<input type="checkbox" name="logCheck" value="'+ buyLog.payLogNo +'">')))
+				.appendTo('#list_body');
+				}
+			});
+			$('#logCountDiv').append('전체 결제건 ' + count +'개');
+			$('<tr>')
+		       .append($('<td id="paging" colspan="6"></td>'))
+		       .appendTo('#list_foot');
+		       
+		       
+		       $('#paging').empty();
+				var pageUtil = resData.pageUtil
+				var paging = '';
+				// 이전 블록
+				if(pageUtil.beginPage != 1){
+					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+				}
+				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++){
+					if(p == $('#page').val()){
+						paging += '<strong>' + p + '</strong>';
+					} else {
+						paging += '<span class="enable_findLink" data-page="'+ p +'">' + p + '</span>';
+					}
+				}
+				// 다음블록
+				if(pageUtil.endPage != pageUtil.totalPage){
+					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+				}
+				
+				$('#paging').append(paging);
+				
+				
+		}
+		
+	});
+}
+function fn_userGiftLog(){
+	var userEmail = $('#userEmail').data('email');
+	var userName = $('#userName').data('name');
+	$.ajax({
+		type: 'post',
+		url: '/payment/buyLogList',
+		data: 'email=' + userEmail + '&page=' + $('#page').val(),
+		dataType: 'json',
+		success: function(resData){
+			console.log(resData.logCount);
+			$('#list_head').empty();
+		    $('#list_body').empty();
+		    $('#list_foot').empty();
+		    $('#logCountDiv').empty();
+		    
+		    
+		    $('<tr>')
+		    	.append($('<th>').text("주문번호"))	
+		    	.append($('<th>').text("이용권이름"))
+		    	.append($('<th>').text("결제날짜(시간)"))
+		    	.append($('<th>').text("결제방식"))
+		    	.append($('<th>').text("결제가격"))
+		    	.append($('<th>').append('<input type="button" value="결제이력삭제" class="btn_logRemove">'))
+		    	.appendTo('#list_head');
+		    if(resData.logList.length == 0){
+		    	$('<tr>')
+		    	.append( $('<td colspan="6">').text('결제 내역이 없습니다!'))
+		    	.appendTo('#list_body');
+		  	}
+		    var count = 0;
+			$.each(resData.logList, function(i, buyLog){
+				
+				if (buyLog.payLogName.endsWith(')')) {
+				count += 1;
+				 
+				
+				const logDate = moment(buyLog.payLogDate).format('YYYY년 MM월 DD일 (HH시 mm분)');
+				$('<tr>')
+				.append( $('<td>').text(buyLog.payLogNo))
+				//.append( $('<td>').text(buyLog.payLogName.substr(0, 6)))
+				.append( $('<td>').text(buyLog.payLogName))
+				.append( $('<td>').text(logDate))
+				.append( $('<td>').text(buyLog.payLogPg))
+				.append( $('<td>').text('₩' + buyLog.payLogPrice))
+				.append($('<td>').append($('<input type="checkbox" name="logCheck" value="'+ buyLog.payLogNo +'">')))
+				.appendTo('#list_body');
+				}
+			});
+			$('#logCountDiv').append('전체 결제건 ' + count +'개');
+			$('<tr>')
+		       .append($('<td id="paging" colspan="6"></td>'))
+		       .appendTo('#list_foot');
+		       
+		       
+		       $('#paging').empty();
+				var pageUtil = resData.pageUtil
+				var paging = '';
+				// 이전 블록
+				if(pageUtil.beginPage != 1){
+					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
+				}
+				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++){
+					if(p == $('#page').val()){
+						paging += '<strong>' + p + '</strong>';
+					} else {
+						paging += '<span class="enable_findLink" data-page="'+ p +'">' + p + '</span>';
+					}
+				}
+				// 다음블록
+				if(pageUtil.endPage != pageUtil.totalPage){
+					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
+				}
+				
+				$('#paging').append(paging);
+				
+				
+		}
+		
 	});
 }
 function fn_logRemove(){
@@ -235,7 +401,7 @@ function fn_userLogSelect(){
 							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
 							<script>
 								$('#pass_log').click(function(){
-									location.href="/";
+									fn_userLog();
 								})
 							</script>
 						</li>
@@ -244,7 +410,7 @@ function fn_userLogSelect(){
 							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
 							<script>
 								$('#purchased_pass').click(function(){
-									location.href="/";
+									fn_userBuyLog();
 								})
 							</script>
 						</li>
@@ -253,7 +419,7 @@ function fn_userLogSelect(){
 							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
 							<script>
 								$('#gifted_pass').click(function(){
-									location.href="/";
+									fn_userGiftLog();
 								})
 							</script>
 						</li>
@@ -282,6 +448,9 @@ function fn_userLogSelect(){
 				<input type="hidden" class="isUser" th:data-user="true">
 			</div> 
 			<div id="buyPageDiv" style="text-align: center">
+				<div id="logCountDiv">
+					
+				</div>
 				<table border="1">
 					<thead id="list_head" >
 					</thead>

@@ -160,14 +160,16 @@ public class PaymentServiceImpl implements PaymentService {
 	public Map<String, Object> getLogList(HttpServletRequest request) {
 		String email = request.getParameter("email");
 		int page = Integer.parseInt(request.getParameter("page"));
-		int logCount = paymentMapper.selectPaymentLogListCount();
-		pageUtil.setPageUtil(page, 10, logCount);
 		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> result = new HashMap<>();
 		map.put("email", email);
-		map.put("begin", pageUtil.getBegin());
+		int logCount = paymentMapper.selectPaymentLogListCount(map);
+		result.put("logCount", logCount);
+		pageUtil.setPageUtil(page, 10, logCount);
+		map.put("begin", pageUtil.getBegin() -1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		map.put("end", pageUtil.getEnd());
 		
-		Map<String, Object> result = new HashMap<>();
 		result.put("logList", paymentMapper.selectPaymentLogList(map));
 		result.put("pageUtil", pageUtil);
 		
