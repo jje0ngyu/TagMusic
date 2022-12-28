@@ -69,8 +69,9 @@ public class UploadServiceImpl implements UploadService {
 		pageUtil.setPageUtil(page, recordPerPage, totalRecord);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("begin", pageUtil.getBegin());
+		map.put("begin", pageUtil.getBegin() - 1);
 		map.put("end", pageUtil.getEnd());
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("uploadList", uploadMapper.selectUploadListByMap(map));
@@ -93,7 +94,6 @@ public class UploadServiceImpl implements UploadService {
 				.title(title)
 				.content(content)
 				.build();
-		
 		int uploadResult = uploadMapper.insertUpload(upload); 
 		
 		List<MultipartFile> files = multipartRequest.getFiles("files");  

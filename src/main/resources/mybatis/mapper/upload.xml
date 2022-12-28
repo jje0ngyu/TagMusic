@@ -12,10 +12,10 @@
 	</select>
 
 	<select id="selectUploadListByMap" parameterType="Map" resultType="UploadDTO">
-		SELECT A.ROW_NUM, A.UPLOAD_NO, A.TITLE, A.CONTENT, A.CREATE_DATE, A.MODIFY_DATE, A.HIT
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY UPLOAD_NO DESC) AS ROW_NUM, UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE, HIT
-		          FROM UPLOAD) A
-		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+		 SELECT UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE, HIT
+           FROM UPLOAD
+          ORDER BY UPLOAD_NO DESC
+          LIMIT #{begin}, #{recordPerPage}
 	</select>
 
 	
@@ -26,15 +26,15 @@
   	     WHERE UPLOAD_NO = #{uploadNo}
 	</select>
 	
-	<insert id="insertUpload" parameterType="UploadDTO">
-		<selectKey keyProperty="uploadNo" resultType="int" order="BEFORE">
+	<!-- <selectKey keyProperty="uploadNo" resultType="int" order="BEFORE">
 			SELECT UPLOAD_SEQ.NEXTVAL
 			  FROM DUAL
-		</selectKey>
-		INSERT INTO UPLOAD
-			(UPLOAD_NO, TITLE, CONTENT, CREATE_DATE, MODIFY_DATE, HIT)
-		VALUES
-			(#{uploadNo}, #{title}, #{content}, SYSDATE, SYSDATE, 0)
+		</selectKey>-->
+	<insert id="insertUpload" parameterType="UploadDTO" useGeneratedKeys="true" keyProperty="uploadNo">
+			INSERT INTO UPLOAD
+				(TITLE, CONTENT, CREATE_DATE, MODIFY_DATE, HIT)
+			VALUES
+				(#{title}, #{content}, NOW(), NOW(), 0)
 	</insert>
 	
 	<update id="updateHit" parameterType="int">
@@ -46,9 +46,9 @@
 	
 	<insert id="insertAttach" parameterType="AttachDTO">
 		INSERT INTO ATTACH
-			(ATTACH_NO, PATH, ORIGIN, FILESYSTEM, DOWNLOAD_CNT, HAS_THUMBNAIL, UPLOAD_NO)
+			(PATH, ORIGIN, FILESYSTEM, DOWNLOAD_CNT, HAS_THUMBNAIL, UPLOAD_NO)
 		VALUES
-			(ATTACH_SEQ.NEXTVAL, #{path}, #{origin}, #{filesystem}, 0, #{hasThumbnail}, #{uploadNo})
+			(#{path}, #{origin}, #{filesystem}, 0, #{hasThumbnail}, #{uploadNo})
 	</insert>
 	
 	<select id="selectUploadByNo" parameterType="int" resultType="UploadDTO">
@@ -79,7 +79,7 @@
 		UPDATE UPLOAD
 		   SET TITLE = #{title}
 		     , CONTENT = #{content}
-		     , MODIFY_DATE = SYSDATE
+		     , MODIFY_DATE = NOW()
 		 WHERE UPLOAD_NO = #{uploadNo}
 	</update>
 	
@@ -98,7 +98,7 @@
 	<select id="selectAttachListInYesterday" resultType="AttachDTO">
 		SELECT ATTACH_NO, PATH, ORIGIN, FILESYSTEM, DOWNLOAD_CNT, HAS_THUMBNAIL, UPLOAD_NO
 		  FROM ATTACH
-		 WHERE PATH = CONCAT('storage\\', TO_CHAR(SYSDATE - 1, 'yyyy\\mm\\dd'))
+		 WHERE PATH = CONCAT('storage\\', DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%Y\\%m\\%d'))
 	</select>
 
 	

@@ -9,7 +9,7 @@ import com.gdu.tagmusic.service.UserService;
 
 @EnableScheduling
 @Component
-public class SleepUserScheduler {
+public class PwScheduler {
 
 	@Autowired
 	private UserService userService;
@@ -17,7 +17,7 @@ public class SleepUserScheduler {
 	// 매일 새벽 1시	@Scheduled(cron="0 0 1 * * *")
 	@Scheduled(cron="0 0/5 * * * *")
 	public void execute() {
-		userService.sleepUserHandle();
+		userService.pwHandle();
 	}
 	
 }

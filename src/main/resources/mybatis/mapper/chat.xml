@@ -53,9 +53,9 @@
 	<insert id="insertChatbox" parameterType="ChatDTO">
 	
 		INSERT INTO CHAT_ADMIN
-  			 (CHAT_NO, USER_NO, CHAT_DATE, IP, STATE, DEPTH, GROUP_NO, GROUP_ORDER)
+  			 (USER_NO, CHAT_DATE, IP, STATE, DEPTH, GROUP_NO, GROUP_ORDER)
 		VALUES
-   			 (CHAT_SEQ.NEXTVAL, #{userNo}, SYSDATE, #{ip}, 1, 0, CHAT_SEQ.CURRVAL, 0)
+   			 (#{userNo}, NOW(), #{ip}, 1, 0, #{userNo}, 0)
    		 
 	</insert>
 	
@@ -82,21 +82,20 @@
 	
 	<insert id="insertChat" parameterType="ChatDTO">
 		INSERT INTO CHAT_ADMIN
-			(CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER)
+			(USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER)
 		VALUES
-			(CHAT_SEQ.NEXTVAL, #{userNo}, SYSDATE, #{ip}, #{content}, 1, 1, #{groupNo}, #{groupOrder})
+			(#{userNo}, NOW(), #{ip}, #{content}, 1, 1, #{groupNo}, #{groupOrder})
 	</insert>
 
 
 
 	<select id="getChatList" parameterType="map" resultType="ChatDTO">
 	
-		SELECT A.RN, A.CHAT_NO, A.USER_NO, A.CHAT_DATE, A.IP, A.CONTENT, A.STATE, A.DEPTH, A.GROUP_NO, A.GROUP_ORDER
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY GROUP_ORDER DESC) AS RN, CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER
-		          FROM CHAT_ADMIN
-		         WHERE GROUP_NO = #{groupNo}
-		         AND USER_NO = #{userNo}
-		           AND DEPTH = 1) A
+		SELECT CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER
+          FROM CHAT_ADMIN
+         WHERE GROUP_NO = #{groupNo}
+           AND USER_NO = #{userNo}
+		   AND DEPTH = 1
 	
 	</select>
 	

@@ -40,6 +40,8 @@ public interface UserService {
 	public Map<String, Object> checkPw(HttpServletRequest request, HttpServletResponse response);
 	public void modifyPw(HttpServletRequest request, HttpServletResponse response);
 	public void modifyMobile(HttpServletRequest request, HttpServletResponse response);
+	// 회원 정보 수정 - 비밀번호 3개월
+	public void pwHandle();	 // PwScheduler에서 호출
 	
 	// 휴면
 	// 휴면 확인
