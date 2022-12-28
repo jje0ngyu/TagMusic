@@ -23,7 +23,7 @@ public interface PaymentMapper{
 	public int deletePass();
 	public UserDTO selectRecipientByEmail(Map<String, Object> map);
 	
-	public int selectPaymentLogListCount();
+	public int selectPaymentLogListCount(Map<String, Object> map);
 	public List<PaymentLogDTO> selectPaymentLogList(Map<String, Object> map);
 	
 	public int deleteLogByNo(Map<String, Object> map);

@@ -64,9 +64,9 @@
 	
 	<insert id="insertMusic" parameterType="MusicDTO">
 		INSERT INTO MUSIC
-			(MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE) 
+			(EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE) 
 		VALUES
-			(MUSIC_SEQ.NEXTVAL, #{email}, #{musicTitle}, #{musicContent}, #{musicAlbum}, #{musicGenre}, #{ip}, #{imgOrigin}, #{imgFilesystem}, #{musicOrigin}, #{musicFilesystem}, 0, #{imgPath}, #{musicPath}, #{hasThumbNail}, SYSDATE)
+			(#{email}, #{musicTitle}, #{musicContent}, #{musicAlbum}, #{musicGenre}, #{ip}, #{imgOrigin}, #{imgFilesystem}, #{musicOrigin}, #{musicFilesystem}, 0, #{imgPath}, #{musicPath}, #{hasThumbNail}, SYSDATE)
 	</insert>
 	
 	<!-- 음원 작성 후 상세보기로 이동할 MUSIC_NO 출력 -->

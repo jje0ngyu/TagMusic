@@ -1,5 +1,6 @@
 package com.gdu.tagmusic.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -31,10 +32,13 @@ public interface UserMapper {
 	public int insertImage(ProfileImageDTO image);
 	public int updateImagePath(ProfileImageDTO image);
 	public int updateUser(UserDTO user);
+	public List<UserDTO> selectNoticePassword();
 	
 	// 휴면
 	// 휴면 - 검사
 	public SleepUserDTO selectSleepUserByEmail(String email);
+	// 휴면 - 11개월 전 안내메일
+	public List<UserDTO> selectNoticeSleep();
 	// 휴면 - 휴면처리
 	public int insertSleepUser();
 	public int deleteUserForSleep();
