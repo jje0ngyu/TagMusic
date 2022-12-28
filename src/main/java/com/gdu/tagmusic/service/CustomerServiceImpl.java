@@ -98,7 +98,6 @@ public class CustomerServiceImpl implements CustomerService {
 						String ip = request.getRemoteAddr();
 						ChatDTO chat = new ChatDTO();
 						chat.setUserNo(userNo);
-						chat.setContent("기초데이터");
 						chat.setIp(ip);
 						chatMapper.insertChatbox(chat);
 					}else {

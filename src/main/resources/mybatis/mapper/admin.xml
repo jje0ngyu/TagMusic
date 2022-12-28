@@ -46,13 +46,15 @@
 		<collection resultMap="UserMap" property="userDTO"></collection>
 	</resultMap>
 	
-	
+	<!-- 완료 -->
 	<select id="selectAllChatCount" resultType="int">
         SELECT COUNT(*)
         FROM (	SELECT DISTINCT USER_NO
-                FROM CHAT_ADMIN )
+                FROM CHAT_ADMIN ) A
 	</select>
 	
+	
+	<!-- 완료 -->
 	<select id="selectChatUsingScroll" parameterType="int" resultMap="ChatMap">
 		    SELECT C.CHAT_NO, C.USER_NO, C.CHAT_DATE, C.IP, C.CONTENT,C.STATE,C.DEPTH,C.GROUP_NO,C.GROUP_ORDER, U.NAME, U.PROFILE_IMAGE
 		      FROM CHAT_ADMIN C INNER JOIN USERS U
@@ -76,6 +78,7 @@
 		  
 	</select>
 	
+	
 	<select id="getChatDetail" parameterType="int" resultMap="ChatMap">
 	
 		SELECT CHAT_NO, C.USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER, U.NAME, U.PROFILE_IMAGE
@@ -86,6 +89,8 @@
 	
 	</select>
 	
+	
+	
 	<select id="existChatUserList" resultType="ChatDTO">
 	  SELECT GROUP_NO, MAX(CHAT_DATE)
 	    FROM CHAT_ADMIN
@@ -93,38 +98,28 @@
     ORDER BY MAX(CHAT_DATE)
 	</select>
 	
-	
-	
-	
-	
 	<!-- 유저관리페이지용 매퍼 -->
-	
 	<select id="selectUserList" resultType="UserDTO" parameterType="map">
-		SELECT A.*
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO) AS RN, USER_NO, EMAIL, PW, ARTIST, NAME, GENDER, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE, PROFILE_IMAGE
-		          FROM USERS
-	                 WHERE NOT USER_NO=1) A
-		 WHERE A.RN BETWEEN #{begin} AND #{end}
+		  SELECT USER_NO, EMAIL, PW, ARTIST, NAME, GENDER, MOBILE, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE, PROFILE_IMAGE
+			FROM USERS
+		   WHERE NOT USER_NO=1
+           LIMIT #{begin}, #{recordPerPage}
 	</select>
 	
 	
 	<select id="selectSleepUserList" resultType="UserDTO" parameterType="map">
-		SELECT A.*
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, JOIN_DATE, SLEEP_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
-		          FROM SLEEP_USERS
-	                 WHERE NOT USER_NO=1) A
-		 WHERE A.RN BETWEEN #{begin} AND #{end}
+		SELECT USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, JOIN_DATE, SLEEP_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
+		  FROM SLEEP_USERS
+	     WHERE NOT USER_NO=1
 	</select>
 	
+	<!-- 여기하는 중 -->
 	<select id="selectRetireUserList" resultType="UserDTO" parameterType="map">
-		SELECT A.*
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY USER_NO) AS RN, USER_NO, EMAIL, RETIRE_DATE, ARTIST
-		          FROM RETIRE_USERS
-	                 WHERE NOT USER_NO=1) A
-		 WHERE A.RN BETWEEN #{begin} AND #{end}
+		SELECT USER_NO, EMAIL, RETIRE_DATE, ARTIST
+		  FROM RETIRE_USERS
+	     WHERE NOT USER_NO=1
+	 	 LIMIT #{begin}, #{recordPerPage}
 	</select>
-	
-	
 	
 	
 	
@@ -163,23 +158,21 @@
 	</select>
 
 	<select id="selectSearchEmployeeList" parameterType="Map" resultType="UserDTO">
-		SELECT A.*
- 		  FROM (  
-                <choose>
+   				<choose>
                     <when test="table == 'USERS'">
-                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
+                     SELECT USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
                      FROM ${table}
                     </when>
                     <when test="table == 'SLEEP_USERS'">
-                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, MOBILE, JOIN_DATE, SLEEP_DATE, PROFILE_IMAGE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, PW_MODIFY_DATE, INFO_MODIFY_DATE
+                     SELECT USER_NO, EMAIL, ARTIST, NAME, PW, MOBILE, JOIN_DATE, SLEEP_DATE, PROFILE_IMAGE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, AGREE_CODE, SNS_TYPE, PW_MODIFY_DATE, INFO_MODIFY_DATE
                      FROM ${table}
                     </when>
                    	<when test="table == 'RETIRE_USERS'">
-                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, RETIRE_DATE
+                     SELECT USER_NO, EMAIL, ARTIST, RETIRE_DATE
                      FROM ${table}
                     </when>
                     <otherwise>
-                     SELECT ROW_NUMBER() OVER(ORDER BY USER_NO ASC) AS RN, USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
+                     SELECT USER_NO, EMAIL, ARTIST, NAME, PW, PROFILE_IMAGE, MOBILE, GENDER, BIRTHYEAR, BIRTHDAY, POSTCODE, ROAD_ADDRESS, JIBUN_ADDRESS, DETAIL_ADDRESS, EXTRA_ADDRESS, SNS_TYPE, SESSION_ID, SESSION_LIMIT_DATE, JOIN_DATE, PW_MODIFY_DATE, INFO_MODIFY_DATE, AGREE_CODE
                      FROM ${table}
                     </otherwise>
                   </choose>
@@ -194,16 +187,15 @@
 			            <if test="column=='JOIN_DATE'">
 			                ${column} BETWEEN TO_DATE(#{start}, 'yyyy-mm-dd') AND TO_DATE(#{stop}, 'yyyy-mm-dd')
 			            </if>
-			        </where>    ) A
-			        
-       	 WHERE A.RN BETWEEN #{begin} AND #{end} 
+			        </where>
+       	 LIMIT #{begin}, #{recordPerPage};
 	</select>
 	
 	
 	
 	<select id="selectAutoCompleteList" parameterType="Map" resultType="UserDTO">
 		SELECT DISTINCT ${column}
-		  FROM EMPLOYEES
+		  FROM USERS
 		 WHERE ${column} LIKE CONCAT(#{query}, '%')
 	</select>
 
@@ -246,7 +238,7 @@
 					   #{item.extraAddress,jdbcType=VARCHAR} AS EXTRA_ADDRESS,
 					   #{item.snsType,jdbcType=VARCHAR} AS SNS_TYPE,
 					   #{item.joinDate,jdbcType=DATE} AS JOIN_DATE,
-					   SYSDATE,
+					   NOW(),
 					   #{item.pwModifyDate,jdbcType=DATE} AS PW_MODIFY_DATE,
 					   #{item.infoModifyDate,jdbcType=DATE} AS INFO_MODIFY_DATE,
 					   #{item.agreeCode,jdbcType=INTEGER} AS AGREE_CODE
@@ -276,7 +268,7 @@
 			<foreach collection="retireUsers" item="item" separator="UNION ALL ">
 		 SELECT    #{item.userNo} AS USER_NO,
 				   #{item.email} AS EMAIL,
-			         SYSDATE,
+			         NOW(),
 				   #{item.artist} AS ARTIST
 		      FROM DUAL
 		  </foreach>) A

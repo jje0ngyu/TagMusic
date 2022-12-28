@@ -48,24 +48,20 @@
 	})
 	
 </script>
- <body>
-  <style>
-    table {	 
-	  width:100%; 
-	  table-layout: fixed;
- 	      } 
-  </style>
 
+ <body>
+ 
 	<div th:replace="~{layout/header.html::header_layout}"></div>
-	<div class="session">
-		<div th:replace="~{layout/side.html::side_layout}"></div>
-		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
-		<div class="container">
-			<div class="mainbox">
-			
-				<div class="maintitle">태그뮤직 고객센터</div>
+	<div th:replace="~{layout/side.html::side_layout}"></div>
+		
+	<div class="upload_controller">
+	
+		<!-- 제목 -->
+		<div class="mainbox">
+		<!-- 상단 (tap) -->		
+		<div class="maintitle">태그뮤직 고객센터</div>
 				
-				<div class="top_bar">
+		<div class="top_bar">
 				    <ul>
 				        <li>
 				            <a th:href="@{/customerService/home}">홈</a>
