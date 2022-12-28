@@ -7,7 +7,7 @@
 <script th:src="@{/summernote-0.8.18-dist/summernote-lite.js}"></script>
 <script th:src="@{/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js}"></script>
 <link rel="stylesheet" th:href="@{/summernote-0.8.18-dist/summernote-lite.css}">
-<link rel="stylesheet" th:href="@{/css/customerService.css}">
+<link rel="stylesheet" th:href="@{/css/board.css}">
 <script>
 	
 	$(document).ready(function(){
@@ -65,65 +65,74 @@
 			}
 		});
 		
+		// 탭 (href)
+		$('#tabHome').click(function(){
+			location.href='/customerService/home';
+		})
+		$('#tabNotice').click(function(){
+			location.href='/board/list';
+		})
+		$('#tabFAQ').click(function(){
+			location.href='/upload/list';
+		})
+		$('#tabChat').click(function(){
+			location.href='/customerService/chat';
+		})
 	});
 	
 </script>
 
 <body>
 
-<div th:replace="~{layout/header.html::header_layout}"></div>
-	<div class="session">
-		<div th:replace="~{layout/side.html::side_layout}"></div>
-		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
-		<div class="container">
-			<div class="mainbox" >
-			
-				<div class="maintitle">태그뮤직 고객센터</div>
-				
-				<div class="top_bar">
-				    <ul>
-				        <li>
-				            <a th:href="@{/customerService/home}">홈</a>
-				        </li>
-				        <li class="click">
-				            <a th:href="@{/board/list}">공지사항</a>
-				        </li>
-				        <li>
-				            <a th:href="@{/upload/list}">자주 하는 질문</a>
-				        </li>
-				        <li>
-				            <a th:href="@{/customerService/chat}">1:1문의하기</a>
-				        </li>
-				    </ul>
-				</div>
-			
-	<h1>공지 작성</h1>
-	  <hr>
-	<form id="frm_write" th:action="@{/board/add}" method="post">
+	<div th:replace="~{layout/header.html::header_layout}"></div>
+	<div th:replace="~{layout/side.html::side_layout}"></div>
 	
-		<div>
-			<label for="title">제목</label>
-			<input type="text" name="title" id="title" style="height:100%;width:100%;border: 0;">
-		</div>
-
-		<div>
-			<label for="content">내용</label>
-			<textarea name="content" id="content"></textarea>				
-		</div>
+	<div class="board_controller">
 		
-		<div id="summernote_image_list"></div>
-	
-		<div>
-			<button>작성완료</button>
-			<input id="reset" type="reset" value="입력초기화">
-			<input type="button" value="목록" id="btn_list">
-		</div>
-				
-	</form>
-	
+		<!-- 제목 -->
+		<div class="board_title">공지사항 작성</div>
+		<!-- 상단 (tap) -->
+		<div class="board_top_controller">
+			<div class="board_tab_controller">
+				<div class="board_tab" id="tabHome">홈</div>
+				<div class="board_tab tab_click" id="tabNotice">공지사항</div>
+				<div class="board_tab" id="tabFAQ">자주 하는 질문</div>
+				<div class="board_tab" id="tabChat">1:1 문의하기</div>
 			</div>
 		</div>
-	</div>
+		
+		
+		<div class="board_middle_controller">
+			<form id="frm_write" th:action="@{/board/add}" method="post">
+			
+				<div>
+					<label for="title">제목</label>
+					<input type="text" name="title" id="title" style="height: 45px;width:100%;border: 0; background-color:#FFFFFF">
+				</div>
+		
+				<div>
+					<label for="content">내용</label>
+					<textarea name="content" id="content"></textarea>				
+				</div>
+				
+				<div id="summernote_image_list"></div>
+			
+				
+						
+			</form>
+		</div> <!-- board_middle_controller -->
+		
+		<div class="board_bottom_controller">
+			<input type="button" value="목록" id="btn_list" class="btn">
+			<input type="reset" value="입력초기화" id="reset" class="btn">
+			<input type="button" id="btn_submit" class="btn" value="작성완료">
+		</div>
+		<script>
+			$('#btn_submit').click(function(){
+				$('#frm_write').submit();
+			});
+		</script>
+	</div> <!-- board_controller -->
 
 </body>
 </html>

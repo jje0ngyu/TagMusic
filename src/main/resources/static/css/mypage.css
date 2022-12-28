@@ -265,3 +265,18 @@ body {
 .correct:hover {
 	background-color: green;
 }
+
+/* 탈퇴 페이지 */
+.retire_controller {
+	width: 30%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 10% auto;
+	padding: 50px 50px;
+	box-shadow: 1px 1px 3px 1px #37486b;
+	border-radius: 10px;
+}
+.retire_text_goMain {
+	margin-top: 20px;
+}
