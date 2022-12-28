@@ -64,6 +64,19 @@
 			}
 		});
 		
+		// 탭 (href)
+		$('#tabHome').click(function(){
+			location.href='/customerService/home';
+		})
+		$('#tabNotice').click(function(){
+			location.href='/board/list';
+		})
+		$('#tabFAQ').click(function(){
+			location.href='/upload/list';
+		})
+		$('#tabChat').click(function(){
+			location.href='/customerService/chat';
+		})
 	});
 	
 </script>
@@ -76,7 +89,7 @@
 	<div class="board_controller">
 		
 		<!-- 제목 -->
-		<div class="board_title">공지사항 게시글 정보</div>
+		<div class="board_title">공지사항 수정 화면</div>
 		<!-- 상단 (tap) -->
 		<div class="board_top_controller">
 			<div class="board_tab_controller">
@@ -87,9 +100,6 @@
 			</div>
 		</div>
 	
-			 
-	<h1>수정 화면</h1>
-	  <hr>
 	<form id="frm_edit" th:object="${board}" th:action="@{/board/modify}" method="post">
 	
 		<input type="hidden" name="boardNo" th:field="*{boardNo}">
@@ -105,11 +115,15 @@
 		</div>
 		
 		<div>
-			<input type="button" value="목록" id="btn_list">
-			<input type="reset" value="작성초기화">
-			<button>수정완료</button>
+			<input type="button" value="목록" id="btn_list" class="btn">
+			<input type="reset" value="작성초기화" id="reset" class="btn">
+			<input type="button" id="btn_submit" class="btn" value="작성완료">
 		</div>
-		
+		<script>
+			$('#btn_submit').click(function(){
+				$('#frm_edit').submit();
+			});
+		</script>
 	</form>
 	</div> <!--board_controller-->
 

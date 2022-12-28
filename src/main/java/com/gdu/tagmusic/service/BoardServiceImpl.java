@@ -60,8 +60,9 @@ public class BoardServiceImpl implements BoardService {
 		
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("begin", pageUtil.getBegin());
+		map.put("begin", pageUtil.getBegin() - 1);
 		map.put("end", pageUtil.getEnd());
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
 		
 		model.addAttribute("totalRecord", totalRecord);

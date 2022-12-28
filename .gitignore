@@ -32,6 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 
+### storage ###
+/storage/
+
 ### yam, properties ###
 application.yml
 *.properties
