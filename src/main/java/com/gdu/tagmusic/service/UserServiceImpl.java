@@ -36,6 +36,7 @@ import com.gdu.tagmusic.util.JavaMailUtil;
 import com.gdu.tagmusic.util.MyFileUtil;
 import com.gdu.tagmusic.util.SecurityUtil;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -806,6 +807,16 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
+	// 3개월 - 비밀번호 수정
+	@Override
+	public void pwHandle() {
+		// 3개월 전 비밀번호 수정 체크
+		List<UserDTO> user = userMapper.selectNoticePassword();
+		for(int i=0; i < user.size(); i++) {
+			
+		}
+	}
+	
 	// 휴면 - 로그인 시, 휴면 체크
 	@Override
 	public SleepUserDTO getSleepUserByEmail(String email) {
@@ -816,6 +827,24 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public void sleepUserHandle() {
+		// 11개월 전 로그인 체크
+		List<UserDTO> user = userMapper.selectNoticeSleep();
+		
+		
+		for(int i=0; i < user.size(); i++) {
+			String email = user.get(i).getEmail();
+			// 메일 내용
+			String text = "";
+			text += "오랫동안 접속하지 않아 1개월 뒤면 휴면 처리됩니다.<br>";
+			text += "다시 돌아오셔서 아티스트 활동을 이어가주세요.<br><br>";
+			text += "태그뮤직은 <strong>" + user.get(i).getArtist() + "</strong>님을 기다리고 있습니다.<br>";
+			text += "태그뮤직 바로가기 > http://localhost:9090/";
+			
+			// 메일 전송
+			javaMailUtil.sendJavaMail(email, "[TagMusic] 휴면 전환 안내", text);
+		}
+		
+		// 휴면 전환
 		int insertCount = userMapper.insertSleepUser();
 		if(insertCount > 0) {
 			userMapper.deleteUserForSleep();
