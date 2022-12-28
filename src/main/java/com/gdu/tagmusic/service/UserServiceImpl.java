@@ -732,6 +732,35 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Map<String, Object> checkPw(HttpServletRequest request, HttpServletResponse response) {
 		
+		HttpSession session = request.getSession();
+		
+		// 비밀번호 일치하는지 확인
+		String email = ((UserDTO)session.getAttribute("loginUser")).getEmail();
+		String pw = securityUtil.sha256(request.getParameter("originPw"));
+		System.out.println("email : " + email);
+		System.out.println("pw : " + pw);
+		
+		// 조회 조건으로 사용할 Map
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", email);
+		map.put("pw", pw);
+		UserDTO selectUser = userMapper.selectUserByMap(map);
+		System.out.println("selectUSer:" + selectUser);
+		Map<String, Object> result = new HashMap<>();
+		
+		result.put("result", selectUser != null);
+		System.out.println("result: " + result);
+		
+		// 회원정보수정
+		/*Map<String, Object> result = new HashMap<>();
+		result.put("result", userMapper.updateUserPassword(user));
+		*/
+		return result;		
+	}
+	// 회원정보수정 - 비밀번호
+	@Override
+	public void modifyPw(HttpServletRequest request, HttpServletResponse response) {
+		
 		// 사용자의 아이디
 		HttpSession session = request.getSession();
 		UserDTO User = (UserDTO)session.getAttribute("User");
@@ -739,21 +768,7 @@ public class UserServiceImpl implements UserService {
 		
 		String pw = securityUtil.sha256(request.getParameter("pw"));
 		
-		// DB로 보낼 UserDTO 만들기
-		UserDTO user = UserDTO.builder()
-				.userNo(userNo)
-				.pw(pw)
-				.build();
-						
-		// 회원정보수정
-		Map<String, Object> result = new HashMap<>();
-		result.put("result", userMapper.updateUserPassword(user));
-		return result;		
-	}
-	// 회원정보수정 - 비밀번호
-	@Override
-	public void modifyPw(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
+		
 	}
 	
 	// 회원정보수정 - 휴대폰
@@ -876,7 +891,7 @@ public class UserServiceImpl implements UserService {
 		
 		// 비밀번호 일치하는지 확인
 		String email = ((UserDTO)session.getAttribute("loginUser")).getEmail();
-		String pw = securityUtil.sha256(request.getParameter("pw"));
+		String pw = securityUtil.sha256(request.getParameter("originPw"));
 		
 		// 조회 조건으로 사용할 Map
 		Map<String, Object> map = new HashMap<String, Object>();

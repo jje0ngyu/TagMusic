@@ -1,0 +1,80 @@
+깃 사용할때 
+git checkout JI
+
+Ji 나오면 사용
+
+스프링 키기전에 git 들어가서
+
+git checkout JI
+(JI) 뜨면
+스프링 사용
+
+===============================
+
+깃허브(메인) 주소
+
+각자 컴퓨터가 로컬 
+
+각자 거치는곳이 브랜치 
+
+브랜치에 push 한 상태
+
+-브랜치 만들기
+git branch JI
+
+-브랜치 이동
+git checkout JI
+
+- 파일 스태이징(추적 가능한 상태) 나 이거 올렸다. 깃허브한테 추적해달라. 
+git add .
+
+- 커밋메시지 메모장을 남긴다 
+주석 깃허브한테
+git commit -m '[JI]test'
+
+- 브랜치에 올린거라고 생각!
+git push team JI
+
+
+================================
+
+git checkout main 
+메인으로 이동
+
+git merage JI
+브랜치 이름
+메인이랑 브랜치랑 합치겠다 합친 다음에 
+
+git push team main
+합친 다음에 원격으로 반영 
+push 
+
+=================================
+
+git 들어가서 승인할때 
+
+Pull requests →
+
+Commits →
+
+Review changes →
+
+(가운데꺼) Submit review
+
+
+================================
+
+로컬 이름이 team
+
+git add .
+
+git commit -m'[JI]'
+
+git checkout main
+
+git pull team main
+
+git checkout JI
+
+git merge main
+

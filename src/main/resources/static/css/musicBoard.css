@@ -329,14 +329,14 @@ input[type=button] {
 
 .createPlaylist_header {
 	
-	width: 450px;
+	width: 430px;
 	height: 50px;
 	
 }
 
 .createPlaylist_body {
 	
-	width: 450px;
+	width: 430px;
 	height: 80px;
 	
 }
@@ -370,8 +370,5 @@ input[type=button] {
 	line-height: 40px;
 	
 }
-
-
-
 
 

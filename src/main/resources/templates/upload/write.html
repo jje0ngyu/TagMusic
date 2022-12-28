@@ -4,37 +4,49 @@
 <meta charset="UTF-8">
 <title>고객센터>태그뮤직</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<link rel="stylesheet" th:href="@{/css/customerService.css}">
+<link rel="stylesheet" th:href="@{/css/board.css}">
 <script>
 
 	$(function(){
 		fn_fileCheck();
-	});
-	
-	function fn_fileCheck(){
-		
-		$('#files').change(function(){
-			
-			let maxSize = 1024 * 1024 * 1000;
-			
-			let files = this.files;
-			
-			$('#file_list').empty();
-			$.each(files, function(i, file){
-				
-				if(file.size > maxSize){
-					alert('1000MB 이하의 파일만 첨부할 수 있습니다.');
-					$(this).val(''); 
-					return;
-				}
-				
-				$('#file_list').append('<div>' + file.name + '</div>');
-				
-			});
-			
 		});
+	
+	  function fn_fileCheck(){
 		
+	$('#files').change(function(){
+			
+		let maxSize = 1024 * 1024 * 1000;	
+		let files = this.files;
+			
+	$('#file_list').empty();
+	
+	$.each(files, function(i, file){
+		if(file.size > maxSize){
+		 alert('1000MB 이하의 파일만 첨부할 수 있습니다.');
+	$(this).val(''); 
+	     return;   
+		}
+				
+	$('#file_list').append('<div>' + file.name + '</div>');
+				
+	    });
+	  });
 	}
+	
+	// 탭 (href)
+	$('#tabHome').click(function(){
+		location.href='/customerService/home';
+	})
+	$('#tabNotice').click(function(){
+		location.href='/board/list';
+	})
+	$('#tabFAQ').click(function(){
+		location.href='/upload/list';
+	})
+	$('#tabChat').click(function(){
+	location.href='/customerService/chat';
+	})
+	
 </script>
  <body>
   <style>
@@ -49,7 +61,7 @@
 		<div th:replace="~{layout/side.html::side_layout}"></div>
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
 		<div class="container">
-			<div class="mainbox" >
+			<div class="mainbox">
 			
 				<div class="maintitle">태그뮤직 고객센터</div>
 				
@@ -77,20 +89,21 @@
 		<table class="table table-striped">
 		 <thead>
 		   <tr>
-		    <td>
-				<label for="title">제목</label>	
+		    <td style="background-color:rgb(192, 192, 192)">
+				<h2><label for="title" style="background-color:rgb(192, 192, 192)">제목</label></h2>	
 		    </td>	
-			<td style="height:100%;width:100%;">	
-				<input type="text" id="title" name="title" required="required" style="height:100%;width:100%;border: 0;">
+			<td style="height:95%;width:95%; background-color:rgb(192, 192, 192)">	
+				<input type="text" id="title" name="title" required="required" style="height: 45px;width:100%;border: 0; background-color:rgb(255, 255, 255)">
 			 </td>
-		</thead>	 
+		</thead>	
+		 
 		 <tbody>
 		   <tr>
-		    <td>
-				<label for="content">내용</label>
+		   <td style="background-color:rgb(192, 192, 192)">
+				<h3><label for="title" style="background-color:rgb(192, 192, 192)">내용</label></h3>	
 		    </td>
-		    <td style="height:100%;width:100%;">	
-			  <textarea type="content" id="content" name="content" style="height:100%;width:100%;border: 0;"></textarea>
+		    <td>	
+			  <textarea type="content" id="content" name="content" style="height:100%;width:100%;border: 0; background-color:rgb(255, 255, 255)"></textarea>
 		    </td>
 		   </tr>
 		 </tbody>     
