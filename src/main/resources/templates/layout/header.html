@@ -7,12 +7,6 @@
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <!-- layout CSS 외에 다른 CSS 넣지 말아주세요 ㅠㅠ -->
 <link rel="stylesheet" th:href="@{/css/layout.css}">
-<!-- 승준님 아래 CSS는 해당 CSS가 필요한 html 파일에만 넣어주세요.-->
-<!--
-<link rel="stylesheet" th:href="@{/css/main.css}">
-<link rel="stylesheet" th:href="@{/css/playlist.css}">
-<link rel="stylesheet" th:href="@{/css/popup.css}">
--->
 
 <style>
 	
@@ -58,7 +52,7 @@
 						
 					$.each(resData.rankingList, function(index, rank) {
 						
-						$('<li class="ranking_li">').append('<a class="ranking_link" id="ranking_link" href="/music/detail?musicNo=' + rank.musicNo + '">'+ (index + 1) + '&nbsp;&nbsp;&nbsp;' + rank.musicTitle + '&nbsp;&nbsp;&nbsp;' + rank.activeLogDTO.userDTO.artist + '</a>')
+						$('<li class="ranking_li">').append('<a class="ranking_link" id="ranking_link" href="/music/detail?musicNo=' + rank.musicNo + '">'+ (index + 1) + '&nbsp;&nbsp;&nbsp;' + rank.musicTitle + '&nbsp;&nbsp;&nbsp;' + rank.userDTO.artist + '</a>')
 						.appendTo('#ranking_ol');
 					});
 				}

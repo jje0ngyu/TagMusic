@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.tagmusic.domain.MusicDTO;
+import com.gdu.tagmusic.domain.MusicLikeDTO;
 import com.gdu.tagmusic.domain.MyMusicDTO;
 import com.gdu.tagmusic.domain.PlaylistDTO;
 
@@ -44,7 +45,7 @@ public interface MusicMapper {
 	public List<MusicDTO> selectMusicRanking10(Map<String, Object> map);
 	
 	// [유저서비스]
-	// # 유저 플레이리스트 페이지 이동
+	// 1. 플레이리스트
 	
 	// 1) 유저의 플레이리스트 개수
 	public int 	selectUserPlaylistCnt(Map<String, Object> map);
@@ -82,12 +83,20 @@ public interface MusicMapper {
 	// 12) 디폴트곡 넣기
 	public int insertDefaultMusicToPlaylist(Map<String, Object> map);
 	
-	// 13) 제약 : 플레이리스트명 확인
-	public PlaylistDTO checkPlaylistAtUser(Map<String, Object> map);
+	// 13) 제약 : 플레이리스트명 확인_이름으로확인
+	public PlaylistDTO checkPlaylistAtUserByListName(Map<String, Object> map);
 
 	// 14) 제약 : 플레이리스트 개수 확인
 	public int checkUserPlaylistCnt(Map<String, Object> map);
 	
+	// 2. 좋아요
+	// 1) 유저의 전체 좋아요 수 
+	public int selectUserMusicLikeCnt(Map<String, Object> map);
+	
+	// 2) 유저의 좋아요 목록
+	public List<MusicDTO> selectUserMusicLikeList(Map<String, Object> map);
+	
+	// 3) 유저 좋아요 삭제
 	
 	
 	

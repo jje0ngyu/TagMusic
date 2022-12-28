@@ -105,6 +105,8 @@ public class MusicController {
 	
 	// [유저서비스]
 	
+	// 1. 플레이리스트	=========================================================================================================
+	
 	// 구현 : 플레이리스트 페이지 이동 
 	@GetMapping("/music/move/playlist")
 	public String movePlaylist(HttpServletRequest request, Model model) {
@@ -161,6 +163,24 @@ public class MusicController {
 	public Map<String, Object> createPlaylist(HttpServletRequest request) {	
 		return musicService.createPlaylist(request);
 	}
+	
+	
+	// 2. 좋아요 ====================================================================================================================
+	
+	// 구현 : 플레이리스트 페이지 이동 
+		@GetMapping("/music/move/musicLike")
+		public String moveMusicLike(HttpServletRequest request, Model model) {
+			return "/musicUserService/musicLike";
+		}
+		
+	// 구현 : 플레이리스트 목록조회
+	@ResponseBody
+	@GetMapping(value="/music/user/musicLikeList", produces="application/json")
+	public Map<String, Object> userMusicLikeList(HttpServletRequest request) {	
+		return musicService.selectMusicLikeList(request);
+	}
+	
+	
 	
 	
 	/*
