@@ -45,7 +45,8 @@
 	    <div class="board_middle_controller">
 			<div class="detail_title" th:text="|${board.boardTitle}|"></div>
 			<div class="detail_info">
-				<div>관리자</div>
+				<!-- 작성자는 관리자만 가능 -->
+				<div>관리자</div> 
 				<div class="flex0">
 					<div th:text="|조회수 : ${#numbers.formatInteger(board.boardHit,1,'COMMA')}|"></div>
 					<div class="create_date" th:text="|작성일 : ${#dates.format(board.boardCreateDate,'yyyy. M. d HH:mm')}"></div>

@@ -47,6 +47,7 @@
 		
 		<!-- 중간 (작성, 게시글) -->
 		<div class="board_middle_controller">
+			<!-- 관리자/일반회원 구분 -->
 			<div th:if="${session.loginUser.userNo != 1}" style="height: 40px;"></div>
 			<div th:if="${session.loginUser.userNo == 1}" class="middle_top" >
 				<input type="button" value="새 글 작성" id="btn_write">
