@@ -33,7 +33,7 @@
 	   flex와 space-between으로 모든 상단 레이아웃 기능을 수평정렬
 	*/
 	.header {
-	height : 100px;
+	height : 70px;
 	background: linear-gradient(#ffffff, 2%,#fdfdfd);
 	box-shadow: 0 1px 10px 0 #37486b;
 	z-index: 2;

@@ -79,6 +79,31 @@
 								.append( '<tr class="musicLike_tr"><td class="musicLike_td">번호</td><td class="musicLike_td" colspan="3">음악정보</td><td class="musicLike_td">삭제</td></tr>') )
 						.append( $(body) ) )
 				
+				// (3) 페이징 처리
+				$('.musicLike_footer').empty();
+				
+				
+				let pageUtil = resData.pageUtil;
+				
+				let paging = $('<div class="musicLike_paging">');
+				
+				if(page != 1) {
+					$(paging).append('<span class="musicLike_btn_left" data-page="' + (page - 1) + '">&lt;이전</span>')
+				}
+				
+				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+					if(p = page) {
+						$(paging).append( '<span class="musicLike_btn"></span>' )
+					} else {
+						$(paging).append( '<span class="musicLike_btn data-page="'+p+'"></span>' )
+					}
+				}
+				
+				if(page != pageUtil.totalPage) {
+					$(paging).append('<span class="musicLike_btn_right" data-page="' + (page + 1) + '">&lt;다음</span>')
+				}
+				
+				$('.musicLike_footer').append(paging);
 				
 			}
 				
@@ -164,6 +189,11 @@
 						</tbody>
 					</table>
 	
+				</div>
+				<div class="musicLike_footer">
+					<div class="musicLike_paging"></div>
+				
+				
 				</div>
 
 		</div>
