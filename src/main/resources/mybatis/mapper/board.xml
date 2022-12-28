@@ -12,10 +12,10 @@
 	</select>
 
 	<select id="selectBoardListByMap" parameterType="Map" resultType="BoardDTO">
-		SELECT A.ROW_NUM, A.BOARD_NO, A.BOARD_TITLE, A.BOARD_CONTENT, A.BOARD_HIT, A.IP, A.BOARD_CREATE_DATE, A.GUBUN, A.BOARD_MODIFY_DATE
-		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY BOARD_NO DESC) AS ROW_NUM, BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_HIT, IP, BOARD_CREATE_DATE, GUBUN, BOARD_MODIFY_DATE
-		          FROM BOARD) A
-		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+		  SELECT BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_HIT, IP, BOARD_CREATE_DATE, GUBUN, BOARD_MODIFY_DATE
+           FROM BOARD
+          ORDER BY BOARD_NO DESC
+          LIMIT #{begin}, #{recordPerPage}
 	</select>
 	
 	<insert id="insertSummernoteImage" parameterType="SummernoteImageDTO">
@@ -25,16 +25,15 @@
 			(#{boardNo}, #{filesystem})
 	</insert>
 	
-
-	<insert id="insertBoard" parameterType="BoardDTO">
-		<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
+	<!--<selectKey keyProperty="boardNo" resultType="int" order="BEFORE">
 			SELECT BOARD_SEQ.NEXTVAL
 			  FROM DUAL
-		</selectKey>
+		</selectKey> -->
+	<insert id="insertBoard" parameterType="BoardDTO">
 		INSERT INTO BOARD
-			(BOARD_NO, BOARD_TITLE, BOARD_CONTENT, BOARD_CREATE_DATE, BOARD_HIT, IP, BOARD_MODIFY_DATE)
+			(BOARD_TITLE, BOARD_CONTENT, BOARD_CREATE_DATE, BOARD_HIT, IP, BOARD_MODIFY_DATE)
 		VALUES
-			(#{boardNo}, #{boardTitle}, #{boardContent}, SYSDATE, 0, #{ip}, SYSDATE)
+			(#{boardTitle}, #{boardContent}, NOW(), 0, #{ip}, NOW())
 	</insert>
 	
 	<update id="updateHit" parameterType="int">
@@ -53,7 +52,7 @@
 		UPDATE BOARD
 		   SET BOARD_TITLE = #{boardTitle}
 		     , BOARD_CONTENT = #{boardContent}
-		     , BOARD_MODIFY_DATE = SYSDATE
+		     , BOARD_MODIFY_DATE = NOW()
 		 WHERE BOARD_NO = #{boardNo}
 	</update>
 	
