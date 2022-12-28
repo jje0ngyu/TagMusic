@@ -88,19 +88,19 @@
 				let paging = $('<div class="musicLike_paging">');
 				
 				if(page != 1) {
-					$(paging).append('<span class="musicLike_btn_left" data-page="' + (page - 1) + '">&lt;이전</span>')
+					$(paging).append('<div class="musicLike_btn_left" data-page="' + (page - 1) + '">&lt;이전</div>')
 				}
 				
 				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
 					if(p = page) {
-						$(paging).append( '<span class="musicLike_btn"></span>' )
+						$(paging).append( '<div class="musicLike_btn">'+p+'</div>' )
 					} else {
-						$(paging).append( '<span class="musicLike_btn data-page="'+p+'"></span>' )
+						$(paging).append( '<div class="musicLike_btn data-page="'+p+'"></div>' )
 					}
 				}
 				
 				if(page != pageUtil.totalPage) {
-					$(paging).append('<span class="musicLike_btn_right" data-page="' + (page + 1) + '">&lt;다음</span>')
+					$(paging).append('<div class="musicLike_btn_right" data-page="' + (page + 1) + '">&lt;다음</div>')
 				}
 				
 				$('.musicLike_footer').append(paging);
