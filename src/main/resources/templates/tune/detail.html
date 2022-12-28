@@ -98,13 +98,60 @@
 				</div>
 				<div class="tune_lyrics_box blind">
 					<textarea class="tune_lyrics" th:text="${music.musicContent}"></textarea>
-			
 				</div>
-				<div>
+				
+				<!-- 댓글 -->
+				<div class="comment_box">
+					<div>
+						<form id="frm_comment">
+							<div>
+								<input type="text" name="email" th:value="${session.loginUser.email}">
+								<input type="text" name="musicNo" th:value="${music.musicNo}">	
+								<input type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성하려면 로그인 해 주세요.">
+								<input type="button" value="작성완료" id="btn_add_comment">
+							</div>
+						</form>
+					</div>
+					<div id="comment_list"></div>
+					<div id="paging"></div>
+				</div>
+				
+				<!-- 음원 다운로드 -->
+				<div class="blind">
 					<a th:href="@{/tune/download(musicNo=${music.musicNo})}">음원 다운로드 하기</a>
 				</div>
 			</div>
 		</div>
+		
+		<script>
+			$(function(){
+				// 댓글
+				fn_addComment();
+			});
+			
+			function fn_addComment(){
+			$('#btn_add_comment').click(function(){
+				if($('#commentContent').val() == ''){
+					alert('댓글 내용을 입력하세요');
+					return;
+				}
+				$.ajax({
+					type: 'post',
+					url: '/comment/add',
+					data: $('#frm_comment').serialize(),
+					dataType: 'json',
+					success: function(resData){  // resData = {"isAdd", true}
+						if(resData.isAdd){
+							alert('댓글이 등록되었습니다.');
+							$('#commentContent').val('');
+							fn_commentList();   // 댓글 목록 가져와서 뿌리는 함수
+							fn_commentCount();  // 댓글 목록 개수 갱신하는 함수
+						}
+					}
+				});
+			});
+		}
+		</script>
 		
 	</div>
 </body>

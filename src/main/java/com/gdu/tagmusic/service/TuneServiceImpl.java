@@ -19,6 +19,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.tagmusic.domain.MusicCommentDTO;
 import com.gdu.tagmusic.domain.MusicDTO;
 import com.gdu.tagmusic.mapper.TuneMapper;
 import com.gdu.tagmusic.util.MyFileUtil;
@@ -247,5 +248,16 @@ public class TuneServiceImpl implements TuneService {
 		
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	
+	}
+	
+	
+	// 댓글 - 삽입
+	@Override
+	public Map<String, Object> addComment(MusicCommentDTO comment) {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("isAdd", tuneMapper.insertComment(comment) > 0);			
+		
+		return result;
 	}
 }

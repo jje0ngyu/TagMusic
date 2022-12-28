@@ -1,5 +1,7 @@
 package com.gdu.tagmusic.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.gdu.tagmusic.domain.MusicCommentDTO;
 import com.gdu.tagmusic.service.TuneService;
 
 @Controller
@@ -72,4 +75,10 @@ public class TuneController {
 		return tuneService.download(userAgent, musicNo);
 	}
 	
+	// 음원 상세보기 - 댓글
+	@ResponseBody
+	@PostMapping(value="/comment/add", produces="application/json")
+	public Map<String, Object> add(MusicCommentDTO comment) {
+		return tuneService.addComment(comment);
+	}
 }
