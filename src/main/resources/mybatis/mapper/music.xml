@@ -403,7 +403,7 @@
 
 	<!-- 10. 플레이리스트 추가 -->
 	<insert id="insertPlaylist" parameterType="Map">
-		INSERT INTO PLAYLIST VALUES (#{email} , #{listName})
+		INSERT INTO PLAYLIST(EMAIL, LIST_NAME) VALUES (#{email} , #{listName})
 	</insert>
 	
 	<!-- 11. 유저 플레이리스트 조회 -->
@@ -415,7 +415,7 @@
 
 	<!-- 12. 플레이리스트 생성시 디폴트곡 추가  -->
 	<insert id="insertDefaultMusicToPlaylist" parameterType="Map">
-		INSERT INTO MY_MUSIC VALUES (#{listNo} , 1)
+		INSERT INTO MY_MUSIC (LIST_NO, MUSIC_NO) VALUES (#{listNo} , 1)
 	</insert>
 	
 	<!-- 13. 플레이리스트 존재여부 확인 : 플레이리스트명 있게 -->

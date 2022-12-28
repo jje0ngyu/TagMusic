@@ -558,8 +558,7 @@ public class MusicServiceImpl implements MusicService {
 		} else {
 			
 			// 2. 해당 유저가 지은 플레이리스트명이 처음인 경우 : 이벤트 발생
-			map.put("email", email);
-			map.put("listName", listName);
+
 			
 			// 1) 플레이리스트 생성
 			int result = musicMapper.insertPlaylist(map);
