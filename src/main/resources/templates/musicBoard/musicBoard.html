@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title></title>
 <link rel="stylesheet" th:href="@{/css/musicBoard.css}">
+<link rel="stylesheet" th:href="@{/css/popup.css}">
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 
@@ -170,6 +171,8 @@
 
     	$(document).on('click', '.createPlaylist_btn_cancel', function() {	// 뒤로가기
     		
+    		fn_reModal();
+    		
     	
     	});	
     }
@@ -306,7 +309,7 @@
 								<td>
 									
 									<div th:text="${music.musicTitle}" class="title_artist"></div>
-									<div th:text="${music.activeLogDTO.userDTO.artist}" class="title_artist"></div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
+									<div th:text="${music.userDTO.artist}" class="title_artist"></div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
 								</td>
 								
 								<td>
@@ -397,7 +400,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+		
 </body>
 </html>

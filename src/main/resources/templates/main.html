@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title></title>
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
+<link rel="stylesheet" th:href="@{/css/main.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 	<script th:inline="javascript">
 	
@@ -68,7 +69,7 @@
 						$('<div class="main_item">') 
 						.append(text)
 						.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
 						.appendTo(('#updatedMusicList'));   
 						/* .append(text)
 						.append( $('<a class="item_title" href="/music/detail?musicNo=' + music.musicNo +'">').text(music.musicTitle) )
@@ -139,7 +140,7 @@
 						$('<div class="main_item">') 
 						.append(text)
 						.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
 						.appendTo(('#popularMusicList'));   
 						
 					}); 
@@ -223,7 +224,7 @@
 						$('<div class="main_item">') 
 						.append(text)
 						.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
 						.appendTo(('#popularMusicList'));   
 						
 					}); 
@@ -291,7 +292,7 @@
 							$('<div class="main_item">') 
 							.append(text)
 							.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-							.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+							.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
 							.appendTo(('#popularMusicList'));   
 							
 						}); 
@@ -348,7 +349,7 @@
 							$('<div class="main_item">') 
 							.append(text)
 							.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-							.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+							.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
 							.appendTo(('#popularMusicList'));   
 							
 						}); 
@@ -406,7 +407,7 @@
 							$('<div class="main_item">') 
 							.append(text)
 							.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-							.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.activeLogDTO.userDTO.artist + '</a>')
+							.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
 							.appendTo(('#popularMusicList'));   
 							
 						}); 

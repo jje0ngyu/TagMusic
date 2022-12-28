@@ -66,9 +66,6 @@
 				<div class="right_controll">
 					<input id="hide_detail" type="button" value="눌러!">
 				</div>
-				<div>
-					<input type="button" id="isPassHave" value="티켓가지고있어?" onclick="isPassHave();">
-				</div>
 			</div>
 		</div>
 	
@@ -86,6 +83,7 @@
 			fn_audio_pause();
 			fn_muted();
 			fn_repeat();
+			fn_checkPass();
 			isPassHave();
 		})
 		
@@ -151,7 +149,13 @@
 		</script>	
 		
 <script>
-	function isPass() {}
+	function fn_checkPass() {
+		$('.img_play').click(function(){
+			if(confirm('이용권이 없는 회원입니다. 이용권을 구매하시겠습니까?')){
+				location.href='/payment/buy';
+			}
+		});
+	}
 	function isPassHave(){
 		$.ajax({
 			type: 'post',
@@ -159,7 +163,7 @@
 			dataType: 'json',
 			success: function(resData){
 				if(resData.result == 0){
-					
+					fn_checkPass();
 				} else {
 					fn_audio_play();
 					

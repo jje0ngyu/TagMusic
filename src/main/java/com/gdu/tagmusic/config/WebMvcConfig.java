@@ -42,6 +42,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		// 비로그인 유저방지 인터셉터
 		registry.addInterceptor(pleaseLogininterceptor)
 		.addPathPatterns("/music/move/playlist")	
+		.addPathPatterns("/music/move/musicLike")	
 		.addPathPatterns("/music/move/playlistModal");	// 플레이리스트
 		
 		// 플레이리스트 5개 초과방지 

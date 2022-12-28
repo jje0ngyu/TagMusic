@@ -3,12 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/login.css}">
 <link rel="stylesheet" th:href="@{/css/mypage.css}">
 </head>
 <body>
-
+	<div th:replace="~{layout/loginHeader.html::loginFragment}"></div>
+	<div class="retire_controller">
+		<div>
+			그동안 테그뮤직을 이용해 주셔서 감사합니다.
+		</div>
+		<div class="retire_text_goMain">
+			메인으로 이동하기
+		</div>
+	</div>
 	
-	
-	<a th:href="@{/}">메인으로 이동하기</a>
 </body>
 </html>

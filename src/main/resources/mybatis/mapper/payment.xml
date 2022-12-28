@@ -17,13 +17,13 @@
 		INSERT INTO PAYMENT_LOG
 			(PAY_LOG_NO, PAY_LOG_EMAIL, PAY_LOG_DATE, PAY_LOG_PG, PAY_LOG_NAME, PAY_LOG_PRICE)
 		VALUES
-			(#{merchantUid}, #{email}, SYSDATE, #{payPg}, #{ticketName}, #{price})
+			(#{merchantUid}, #{email}, NOW(), #{payPg}, #{ticketName}, #{price})
 	</insert>
 	<insert id="insertPaymentGiftLog" parameterType="map">
 		INSERT INTO PAYMENT_LOG
 			(PAY_LOG_NO, PAY_LOG_EMAIL, PAY_LOG_DATE, PAY_LOG_PG, PAY_LOG_NAME, PAY_LOG_PRICE)
 		VALUES
-			(#{merchantUid}, #{sessionEmail}, SYSDATE, #{payPg}, #{ticketName}, #{price})
+			(#{merchantUid}, #{sessionEmail}, NOW(), #{payPg}, #{ticketName}, #{price})
 	</insert>
 	
 	<!-- 회원이 만료일이 지났나? 혹은 신규인가 -->
@@ -32,27 +32,28 @@
 		  FROM PAYMENT
 		 WHERE EMAIL = #{email}
 		   AND PASS_NO = #{passNo}
-		   AND EXPIRATION_DATE > SYSDATE
+		   AND EXPIRATION_DATE > NOW()
 	</select>
 	
 	<!-- 이용권이 없으면 추가해주는 쿼리 -->
 	<insert id="insertPayment" parameterType="map">
 		INSERT INTO PAYMENT
-			(PAY_NO, EMAIL, PASS_NO, EXPIRATION_DATE)
+			(EMAIL, PASS_NO, EXPIRATION_DATE)
 		VALUES
-			(PAYMENT_SEQ.NEXTVAL, #{email}, #{passNo}, SYSDATE + 30)
+			(#{email}, #{passNo}, DATE_ADD(NOW(), INTERVAL 30 DAY))
 	</insert>
 	
 	<!-- 이용권이 있으면 기간을 늘려주는 쿼리 -->
 	<update id="updatePaymentExtend" parameterType="map">
 		UPDATE PAYMENT
-  		   SET EXPIRATION_DATE = EXPIRATION_DATE + 30
+  		   SET EXPIRATION_DATE = DATE_ADD(EXPIRATION_DATE, INTERVAL 30 DAY)
   		 WHERE EMAIL = #{email}
 	</update>
 	
 	<!-- 이용권 끝나는 날짜 D_DAY -->
 	<select id="selectRemainiend" parameterType="map" resultType="Integer">
-		SELECT FLOOR(EXPIRATION_DATE - SYSDATE)
+	
+		SELECT TIMESTAMPDIFF(DAY, NOW(), EXPIRATION_DATE)
  		  FROM PAYMENT
 	     WHERE EMAIL = #{email}
 	</select>
@@ -66,7 +67,7 @@
 	<delete id="deletePass">
 		DELETE 
 		  FROM PAYMENT
-		 WHERE SYSDATE > EXPIRATION_DATE
+		 WHERE NOW() > EXPIRATION_DATE
 	</delete>
 	<!-- 선물하기를 할 시  닉네임 비교를 위한 쿼리 -->
 	<select id="selectRecipientByEmail" parameterType="map" resultType="UserDTO">
@@ -74,18 +75,19 @@
 		  FROM USERS
 		 WHERE EMAIL = #{email}
 	</select>
-	<!-- 결제이력의 총개수 (페이징처리 위함) -->
-	<select id="selectPaymentLogListCount" resultType="int">
+	<!-- 해당유저의 결제이력의 개수 (페이징처리 위함) -->
+	<select id="selectPaymentLogListCount" resultType="int" parameterType="map">
 		SELECT COUNT(*)
 		  FROM PAYMENT_LOG
+		 WHERE PAY_LOG_EMAIL = #{email}
 	</select>
 		<!-- 결제 이력을 확인하기 위한 쿼리 -->
 	<select id="selectPaymentLogList" parameterType="Map" resultType="PaymentLogDTO">
-		SELECT A.PAY_LOG_NO, A.PAY_LOG_EMAIL, A.PAY_LOG_NAME, A.PAY_LOG_DATE, A.PAY_LOG_PG, A.PAY_LOG_PRICE
-  		  FROM (SELECT ROW_NUMBER() OVER(ORDER BY PAY_LOG_NO DESC) AS ROW_NUM, PAY_LOG_NO, PAY_LOG_EMAIL, PAY_LOG_NAME, PAY_LOG_DATE, PAY_LOG_PG, PAY_LOG_PRICE
-				  FROM PAYMENT_LOG
-				 WHERE PAY_LOG_EMAIL = #{email}) A
-		 WHERE A.ROW_NUM BETWEEN #{begin} AND #{end}
+		 SELECT PAY_LOG_NO, PAY_LOG_EMAIL, PAY_LOG_NAME, PAY_LOG_DATE, PAY_LOG_PG, PAY_LOG_PRICE
+		  FROM PAYMENT_LOG
+		 WHERE PAY_LOG_EMAIL = #{email}
+		 ORDER BY PAY_LOG_NO DESC
+		 LIMIT #{begin}, #{recordPerPage}
 	</select>
 	<!-- 결제 이력 삭제  -->
 	<delete id="deleteLogByNo" parameterType="Map">
