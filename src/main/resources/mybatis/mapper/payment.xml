@@ -89,6 +89,7 @@
 		 ORDER BY PAY_LOG_NO DESC
 		 LIMIT #{begin}, #{recordPerPage}
 	</select>
+	
 	<!-- 결제 이력 삭제  -->
 	<delete id="deleteLogByNo" parameterType="Map">
 		DELETE
@@ -99,11 +100,72 @@
 		 	</foreach>
 		 </where>
 	</delete>
+	
 	<select id="selectIsPaymentCnt" parameterType="map" resultType="int">
 		SELECT COUNT(*)
 		  FROM PAYMENT
 		 WHERE EMAIL = #{email}
 	</select>
+	
+	<!-- 스케줄러에 등록할 것! 4시마다 0개가 된 쿠폰은 삭제. -->
+	<delete id="deleteCoupon">
+		DELETE FROM COUPON
+		 WHERE COUPON_COUNT = 0
+	</delete>
+	
+	
+	<!-- 해당 쿠폰이 남아있는가? -->
+	<select id="selectCouponByCode" parameterType="map" resultType="Integer">
+		SELECT COUPON_COUNT
+		  FROM COUPON
+		 WHERE COUPON_CODE = #{couponCode}
+		   AND COUPON_COUNT > 0
+	</select>
+	<!-- 해당 유저가 해당 쿠폰을 썻는지? 1이면 썻음 0이면 안씀 -->
+	<select id="selectCouponUseCnt" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+		  FROM COUPON_USE
+		 WHERE EMAIL = #{email}
+		   AND COUPON_CODE = #{couponCode}
+	</select>
+	
+	<!-- 0일경우 쿠폰을 안쓴유저다. -->
+	<update id="updateCoupon" parameterType="map">
+		UPDATE COUPON
+  		   SET COUPON_COUNT = COUPON_COUNT - 1
+  		 WHERE COUPON_CODE = #{couponCode}
+	</update>
+	<insert id="insertCouponUse" parameterType="map">
+		INSERT INTO COUPON_USE
+			(COUPON_CODE, EMAIL)
+		VALUES
+			(#{couponCode}, #{email})
+	</insert>
+	
+	<!-- 회원이 만료일이 지났나? 혹은 신규인가 -->
+	<select id="selectPaymentCouponCnt" resultType="int" parameterType="map">
+		SELECT COUNT(*)
+		  FROM PAYMENT
+		 WHERE EMAIL = #{email}
+		   AND PASS_NO = 1
+		   AND EXPIRATION_DATE > NOW()
+	</select>
+	
+	<!-- 이용권이 없으면 추가해주는 쿼리 -->
+	<insert id="insertPaymentCpn" parameterType="map">
+		INSERT INTO PAYMENT
+			(EMAIL, PASS_NO, EXPIRATION_DATE)
+		VALUES
+			(#{email}, 1, DATE_ADD(NOW(), INTERVAL 15 DAY))
+	</insert>
+	
+	<!-- 이용권이 있으면 기간을 늘려주는 쿼리 -->
+	<update id="updatePaymentExtendCpn" parameterType="map">
+		UPDATE PAYMENT
+  		   SET EXPIRATION_DATE = DATE_ADD(EXPIRATION_DATE, INTERVAL 15 DAY)
+  		 WHERE EMAIL = #{email}
+	</update>
+	
 </mapper>
 
 
