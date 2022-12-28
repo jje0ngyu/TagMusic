@@ -11,8 +11,8 @@
 .musicLike_container {
 	
 	width: 100%;
-	background-color: #efefef;
-	 margin: 35px auto;
+	background-color: #fbfbfb;
+	margin: 35px auto;
 	padding: 60px 270px;	
 
 }
@@ -20,10 +20,10 @@
 .musicLike_page {
 	
 
-	background-color: #ffffff;
+	background-color: #fbfbfb;
 	margin: 35px auto;
 	width : 1300px;
-	height: 1300px;
+	height: 1400px;
 	padding: 30px;
 	
 	
@@ -32,15 +32,16 @@
 .musicLike_header {
 	
 	
-		
-		background-color: #efefef;
+		background-color: #20325A;
+		border-radius: 10px;
 		height: 120px;
 		width: 1240px;
-		font-size: 20px;
-		font-weight: 800;
-		color: 212121;
+		font-size: 23px;
+		font-weight: 900;
+		color: #fdfdfd;
 		padding: 30px 20px;
 		margin-bottom: 20px;
+		box-shadow: 0 1px 10px 0 #37486b;
 	
 
 }
@@ -48,21 +49,22 @@
 .musicLike_body {
 	
 	background-color: #efefef;
-	height: 600px;
-	
+	height: 1050px;
+	box-shadow: 0 1px 10px 0 #808080;
 	font-size: 20px;
 	font-weight: 800;
 	color: 212121;
 	padding: 20px;
+	border-radius: 10px;
 	
 }
 
 .musicLike_table {
 	
-	background-color: white;
+	background-color: efefef;
 	width: 1200px;
     padding: 10px;
-    height : 100px;
+    height : 80px;
    
     border-collapse: collapse;
     font-size: 15px;
@@ -73,10 +75,17 @@
 	
 }
 
+thead {
+	
+	background-color: white;
+	
+}
+
 .musicLike_tr {
 	
 	width: 1200px;
 	height: 40px;
+	
 	
 	
 }
@@ -92,9 +101,20 @@
 	
 }
 
+.musicLike_td_no {
+	
+	width: 20px;
+	font-size: 17px;
+  	height: 30px;
+    border-top: 1px solid #888888;
+    padding: 10px;
+	
+	
+}
+
 .musicLike_td_del {
 	
-	font-size: 13px;
+	font-size: 15px;
   	height: 30px;
     border-top: 1px solid #888888;
     padding: 10px;
@@ -128,6 +148,16 @@
 	
 }
 
+.musicLike_delete:hover {
+	
+	background-color: #20325A;
+	color: #fdfdfd;
+	cursor: pointer;
+	
+	
+}
+
+
 .musicLike_footer {
 	
 	margin-top: 20px;
@@ -137,18 +167,21 @@
 	color: #212121;
 	line-height: 60px;
 	text-align: center;
-	
+	box-shadow: 0 1px 10px 0 #808080;
+	border-radius: 10px;
 		
 }
 
 .musicLike_paging {
 	
-	display : flex;
+	display : inline-block;
 	width: 400px;
 	height: 50px;
 	line-height: 50px;
 	text-align: center;
 	margin: 10px auto;
+
+	
 	
 }
 
@@ -163,16 +196,36 @@
 	font-size: 20px;
 	color: #444444;
 	font-weight: 900;
+	border: 1px solid #777777;
+	background-color: #efefef; 
+	
+	
+	
+}
+
+.musicLike_btn_right, .musicLike_btn_left {
+	
+	border: 1px solid #222222;
+	display: inline-block;
+	width: 40px;
+	height: 35px;
+	text-align: center;
+	line-height: 35px;
+	font-size: 20px;
+	color: #444444;
+	font-weight: 900;
 	border: 1px solid #444444;
 	background-color: #efefef; 
+	
 	
 	
 }
 
 .musicLike_btn:hover {
 	
-	background-color: #888888; 
-	color: #eeeeee;
+	background-color: #20325A;
+	color: #fdfdfd;
+	cursor: pointer;
 	
 }
 
