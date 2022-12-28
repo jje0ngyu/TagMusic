@@ -112,10 +112,6 @@ function fn_isNotUser(){
 				txt += '<input type="button" value="결제하기" onclick="fn_login()">';
 				txt += '</div>';
 				txt += '</div>';
-				/* if(pass.passName == "30일이용권"){
-					txt += '<input type="button" value="선물하기" id="btn_gift" onclick="fn_login()">';
-			
-				} */
 			});
 			$('#buyPageDiv').append(txt);
 		}
@@ -141,11 +137,6 @@ function fn_passList(){
 					txt += '<input type="button" value="결제하기" data-ticket="'+ pass.passName+'" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_buyTicket(this)">';
 				txt += '</div>';
 				txt += '</div>';
-				/* if(pass.passName == "30일이용권"){
-					txt += '<div class="pass_box_right">';
-						txt += '<input class="btn_gift_30days" type="button" value="선물하기" data-if="0" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
-					txt += '</div>';
-				} */
 			});
 			
 			$('#buyPageDiv').append(txt);
@@ -190,13 +181,33 @@ function fn_login(){
 }
 
 function fn_registerCoupon(){
-	var coupon = $('#coupon_input').val();
-	if(coupon.length < 16){
+	var couponCode = $('#coupon_input').val();
+	var userEmail = [[${session.loginUser.email}]];
+	
+	if(couponCode.length < 16){
 		alert('정확한 쿠폰번호를 입력해주세요');
 		return;
 	}
+	console.log('code' + couponCode);
+	console.log('email' + userEmail);
+	 $.ajax({
+		type: 'post',
+		url: '/payment/coupon',
+		data: 'email=' + userEmail + '&couponCode=' + couponCode,
+		dataType: 'json',
+		success: function(resData){
+			switch(resData.result){
+			case 'null': alert('해당 쿠폰은 존재하지 않습니다.'); break;
+			case 'duplication': alert('해당 쿠폰은 이미 사용한 쿠폰입니다.'); break;
+			case 'success' : alert('쿠폰이 등록되었습니다.'); break;
+			case 'extension': alert('15일 연장되었습니다.'); break;
+			case 'false': alert('실패'); break;
+			}
+			fn_remainingDay();
+		}
+	});  
 	
-	console.log('asdd');
+	
 	
 }
 
@@ -243,10 +254,9 @@ function fn_buyTicket(e){
 					dataType: 'json',
 					success: function(resData){
 						var msg = '';
-						if(resData.result == 1){
-							msg += '이용권 구매가 완료되었습니다.';
-						} else {
-							msg += '이용권 구매가 실패하였습니다..';
+						switch(resData.result){
+						case 'success' : msg += '이용권 구매가 완료되었습니다.'; break;
+						case 'extension' : msg += '이용권 기간이 30일 연장되었습니다.'; break;
 						}
 						alert(msg);
 						fn_remainingDay();
