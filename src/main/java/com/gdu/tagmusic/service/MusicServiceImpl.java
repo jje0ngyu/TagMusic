@@ -56,9 +56,9 @@ public class MusicServiceImpl implements MusicService {
 		// 3. 음악리스트 조회
 		// - users 테이블, active_log 테이블과 조인하여 해당 게시글의 artist를 조회해온다
 		Map<String, Object> map = new HashMap<>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
-
+		map.put("begin", pageUtil.getBegin() -1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		
 		List<MusicDTO> musicList = musicMapper.selectUpdatedMusicList(map);
 
 		// 5. 모든 데이터를 전달할 map
@@ -79,7 +79,7 @@ public class MusicServiceImpl implements MusicService {
 
 		// 경로 : fileutil을 통해 차후 결정
 		MusicDTO music = musicMapper.selectMusicByNo(musicNo);
-		File file = new File(music.getImgPath(), music.getImgFilesystem());
+		File file = new File(music.getImgPath(), "s_" + music.getImgFilesystem());
 
 		// db 정보를 통해 이미지를 담은 responseentity객체 반환
 		ResponseEntity<byte[]> result = null;
@@ -90,11 +90,11 @@ public class MusicServiceImpl implements MusicService {
 
 				HttpHeaders headers = new HttpHeaders();
 				headers.add("Content-Type", Files.probeContentType(file.toPath()));
-				File thumbnail = new File(music.getImgPath(), music.getImgFilesystem());
-				// File thumbnail = new File(music.getImgPath(), "s_" +
-				// music.getImgFilesystem());
+				File thumbnail = new File(music.getImgPath(), "s_" + music.getImgFilesystem());
 				result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(thumbnail), null, HttpStatus.OK);
 				return result;
+				
+				
 
 			}
 
@@ -124,8 +124,8 @@ public class MusicServiceImpl implements MusicService {
 
 		// 3) model에 값을 전달
 		Map<String, Object> map = new HashMap<>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
+		map.put("begin", pageUtil.getBegin() -1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 
 		model.addAttribute("paging", pageUtil.getPaging("/music/board/updatedMusic"));
 		model.addAttribute("musicList", musicMapper.selectUpdatedMusicList(map));
@@ -165,8 +165,9 @@ public class MusicServiceImpl implements MusicService {
 		// 3. 음악리스트 조회
 		// - users 테이블, active_log 테이블과 조인하여 해당 게시글의 artist를 조회해온다
 		Map<String, Object> map = new HashMap<>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
+		map.put("begin", pageUtil.getBegin() -1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		
 		// map.put("genre", genre);
 
 		List<MusicDTO> musicList = musicMapper.selectPopularMusicList(map);
@@ -192,8 +193,8 @@ public class MusicServiceImpl implements MusicService {
 		// 3. 음악리스트 조회
 		// - users 테이블, active_log 테이블과 조인하여 해당 게시글의 artist를 조회해온다
 		Map<String, Object> map = new HashMap<>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
+		map.put("begin", pageUtil.getBegin() -1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		// map.put("genre", genre);
 
 		// 4. model로 전달
@@ -224,8 +225,8 @@ public class MusicServiceImpl implements MusicService {
 		// 3. 음악리스트 조회
 		// - users 테이블, active_log 테이블과 조인하여 해당 게시글의 artist를 조회해온다
 		Map<String, Object> map = new HashMap<>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
+		map.put("begin", pageUtil.getBegin() -1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		map.put("genre", genre);
 
 		List<MusicDTO> musicList = musicMapper.selectPopularMusicGenreList(map);
@@ -254,8 +255,9 @@ public class MusicServiceImpl implements MusicService {
 
 		// 3) model에 값을 전달
 		Map<String, Object> map = new HashMap<>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
+		map.put("begin", pageUtil.getBegin() -1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		
 		map.put("query", query);
 
 		model.addAttribute("paging", pageUtil.getPaging("/music/main/totalSearch?query=" + query));
@@ -274,8 +276,8 @@ public class MusicServiceImpl implements MusicService {
 		pageUtil.setPageUtil(1, 10, 10);
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("begin", pageUtil.getBegin());
-		map.put("end", pageUtil.getEnd());
+		map.put("begin", pageUtil.getBegin() -1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 
 		List<MusicDTO> rankingList = musicMapper.selectMusicRanking10(map);
 		map.put("rankingList", rankingList);
@@ -308,7 +310,7 @@ public class MusicServiceImpl implements MusicService {
 	
 		 // * 위의 제약이 실행되기전에 비회원일 경우 email이 null값이 발생하니 제약 뒤에서 값을 호출
 		 int userNo = user.getUserNo(); 
-		 String userName = user.getName();
+		 String userNickName = user.getArtist();
 		 String email = user.getEmail();
 		 map.put("email", email);
 			
@@ -330,7 +332,7 @@ public class MusicServiceImpl implements MusicService {
 			 map.put("userNo", userNo);
 			 
 			 // 반환할 데이터
-			 map.put("userName", userName);										// 유저명
+			 map.put("userNickName", userNickName);										// 유저명
 			 map.put("userPlaylistCnt",musicMapper.selectUserPlaylistCnt(map)); // 플레이리스트 개수
 			 map.put("userPlaylist", musicMapper.selectUserPlaylist(map));		// 플레이리스트 목록
 			 map.put("result", 1);
@@ -379,8 +381,8 @@ public class MusicServiceImpl implements MusicService {
 		 
 		// map에 담기
 		 Map<String, Object> map = new HashMap<>();
-		 map.put("begin", pageUtil.getBegin());
-		 map.put("end", pageUtil.getEnd());
+		 map.put("begin", pageUtil.getBegin() -1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		 map.put("listNo", listNo);
 		 map.put("email", email);
 		 map.put("userNo", userNo);
@@ -589,14 +591,15 @@ public class MusicServiceImpl implements MusicService {
 		// 유저 : email
 		HttpSession session = request.getSession();
 		UserDTO user = (UserDTO) session.getAttribute("loginUser");
-				String email = user.getEmail();
+		String email = user.getEmail();
+		String userNickName = user.getArtist();
 		
 		// map
 		Map<String, Object> map = new HashMap<>();
 		map.put("page", page);
 		map.put("email", email);
 		
-		// 2. 좋아요 수 조회
+		// 2. 유저의 전체 좋아요 수 조회
 		int musicLikeCnt = musicMapper.selectUserMusicLikeCnt(map);
 		
 		// 제약 : 좋아요 수가 0일경우 result = 0 반환
@@ -610,15 +613,22 @@ public class MusicServiceImpl implements MusicService {
 		// 3. 페이징 처리
 		pageUtil.setPageUtil(page, 10, musicLikeCnt);
 		
+		map.put("begin", pageUtil.getBegin() -1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		
 		// 4. 좋아요 목록 조회
-		List<MusicLikeDTO> musicLikeList = musicMapper.selectUserMusicLikeList(map);
+		List<MusicDTO> musicLikeList = musicMapper.selectUserMusicLikeList(map);
 		
 		map.put("pageUtil", pageUtil);
 		map.put("selectUserMusicLikeList", musicLikeList);
 		map.put("result", 1);
+		map.put("userNickName", userNickName);
+		map.put("musicLikeCnt", musicLikeCnt);
 		
-		return null;
+		return map;
 	}
+	
+	
 
 	// 1. 유저 플레이리스트 페이지 이동 및 조회
 

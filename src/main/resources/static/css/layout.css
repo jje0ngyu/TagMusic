@@ -3,7 +3,8 @@
 	/* 공통영역 (header.html을 포함한 모든 html에 적용) */
 
 	/* 클래스 초기화  */
-	html, body, section, article, div, a, input, ul, li, input {
+	html, body, section, article, div, a, input, ul, li, input, ol, span {
+		box-sizing: border-box;
 		margin: 0px;
 		padding: 0px;
 		background-color: inherit;

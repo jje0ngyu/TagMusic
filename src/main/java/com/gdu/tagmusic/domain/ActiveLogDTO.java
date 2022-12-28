@@ -19,6 +19,6 @@ public class ActiveLogDTO {
 	private int musicNo;
 	private Date lastListenDate;
 	private int listenCount;
-	private UserDTO userDTO;
+
 	
 }

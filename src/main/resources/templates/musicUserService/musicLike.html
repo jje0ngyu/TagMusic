@@ -13,20 +13,72 @@
 
 	$(document).ready(function() {
 		
-		//fn_musicLikeList();
+		fn_musicLikeList();
 		//fn_deleteMusicLike();
 	
 	});
 	
 	function fn_musicLikeList() {
 		
+		let page = $('#page').val();
+		
 		$.ajax({
 			type: 'get',
 			url: '/music/user/musicLikeList',
+			data : 'page=' + page,
 			dataType: 'json',
 			success: function(resData) {
 			
 				alert('a');
+				
+				// 최신화
+				$('.musicLike_header').empty();
+				$('.musicLike_body').empty();
+				
+				// 목록조회
+				// 1) 헤더
+				$('.musicLike_header')
+				.append('<div class="musicLike_title">'+resData.userNickName+' 님의 좋아요 리스트입니다</div>')
+				.append('<div class="musicLike_cnt">현재 '+resData.musicLikeCnt+' 개의 곡이 있습니다</div>')
+						
+				// 2) 목록
+				
+				let body = $('<tbody>');
+				
+				// (1) tbody 생성
+				$.each(resData.selectUserMusicLikeList, function(index, musicList) {
+					
+					// 썸네일 조건부여
+					//if(musicList.hasThumbNail == 1) {
+						// let thumbnail = '/music/thumbnail';
+					//} else if (musicList.hasThumbNail == 0) {
+						let thumbnail = '/images/defaultImage.png';
+					//}
+					
+					$('<tr class="musicLike_tr">')
+					.append( $('<td class="musicLike_td">')
+							.append('<div class="musicLike_no">'+(index + 1)+'</div>') )
+					.append( $('<td class="musicLike_td_del">')
+							.append( $('<div class="musicLike_del">')
+									.append('<img class="musicLike_thumbnail" src="' + thumbnail + '">') ) )
+					.append( $('<td class="musicLike_td_del">')
+							.append('<div class="musicLike_del">'+musicList.musicTitle+'</div>') 
+							.append('<div class="musicLike_del">'+musicList.userDTO.artist+'</div>') )
+					.append( $('<td class="musicLike_td_del">')
+							.append('<div class="musicLike_del">'+musicList.musicGenre+'</div>') )
+					.append( $('<td class="musicLike_td">')
+							.append('<div class="musicLike_delete">삭제</div>') )
+					.appendTo( $(body) );
+
+				});
+				
+				// (2) 테이블 생성
+				$('.musicLike_body')
+				.append( $('<table class="musicLike_table">')
+						.append( $('<thead>')
+								.append( '<tr class="musicLike_tr"><td class="musicLike_td">번호</td><td class="musicLike_td" colspan="3">음악정보</td><td class="musicLike_td">삭제</td></tr>') )
+						.append( $(body) ) )
+				
 				
 			}
 				
@@ -54,7 +106,7 @@
 				<div class="musicLike_header">
 				
 					<div class="musicLike_title">~님의 좋아요게시판입니다</div>
-					<div class="musicLike_title">총 곡수는 5개입니다</div>
+					<div class="musicLike_cnt">총 곡수는 5개입니다</div>
 				
 				</div>
 				<div class="musicLike_body">

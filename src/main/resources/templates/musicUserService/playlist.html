@@ -73,7 +73,7 @@
 						$('.playlist_header').empty();
 						$('.playlist_header')
 						.append( $('<div class="playlist_header_left">')
-							.append('<div class="playlist_userName">'  + resData.userName + '님의 플레이리스트</div>')
+							.append('<div class="playlist_userName">'  + resData.userNickName + '님의 플레이리스트</div>')
 							.append('<div class="playlist_cnt">'  + resData.userPlaylistCnt + '개의 플레이리스트 보유중</div>')
 							.append('<div class="playlist_emp">※ 플레이리스트는 총 5개 생성할 수 있습니다</div>') )
 						
@@ -314,7 +314,7 @@
 					$('.playlist_header').empty();
 					$('.playlist_header')
 					.append( $('<div class="playlist_header_left">')
-						.append('<div class="playlist_userName">'  + resData.userName + '님의 플레이리스트</div>')
+						.append('<div class="playlist_userName">'  + resData.userNickName + '님의 플레이리스트</div>')
 						.append('<div class="playlist_cnt">'  + resData.userPlaylistCnt + '개의 플레이리스트 보유중</div>')
 						.append('<div class="playlist_emp">※ 플레이리스트는 총 5개 생성할 수 있습니다</div>') )
 					
@@ -575,12 +575,12 @@
 						if(resData.result == 0) {	
 							alert('플레이리스트는 5개 넘게 생성할 수 없습니다');		
 						} else if (resData.result == 2) {
-							alert('해당 플레이리스트명으로 지어린 리스트가 이미 존재합니다');	
+							alert('해당 플레이리스트명으로 지어린 리스트가 이미 존재합니다');
 						} else  {
 							alert('플레이리스트를 생성했습니다');
+							fn_Playlist_list();
+							$('#modal').css('display', 'none');
 						}
-						fn_Playlist_list();
-						$('#modal').css('display', 'none');
 						
 					}
 				});
