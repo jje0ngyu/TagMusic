@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gdu.tagmusic.domain.UserDTO;
+import com.gdu.tagmusic.mapper.AlarmMapper;
 import com.gdu.tagmusic.mapper.PaymentMapper;
 import com.gdu.tagmusic.util.PageUtil;
 
@@ -23,6 +24,9 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired
 	private PaymentMapper paymentMapper;
+	
+	@Autowired
+	private AlarmMapper alarmMapper;
 
 	@Autowired
 	private PageUtil pageUtil;
@@ -61,8 +65,14 @@ public class PaymentServiceImpl implements PaymentService {
 			int logResult = paymentMapper.insertPaymentLog(map);
 			if (passResult > 0 && logResult > 0) {
 				//성공시 알림생성
-				//map 만들어서 매퍼에 전달. content라는 맵에다 "이용권을 구매하셨습니다. 
-				result.put("result", "success");
+				//map 만들어서 매퍼에 전달. content라는 맵에다 "이용권을 구매하셨습니다.
+				map.put("content", "<a href='/user/mypage'><b>이용권</b>을 구매하셨습니다!</a>");
+				int alarm = alarmMapper.insertAlarm(map);
+				if(alarm == 1) {
+					result.put("result", "success");
+				} else {
+					result.put("result", "false");
+				}
 			} else {
 				result.put("result", "false");
 			}
@@ -70,7 +80,15 @@ public class PaymentServiceImpl implements PaymentService {
 			int extendResult = paymentMapper.updatePaymentExtend(map);
 			int logResult = paymentMapper.insertPaymentLog(map);
 			if (extendResult > 0 && logResult > 0) {
-				result.put("result", "extension");
+				//성공시 알림생성
+				//map 만들어서 매퍼에 전달. content라는 맵에다 "이용권을 구매하셨습니다.
+				map.put("content", "<a href='/user/mypage'><b>이용권</b>기간을 연장했습니다.!</a>");
+				int alarm = alarmMapper.insertAlarm(map);
+				if(alarm == 1) {
+					result.put("result", "extension");
+				} else {
+					result.put("result", "false");
+				}
 			} else {
 				result.put("result", "false");
 			}
@@ -263,6 +281,15 @@ public class PaymentServiceImpl implements PaymentService {
 			map.put("result", "null");
 			// 쿠폰 없음
 		}
+		return map;
+	}
+	
+	@Override
+	public Map<String, Object> alarmList(HttpServletRequest request) {
+		String email = request.getParameter("email");
+		Map<String, Object> map = new HashMap<>();
+		map.put("alarmList", alarmMapper.selectIsAlarmByEmail(email));
+		
 		return map;
 	}
 

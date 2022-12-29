@@ -169,6 +169,7 @@ function fn_remainingDay(){
 					</script>		
 					<!-- 알림 아이콘 클릭시 팝업 창 -->				
 					<div class="header_alarm_controller blind">
+						<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
 						<script>
 							$('.bell_area').click(function(){
 								$('.header_alarm_controller').toggleClass('blind');
@@ -176,22 +177,58 @@ function fn_remainingDay(){
 							});
 							$('.profile_image').click(function(){
 								$('.header_alarm_controller').addClass('blind');
-							})
+							});
+							var userEmail = $('#userEmail').data('email');
+							moment.locale('ko');
+							$(document).ready(function(){
+								fn_alarm();
+							});
+							function fn_alarm(){
+								$('.alarm_middle_controller').empty();
+								$.ajax({
+							    	type: 'post',
+							    	url: '/alarm/list',
+							    	data: 'email=' + userEmail,
+							    	dataType: 'json',
+							    	success: function(resData){
+							    		var txt = '';
+							    		console.log(resData.alarmList == 0);
+							    		if(resData.alarmList == 0){
+							    			txt += '<div class="alarm_content">' ;
+							    			txt += '<div class="alarm_info" style="justify-content: center;">';
+							    				txt += '<div class="alarm_msg">새로 도착한 알람이 없습니다.</div>';
+							    			txt += '</div>';
+							    			txt += '</div>'; 
+							    			$('.alarm_middle_controller').append(txt);
+							    		} else {
+							    			$.each(resData.alarmList, function(i, alarm){
+							    				txt += '<div class="alarm_content">' ;
+							    				txt += '<div class="alarm_info">';
+													txt += '<div class="alarm_gubun">쿠폰</div>';
+														txt += '<div class="alarm_createDate">'+ moment(alarm.alarmArrivalTime).format('YYYY-MM-DD A h:mm') +'</div>';
+													txt += '</div>';
+												txt += '<div class="alarm_msg">' +alarm.alarmContent+ '</div>';
+											txt += '</div>'; 
+							    			
+											
+							    			});
+							    			$('.alarm_middle_controller').append(txt);
+							    		}
+							    		
+							    		
+							    		
+							    	}
+							    });
+							}
+							
+							
+							
 						</script>
 						<div class="alarm_top_controller">
 							<div id="btn_all_read">모두 읽음</div>
 						</div>
 						<div class="alarm_middle_controller">
-							<!-- 알림 1개-->
-							<div class="alarm_content">
-								<div class="alarm_info">
-									<div class="alarm_gubun">쿠폰</div>
-									<div class="alarm_createDate">발송일</div>
-								</div>
-								<div class="alarm_msg">
-									내용내용내용내용내용
-								</div>
-							</div> <!-- 알림 1개 끝-->
+							<!-- 알람들어가는곳 -->
 						</div>
 					</div>
 					<!-- 프로필 사진 클릭시 팝업 창 -->

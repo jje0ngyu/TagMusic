@@ -209,6 +209,7 @@ function fn_registerCoupon(){
 			case 'false': alert('실패'); break;
 			}
 			fn_remainingDay();
+			fn_alarm();
 		}
 	});  
 	
@@ -265,7 +266,7 @@ function fn_buyTicket(e){
 						}
 						alert(msg);
 						fn_remainingDay();
-						
+						fn_alarm();
 					}
 					
 				}); 
@@ -341,6 +342,7 @@ function fn_presentTicket(e){
 							alert(msg);
 							fn_remainingDay();
 							fn_init();
+							fn_alarm();
 						}
 					}); 
 				} else {
