@@ -1,0 +1,76 @@
+@charset "UTF-8";
+
+.header_alarm_controller {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	top: 90px;
+	right: 30px;
+	width: 360px;
+	height: auto;
+	max-width: 430px;
+	overflow: hidden	;
+	padding: 20px;
+	border-radius: 10px;
+	background-color: #37486b;
+	box-shadow: 0px 1px 3px 0px #1f1f1f;
+}
+
+/* 알람 상단 (모두 읽음 처리) */
+.alarm_top_controller {
+	display: flex;
+	justify-content: right;
+	align-items: center;
+	height: 30px;
+}
+#btn_all_read {
+	font-size: 12px;
+	height: auto;
+	margin-right: 10px;
+	color: #1f1f1f;
+	border: 1px solid #bdc3ce;
+	color: #bdc3ce;
+	padding: 5px;
+}
+#btn_all_read:hover {
+	background-color: #f8f9fa;
+	color: #37486b;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+/* 알람 중간 (알림 상태, 발송일, 내용) */
+.alarm_middle_controller {
+	display: flex;
+	flex-direction: column;
+	padding: 10px 5px;
+}
+.alarm_content {
+	border-top : 1px solid #bdc3ce;
+	border-bottom : 1px solid #bdc3ce;
+	padding: 10px 0;
+}
+.alarm_info {
+	display: flex;
+	
+}
+.alarm_gubun {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #FFD654;
+	color: #1f1f1f;
+	width: 70px;
+	height: 24px;
+	border-radius: 20px;
+	margin-right: 10px;
+}
+.alarm_createDate {
+	display: flex;
+	align-items: center;
+	color: #bdc3ce;
+	font-size: 14px;
+}
+.alarm_msg {
+	margin: 5px 15px;
+}

@@ -920,7 +920,7 @@ public class UserServiceImpl implements UserService {
 		
 		// 비밀번호 일치하는지 확인
 		String email = ((UserDTO)session.getAttribute("loginUser")).getEmail();
-		String pw = securityUtil.sha256(request.getParameter("originPw"));
+		String pw = securityUtil.sha256(request.getParameter("pw"));
 		
 		// 조회 조건으로 사용할 Map
 		Map<String, Object> map = new HashMap<String, Object>();

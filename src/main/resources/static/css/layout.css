@@ -256,10 +256,10 @@
 		padding: 20px 10px 30px;
 		border-radius: 10px;
 		width: 300px;
-		background-color: #474545;
+		background-color: #37486b;
 		text-align: center;
 		line-height: 30px;
-		color: #aaaaaa;
+		color: #bdc2ce;
 	}
 	.profile_artist {
 		color: #fdfdfd;
@@ -278,7 +278,13 @@
 		box-shadow: 0 3px 10px -3px #1f1f1f;
 		color: #fdfdfd;
 	}
-	.profile_box  .btn_logout:hover {
+	
+	#account_manage:hover{
+		color: #1f1f1f;
+		background-color: #FFD654;
+	}
+	.profile_box  #btn_logout:hover {
+		color: #1f1f1f;
 		background-color: #FF5361;
 	}
 	
