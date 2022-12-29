@@ -79,7 +79,7 @@ CREATE TABLE SLEEP_USERS (
     NAME             VARCHAR (45)  NOT NULL,
     PW               VARCHAR (64)  NOT NULL,
     MOBILE           VARCHAR (11)  NOT NULL,
-    PROFILE_IMAGE    VARCHAR (500),
+    PROFILE_IMAGE    VARCHAR (500) DEFAULT '/images/basic_profileImage.png',
     GENDER           VARCHAR (2),
     BIRTHYEAR        VARCHAR (4),
     BIRTHDAY         VARCHAR (4),

@@ -39,8 +39,9 @@ input[type=reset], button {
 }
 
 .board_controller {
-	margin: 100px 0 0 230px;
+	margin: 80px 0 0 230px;
 	max-width: 100%;
+	min-width: 1000px;
 	padding: 50px 70px;
 }
 .board_title {
@@ -51,7 +52,7 @@ input[type=reset], button {
 .board_top_controller {
 	display: flex;
 	flex-direction: column;
-	margin-top: 50px;	
+	margin-top: 20px;	
 }
 .board_tab_controller {
 	display: flex;
@@ -66,7 +67,7 @@ input[type=reset], button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 25%;
+	width: 33%;
 	height: 100%;
 	margin:0; padding: 0;
 	border-top: 2px solid #bdc2ce;
