@@ -208,11 +208,7 @@ function fn_userBuyLog(){
 		    	.append($('<th>').text("결제가격"))
 		    	.append($('<th>').append('<input type="button" value="결제이력삭제" class="btn_logRemove">'))
 		    	.appendTo('#list_head');
-		    if(resData.logList.length == 0){
-		    	$('<tr>')
-		    	.append( $('<td colspan="6">').text('결제 내역이 없습니다!'))
-		    	.appendTo('#list_body');
-		  	}
+		    
 		    var count = 0;
 			$.each(resData.logList, function(i, buyLog){
 				if (buyLog.payLogName.endsWith(')') == false) {
@@ -230,8 +226,14 @@ function fn_userBuyLog(){
 				.append($('<td>').append($('<input type="checkbox" name="logCheck" value="'+ buyLog.payLogNo +'">')))
 				.appendTo('#list_body');
 				}
+				
 			});
-			$('#logCountDiv').append('전체 결제건 ' + count +'개');
+			if(count == 0){
+		    	$('<tr>')
+		    	.append( $('<td colspan="6">').text('구매 내역이 없습니다!'))
+		    	.appendTo('#list_body');
+		  	}
+			$('#logCountDiv').append('구매 결제건 ' + count +'개');
 			$('<tr>')
 		       .append($('<td id="paging" colspan="6"></td>'))
 		       .appendTo('#list_foot');
@@ -289,15 +291,16 @@ function fn_userGiftLog(){
 		    	.appendTo('#list_head');
 		    if(resData.logList.length == 0){
 		    	$('<tr>')
-		    	.append( $('<td colspan="6">').text('결제 내역이 없습니다!'))
+		    	.append( $('<td colspan="6">').text('선물 내역이 없습니다!'))
 		    	.appendTo('#list_body');
 		  	}
 		    var count = 0;
 			$.each(resData.logList, function(i, buyLog){
 				
 				if (buyLog.payLogName.endsWith(')')) {
+					
 				count += 1;
-				 
+				
 				
 				const logDate = moment(buyLog.payLogDate).format('YYYY년 MM월 DD일 (HH시 mm분)');
 				$('<tr>')
@@ -310,8 +313,13 @@ function fn_userGiftLog(){
 				.append($('<td>').append($('<input type="checkbox" name="logCheck" value="'+ buyLog.payLogNo +'">')))
 				.appendTo('#list_body');
 				}
+				if(count == 0){
+			    	$('<tr>')
+			    	.append( $('<td colspan="6">').text('선물 내역이 없습니다!'))
+			    	.appendTo('#list_body');
+			  	}
 			});
-			$('#logCountDiv').append('전체 결제건 ' + count +'개');
+			$('#logCountDiv').append('선물 결제건 ' + count +'개');
 			$('<tr>')
 		       .append($('<td id="paging" colspan="6"></td>'))
 		       .appendTo('#list_foot');
@@ -363,6 +371,8 @@ function fn_logRemove(){
 			    	success: function(resData){
 			    		alert(resData.result + '개의 결제 이력을 삭제하였습니다.');
 			    		fn_userLog();
+			    		$('.tab_payment').removeClass('tab_box_click');
+						$('#pass_log').addClass('tab_box_click');
 			    	}
 			    });
 			} else {
@@ -402,6 +412,8 @@ function fn_userLogSelect(){
 							<script>
 								$('#pass_log').click(function(){
 									fn_userLog();
+									$('.tab_payment').removeClass('tab_box_click');
+									$(this).addClass('tab_box_click');
 								})
 							</script>
 						</li>
@@ -411,6 +423,8 @@ function fn_userLogSelect(){
 							<script>
 								$('#purchased_pass').click(function(){
 									fn_userBuyLog();
+									$('.tab_payment').removeClass('tab_box_click');
+									$(this).addClass('tab_box_click');
 								})
 							</script>
 						</li>
@@ -420,6 +434,8 @@ function fn_userLogSelect(){
 							<script>
 								$('#gifted_pass').click(function(){
 									fn_userGiftLog();
+									$('.tab_payment').removeClass('tab_box_click');
+									$(this).addClass('tab_box_click');
 								})
 							</script>
 						</li>
@@ -447,11 +463,9 @@ function fn_userLogSelect(){
 				<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
 				<input type="hidden" class="isUser" th:data-user="true">
 			</div> 
-			<div id="buyPageDiv" style="text-align: center">
-				<div id="logCountDiv">
-					
-				</div>
-				<table border="1">
+			<div id="buyPageDiv" >
+				<div id="logCountDiv"></div>
+				<table border="1" style="text-align:center">
 					<thead id="list_head" >
 					</thead>
 					<tbody id="list_body" >

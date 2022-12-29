@@ -28,4 +28,14 @@ public interface PaymentMapper{
 	
 	public int deleteLogByNo(Map<String, Object> map);
 	public int selectIsPaymentCnt(Map<String, Object> map);
+	
+	public Integer selectCouponByCode(Map<String, Object> map);
+	public int selectCouponUseCnt(Map<String, Object> map);
+	public int updateCoupon(Map<String, Object> map);
+	public int insertCouponUse(Map<String, Object> map);
+	
+	public int selectPaymentCouponCnt(Map<String, Object> map);
+	public int insertPaymentCpn(Map<String, Object> map);
+	public int updatePaymentExtendCpn(Map<String, Object> map);
+	
 }
