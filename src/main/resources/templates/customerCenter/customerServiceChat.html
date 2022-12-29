@@ -5,7 +5,414 @@
 <title>고객센터>태그뮤직</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
-<link rel="stylesheet" th:href="@{/css/customerService.css}">
+<!--/* <link rel="stylesheet" th:href="@{/css/customerService.css}"> */-->
+<style>
+@charset "UTF-8";
+
+/*
+	display : hidden 자리차지함, 안보임
+	display : none; 자리차지안하고 그냥 없어짐
+*/
+
+
+ * {
+     padding: 0;
+     margin: 0;
+ }
+ 
+.board_controller {
+	margin: 80px 0 0 230px;
+	max-width: 100%;
+	min-width: 1000px;
+	padding: 50px 70px;
+}
+
+.board_title {
+	font-size: 32px;
+	font-weight: 600;
+}
+/* 페이지 상단 */
+.board_top_controller {
+	display: flex;
+	flex-direction: column;
+	margin-top: 20px;	
+}
+.board_tab_controller {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 60px;
+	
+	font-weight: 600;
+	color: #bdc2ce;
+}
+.board_tab {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 33%;
+	height: 100%;
+	margin:0; padding: 0;
+	border-top: 2px solid #bdc2ce;
+	border-bottom: 2px solid #bdc2ce;
+}
+.board_tab:hover {
+	cursor: pointer;
+	color: #fdfdfd;
+	background-color: #20325A;
+}
+
+.tab_click {
+	display: flex;
+	align-items: center;
+	color: #20325A;
+	height: 100%;
+	border-top: 2px solid #37486b;
+	border-bottom: 2px solid #37486b;
+}
+ 
+ 
+.blind {
+	display: none;
+}
+ 
+.chat_warp {
+    width: 400px;
+    height: 100px;
+    border: 1px solid gray;
+    position: relative;
+    cursor:pointer;
+}
+.chat_warp > div {
+    position: absolute;
+	
+}
+.chat_warp > div > img{
+	width:70px;
+    position: absolute;
+}
+
+.chat_warp > div:nth-of-type(1){
+	top : 15px;
+	left: 10px;
+}
+.chat_warp > div:nth-of-type(2){
+	top : 20px;
+	left: 100px;
+}
+.chat_warp > div:nth-of-type(3){
+	top : 50px;
+	left: 100px;
+}
+.chat_warp > div:nth-of-type(4){
+    top: 20px;
+    right: 20px;
+    font-size : 8px;
+}
+
+
+ 
+ .thum{
+ 	width:40px;
+ }
+ 
+ .admin_menu{
+ 	margin-top : 80px;
+	display : flex;
+ }
+ 
+.admin_menu +  div{
+	border : 1px solid #443E36;
+	background-color : #443E36;
+	border-radius: 3px;
+	margin-bottom : 50px;
+	/* margin : 10px; */
+}
+
+.admin_menu>div{
+	margin : 0px 10px;
+	font-size: 20px;
+	padding: 5px 30px;
+	border : 3px solid #443E36;
+	border-bottom : 0px;
+	border-radius: 10px 10px 0px 0px;
+}
+
+.admin_menu>div:nth-of-type(1) {
+	margin-left : 20px;
+	font-size: 20px;
+}
+
+.admin_menu>div:hover {
+	cursor: pointer;
+	color: #fdfdfd;
+	background-color: #20325A;
+}
+
+.paging {
+	border: 1px solid #222222;
+	display: inline-block;
+	width: 40px;
+	height: 35px;
+	text-align: center;
+	line-height: 35px;
+	font-size: 20px;
+	color: #444444;
+	font-weight: 900;
+	border: 1px solid #444444;
+}
+
+.list_body > td{
+	font-size : 5px;
+}
+
+
+
+
+
+/* 유저 챗 리스트 조회하는 css */
+.container1 {
+	margin: 80px 0 0 230px;
+	max-width: 100%;
+	min-width: 1000px;
+	padding: 50px 70px;
+}
+
+ .chat_list_main{
+    position: absolute;
+ 	width: 400px;
+ 	padding-top:15px;
+}
+ .chat_detail_main{
+position: fixed;
+    top: 199px;
+    left: 700px;
+    border: 1px solid black;
+    width: 403px;
+    height: 704x;
+	
+}
+ .chat_detail_container{
+ 	width: 400px;
+	height: 700px;
+	overflow: scroll;
+}
+
+.chat_detail_container > div{
+	padding: 8px;
+}
+
+
+
+
+
+/* 유저 관리 테이블 css */
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:600,700';
+
+* {font-family: 'Open Sans', sans-serif;}
+
+.rwd-table {
+  margin: auto;
+  min-width: 300px;
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+.rwd-table > thead >tr{
+	/* rwd-table tr:first-child */
+  border-top: none;
+  background: #428bca;
+  color: #fff;
+}
+
+.rwd-table tr {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  background-color: #f5f9fc;
+}
+
+.rwd-table>tbody>tr:nth-child(odd){
+	/* rwd-table tr:nth-child(odd):not(:first-child) */
+  background-color: #ebf3f9;
+}
+
+.rwd-table th {
+  display: none;
+}
+
+.rwd-table td {
+  display: block;
+}
+
+.rwd-table td:first-child {
+  margin-top: .5em;
+}
+
+.rwd-table td:last-child {
+  margin-bottom: .5em;
+}
+
+.rwd-table td:before {
+  content: attr(data-th) ": ";
+  font-weight: bold;
+  width: 120px;
+  display: inline-block;
+  color: #000;
+}
+
+.rwd-table th,
+.rwd-table td {
+  text-align: left;
+}
+
+.rwd-table {
+  color: #333;
+  border-radius: .4em;
+  overflow: hidden;
+}
+
+.rwd-table tr {
+  border-color: #bfbfbf;
+}
+
+.rwd-table th,
+.rwd-table td {
+  padding: .5em 1em;
+}
+@media screen and (max-width: 601px) {
+  .rwd-table tr:nth-child(2) {
+    border-top: none;
+  }
+}
+@media screen and (min-width: 600px) {
+	/* .rwd-table tr:hover:not(:first-child) */
+   .rwd-table>tbody>tr:hover{
+    background-color: #d8e7f3;
+  }
+  .rwd-table td:before {
+    display: none;
+  }
+  .rwd-table th,
+  .rwd-table td {
+    display: table-cell;
+    padding: .25em .5em;
+  }
+  .rwd-table th:first-child,
+  .rwd-table td:first-child {
+    padding-left: 0;
+  }
+  .rwd-table th:last-child,
+  .rwd-table td:last-child {
+    padding-right: 0;
+  }
+  .rwd-table th,
+  .rwd-table td {
+    padding: 10px !important;
+  }
+}
+
+
+/* THE END OF THE IMPORTANT STUFF */
+
+.container {
+  display: block;
+  text-align: center;
+}
+
+@-webkit-keyframes leftRight {
+  0%    { -webkit-transform: translateX(0)}
+  25%   { -webkit-transform: translateX(-10px)}
+  75%   { -webkit-transform: translateX(10px)}
+  100%  { -webkit-transform: translateX(0)}
+}
+@keyframes leftRight {
+  0%    { transform: translateX(0)}
+  25%   { transform: translateX(-10px)}
+  75%   { transform: translateX(10px)}
+  100%  { transform: translateX(0)}
+}
+
+
+
+.hr-1 {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+	width: 800px;
+}
+
+
+
+/*고객센터 _ 1:1 문의 CSS*/
+
+.chat_box {
+	height: 400px; /*높이*/
+	width : 600px;
+	margin: 30px 50px;
+	overflow: scroll;
+}
+.chat_user {
+	position: relative;
+    height: 100px;
+    border: 1px solid gray;
+    position: relative;
+}
+.chat_user > div {
+      border: 1px solid rgb(170, 20, 20);
+      position: absolute;
+}
+.chat_user > div:nth-of-type(1){
+	/*프로필이미지위치*/
+	top: 21px;
+	right : 10px;
+}
+.profile{
+	/*프로필 이미지 사진*/
+	width:70px;
+}
+.chat_user > div:nth-of-type(2){
+	/*프로필이미지위치*/
+    top: 33px;
+    right: 70px;
+}
+.chat_user > div:nth-of-type(3){
+	/*프로필이미지위치*/
+	font-size: 10px;
+    top: 60px;
+    right: 70px;
+}
+.chat_admin{
+    height: 100px;
+    border: 1px solid gray;
+    position: relative;
+    background-color: orange;
+}
+.chat_admin > div {
+      position: absolute;
+}
+.chat_admin > div:nth-of-type(1){
+	top: 21px;
+	left : 10px;
+}
+.chat_admin > div:nth-of-type(2){
+    top: 33px;
+    left: 70px;
+}
+.chat_admin > div:nth-of-type(3){
+	font-size: 10px;
+    top: 60px;
+    left: 70px;
+}
+.add_chat{
+	margin: 0px 50px;
+}
+#content{
+	width:150px;
+}
+
+
+
+</style>
 <script th:inline="javascript">
 
 /*<![CDATA[*/
@@ -136,16 +543,16 @@
 					<div class="board_tab tab_click" id="tabChat">1:1 문의하기</div>
 				</div>
 			</div>
+			
+		
 				
 			<div class="chat_box" id="chat_box">	
 			
-				
-				
-				
-			
 			
 			</div>
- 			<div>
+			
+			
+ 			<div class="add_chat">
 				<form id="frm_add_chat">
 					<!-- 원글의 DEPTH, GROUP_NO, GROUP_ORDER은 답글 남길 때 필요하니 히든으로 숨겨놔야함 -->
 					<input type="hidden" name="userNo" th:value="${chatUserNo.userNo}">
@@ -159,7 +566,6 @@
 				</form>
 			</div>
 			
-
 
 
 	</div>
