@@ -144,6 +144,7 @@ function fn_passList(){
 	});
 }
 function fn_passGiftList(){
+	var userName = $('#userName').data('name');
 	$.ajax({
 		type: 'post',
 		url: '/pass/list',
@@ -161,7 +162,12 @@ function fn_passGiftList(){
 					txt += '</div>';
 					txt += '</div>';
 					txt += '<div class="pass_box_right">';
+					if(userName != null){
 						txt += '<input class="btn_gift_30days" type="button" value="선물하기" data-if="0" data-ticket="'+ pass.passName + '" data-passno="'+pass.passNo+'" data-pg="inicis통합결제" data-amount="'+pass.passPrice+'" onclick="fn_presentTicket(this)">';
+					} else {
+						txt += '<input class="btn_gift_30days" type="button" value="선물하기" onclick="fn_login()">';
+						
+					}
 					txt += '</div>';
 					txt += '</div>';
 				} 
@@ -181,15 +187,14 @@ function fn_login(){
 }
 
 function fn_registerCoupon(){
+    
 	var couponCode = $('#coupon_input').val();
-	var userEmail = /*[[${session.loginUser.email}]]*/ null;
+	var userEmail = $('#userName').data('email');
 	
 	if(couponCode.length < 16){
 		alert('정확한 쿠폰번호를 입력해주세요');
 		return;
 	}
-	console.log('code' + couponCode);
-	console.log('email' + userEmail);
 	 $.ajax({
 		type: 'post',
 		url: '/payment/coupon',
@@ -407,7 +412,7 @@ function fn_presentTicket(e){
 							txt += '<div class="pass_box_left">';
 							txt += '<div class="pass_name">쿠폰번호입력</div>';
 							txt += '<div class="pass_msg_price">';
-							txt += '<div class="pass_msg"><input type="text" class="coupon_input" id="coupon_input" maxlength="16" placeholder="이용하실 쿠폰 16자리를 입력해주세요!" ></div>';
+							txt += '<div class="pass_msg"><input type="text" class="coupon_input" id="coupon_input" maxlength="16" placeholder="이용하실 쿠폰 16자리를 입력해주세요!"></div>';
 							txt += '<div class="pass_price"></div>';
 							txt += '</div>';
 							txt += '</div>';
@@ -431,8 +436,22 @@ function fn_presentTicket(e){
 						});
 					</script>
 					<script>
+					
+					    // ID가 message에서 엔터키를 누를 경우
+					    
+						        
+					    
+					
 					function fn_couponInput(){
-						$(document).on('blur keyup', '#coupon_input', function(){
+						$(document).on('blur keyup', '#coupon_input', function(key){
+							var userName = $('#userName').data('name');
+							if (key.keyCode == 13) {
+								if(userName != null){
+									fn_registerCoupon();
+								} else {
+									fn_login();
+								}
+					        } 
 							var str = $(this).val();
 							var reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g;
 							var reg2 = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi;
