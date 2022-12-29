@@ -3,124 +3,68 @@
 <head th:replace="~{layout/header::head('Tag Music > 회원가입')}"></head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" th:href="@{/css/join.css}">
+<link rel="stylesheet" th:href="@{/css/user/header.css}">
+<link rel="stylesheet" th:href="@{/css/user/join.css}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<script>
-	$(function(){
-		fn_checkAll();
-		fn_checkOne();
-		fn_toggleCheck();
-		fn_submit();
-	});
-	
-	// 모두 동의 체크하면, 개별 체크에 체크 표시
-	function fn_checkAll(){
-		$('#check_all').click(function(){
-			$('.check_one').prop('checked', $(this).prop('checked'));
-			if($(this).is(':checked')){
-				$('.lbl_one').addClass('lbl_checked');
-			} else {
-				$('.lbl_one').removeClass('lbl_checked');
-			}
-		});
-	}
-	
-	
-	//	개별 체크 4개 모두 선택되었다면 모두 동의 check
-	function fn_checkOne(){
-		$('.check_one').click(function(){
-			let checkCount = 0;
-			for(let i = 0; i < $('.check_one').length; i++){
-				checkCount += $($('.check_one')[i]).prop('checked');
-			}
-			$('#check_all').prop('checked', $('.check_one').length == checkCount);
-			if($('#check_all').is(':checked')){
-				$('.lbl_all').addClass('lbl_checked');
-			} else {
-				$('.lbl_all').removeClass('lbl_checked');
-			}
-		});
-	}
-	
-	// 체크할때마다 lbl_checked 클래스를 줬다 뺐었다 하기
-	function fn_toggleCheck(){
-		$('.lbl_all, .lbl_one').click(function(){
-			$(this).toggleClass('lbl_checked');
-		});
-	}
-	
-	// 서브밋 (필수 체크 여부 확인)
-	function fn_submit(){
-		$('#frm_agree').submit(function(event){
-			if($('#service').is(':checked') == false || $('#privacy').is(':checked') == false){
-				alert('필수 약관에 동의하세요.');
-				event.preventDefault();
-				return;
-			}
-		});
-	}
-</script>
+<script th:src="@{/js/user/agree.js}"></script>
+
 <body>
-	<img th:src="@{/images/background_login.jpg}" class="background_login">
-	<div class="backgroung_layer"></div>
 	<div th:replace="~{layout/loginHeader.html::loginFragment}"></div>
-	<div class="agree_box">
-		<div class="container">
-			<form id="frm_agree" th:action="@{/user/join/write}">
-				<!-- 모두 동의 -->
-				<div class="lbl_bpx">
-					<input type="checkbox" id="check_all" class="blind">
-					<label for="check_all" class="lbl_all">
-						<span class="check_text">태그뮤직 이용약관, 개인정보 수집 및 이용, 위치기반서비스 이용약관(선택), 프로모션 정보 수신(선택)에 모두 동의합니다.</span>
-					</label>
-				</div>
-				<!-- 개별 동의 -->
-				<div class="lbl_bpx">
-					<input type="checkbox" id="service" class="check_one blind">
-					<label for="service" class="lbl_one">
-						<span class="check_text">이용약관 동의(필수)</span>
-					</label>
-					<div>
-						<textarea>본 약관은 ...</textarea>
+	<div class="join_controller">
+		<div class="join_box">
+				<form id="frm_agree" th:action="@{/user/join/write}">
+					<!-- 모두 동의 -->
+					<div class="lbl_bpx">
+						<input type="checkbox" id="check_all" class="blind">
+						<label for="check_all" class="lbl_all">
+							<span class="check_text">태그뮤직 이용약관, 개인정보 수집 및 이용, 위치기반서비스 이용약관(선택), 프로모션 정보 수신(선택)에 모두 동의합니다.</span>
+						</label>
 					</div>
-				</div>
-				<div class="lbl_bpx">
-					<input type="checkbox" id="privacy" class="check_one blind">
-					<label for="privacy" class="lbl_one">
-						<span class="check_text">개인정보수집 동의(필수)</span>
-					</label>
-					<div>
-						<textarea>개인정보보호법에 따라 ...</textarea>
+					<!-- 개별 동의 -->
+					<div class="lbl_bpx">
+						<input type="checkbox" id="service" class="check_one blind">
+						<label for="service" class="lbl_one">
+							<span class="check_text">이용약관 동의(필수)</span>
+						</label>
+						<div>
+							<textarea>본 약관은 ...</textarea>
+						</div>
 					</div>
-				</div>
-				<div class="lbl_bpx">
-					<input type="checkbox" id="location" name="location" class="check_one blind">
-					<i class="bi bi-check-square-fill"></i>
-					<label for="location" class="lbl_one">
-						<span class="check_text">위치정보수집 동의(선택)</span>
-					</label>
-					<div>
-						<textarea>위치정보 ...</textarea>
+					<div class="lbl_bpx">
+						<input type="checkbox" id="privacy" class="check_one blind">
+						<label for="privacy" class="lbl_one">
+							<span class="check_text">개인정보수집 동의(필수)</span>
+						</label>
+						<div>
+							<textarea>개인정보보호법에 따라 ...</textarea>
+						</div>
 					</div>
-				</div>
-				<div class="lbl_bpx">
-					<input type="checkbox" id="promotion" name="promotion" class="check_one blind">
-					<label for="promotion" class="lbl_one">
-						<span class="check_text">마케팅 동의(선택)</span>
-					</label>
-					<div>
-						<textarea>이벤트 ...</textarea>
+					<div class="lbl_bpx">
+						<input type="checkbox" id="location" name="location" class="check_one blind">
+						<label for="location" class="lbl_one">
+							<span class="check_text">위치정보수집 동의(선택)</span>
+						</label>
+						<div>
+							<textarea>위치정보 ...</textarea>
+						</div>
 					</div>
-				</div>
-				<!-- 버튼 -->
-				<div class="btn_box">
-					<input class="btn cancel" type="button" value="취소" onclick="history.back();">
-					<button class="btn next">다음</button>
-				</div>
-			</form>
+					<div class="lbl_bpx">
+						<input type="checkbox" id="promotion" name="promotion" class="check_one blind">
+						<label for="promotion" class="lbl_one">
+							<span class="check_text">마케팅 동의(선택)</span>
+						</label>
+						<div>
+							<textarea>이벤트 ...</textarea>
+						</div>
+					</div>
+					<!-- 버튼 -->
+					<div class="btn_box">
+						<input class="btn cancel" id="btn_cancel" type="button" value="취소" onclick="history.back();">
+						<button class="btn next">다음</button>
+					</div>
+				</form>
 		</div>
-	</div>
-		
+	</div>	
 </body>
 </html>

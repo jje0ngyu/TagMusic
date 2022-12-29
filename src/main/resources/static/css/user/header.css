@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+/* 공통영역 (header.html을 포함한 모든 html에 적용) */
+
+/* 클래스 초기화  */
+html, body, section, article, div, a, input, ul, li, input, h1 {
+	margin: 0px;
+	padding: 0px;
+	background-color: inherit;
+	color: inherit;
+}
+a {
+	text-decoration: none;
+}
+body {
+	width: 100%;
+}
+input[type=button] {
+	background-color: #bdc2ce;
+	border: none;
+	border-radius: 30px;
+}
+.blind {
+	display: none;
+}
+
+
+
+header {
+	background: linear-gradient(#ffffff, 2%,#fdfdfd);
+	box-shadow: 0 1px 10px 0 #37486b;
+	z-index: 100;;
+}
+.hover:hover {
+	cursor: pointer;
+}
+.flex_center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

@@ -79,6 +79,12 @@ public class PaymentController {
 	public Map<String, Object> passHave(HttpServletRequest request){
 		return paymentService.isHavePass(request);
 	}
+	
+	@ResponseBody
+	@PostMapping(value="/payment/coupon",produces="application/json; charset=UTF-8")
+	public Map<String, Object> couponUse(HttpServletRequest request){
+		return paymentService.couponUse(request);
+	}
 }
 
 

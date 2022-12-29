@@ -28,10 +28,22 @@ header {
 	box-shadow: 0 1px 10px 0 #37486b;
 	z-index: 2;;
 }
+.hover:hover {
+	cursor: pointer;
+}
 .flex_center {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.msg_check {
+	width: 350px;
+	border: none;
+	outline: none;
+	text-align: center;
+	margin-bottom: 5px;
+	color: indianred;
 }
 .login_api {
 	margin-top: 5px;
@@ -71,7 +83,7 @@ header {
 		display: flex;
 		flex-direction: column;
 		z-index: 0;
-		margin: 5% auto;
+		margin: 70px auto;
 		margin-bottom: 20px;
 		width: 460px;
 		text-align: center;
@@ -108,7 +120,7 @@ header {
 .login_tom_middle_controller {
 	display: flex;
 	justify-content: space-between;
-	margin: 5px 30px;
+	margin: 15px 30px 5px;
 }
 .backgroung_layer {
 	position: absolute;
@@ -136,7 +148,7 @@ header {
 	width: 85%;
 	height: 45px;
 	padding: 0 5px;
-	margin: 10px 0;
+	margin-top: 10px;
 	background-color: none;
 	border-bottom: 3px solid #37486b;
 }
@@ -180,4 +192,7 @@ header {
 .login_join_content {
 	font-weight: 600;
 	color: #37486b;
+}
+.error_box {
+	border-bottom: 3px solid indianred;
 }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.FileSystemResource;
@@ -19,9 +20,11 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.tagmusic.domain.MusicCommentDTO;
 import com.gdu.tagmusic.domain.MusicDTO;
 import com.gdu.tagmusic.mapper.TuneMapper;
 import com.gdu.tagmusic.util.MyFileUtil;
+import com.gdu.tagmusic.util.PageUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -31,6 +34,7 @@ public class TuneServiceImpl implements TuneService {
 
 	private TuneMapper tuneMapper;
 	private MyFileUtil myFileUtil; 
+	private PageUtil pageUtil;
 	
 	
 	// 음원 등록
@@ -247,5 +251,49 @@ public class TuneServiceImpl implements TuneService {
 		
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	
+	}
+	
+	// 댓글 - 리스트
+	@Override
+	public Map<String, Object> getCommentCount(int musicNo) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("commentCount", tuneMapper.selectCommentCount(musicNo));
+		return result;
+	}
+	@Override
+	public Map<String, Object> getCommentList(HttpServletRequest request) {
+		int musicNo = Integer.parseInt(request.getParameter("musicNo"));
+		int page = Integer.parseInt(request.getParameter("page"));
+		int commentCount = tuneMapper.selectCommentCount(musicNo);
+		pageUtil.setPageUtil(page, 10 ,commentCount);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("musicNo", musicNo);
+		map.put("begin", pageUtil.getBegin() - 1);  // MySQL은 begin이 0부터 시작함
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("resData.commentCount", commentCount);
+		result.put("commentList", tuneMapper.selectCommentList(map));
+		result.put("pageUtil", pageUtil);
+		
+		return result;
+		
+	}
+	// 댓글 - 삽입
+	@Override
+	public Map<String, Object> addComment(MusicCommentDTO comment) {
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("isAdd", tuneMapper.insertComment(comment) > 0);			
+		
+		return result;
+	}
+	// 댓글 - 삭제
+	@Override
+	public Map<String, Object> removeComment(int commentNo) {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("isRemove", tuneMapper.deleteComment(commentNo) == 1);
+		return result;
 	}
 }
