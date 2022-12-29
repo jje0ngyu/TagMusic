@@ -61,20 +61,16 @@
 				
 				$('#chat_box').empty();
 				
-				
 				var div1 = '';
 				
 				if((resData.chatList).length == 0) {
 					
 					div1 += '<div>';
 					div1 += /*[[${chatUserNo.userDTO.name}]]*/
-					div1 += '님 안녕하세요! <br> 궁금하신 사항이 있으신가요?'
+					div1 += '님 안녕하세요! <br> 궁금하신 사항이 있으신가요?';
 					div1 += '</div>';
 					$('#chat_box').append(div1);
 				}
-				
-				
-				
 				
 				$.each(resData.chatList, function(i, chat){
 					
@@ -84,29 +80,27 @@
 						
 						if(chat.userNo == 1){
 							// 관리자가 남긴 답변일 경우
-							div += '<div style="height:40px; width:500px; margin-left: 150px;">';
+							div += '<div class="chat_admin">';
 						}else{
-							
 							// 유저가 남긴 문의일 경우
-							div += '<div style="height:40px; width:500px; padding-left: 20px;">';
+							div += '<div class="chat_user">';
 							
 						}
 						
-						if(chat.state == 1){
-							div += '<div style="display:inline; text-align: center; line-height: 40px;">';
-							div += chat.content;
-							div += '</div>';
-						}
+						div += '<div><img src="'+chat.userDTO.profileImage+'" style="width:50px;"></img></div>';
+						
+						div += '<div>';
+						div += chat.content;
+						div += '</div>';
+						
 						
 						/// 나주에 추가 기능구현할 것 : 인접형제의 chatDate랑 시간 비교해서 같은 분이면 안나오게 하기
-						div += '<span style="font-size: 10px; color: silver;" id="chatDate">' + moment(chat.chatDate).format('YYYY.MM.DD hh:mm') + '</span>';
+						div += '<div>' + moment(chat.chatDate).format('YY.MM.DD hh:mm') + '</div>';
 						
 						// 로그인한 사용자만 볼 수 있도록 if 처리
 						div += '</div>';
 						$('#chat_box').append(div);
 						//$('#chat_box').append('<div style="border-bottom: 1px dotted gray;"></div>');
-						
-					
 				});
 			}
 		});

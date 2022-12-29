@@ -5,7 +5,7 @@
 <title>고객센터>태그뮤직</title>
 <link rel="stylesheet" th:href="@{/css/board.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<script>
+<script type="text/javascript" th:inline="javascript">
 	$(function(){
 		// 탭 (href)
 		$('#tabHome').click(function(){
@@ -24,8 +24,14 @@
 		// 새 글 작성
 		$('#btn_write').click(function(){
 			location.href = '/board/write';
-		});
-	})
+		});	
+		
+	});
+	
+	
+	
+	
+	
 </script>
 <body>
 	<div th:replace="~{layout/header.html::header_layout}"></div>
@@ -47,10 +53,10 @@
 		<!-- 중간 (작성, 게시글) -->
 		<div class="board_middle_controller">
 			<!-- 관리자/일반회원 구분 -->
-			<div th:if="${session.loginUser.userNo != 1}"></div>
-			<div th:if="${session.loginUser.userNo == 1}" class="middle_top" >
-				<input type="button" value="새 글 작성" id="btn_write">
+			<div th:if="${session.loginUser != null && session.loginUser.userNo == 1}" class="middle_top" >
+				<input type="button" value="새 글 작성" id="btn_id">
 			</div>
+
 			
 			<table>
 				<thead>
