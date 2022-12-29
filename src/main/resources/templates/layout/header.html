@@ -7,6 +7,7 @@
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <!-- layout CSS 외에 다른 CSS 넣지 말아주세요 ㅠㅠ -->
 <link rel="stylesheet" th:href="@{/css/layout.css}">
+<link rel="stylesheet" th:href="@{/css/alarm.css}">
 
 <style>
 	
@@ -165,7 +166,34 @@ function fn_remainingDay(){
 						$('.profile_image').click(function(){
 							$('.profile_box').toggleClass('blind');
 						});
-					</script>						
+					</script>		
+					<!-- 알림 아이콘 클릭시 팝업 창 -->				
+					<div class="header_alarm_controller blind">
+						<script>
+							$('.bell_area').click(function(){
+								$('.header_alarm_controller').toggleClass('blind');
+								$('.profile_box').addClass('blind');
+							});
+							$('.profile_image').click(function(){
+								$('.header_alarm_controller').addClass('blind');
+							})
+						</script>
+						<div class="alarm_top_controller">
+							<div id="btn_all_read">모두 읽음</div>
+						</div>
+						<div class="alarm_middle_controller">
+							<!-- 알림 1개-->
+							<div class="alarm_content">
+								<div class="alarm_info">
+									<div class="alarm_gubun">쿠폰</div>
+									<div class="alarm_createDate">발송일</div>
+								</div>
+								<div class="alarm_msg">
+									내용내용내용내용내용
+								</div>
+							</div> <!-- 알림 1개 끝-->
+						</div>
+					</div>
 					<!-- 프로필 사진 클릭시 팝업 창 -->
 					<div class="header_right_bottom_controller">
 						<div class="profile_box blind">
@@ -182,8 +210,8 @@ function fn_remainingDay(){
 								</div>
 							</div>					
 							<div>
-								<input type="button" value="TagMusic 계정관리" class="account_manage">
-								<input type="button" value="로그아웃" class="btn_logout">
+								<input type="button" value="TagMusic 계정관리" id="account_manage" class="account_manage">
+								<input type="button" value="로그아웃" id="btn_logout" class="btn_logout">
 							</div>
 							<script>
 								$('.account_manage').click(function(){
@@ -195,8 +223,8 @@ function fn_remainingDay(){
 							</script>
 							<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
 						</div>
-					</div>
-				</div>
+					</div> <!-- 프로필 사진 창-->
+				</div> <!--로그인 유저 창-->
 			</div>
 			
 			<!--/*
