@@ -75,10 +75,31 @@ public class TuneController {
 		return tuneService.download(userAgent, musicNo);
 	}
 	
+	
+	
 	// 음원 상세보기 - 댓글
+	// 댓글 - 카운트
+	@ResponseBody
+	@GetMapping(value="/comment/getCount", produces="application/json")
+	public Map<String, Object> getCount(@RequestParam("musicNo") int musicNo) {
+		return tuneService.getCommentCount(musicNo);
+	}
+	// 댓글 - 리스트
+	@ResponseBody
+	@GetMapping(value="/comment/list", produces="application/json")
+	public Map<String, Object> list(HttpServletRequest request) {
+		return tuneService.getCommentList(request);
+	}
+	// 댓글 - 삽입
 	@ResponseBody
 	@PostMapping(value="/comment/add", produces="application/json")
 	public Map<String, Object> add(MusicCommentDTO comment) {
 		return tuneService.addComment(comment);
+	}
+	// 댓글 - 삭제
+	@ResponseBody
+	@PostMapping(value="/comment/remove", produces="application/json")
+	public Map<String, Object> remove(@RequestParam("commentNo") int commentNo){
+		return tuneService.removeComment(commentNo);
 	}
 }

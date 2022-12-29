@@ -2,6 +2,7 @@ package com.gdu.tagmusic.service;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.Resource;
@@ -25,6 +26,9 @@ public interface TuneService {
 	public ResponseEntity<Resource> download(String userAgent, int musicNo);
 	
 	
-	// 댓글 - 삽입
+	// 댓글
+	public Map<String, Object> getCommentCount(int musicNo);
+	public Map<String, Object> getCommentList(HttpServletRequest request);
 	public Map<String, Object> addComment(MusicCommentDTO comment);
+	public Map<String, Object> removeComment(int commentNo);
 }

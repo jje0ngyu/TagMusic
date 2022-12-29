@@ -85,11 +85,32 @@
 	</update>
 	
 	
+	
 	<!-- 음원 상세보기 - 댓글 -->
+	<select id="selectCommentCount" parameterType="int" resultType="int">
+		SELECT COUNT(COMMENT_NO)
+		  FROM MUSIC_COMMENT
+		 WHERE MUSIC_NO = #{musicNo}
+	</select>
+	
+	<select id="selectCommentList" parameterType="Map" resultType="MusicCommentDTO">
+		SELECT COMMENT_NO, MUSIC_NO, EMAIL, COMMENT_CONTENT, CREATE_DATE
+		  FROM MUSIC_COMMENT
+		 WHERE MUSIC_NO = #{musicNo}
+		 ORDER BY CREATE_DATE DESC
+		 LIMIT #{begin}, #{recordPerPage}
+	</select>
+	
 	<insert id="insertComment" parameterType="MusicCommentDTO">
 		INSERT INTO MUSIC_COMMENT
 			(MUSIC_NO, EMAIL, COMMENT_CONTENT, CREATE_DATE)
 		VALUES
 			(#{musicNo}, #{email}, #{commentContent}, NOW())
 	</insert>
+	
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM MUSIC_COMMENT
+		 WHERE COMMENT_NO = #{commentNo}
+	</delete>
+	
 </mapper>
