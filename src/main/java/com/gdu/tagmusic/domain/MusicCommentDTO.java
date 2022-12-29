@@ -1,6 +1,6 @@
 package com.gdu.tagmusic.domain;
 
-import java.sql.Date;
+import java.util.Date;
 
 import groovy.transform.builder.Builder;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ public class MusicCommentDTO {
 	private int musicNo;
 	private String email;
 	private String commentContent;
-	private String createDate;
+	private Date createDate;
 	
 	
 }

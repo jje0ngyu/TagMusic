@@ -58,9 +58,10 @@ html, body, div, input, a, form, textarea {
 }
 
 .border_bottom_solid_white {
-	border-bottom-color: white;
+	border-bottom-color: #37486b;
 	border-bottom-width: 3px;
 	border-bottom-style: solid;
+	box-shadow: 0 10px 10px -10px #20325a;
 }
 /* 가사박스 */
 .tune_lyrics_box {
@@ -129,7 +130,8 @@ html, body, div, input, a, form, textarea {
 		text-align: center;
 	}
 	.tune_tab_content:hover {
-		background-color: rgb(33,33,33);
+		background-color:#37486b;
+		color: #fdfdfd;
 		cursor: pointer;
 	}
 }

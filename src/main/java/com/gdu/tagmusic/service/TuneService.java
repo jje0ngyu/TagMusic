@@ -1,11 +1,15 @@
 package com.gdu.tagmusic.service;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.tagmusic.domain.MusicCommentDTO;
 import com.gdu.tagmusic.domain.MusicDTO;
 
 public interface TuneService {
@@ -20,4 +24,11 @@ public interface TuneService {
 	
 	// 음원 다운로드
 	public ResponseEntity<Resource> download(String userAgent, int musicNo);
+	
+	
+	// 댓글
+	public Map<String, Object> getCommentCount(int musicNo);
+	public Map<String, Object> getCommentList(HttpServletRequest request);
+	public Map<String, Object> addComment(MusicCommentDTO comment);
+	public Map<String, Object> removeComment(int commentNo);
 }

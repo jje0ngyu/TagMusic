@@ -26,44 +26,35 @@
 	background-color: none;
 	border-bottom: 3px solid #37486b;
 }
+.join_controller {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	width: 100%;
+	height: auto ;
+	padding-top: 120px;
+	background-color: #f8f9fa;
+}
+
+.join_box {
+	background-color: #fdfdfd;
+	position: relative;
+	margin: 0 auto;
+	padding: 30px 70px;
+	width: 580px;
+	border: 1px solid #bdc2ce;
+	box-shadow: 0px 1px 4px -5px #bdc2ce;
+}
+.placeLabel{
+	position: absolute;
+	top:20%;
+	transform: translateY(-50%);
+	transition: font .1s ease,top .1s ease,transform 1.s ease;
+}
 @media only screen and (min-width: 740px) {
-	.body {
-		z-index: -2;
-		position: absolute;
-	}
-	.background_login {
-		z-index: -1;
-		position: fixed;
-		top:0;
-		width: 100%;
-		height: 100%;
-		background-size: cover;
-		background-image: url(../../images/background_login.jpg);
-		background-position: center;
-	}
-	.backgroung_layer {
-		position: absolute;
-		display: inline-block;
-		width: 100%;
-		height: 100%;
-		color: #f1f2f3;
-		z-index: -1;
-		background-color: rgba(0,0,0, 0.6);
-	}
-	.agree_box {
-		position: relative;
-		margin: 0 auto;
-		width: 580px;
-		background-color: rgba(0,0,0, 0.6);
-	}
-	.container {
-		position: relative;
-		border-radius: 10px;
-		padding: 30px 0 50px; 
-		margin: 0 auto;
-		width: 430px;
-		color: whitesmoke;
-	}
+
+
 	textarea {
 		position: relative;
 		width: 100%;
@@ -86,13 +77,15 @@
 .check_text {
 	margin-left: 10px;
 }
-.bi {
-	color: darkgreen;
-	background-color: rebeccapurple;
-}
+
 textarea {
 	margin-top: 10px;
 	background-color: rgba(233, 233, 233, 0.9);
+}
+/* join_bottom_ccontroller */
+.next {
+	border-radius: 20px;
+	background-color: #bdc2ce;
 }
 .btn_box {
 	position: relative;
@@ -107,16 +100,17 @@ textarea {
 }
 .cancel {
 	margin-right: 14px;
+	color: #1f1f1f;
 }
-.cancel:hover {
-	background-color: crimson;
+.cancel:hover, #btn_cancel:hover {
+	background-color: indianred;
 	font-weight: bold;
-	color: whitesmoke;
+	color: #fdfdfd;
 	cursor: pointer;
 	text-decoration: none;
 }
 .next:hover {
-	background-color: green;
+	background-color: #37486b;
 	font-weight: bold;
 	color: whitesmoke;
 	cursor: pointer;
@@ -134,4 +128,28 @@ textarea {
 	font-size: 13px;
 	font-weight: 400;
 	color: #b3b3b3;
+}
+.info_box {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	
+	border: 1px solid #bdc2ce;
+}
+
+/* join 에서 input 박스 */
+#name {
+	width: 320px;
+	height: 32px;
+}
+#email {
+	height: 32px;
+	border: none;
+	border-bottom: 2px solid #37486b;
+	width: 60%;
+	outline: none;
+}
+/* join_middle_controller */
+.join_middle_controller {
+	
 }
