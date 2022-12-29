@@ -429,14 +429,29 @@
 	<select id="checkUserMusicLike" parameterType="Map" resultType="int">
 		SELECT COUNT(LIKE_NO)
 		FROM MUSIC_LIKE
-		WHERE MUSIC_NO = #{musicNo} AND EMAIL = #{email}
+		WHERE EMAIL = #{email} AND MUSIC_NO = #{musicNo}
 	</select>
 	
+	<!-- 5. 좋아요 개수 확인 -->
 	<select id="checkMusicLikeCnt" parameterType="Map" resultType="int">
 		SELECT COUNT(LIKE_NO)
 		FROM MUSIC_LIKE
 		WHERE MUSIC_NO = #{musicNo}
 	</select>
+	
+	<!-- 6. 좋아요 추가 -->
+	<insert id="insertMusicLike" parameterType="Map">
+		INSERT INTO MUSIC_LIKE (EMAIL, MUSIC_NO) VALUES(#{email}, #{musicNo})
+	</insert>
+	
+	<!-- 7. 유저 좋아요 본인여부 확인 -->
+	<select id="checkUserMusicWriter" parameterType="int" resultType="String">
+		SELECT EMAIL
+		FROM MUSIC
+		WHERE MUSIC_NO = #{musicNo}
+	</select>
+	
+	
 	
 	
 	<!--  3. 유저 플레이리스트 썸네일 가져오기	<select id="selectUserPlaylistThumbnail" parameterType="int" resultType="MusicDTO">

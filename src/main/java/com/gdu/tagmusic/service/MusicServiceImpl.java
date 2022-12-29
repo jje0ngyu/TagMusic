@@ -2,6 +2,7 @@ package com.gdu.tagmusic.service;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -182,7 +183,8 @@ public class MusicServiceImpl implements MusicService {
 	@Override
 	public void selectPopularMusicList(HttpServletRequest request, Model model) {
 
-		// 1. 파라미터
+		// 1. 기초데이터
+		// 파라미터
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
 
@@ -197,12 +199,18 @@ public class MusicServiceImpl implements MusicService {
 		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		// map.put("genre", genre);
 
+		List<MusicDTO> list =  musicMapper.selectPopularMusicList(map);
+		
 		// 4. model로 전달
 		model.addAttribute("paging", pageUtil.getPaging("/music/board/popularMusic"));
 		model.addAttribute("musicList", musicMapper.selectPopularMusicList(map));
 		model.addAttribute("beginNo", totalRecordCnt - (page - 1) * pageUtil.getRecordPerPage());
 		// 게시글 가장 첫번째번호 : html에서 index값을 뺴서 no값을 출력
 		model.addAttribute("pageName", "인기리스트");
+		
+		
+		
+		
 
 	}
 
@@ -282,7 +290,9 @@ public class MusicServiceImpl implements MusicService {
 		List<MusicDTO> rankingList = musicMapper.selectMusicRanking10(map);
 		map.put("rankingList", rankingList);
 
-		// * list를 반환시, list와 map 주의
+		// * list를 반환시, list와 map 주
+		
+		
 
 		return map;
 	}
@@ -620,6 +630,7 @@ public class MusicServiceImpl implements MusicService {
 		System.out.println("==" + musicLikeList.size());
 		map.put("pageUtil", pageUtil);
 		map.put("selectUserMusicLikeList", musicLikeList);
+		map.put("beginNo", pageUtil.getBegin());
 		map.put("result", 1);
 		map.put("userNickName", userNickName);
 		map.put("musicLikeCnt", musicLikeCnt);
@@ -674,13 +685,17 @@ public class MusicServiceImpl implements MusicService {
 		
 		// 유저 : email
 		HttpSession session = request.getSession();
-		UserDTO user = (UserDTO) session.getAttribute("loginUser");
-		String email = user.getEmail();
+		UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+		String email = loginUser.getEmail();
 		
 		
+		
+		// 여부확인
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("email", email);
 		map.put("musicNo", musicNo);
+	
 		
 		Map<String, Object> result = new HashMap<>();
 	    result.put("musicLikeCheck", musicMapper.checkUserMusicLike(map));
@@ -706,12 +721,47 @@ public class MusicServiceImpl implements MusicService {
 		return result;
 	}
 	
-	// 해당 유저가 처음 좋아요를 클릭한 경우
+	// 5. 좋아요 선택/해제
+	@Override
+	public Map<String, Object> toggleMusicLike(HttpServletRequest request) {
+		
+		// 1. 기초데이터
+		// 파라미터 : likeNo
+		Optional<String> opt = Optional.ofNullable(request.getParameter("musicNo")); 
+		int musicNo = Integer.parseInt(opt.orElse("1"));
+		
+		// 유저 : email
+		HttpSession session = request.getSession();
+		UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+		String email = loginUser.getEmail();
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("musicNo", musicNo);
+		map.put("email", email);
+		
+		Map<String, Object> result = new HashMap<>();
 	
-			// 해당 유저가 두번이상 좋아요를 클릭한 경우
+		int checkUserMusicLike = musicMapper.checkUserMusicLike(map);
+		
+	
+		 if(checkUserMusicLike == 0) {
 			
-			// 삭제 : update를 한다
+			 musicMapper.insertMusicLike(map);	// 선택
+		
+			 result.put("result", 0); 
+			 return result;
+		 } else {
+			 
+			 musicMapper.deleteMusicLike(map);
 			
+			 result.put("result", 1); // 삭제
+			 return result;
+		 }
+			
+	 
+	}
+	
+	
 	
 
 	// 1. 유저 플레이리스트 페이지 이동 및 조회

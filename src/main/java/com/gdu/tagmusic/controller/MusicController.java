@@ -201,7 +201,13 @@ public class MusicController {
 		return musicService.checkMusicLikeCnt(request);
 	}
 	
-
+	// 구현 : 좋아요 선택/해제
+		@ResponseBody
+		@GetMapping(value="/music/user/toggleMusicLike", produces="application/json")
+		public Map<String, Object> toggleMusicLike(HttpServletRequest request) {	
+			return musicService.toggleMusicLike(request);
+		}
+	
 	
 	
 	

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title></title>
 <link rel="stylesheet" th:href="@{/css/musicBoard.css}">
-<link rel="stylesheet" th:href="@{/css/popup.css}">
+
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 
@@ -20,15 +20,15 @@
 		fn_modalClose();				// 기능 : 모달창 종료
 		
 		fn_checkMusicLike();			// 구현 : 내가 좋아요를 누른 곡인지 여부 조회
-		fn_musicLikeCnt();				// 구현 : 전체 좋아요 개수 조회
-		//fn_musicLike();					// 구현 : 좋아요 누르기(선택/해제)
+		//fn_musicLikeCnt();				// 구현 : 전체 좋아요 개수 조회
+		fn_clickMusicLike() 			// 구현 : 유저_좋아요 선택/해제
 		
 	});
 	
 	// 전역변수
-	var musicNo;						// 음악번호 : 좋아요 처리
-	var loginUser;						// 세션에 저장된 유저정보
-	
+	var musicNo;										// 음악번호 : 좋아요 처리
+	var loginUser = /*[[${session.loginUser}]]*/ null;	// 세션에 저장된 유저정보
+	var writer;											// 게시글의 유저정보
 	
 	
 	
@@ -126,6 +126,8 @@
 			});	
     	});
     }
+    
+   	// 
     
     function fn_modal_createPlaylist() {	// 플레이리스트 생성화면
     	
@@ -246,43 +248,55 @@
     	
     }
     
-    function fn_checkMusicLike () {	// 좋아요 선택 여부 확인
+    function fn_checkMusicLike () {	// 구현 : 좋아요 선택 여부 확인
     	
-    	musicNo = $('.musicNo').val();	
-    
-    	$.ajax({
-			url: '/music/user/checkMusicLike',
-			type: 'get',
-			data: 'musicNo=' + musicNo,
-			dataType: 'json',
-			success: function(resData){
-				
-				$('.musicBoard_musicLike').empty();
-				
-				if (resData.musicLikeCheck == 0) {
-					$('.musicBoard_musicLike').append('<img src="/images/dislike.png" width="30px">');
-					//$('#heart').removeClass("good_checked");
-				} else {
-					$('.musicBoard_musicLike').append('<img src="/images/like.png" width="30px">');
-					//$('#heart').addClass("good_checked");
-				}
-			}
-		});
+    	$.each( $('.musicBoard_musicLike'), function(i, musicBoard) {	// * musicBoard : 좋아요 data 배열의 변수
+    		
+	    	if(loginUser == null) {
+	    		$(musicBoard).append('<img src="/images/like.png" width="30px">');
+	    		return;
+	    	}
+
+    		musicNo = $(musicBoard).data('musicno');
+    		
+    		$.ajax({				// 회원인 경우, 본인의 좋아요 여부에 따른 하트 보여주기
+    			url: '/music/user/checkMusicLike',
+    			type: 'get',
+    			data: 'musicNo=' + musicNo,
+    			dataType: 'json',
+    			success: function(resData){
+    				
+    				 $(musicBoard).empty();	// 초기화
+    				
+    				if(resData.musicLikeCheck == 0) {
+    					
+    					$(musicBoard)	// 0일때는 클래스x
+    					.removeClass('good_checked')
+    					.append('<img src="/images/dislike.png" width="30px">');
+    					
+    				} else if(resData.musicLikeCheck == 1) {
+    				
+    					$(musicBoard)	// 좋아요 클릭시 o
+    					.addClass('good_checked')
+    					.append('<img src="/images/like.png" width="30px">');
+    					
+    				}
+    				//fn_musicLikeCnt()
+
+    			}
+    		});
+    	});
     }
-    //loginUser = session.getAttribute('loginUser');
-    	
-    	/* if(loginUser == null) {
-    		alert('회원만 가능합니다');
-    		return;
-    	}
-    		 */
+
     		
     		 
-   	function fn_musicLikeCnt() {	// 기능 : 좋아요 개수 표시하기
-    			 
-   		musicNo = $('.musicNo').val();	 
+  /*  	function fn_musicLikeCnt() {	// 기능 : 좋아요 개수 표시하기
+   		
+   		$.each( $('.musicBoard_musicLike'), function(i, musicBoard) {
    			
-		 $.ajax({
+	   		musicNo = $(musicBoard).data('musicno');
+	   		
+	   		$.ajax({
 				url: '/music/user/checkMusicLikeCnt',
 				type: 'get',
 				data: 'musicNo=' + musicNo,
@@ -293,9 +307,64 @@
 					$('.musicBoard_musicLikeCnt').empty();
 					$('.musicBoard_musicLikeCnt').text(resData.musicLikeCnt);
 				}
+			});   		
+   		}); 
+    } */
+    		 
+    function fn_clickMusicLike() { // 구현 : 유저_좋아요 선택/해제
+    	
+    	
+    	$(document).on('click', '.musicBoard_musicLike', function() {
+    		
+			writer = $('.writer').val();
+    		
+    		if(loginUser == null) {				// 제약 : 비회원금지
+    			alert('회원만 가능합니다');
+				return;
+    		}
+    		
+    		if(loginUser.email == writer) {		// 제약 : 본인 좋아요 금지
+ 	
+    			alert('본인 게시물에 좋아요를 누를 수 없습니다');
+				return;		
+    		}
+    		
+    		var click = $(this)	// * 함수안에서 사용된 동적이벤트의 this는 ajax 함수응답 안에서 사용할 수없기 때문에 변수로 전달해줘야한다
+
+    		// 좋아요 처리
+    		
+			$.ajax({
+				url: '/music/user/toggleMusicLike',
+				type: 'get',
+				data: 'musicNo=' + $(this).data('musicno'),
+				dataType: 'json',
+				success: function(resData){
+				
+					$(click).empty();
+					
+					if(resData.result == 0) {	// 선택
+						
+						$(click)
+						.addClass('good_checked')
+						.append('<img src="/images/like.png" width="30px">');
+						
+					} else {					// 해제
+						
+						$(click)
+						.removeClass('good_checked')
+						.append('<img src="/images/dislike.png" width="30px">');
+						
+					}
+					//fn_musicLikeCnt();
+					fn_checkMusicLike();
+					
+					
+				}
 			});
-    			
-    			 
+    		
+    		
+    	});
+    	
     }
 
 
@@ -312,6 +381,8 @@
 		
 			<div class="list_container">
 				<div class="list_page">
+				
+					
 				
 					<div class="page_title">
 					<!-- 구현 : 요청마다 게시판 이름 변경하기  -->
@@ -353,6 +424,7 @@
 						</thead>
 						<tbody>
 							<tr th:each="music,vs:${musicList}">
+							
 								<td>
 									<input type="checkbox">
 								</td>
@@ -370,14 +442,16 @@
 								<td>
 									
 									<div th:text="${music.musicTitle}" class="title_artist"></div>
-									<div th:text="${music.userDTO.artist}" class="title_artist"></div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
+									<div th:text="${music.email}" class="title_artist"></div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
 								</td>
 								
 								<td>
 									<div th:text="${music.musicGenre}"></div>
 								</td>
 								<td class="musicBoard_td_musicLike">
-									<span class="musicBoard_musicLike"></span>
+									<span class="musicBoard_musicLike" th:data-musicno="${music.musicNo}"></span>
+									 <input type="hidden" class="writer" th:value="${music.email}">									
+									
 									<span class="musicBoard_musicLikeCnt"></span>
 								</td>
 								<td class="board_playlist_area">
@@ -462,6 +536,6 @@
 					</div>
 				</div>
 			</div>
-		
+		</div>
 </body>
 </html>

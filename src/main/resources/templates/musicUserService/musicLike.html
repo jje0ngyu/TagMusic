@@ -38,11 +38,16 @@
 			success: function(resData) {
 				console.log(resData)
 				// 최신화
+				$('.musicLike_top').empty();
 				$('.musicLike_header').empty();
 				$('.musicLike_body').empty();
 				
 				// 목록조회
 				// 1) 헤더
+				$('.musicLike_top').
+				append('<div class="musicLike_title">좋아요 게시판</div>')
+				
+				
 				$('.musicLike_header')
 				.append('<div class="musicLike_title">'+resData.userNickName+' 님의 좋아요 리스트입니다</div><div class="musicLike_cnt">현재 '+resData.musicLikeCnt+' 개의 곡이 있습니다</div>') ;
 						
@@ -62,7 +67,7 @@
 					}
 					
 					$('<tr class="musicLike_tr">')
-					.append( $('<td class="musicLike_td_no"><div class="musicLike_no">' + (index + 1) + '</div></td>') )
+					.append( $('<td class="musicLike_td_no"><div class="musicLike_no">' + musicList.musicNo + '</div></td>') )
 					.append( $('<td class="musicLike_td_del"><div class="musicLike_del"><img class="musicLike_thumbnail" src="' + thumbnail + '"></div></td>') )	
 					.append( $('<td class="musicLike_td_del"><div class="musicLike_del">'+musicList.musicTitle+'</div><div class="musicLike_del">'+musicList.userDTO.artist+'</div></td>') )
 					.append( $('<td class="musicLike_td_del"><div class="musicLike_del">'+musicList.musicGenre+'</div></td>') )
@@ -154,7 +159,8 @@
 		<div class="musicLike_container">
 		
 			<div class="musicLike_page">
-			
+				
+				<div class="musicLike_top"></div>
 			
 				<div class="musicLike_header">
 				

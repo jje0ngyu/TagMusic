@@ -100,12 +100,18 @@ public interface MusicMapper {
 	public int deleteMusicLike(Map<String, Object> map);
 	
 	// 4) 유저 좋아요 상태 조회
-	public int checkUserMusicLike(Map<String, Object> map);
+	 public int checkUserMusicLike(Map<String, Object> map);
 	
 	// 5) 좋아요 개수 조회
 	public int checkMusicLikeCnt(Map<String, Object> map);
 	
+	// 6) 좋아요 추가
+	public int insertMusicLike(Map<String, Object> map);
 	
+	// 7) 해당 게시글 = 유저 본인 여부확인
+	public String checkUserMusicWriter(int musicNo);
+	
+
 	
 	/*
 	 * // 2) 유저의 플레이리스트 썸네일 반환 public MusicDTO selectUserPlaylistThumbnail(int

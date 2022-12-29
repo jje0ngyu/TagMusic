@@ -77,6 +77,10 @@ public interface MusicService {
 	// 4. 좋아요 개수 조회
 	public Map<String, Object> checkMusicLikeCnt(HttpServletRequest request);
 	
+	// 5. 좋아요 선택/해제
+	public Map<String, Object> toggleMusicLike(HttpServletRequest request);
+
+	
 
 	/*
 	 * // 1. 유저의 listNo 가져오기 public void selectUserPlaylist(HttpServletRequest
