@@ -19,7 +19,18 @@
 		fn_createPlaylist();			// 구현 : 플레이리스트 생성
 		fn_modalClose();				// 기능 : 모달창 종료
 		
+		fn_checkMusicLike();			// 구현 : 내가 좋아요를 누른 곡인지 여부 조회
+		fn_musicLikeCnt();				// 구현 : 전체 좋아요 개수 조회
+		//fn_musicLike();					// 구현 : 좋아요 누르기(선택/해제)
+		
 	});
+	
+	// 전역변수
+	var musicNo;						// 음악번호 : 좋아요 처리
+	var loginUser;						// 세션에 저장된 유저정보
+	
+	
+	
 	
     function fn_modal() {	// 플레이리스트 목록창
     	
@@ -234,8 +245,58 @@
 			});
     	
     }
+    
+    function fn_checkMusicLike () {	// 좋아요 선택 여부 확인
+    	
+    	musicNo = $('.musicNo').val();	
+    
+    	$.ajax({
+			url: '/music/user/checkMusicLike',
+			type: 'get',
+			data: 'musicNo=' + musicNo,
+			dataType: 'json',
+			success: function(resData){
+				
+				$('.musicBoard_musicLike').empty();
+				
+				if (resData.musicLikeCheck == 0) {
+					$('.musicBoard_musicLike').append('<img src="/images/dislike.png" width="30px">');
+					//$('#heart').removeClass("good_checked");
+				} else {
+					$('.musicBoard_musicLike').append('<img src="/images/like.png" width="30px">');
+					//$('#heart').addClass("good_checked");
+				}
+			}
+		});
+    }
+    //loginUser = session.getAttribute('loginUser');
+    	
+    	/* if(loginUser == null) {
+    		alert('회원만 가능합니다');
+    		return;
+    	}
+    		 */
     		
-    		
+    		 
+   	function fn_musicLikeCnt() {	// 기능 : 좋아요 개수 표시하기
+    			 
+   		musicNo = $('.musicNo').val();	 
+   			
+		 $.ajax({
+				url: '/music/user/checkMusicLikeCnt',
+				type: 'get',
+				data: 'musicNo=' + musicNo,
+				dataType: 'json',
+				success: function(resData){
+				
+
+					$('.musicBoard_musicLikeCnt').empty();
+					$('.musicBoard_musicLikeCnt').text(resData.musicLikeCnt);
+				}
+			});
+    			
+    			 
+    }
 
 
 </script>
@@ -315,8 +376,9 @@
 								<td>
 									<div th:text="${music.musicGenre}"></div>
 								</td>
-								<td>
-									<input type="button" value="좋아요">
+								<td class="musicBoard_td_musicLike">
+									<span class="musicBoard_musicLike"></span>
+									<span class="musicBoard_musicLikeCnt"></span>
 								</td>
 								<td class="board_playlist_area">
 									<div class="playlist_hidden">

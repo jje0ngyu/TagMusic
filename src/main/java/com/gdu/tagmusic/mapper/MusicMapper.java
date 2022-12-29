@@ -97,6 +97,13 @@ public interface MusicMapper {
 	public List<MusicDTO> selectUserMusicLikeList(Map<String, Object> map);
 	
 	// 3) 유저 좋아요 삭제
+	public int deleteMusicLike(Map<String, Object> map);
+	
+	// 4) 유저 좋아요 상태 조회
+	public int checkUserMusicLike(Map<String, Object> map);
+	
+	// 5) 좋아요 개수 조회
+	public int checkMusicLikeCnt(Map<String, Object> map);
 	
 	
 	

@@ -167,28 +167,42 @@ public class MusicController {
 	
 	// 2. 좋아요 ====================================================================================================================
 	
-	// 구현 : 플레이리스트 페이지 이동 
+	// 구현 : 좋아요 페이지 이동 
 		@GetMapping("/music/move/musicLike")
 		public String moveMusicLike(HttpServletRequest request, Model model) {
 			return "/musicUserService/musicLike";
 		}
 		
-	// 구현 : 플레이리스트 목록조회
+	// 구현 : 좋아요 목록조회
 	@ResponseBody
 	@GetMapping(value="/music/user/musicLikeList", produces="application/json")
 	public Map<String, Object> userMusicLikeList(HttpServletRequest request) {	
 		return musicService.selectMusicLikeList(request);
 	}
 	
+	// 구현 : 좋아요 삭제
+	@ResponseBody
+	@PostMapping(value="/music/user/deleteUserMusicLike", produces="application/json")
+	public Map<String, Object> deleteUserMusicLike(HttpServletRequest request) {	
+		return musicService.deleteUserMusicLike(request);
+	}
 	
+	// 구현 : 좋아요 상태 조회
+	@ResponseBody
+	@GetMapping(value="/music/user/checkMusicLike", produces="application/json")
+	public Map<String, Object> checkMusicLike(HttpServletRequest request) {	
+		return musicService.checkMusicLike(request);
+	}
 	
+	// 구현 : 좋아요 개수 확인
+	@ResponseBody
+	@GetMapping(value="/music/user/checkMusicLikeCnt", produces="application/json")
+	public Map<String, Object> checkMusicLikeCnt(HttpServletRequest request) {	
+		return musicService.checkMusicLikeCnt(request);
+	}
 	
-	/*
-	 * // 구현 : 모달창 아이프레임, 플레이리스트 목록조회
-	 * 
-	 * @GetMapping("/music/playlistModal") public String playlistArea() { return
-	 * "/musicBoard/playlistModal"; }
-	 */
+
+	
 	
 	
 	
