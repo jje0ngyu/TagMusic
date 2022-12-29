@@ -58,40 +58,9 @@
 			<result column="AGREE_CODE" property="agreeCode"></result>
 		</association>
 		<association javaType="MusicLikeDTO" property="musicLikeDTO">
-			<id column="ACTIVE_NO" property="activeNo"></id>
+			<id column="LIKE_NO" property="likeNo"></id>
 			<result column="EMAIL" property="email"></result>
 			<result column="MUSIC_NO" property="musicNo"></result>
-			<result column="LAST_LISTEN_DATE" property="lastListenDate"></result>
-			<result column="LISTEN_COUNT" property="listenCount"></result>
-			<association javaType="UserDTO" property="userDTO">
-				<id column="USER_NO" property="userNo"></id>
-				<result column="EMAIL" property="email"></result>
-				<result column="ARTIST" property="artist"></result>
-				<result column="NAME" property="name"></result>
-				<result column="PW" property="pw"></result>
-				<result column="PROFILE_IMAGE" property="profileImage"></result>
-				<result column="MOBILE" property="mobile"></result>
-				<result column="GENDER" property="gender"></result>
-				<result column="BIRTHYEAR" property="birthyear"></result>
-				<result column="BIRTHDAY" property="birthday"></result>
-				<result column="POSTCODE" property="postcode"></result>
-				<result column="ROAD_ADDRESS" property="roadAddress"></result>
-				<result column="JIBUN_ADDRESS" property="jibunAddress"></result>
-				<result column="DETAIL_ADDRESS" property="detailAddress"></result>
-				<result column="EXTRA_ADDRESS" property="extraAddress"></result>
-				<result column="SNS_TYPE" property="snsType"></result>
-				<result column="SESSION_ID" property="sessionId"></result>
-				<result column="SESSION_LIMIT_DATE" property="sessionLimitDate"></result>
-				<result column="JOIN_DATE" property="joinDate"></result>
-				<result column="PW_MODIFY_DATE" property="pwModifyDate"></result>
-				<result column="INFO_MODIFY_DATE" property="infoModifyDate"></result>
-				<result column="AGREE_CODE" property="agreeCode"></result>
-			<!-- 	<association javaType="PlaylistDTO" property="playlistDTO">
-					<id column="LIST_NO" property="userNo"></id>
-					<result column="EMAIL" property="email"></result>
-					<result column="LIST_NAME" property="listName"></result>
-				</association> -->
-			</association>
 		</association>
 	</resultMap>
 	
@@ -433,22 +402,41 @@
 	</select>
 	
 	<!-- # 좋아요  -->
+	<!-- 1. 좋아요 게시글 수 -->
 	<select id="selectUserMusicLikeCnt" parameterType="Map" resultType="int">
 		SELECT COUNT(LIKE_NO)
 		FROM MUSIC_LIKE
 		WHERE EMAIL = #{email}
 	</select>
 	
+	<!-- 2. 좋아요 게시판 목록 조회 -->
 	<select id="selectUserMusicLikeList" parameterType="Map" resultMap="MusicMap">
 		SELECT U.ARTIST, L.LIKE_NO, M.MUSIC_NO, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
-                		FROM MUSIC M INNER JOIN MUSIC_LIKE L
-                		ON M.MUSIC_NO = L.MUSIC_NO INNER JOIN USERS U
-                		ON L.EMAIL = U.EMAIL
-                		WHERE U.EMAIL = #{email}
+          FROM MUSIC M INNER JOIN MUSIC_LIKE L
+            ON M.MUSIC_NO = L.MUSIC_NO INNER JOIN USERS U
+            ON L.EMAIL = U.EMAIL
+         WHERE U.EMAIL = #{email}
 		ORDER BY L.LIKE_NO DESC
 		LIMIT #{begin}, #{recordPerPage}
 	</select>
-
+	
+	<!-- 3. 좋아요 게시판 목록에서 삭제 -->
+	<delete id="deleteMusicLike" parameterType="Map">
+		DELETE FROM MUSIC_LIKE WHERE MUSIC_NO = #{musicNo} AND EMAIL = #{email}
+	</delete>
+	
+	<!-- 4. 좋아요 상태조회 -->
+	<select id="checkUserMusicLike" parameterType="Map" resultType="int">
+		SELECT COUNT(LIKE_NO)
+		FROM MUSIC_LIKE
+		WHERE MUSIC_NO = #{musicNo} AND EMAIL = #{email}
+	</select>
+	
+	<select id="checkMusicLikeCnt" parameterType="Map" resultType="int">
+		SELECT COUNT(LIKE_NO)
+		FROM MUSIC_LIKE
+		WHERE MUSIC_NO = #{musicNo}
+	</select>
 	
 	
 	<!--  3. 유저 플레이리스트 썸네일 가져오기	<select id="selectUserPlaylistThumbnail" parameterType="int" resultType="MusicDTO">

@@ -44,8 +44,11 @@
 			let regEmail = /^[0-9a-zA-Z][0-9a-zA-Z-_]{3,29}@[a-z]{1,10}[\.][a-z\.]{2,18}$/;
 			if(regEmail.test(emailValue) == false) {
 				$('.msg_email').removeClass('blind');
+				$('#email').addClass('error_box');
 			} else {
 				$('.msg_email').addClass('blind');
+				$('#email').removeClass('error_box');
+				
 			}
 		});
 		
@@ -64,8 +67,10 @@
 			let regEmail = /^[0-9a-zA-Z-_!@#$%^&*]{4,60}$/;
 			if(regEmail.test(emailValue) == false) {
 				$('.msg_pw').removeClass('blind');
+				$('#pw').addClass('error_box');
 			} else {
 				$('.msg_pw').addClass('blind');
+				$('#pw').removeClass('error_box');
 			}
 		});
 		
@@ -238,13 +243,18 @@
 						</script>
 			
 			<div class="login_bottom_controller">
-				<div class="msg_login_box">TagMusic 회원이 아닌가요?</div>
-				<div class="login_join_content">
-					<a th:href="@{/user/join/agree}" class="login_join_content">가입하기</a>
-				</div>
+					<div class="msg_login_box hover">TagMusic 회원이 아닌가요?</div>
+					<div class="login_join_content">
+						<a th:href="@{/user/join/agree}" id="join_text" class="login_join_content">가입하기</a>
+					</div>
+					
 			</div>
 		</form>
 	</div>
-
+	<script>
+		$('.msg_login_box').click(function(){
+			location.href='/user/join/agree';
+		})	
+	</script>
 </body>
 </html>

@@ -598,7 +598,6 @@ public class MusicServiceImpl implements MusicService {
 		
 		// map
 		Map<String, Object> map = new HashMap<>();
-		map.put("page", page);
 		map.put("email", email);
 		
 		// 2. 유저의 전체 좋아요 수 조회
@@ -606,30 +605,113 @@ public class MusicServiceImpl implements MusicService {
 		
 		// 제약 : 좋아요 수가 0일경우 result = 0 반환
 		if(musicLikeCnt == 0) {
-			
 			map.put("result", 0);
 			return map;
-			
 		}
 		
 		// 3. 페이징 처리
 		pageUtil.setPageUtil(page, 10, musicLikeCnt);
 		
-		map.put("begin", pageUtil.getBegin() -1);
+		map.put("begin", pageUtil.getBegin() - 1);
 		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
 		// 4. 좋아요 목록 조회
 		List<MusicDTO> musicLikeList = musicMapper.selectUserMusicLikeList(map);
-		
+		System.out.println("==" + musicLikeList.size());
 		map.put("pageUtil", pageUtil);
 		map.put("selectUserMusicLikeList", musicLikeList);
 		map.put("result", 1);
 		map.put("userNickName", userNickName);
 		map.put("musicLikeCnt", musicLikeCnt);
 		
+		System.out.println(pageUtil.getBegin());	//1
+		System.out.println(pageUtil.getEnd());		// 10
+		System.out.println(pageUtil.getBeginPage());	// 1
+		System.out.println(pageUtil.getEndPage());	//1
+		System.out.println(pageUtil.getRecordPerPage());// 10
+		System.out.println(pageUtil.getTotalPage());	//1
+		System.out.println(map);
+		
 		return map;
 	}
+
+	// 2. 유저 좋아요 삭제
+	@Override
+	public Map<String, Object> deleteUserMusicLike(HttpServletRequest request) {
+
+		// 1. 기초데이터
+		// 파라미터 : likeNo
+		Optional<String> opt = Optional.ofNullable(request.getParameter("musicNo")); 
+		int musicNo = Integer.parseInt(opt.orElse("1"));
+		
+		// 유저 : email
+		HttpSession session = request.getSession();
+		UserDTO user = (UserDTO) session.getAttribute("loginUser");
+		String email = user.getEmail();
+		
+		// map
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+		map.put("musicNo", musicNo);
+		
+		// 2. 좋아요 목록에서 삭제
+		int result = musicMapper.deleteMusicLike(map);
+
+		Map<String, Object> map2 = new HashMap<>();
+		map2.put("result", result);
+		
+		return map2;
+	}
 	
+	// 3. 유저 좋아요 상태 조회
+	@Override
+	public Map<String, Object> checkMusicLike(HttpServletRequest request) {
+		
+		// 1. 기초데이터
+		// 파라미터 : likeNo
+		Optional<String> opt = Optional.ofNullable(request.getParameter("musicNo")); 
+		int musicNo = Integer.parseInt(opt.orElse("1"));
+		
+		// 유저 : email
+		HttpSession session = request.getSession();
+		UserDTO user = (UserDTO) session.getAttribute("loginUser");
+		String email = user.getEmail();
+		
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+		map.put("musicNo", musicNo);
+		
+		Map<String, Object> result = new HashMap<>();
+	    result.put("musicLikeCheck", musicMapper.checkUserMusicLike(map));
+		
+		return result;
+	}
+	
+	// 4. 좋아요 개수 조회
+	@Override
+	public Map<String, Object> checkMusicLikeCnt(HttpServletRequest request) {
+
+		// 1. 기초데이터
+		// 파라미터 : likeNo
+		Optional<String> opt = Optional.ofNullable(request.getParameter("musicNo")); 
+		int musicNo = Integer.parseInt(opt.orElse("1"));
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("musicNo", musicNo);
+		
+		Map<String, Object> result = new HashMap<>();
+		result.put("musicLikeCnt", musicMapper.checkMusicLikeCnt(map));
+		
+		return result;
+	}
+	
+	// 해당 유저가 처음 좋아요를 클릭한 경우
+	
+			// 해당 유저가 두번이상 좋아요를 클릭한 경우
+			
+			// 삭제 : update를 한다
+			
 	
 
 	// 1. 유저 플레이리스트 페이지 이동 및 조회

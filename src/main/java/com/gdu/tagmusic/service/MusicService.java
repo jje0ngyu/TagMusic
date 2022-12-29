@@ -64,8 +64,18 @@ public interface MusicService {
 	public Map<String, Object> createPlaylist(HttpServletRequest request);
 	
 	// # 유저 좋아요 
+	
+	// 1. 유저 좋아요 목록 조회
 	public Map<String, Object> selectMusicLikeList(HttpServletRequest request);
 
+	// 2. 유저 좋아요 목록에서 삭제
+	public Map<String, Object> deleteUserMusicLike(HttpServletRequest request);
+	
+	// 3. 유저 좋아요 상태 조회
+	public Map<String, Object> checkMusicLike(HttpServletRequest request);
+	
+	// 4. 좋아요 개수 조회
+	public Map<String, Object> checkMusicLikeCnt(HttpServletRequest request);
 	
 
 	/*
