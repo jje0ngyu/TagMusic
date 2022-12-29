@@ -340,17 +340,25 @@ position: fixed;
 	height: 400px; /*높이*/
 	width : 600px;
 	margin: 30px 50px;
-	overflow: scroll;
+	/* overflow: scroll; */
+	overflow-y: scroll; 
 }
+
+.chat_box ::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}
+
+
+
+
 .chat_user {
 	position: relative;
     height: 100px;
-    border: 1px solid gray;
     position: relative;
 }
 .chat_user > div {
-      border: 1px solid rgb(170, 20, 20);
       position: absolute;
+      
 }
 .chat_user > div:nth-of-type(1){
 	/*프로필이미지위치*/
@@ -374,9 +382,7 @@ position: fixed;
 }
 .chat_admin{
     height: 100px;
-    border: 1px solid gray;
     position: relative;
-    background-color: yellow;
 }
 .chat_admin > div {
       position: absolute;
@@ -397,8 +403,82 @@ position: fixed;
 .add_chat{
 	margin: 0px 50px;
 }
-#content{
-	width:150px;
+
+
+
+
+/* 1:1 보내는 버튼 */
+.btn-3d {
+  position: relative;
+  display: inline-block;
+  font-size: 15px;
+  padding: 10px 30px;
+  color: white;
+  margin: 0px 10px 10px;
+  border-radius: 6px;
+  text-align: center;
+  transition: top .01s linear;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.15);
 }
+.btn-3d.blue:hover   {background-color: #699DD1;}
+.btn-3d:active {
+  top: 9px;
+}
+.btn-3d.blue {
+  background-color: #6DA2D9;
+  box-shadow: 0 0 0 1px #6698cb inset,
+        0 0 0 2px rgba(255,255,255,0.15) inset,
+        0 8px 0 0 rgba(110, 164, 219, .7),
+        0 8px 0 1px rgba(0,0,0,.4),
+        0 8px 8px 1px rgba(0,0,0,0.5);
+}
+.btn-3d.blue:active {
+  box-shadow: 0 0 0 1px #6191C2 inset,
+        0 0 0 2px rgba(255,255,255,0.15) inset,
+        0 0 0 1px rgba(0,0,0,0.4);
+}
+.btn-gradient {
+  text-decoration: none;
+  color: white;
+  padding: 10px 30px;
+  display: inline-block;
+  position: relative;
+  border: 1px solid rgba(0,0,0,0.21);
+  border-bottom: 4px solid rgba(0,0,0,0.21);
+  border-radius: 4px;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+}
+.btn-gradient.blue {
+  background: rgba(102,152,203,1);
+  background: -moz-linear-gradient(top, rgba(102,152,203,1) 0%, rgba(92,138,184,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(102,152,203,1)), color-stop(100%, rgba(92,138,184,1)));
+  background: -webkit-linear-gradient(top, rgba(102,152,203,1) 0%, rgba(92,138,184,1) 100%);
+  background: -o-linear-gradient(top, rgba(102,152,203,1) 0%, rgba(92,138,184,1) 100%);
+  background: -ms-linear-gradient(top, rgba(102,152,203,1) 0%, rgba(92,138,184,1) 100%);
+  background: linear-gradient(to bottom, rgba(102,152,203,1) 0%, rgba(92,138,184,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6698cb', endColorstr='#5c8ab8', GradientType=0 );
+}
+.btn-gradient.blue:active   {background: #608FBF;}
 
 
+
+.plz_input_q {
+	position: relative;
+	width: 600px;
+}
+.plz_input_q >input {
+	position: absolute;
+}
+.plz_input_q :nth-of-type(1){
+	left : 0px;
+}
+.plz_input_q :nth-of-type(2){
+	top: 0;
+	right: 0px;
+}
+#content{
+	border-radius: 30px;
+	width: 450px;
+	height: 50px;
+	padding : 20px;
+}
