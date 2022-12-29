@@ -94,7 +94,6 @@
 		SELECT CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER
           FROM CHAT_ADMIN
          WHERE GROUP_NO = #{groupNo}
-           AND USER_NO = #{userNo}
 		   AND DEPTH = 1
 	
 	</select>

@@ -236,7 +236,7 @@ input[type=button] {
 
 /* 페이지 util : 페이지 블록 처리 css */
 .paging {
-	
+	margin-bottom: 10px;
 	border: 1px solid #222222;
 	display: inline-block;
 	width: 40px;

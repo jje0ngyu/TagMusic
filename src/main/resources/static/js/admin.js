@@ -2,6 +2,24 @@
  * 
  */
  
+ 	function fn_admin_control(){
+		$('#admin_control').click(function(){
+			location.href='/admin/user/control';		
+		});
+	 }
+	 
+ 	function fn_music_control(){
+		$('#music_control').click(function(){
+			location.href='/admin/music/control';		
+		});
+	 }
+	 
+ 	function fn_admin_chatUserList(){
+		$('#admin_chatUserList').click(function(){
+			location.href='/admin/chatUserList';		
+		});
+	 }
+ 
  	// checkbox 전체체크하면 개별체크 한꺼번에 됨
 	function fn_checkAll(){
 		$('#check_all').click(function(){
@@ -28,6 +46,11 @@
 				data : $('#frm_search1').serialize()+'&page='+realpage,
 				dataType : 'json',
 				success : function(resData){
+					
+					
+					console.log(resData.table);
+					console.log(resData.userList);
+
 										
 					$('#list_body').empty();
 					$('#list_foot').empty();
