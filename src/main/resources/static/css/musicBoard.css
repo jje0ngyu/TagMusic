@@ -371,4 +371,31 @@ input[type=button] {
 	
 }
 
+/* 추가수정란  */
+.musicBoard_td_musicLike {
+	
+	padding: 20px;
+	
+}
+
+.musicBoard_musicLike {
+	
+	display: inline-block;
+	
+	
+
+	
+}
+
+.musicBoard_musicLikeCnt {
+	
+	display: inline-block;
+	margin-left: 3px;
+	font-size: 15px;
+	font-weight: 900;
+	
+	
+	
+}
+
 

@@ -12,15 +12,23 @@
 	// 유저 좋아요
 
 	$(document).ready(function() {
-		
-		fn_musicLikeList();
-		//fn_deleteMusicLike();
-	
+		fn_musicLikeList();			// 구현 : 유저 좋아요 리스트 조회
+		fn_changeMusicLikePage();	// 기능 : 유저 좋아요 페이징 이동
+		fn_deleteMusicLike();		// 구현 : 유저 좋아요 리스트에서 해제
+
 	});
 	
-	function fn_musicLikeList() {
+	// 전역변수
+	var page = 1;	// 페이지 디폴트값
+	var thumbnail;	// 썸네일
+	var body;		// 테이블 바디
+	var paging;		// 페이징 합치는 변수
+	var pagingUtil;	// 페이지 유틸
+	var musicNo;	// 삭제할 음악 변수
+	
+	function fn_musicLikeList() {	// 구현 : 유저 좋아요 리스트 조회
 		
-		let page = $('#page').val();
+	//	let page = $('#page').val();
 		
 		$.ajax({
 			type: 'get',
@@ -28,9 +36,7 @@
 			data : 'page=' + page,
 			dataType: 'json',
 			success: function(resData) {
-			
-				alert('a');
-				
+				console.log(resData)
 				// 최신화
 				$('.musicLike_header').empty();
 				$('.musicLike_body').empty();
@@ -38,77 +44,100 @@
 				// 목록조회
 				// 1) 헤더
 				$('.musicLike_header')
-				.append('<div class="musicLike_title">'+resData.userNickName+' 님의 좋아요 리스트입니다</div>')
-				.append('<div class="musicLike_cnt">현재 '+resData.musicLikeCnt+' 개의 곡이 있습니다</div>')
+				.append('<div class="musicLike_title">'+resData.userNickName+' 님의 좋아요 리스트입니다</div><div class="musicLike_cnt">현재 '+resData.musicLikeCnt+' 개의 곡이 있습니다</div>') ;
 						
 				// 2) 목록
 				
-				let body = $('<tbody>');
+				body = $('<tbody>');
 				
 				// (1) tbody 생성
 				$.each(resData.selectUserMusicLikeList, function(index, musicList) {
 					
+					
 					// 썸네일 조건부여
-					//if(musicList.hasThumbNail == 1) {
-						// let thumbnail = '/music/thumbnail';
-					//} else if (musicList.hasThumbNail == 0) {
-						let thumbnail = '/images/defaultImage.png';
-					//}
+					if(musicList.hasThumbNail == 1) {
+						thumbnail = '/music/thumbnail?musicNo=' + musicList.musicNo;
+					} else if (musicList.hasThumbNail == 0) {
+						thumbnail = '/images/defaultImage.png';
+					}
 					
 					$('<tr class="musicLike_tr">')
-					.append( $('<td class="musicLike_td">')
-							.append('<div class="musicLike_no">'+(index + 1)+'</div>') )
-					.append( $('<td class="musicLike_td_del">')
-							.append( $('<div class="musicLike_del">')
-									.append('<img class="musicLike_thumbnail" src="' + thumbnail + '">') ) )
-					.append( $('<td class="musicLike_td_del">')
-							.append('<div class="musicLike_del">'+musicList.musicTitle+'</div>') 
-							.append('<div class="musicLike_del">'+musicList.userDTO.artist+'</div>') )
-					.append( $('<td class="musicLike_td_del">')
-							.append('<div class="musicLike_del">'+musicList.musicGenre+'</div>') )
-					.append( $('<td class="musicLike_td">')
-							.append('<div class="musicLike_delete">삭제</div>') )
+					.append( $('<td class="musicLike_td_no"><div class="musicLike_no">' + (index + 1) + '</div></td>') )
+					.append( $('<td class="musicLike_td_del"><div class="musicLike_del"><img class="musicLike_thumbnail" src="' + thumbnail + '"></div></td>') )	
+					.append( $('<td class="musicLike_td_del"><div class="musicLike_del">'+musicList.musicTitle+'</div><div class="musicLike_del">'+musicList.userDTO.artist+'</div></td>') )
+					.append( $('<td class="musicLike_td_del"><div class="musicLike_del">'+musicList.musicGenre+'</div></td>') )
+					.append( $('<td class="musicLike_td"><div class="musicLike_delete" data-musicno="'+musicList.musicNo+'">하트깨짐</div></td>') )
 					.appendTo( $(body) );
 
 				});
-				
 				// (2) 테이블 생성
 				$('.musicLike_body')
-				.append( $('<table class="musicLike_table">')
-						.append( $('<thead>')
-								.append( '<tr class="musicLike_tr"><td class="musicLike_td">번호</td><td class="musicLike_td" colspan="3">음악정보</td><td class="musicLike_td">삭제</td></tr>') )
-						.append( $(body) ) )
+				.append( $('<table class="musicLike_table"><thead><tr class="musicLike_tr"><td class="musicLike_td">번호</td><td class="musicLike_td" colspan="3">음악정보</td><td class="musicLike_td">삭제</td></tr></thead></table>') 
+						.append( $(body) ) );
 				
+						
 				// (3) 페이징 처리
 				$('.musicLike_footer').empty();
 				
 				
-				let pageUtil = resData.pageUtil;
+				pageUtil = resData.pageUtil;
+				paging = $('<div class="musicLike_paging">');
 				
-				let paging = $('<div class="musicLike_paging">');
+				
 				
 				if(page != 1) {
-					$(paging).append('<div class="musicLike_btn_left" data-page="' + (page - 1) + '">&lt;이전</div>')
+					$(paging).append('<div class="musicLike_btn" data-page="' + (page - 1) + '">◀</div>')
 				}
 				
 				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
-					if(p = page) {
-						$(paging).append( '<div class="musicLike_btn">'+p+'</div>' )
-					} else {
-						$(paging).append( '<div class="musicLike_btn data-page="'+p+'"></div>' )
-					}
+					
+						$(paging).append( '<div class="musicLike_btn" data-page="'+p+'">'+p+'</div>' )
 				}
 				
 				if(page != pageUtil.totalPage) {
-					$(paging).append('<div class="musicLike_btn_right" data-page="' + (page + 1) + '">&lt;다음</div>')
+					$(paging).append('<div class="musicLike_btn" data-page="' + (page + 1) + '">▶</div>')
 				}
 				
-				$('.musicLike_footer').append(paging);
+				$(paging).appendTo( $('.musicLike_footer') );
 				
 			}
 				
 		});
 	}
+	
+	function fn_changeMusicLikePage(){	// 기능 : 페이지 이동
+		$(document).on('click', '.musicLike_btn', function(){
+			page = $(this).data('page');
+			fn_musicLikeList();
+		});
+	}
+	
+	function fn_deleteMusicLike() {	// 구현 : 좋아요 리스트에서 삭제
+		
+		$(document).on('click', '.musicLike_delete', function(){
+			
+			musicNo = $(this).data('musicno');
+			
+			$.ajax({
+				type: 'post',
+				url: '/music/user/deleteUserMusicLike',
+				data : 'musicNo=' + musicNo,
+				dataType: 'json',
+				success: function(resData) {
+				
+					if(resData.result == 1) {
+						alert('삭제했습니다');
+						fn_musicLikeList();
+						
+					}
+					
+					}
+				});
+				
+			
+		});
+		
+	};	
 
 
 </script>
@@ -123,7 +152,6 @@
 	
 		
 		<div class="musicLike_container">
-		<input type="hidden" id="page" value="1">
 		
 			<div class="musicLike_page">
 			
@@ -191,7 +219,7 @@
 	
 				</div>
 				<div class="musicLike_footer">
-					<div class="musicLike_paging"></div>
+					<div id="musicLike_paging"></div>
 				
 				
 				</div>
