@@ -80,6 +80,21 @@ public interface MusicService {
 	// 5. 좋아요 선택/해제
 	public Map<String, Object> toggleMusicLike(HttpServletRequest request);
 
+	// # 최근들은
+	// 1) 최근들은 목록 조회
+	public Map<String, Object> selectMusicLastlyList(HttpServletRequest request);
+	
+	// 2) 최근들은, 많이들은 목록 삭제
+	public Map<String, Object> deleteUserMusicLog(HttpServletRequest request);
+
+	// # 많이들은
+	// 1) 많이들은 목록 조회
+	public Map<String, Object> selectMusicManyList(HttpServletRequest request);
+		
+	// 2) 최근들은, 많이들은 전체 삭제
+	public Map<String, Object> deleteALLUserMusicLog(HttpServletRequest request);
+	
+
 	
 
 	/*

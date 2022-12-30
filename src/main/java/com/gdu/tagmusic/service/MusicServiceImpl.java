@@ -381,11 +381,11 @@ public class MusicServiceImpl implements MusicService {
 		 // 해당 플레이리스트 음악 개수
 		 int playlistMusicCnt = musicMapper.selectUserPlaylistMusicCnt(listNo);
 		 
-		 System.out.println(user);
-		 System.out.println(email);
-		 System.out.println(userNo);
-		 System.out.println(playlistMusicCnt);
-		 System.out.println(listNo);
+			/*
+			 * System.out.println(user); System.out.println(email);
+			 * System.out.println(userNo); System.out.println(playlistMusicCnt);
+			 * System.out.println(listNo);
+			 */
 		 // 한 페이지당 10개의 게시글 조회
 		 pageUtil.setPageUtil(page, 5, playlistMusicCnt);
 		 
@@ -397,9 +397,9 @@ public class MusicServiceImpl implements MusicService {
 		 map.put("email", email);
 		 map.put("userNo", userNo);
 		 
-		 System.out.println( "end : "+ pageUtil.getEnd());
+		// System.out.println( "end : "+ pageUtil.getEnd());
 		 List<MyMusicDTO> PlaylistMusiclist = musicMapper.selectUserPlaylistMusiclist(map);
-		 System.out.println(PlaylistMusiclist);
+		 //System.out.println(PlaylistMusiclist);
 		 //PlaylistMusiclist.stream().forEach(System.out::println);
 		 
 		 map.put("pageUtil", pageUtil);								// 페이지
@@ -629,19 +629,19 @@ public class MusicServiceImpl implements MusicService {
 		List<MusicDTO> musicLikeList = musicMapper.selectUserMusicLikeList(map);
 		System.out.println("==" + musicLikeList.size());
 		map.put("pageUtil", pageUtil);
-		map.put("selectUserMusicLikeList", musicLikeList);
 		map.put("beginNo", pageUtil.getBegin());
-		map.put("result", 1);
 		map.put("userNickName", userNickName);
+		map.put("selectUserMusicLikeList", musicLikeList);
+		map.put("result", 1);
 		map.put("musicLikeCnt", musicLikeCnt);
-		
-		System.out.println(pageUtil.getBegin());	//1
-		System.out.println(pageUtil.getEnd());		// 10
-		System.out.println(pageUtil.getBeginPage());	// 1
-		System.out.println(pageUtil.getEndPage());	//1
-		System.out.println(pageUtil.getRecordPerPage());// 10
-		System.out.println(pageUtil.getTotalPage());	//1
-		System.out.println(map);
+		/*
+		 * System.out.println(pageUtil.getBegin()); //1
+		 * System.out.println(pageUtil.getEnd()); // 10
+		 * System.out.println(pageUtil.getBeginPage()); // 1
+		 * System.out.println(pageUtil.getEndPage()); //1
+		 * System.out.println(pageUtil.getRecordPerPage());// 10
+		 * System.out.println(pageUtil.getTotalPage()); //1
+		 */		//System.out.println(map);
 		
 		return map;
 	}
@@ -716,7 +716,9 @@ public class MusicServiceImpl implements MusicService {
 		map.put("musicNo", musicNo);
 		
 		Map<String, Object> result = new HashMap<>();
+		//int aaa =  musicMapper.checkMusicLikeCnt(map);
 		result.put("musicLikeCnt", musicMapper.checkMusicLikeCnt(map));
+		//System.out.println(aaa);
 		
 		return result;
 	}
@@ -760,6 +762,156 @@ public class MusicServiceImpl implements MusicService {
 			
 	 
 	}
+	
+	
+	// # 최근들은
+	// 1. 유저_최근들은 목록 조회
+	@Override
+	public Map<String, Object> selectMusicLastlyList(HttpServletRequest request) {
+		
+		// 1. 기초데이터
+		// 파라미터 : page 
+		Optional<String> opt = Optional.ofNullable(request.getParameter("page")); 
+		int page = Integer.parseInt(opt.orElse("1"));
+
+		// 유저 : email
+		HttpSession session = request.getSession();
+		UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+		String email = loginUser.getEmail();
+		String userNickName = loginUser.getArtist();
+		
+		// map
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", email);
+				
+		// 2. 유저의 전체 좋아요 수 조회
+		int musicLastlyCnt = musicMapper.selectUserMusicLastlyCnt(map);
+		
+		// 3. 페이징 처리
+		pageUtil.setPageUtil(page, 10, musicLastlyCnt);
+
+		map.put("begin", pageUtil.getBegin() - 1);
+		map.put("recordPerPage", pageUtil.getRecordPerPage());
+		
+		// 4. 최근들은 목록 조회
+	    List<MusicDTO> musicLastlyList = musicMapper.selectUserMusicLastlyList(map);
+	    //System.out.println(musicLastlyList);
+		
+	    Map<String, Object> result = new HashMap<>();
+		result.put("musicLastlyCnt", musicLastlyCnt);
+		result.put("musicLastlyList", musicLastlyList);
+		result.put("pageUtil", pageUtil);
+		result.put("beginNo", pageUtil.getBegin());
+		result.put("userNickName", userNickName);
+	    
+		return result;
+	}
+	
+	// 2. 유저_최근들은, 많이들은 삭제
+	@Override
+	public Map<String, Object> deleteUserMusicLog(HttpServletRequest request) {
+		
+		// 1. 기초데이터
+		
+			// 파라미터 : likeNo
+			Optional<String> opt = Optional.ofNullable(request.getParameter("musicNo")); 
+			int musicNo = Integer.parseInt(opt.orElse("1"));
+			
+			// 유저 : email
+			HttpSession session = request.getSession();
+			UserDTO user = (UserDTO) session.getAttribute("loginUser");
+			String email = user.getEmail();
+			
+			// map
+			Map<String, Object> map = new HashMap<>();
+			map.put("email", email);
+			map.put("musicNo", musicNo);
+			
+			// 2. 좋아요 목록에서 삭제
+			int deleteResult = musicMapper.deleteMusicLog(map);
+
+			Map<String, Object> result = new HashMap<>();
+			result.put("result", deleteResult);
+			
+			return result;
+	}
+	
+	// # 많이들은
+	
+	// 1. 유저_많이들은 목록조회
+	
+	@Override
+	public Map<String, Object> selectMusicManyList(HttpServletRequest request) {
+		
+		// 1. 기초데이터
+				// 파라미터 : page 
+				Optional<String> opt = Optional.ofNullable(request.getParameter("page")); 
+				int page = Integer.parseInt(opt.orElse("1"));
+
+				// 유저 : email
+				HttpSession session = request.getSession();
+				UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+				String email = loginUser.getEmail();
+				String userNickName = loginUser.getArtist();
+				
+				// map
+				Map<String, Object> map = new HashMap<>();
+				map.put("email", email);
+						
+				// 2. 유저의 전체 좋아요 수 조회
+				int userMusicManyCnt = musicMapper.selectUserMusicManyCnt(map);
+				
+				// 3. 페이징 처리
+				pageUtil.setPageUtil(page, 10, userMusicManyCnt);
+
+				map.put("begin", pageUtil.getBegin() - 1);
+				map.put("recordPerPage", pageUtil.getRecordPerPage());
+				
+				// 4. 최근들은 목록 조회
+			    List<MusicDTO> musicManyList = musicMapper.selectUserMusicManyList(map);
+			    //System.out.println(musicLastlyList);
+				
+			    Map<String, Object> result = new HashMap<>();
+				result.put("userMusicManyCnt", userMusicManyCnt);
+				result.put("musicManyList", musicManyList);
+				result.put("pageUtil", pageUtil);
+				result.put("beginNo", pageUtil.getBegin());
+				result.put("userNickName", userNickName);
+			    
+				return result;
+	}
+	
+	// 3. 유저_많이들은 음악 전체삭제
+	
+	@Override
+	public Map<String, Object> deleteALLUserMusicLog(HttpServletRequest request) {
+		
+		
+		// 1. 기초데이터
+		
+
+			// 유저 : email
+			HttpSession session = request.getSession();
+			UserDTO user = (UserDTO) session.getAttribute("loginUser");
+			String email = user.getEmail();
+			
+			// map
+			Map<String, Object> map = new HashMap<>();
+			map.put("email", email);
+
+			
+			// 2. 좋아요 목록에서 삭제
+			int deleteAllResult = musicMapper.deleteAllMusicLog(map);
+
+			Map<String, Object> result = new HashMap<>();
+			result.put("result", 1);
+			
+			return result;
+
+	
+		
+	}
+
 	
 	
 	

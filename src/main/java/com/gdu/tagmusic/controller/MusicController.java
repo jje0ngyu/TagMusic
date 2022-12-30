@@ -207,7 +207,52 @@ public class MusicController {
 		public Map<String, Object> toggleMusicLike(HttpServletRequest request) {	
 			return musicService.toggleMusicLike(request);
 		}
+		
+	// 3. 최근들은
+		
+	// 구현 : 최근들은 페이지 이동
+	@GetMapping("/music/move/musicLastly")
+	public String musicLastly(HttpServletRequest request, Model model) {
+		return "/musicUserService/musicLastly";
+	}
+			
+	// 구현 : 최근들은 목록 조회
+	@ResponseBody
+	@GetMapping(value="/music/user/musicLastlyList", produces="application/json")
+	public Map<String, Object> musicLastly(HttpServletRequest request) {
+		return musicService.selectMusicLastlyList(request);
+	}
+		
+	// 구현 : 최근들은 삭제
+	@ResponseBody
+	@PostMapping(value="/music/user/deleteMusicLog", produces="application/json")
+	public Map<String, Object> deleteMusicLog(HttpServletRequest request) {	
+		return musicService.deleteUserMusicLog(request);
+	}
+		
+	// 4. 많이들은
+	// 구현 : 많이들은 페이지 이동
+	@GetMapping("/music/move/musicMany")
+	public String musicMany(HttpServletRequest request, Model model) {
+		return "/musicUserService/musicMany";
+	}
+			
+	// 구현 : 많이들은 목록 조회
+	@ResponseBody
+	@GetMapping(value="/music/user/musicManyList", produces="application/json")
+	public Map<String, Object> musicMany(HttpServletRequest request) {
+		return musicService.selectMusicManyList(request);
+	}
+
 	
+	// 구현 : 많이들은 전체 삭제
+	@ResponseBody
+	@PostMapping(value="/music/user/deleteAllUserMusicLog", produces="application/json")
+	public Map<String, Object> deleteAllUserMusicLog(HttpServletRequest request) {	
+		return musicService.deleteALLUserMusicLog(request);
+	}
+
+
 	
 	
 	

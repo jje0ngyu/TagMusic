@@ -508,10 +508,17 @@
 
 #modal .modal_content {
   width:450px;
-  margin:50px auto;
-  padding:20px 10px;
-  background:#fff;
+  margin:30px auto;
+ 
+  background-color:#474545;
   border:2px solid #666;
+  color: #efefef;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: center;
+  padding: 30px;
+  
+  
 }
 
 #modal .modal_layer {

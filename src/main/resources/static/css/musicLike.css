@@ -40,7 +40,7 @@
 
 .musicLike_header {
 	
-	
+		display: flex;
 		background-color: #20325A;
 		border-radius: 10px;
 		height: 120px;
@@ -55,6 +55,16 @@
 
 }
 
+.musicLike_header_left {
+	
+	margin-right: 570px;
+	
+}
+
+.musicLike_header_right {
+	
+	padding-top: 45px;
+}
 .musicLike_body {
 	
 	background-color: #efefef;
@@ -62,7 +72,7 @@
 	box-shadow: 0 1px 10px 0 #808080;
 	font-size: 20px;
 	font-weight: 800;
-	color: 212121;
+	color: #212121;
 	padding: 20px;
 	border-radius: 10px;
 	
@@ -141,7 +151,7 @@ thead {
 }
 
 /* * 게시판 버튼 표준양식 */
-.musicLike_delete {
+.musicLike_delete, .musicLastly_delete, .musicMany_delete  {
 	
 	
 	border: 1px solid #888888;
@@ -157,7 +167,30 @@ thead {
 	
 }
 
-.musicLike_delete:hover {
+.musicLike_deleteAll, .musicLastly_deleteAll, .musicMany_deleteAll {
+	
+	border: 1px solid #888888;
+	background-color: #dddddd;
+	width: 120px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	display: inline-block;
+	border-radius: 5px;
+	color: #323232;
+	font-size: 20px;
+	
+}
+
+.musicLike_deleteAll:hover, .musicLastly_deleteAll:hover, .musicMany_deleteAll:hover{
+	
+	background-color: #ffd440;
+	color: #323232;
+	cursor: pointer;
+	
+} 
+
+.musicLike_delete:hover, .musicLastly_delete:hover, .musicMany_delete:hover {
 	
 	background-color: #20325A;
 	color: #fdfdfd;

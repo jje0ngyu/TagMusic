@@ -20,7 +20,7 @@
 		fn_modalClose();				// 기능 : 모달창 종료
 		
 		fn_checkMusicLike();			// 구현 : 내가 좋아요를 누른 곡인지 여부 조회
-		//fn_musicLikeCnt();				// 구현 : 전체 좋아요 개수 조회
+		fn_musicLikeCnt();				// 구현 : 전체 좋아요 개수 조회
 		fn_clickMusicLike() 			// 구현 : 유저_좋아요 선택/해제
 		
 	});
@@ -281,7 +281,7 @@
     					.append('<img src="/images/like.png" width="30px">');
     					
     				}
-    				//fn_musicLikeCnt()
+    				fn_musicLikeCnt()
 
     			}
     		});
@@ -290,11 +290,13 @@
 
     		
     		 
-  /*  	function fn_musicLikeCnt() {	// 기능 : 좋아요 개수 표시하기
+    	function fn_musicLikeCnt() {	// 기능 : 좋아요 개수 표시하기
    		
    		$.each( $('.musicBoard_musicLike'), function(i, musicBoard) {
    			
 	   		musicNo = $(musicBoard).data('musicno');
+	   		
+	   		var cnt = $(musicBoard).next().next();
 	   		
 	   		$.ajax({
 				url: '/music/user/checkMusicLikeCnt',
@@ -303,13 +305,12 @@
 				dataType: 'json',
 				success: function(resData){
 				
-
-					$('.musicBoard_musicLikeCnt').empty();
-					$('.musicBoard_musicLikeCnt').text(resData.musicLikeCnt);
+					$(cnt).empty();	// 초기화
+					$(cnt).text(resData.musicLikeCnt);
 				}
 			});   		
    		}); 
-    } */
+    } 
     		 
     function fn_clickMusicLike() { // 구현 : 유저_좋아요 선택/해제
     	
@@ -355,7 +356,7 @@
 						.append('<img src="/images/dislike.png" width="30px">');
 						
 					}
-					//fn_musicLikeCnt();
+					fn_musicLikeCnt();
 					fn_checkMusicLike();
 					
 					
@@ -510,6 +511,7 @@
 									
 								</td>
 								<td>
+									<i class="fa-solid fa-arrow-down-to-line"></i>
 									<input type="button" id="modal_close" value="다운받기">
 								</td>
 							</tr>

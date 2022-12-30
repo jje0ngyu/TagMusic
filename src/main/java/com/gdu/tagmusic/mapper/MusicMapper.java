@@ -111,6 +111,26 @@ public interface MusicMapper {
 	// 7) 해당 게시글 = 유저 본인 여부확인
 	public String checkUserMusicWriter(int musicNo);
 	
+	// 3. 최근들은
+	// 1) 최근들은 좋아요 수
+	public int selectUserMusicLastlyCnt(Map<String, Object> map);
+	
+	// 2) 최근들은 목록
+	public List<MusicDTO> selectUserMusicLastlyList(Map<String, Object> map);
+	
+	// 4. 많이들은
+	// 1) 최근들은 좋아요 수
+	public int selectUserMusicManyCnt(Map<String, Object> map);
+	
+	// 2) 최근들은 목록
+	public List<MusicDTO> selectUserMusicManyList(Map<String, Object> map);
+	
+	// 3) 많이들은, 최근들은 삭제
+	public int deleteMusicLog(Map<String, Object> map);
+	
+	// 4) 많이들은, 최근들은 전체삭제
+	public int deleteAllMusicLog(Map<String, Object> map);
+
 
 	
 	/*
