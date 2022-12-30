@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gdu.tagmusic.domain.UserDTO;
+import com.gdu.tagmusic.mapper.AlarmMapper;
 import com.gdu.tagmusic.mapper.PaymentMapper;
 import com.gdu.tagmusic.util.PageUtil;
 
@@ -23,6 +24,9 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired
 	private PaymentMapper paymentMapper;
+	
+	@Autowired
+	private AlarmMapper alarmMapper;
 
 	@Autowired
 	private PageUtil pageUtil;
@@ -60,7 +64,16 @@ public class PaymentServiceImpl implements PaymentService {
 			int passResult = paymentMapper.insertPayment(map);
 			int logResult = paymentMapper.insertPaymentLog(map);
 			if (passResult > 0 && logResult > 0) {
-				result.put("result", "success");
+				//성공시 알림생성
+				//map 만들어서 매퍼에 전달. content라는 맵에다 "이용권을 구매하셨습니다.
+				map.put("title", "결제");
+				map.put("content", "<a href='/user/mypage'><b>이용권</b>을 구매하셨습니다!</a>");
+				int alarm = alarmMapper.insertAlarm(map);
+				if(alarm == 1) {
+					result.put("result", "success");
+				} else {
+					result.put("result", "false");
+				}
 			} else {
 				result.put("result", "false");
 			}
@@ -68,7 +81,16 @@ public class PaymentServiceImpl implements PaymentService {
 			int extendResult = paymentMapper.updatePaymentExtend(map);
 			int logResult = paymentMapper.insertPaymentLog(map);
 			if (extendResult > 0 && logResult > 0) {
-				result.put("result", "extension");
+				//성공시 알림생성
+				//map 만들어서 매퍼에 전달. content라는 맵에다 "이용권을 구매하셨습니다.
+				map.put("title", "결제");
+				map.put("content", "<a href='/user/mypage'><b>이용권</b>기간을 연장했습니다.!</a>");
+				int alarm = alarmMapper.insertAlarm(map);
+				if(alarm == 1) {
+					result.put("result", "extension");
+				} else {
+					result.put("result", "false");
+				}
 			} else {
 				result.put("result", "false");
 			}
@@ -80,8 +102,10 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public Map<String, Object> presentPass(HttpServletRequest request) {
 
+
 		Map<String, Object> map = new HashMap<>();
-		String email = request.getParameter("email");
+		//세션 FROMemail이메일 보낸사람의 이메일
+		String email = request.getParameter("email");//선물받는사람의 이메일
 		String price = request.getParameter("price");
 		String passNo = request.getParameter("passNo");
 		String payPg = request.getParameter("payPg");
@@ -104,6 +128,8 @@ public class PaymentServiceImpl implements PaymentService {
 			int passResult = paymentMapper.insertPayment(map);
 			int logResult = paymentMapper.insertPaymentGiftLog(map);
 			if (passResult > 0 && logResult > 0) {
+				//성공시 알림생성
+				//map 만들어서 매퍼에 전달. content라는 맵에다 "FROMemail님이 이용권을 선물하셨습니다."
 				result.put("result", 1);
 			} else {
 				result.put("result", 0);
@@ -257,6 +283,15 @@ public class PaymentServiceImpl implements PaymentService {
 			map.put("result", "null");
 			// 쿠폰 없음
 		}
+		return map;
+	}
+	
+	@Override
+	public Map<String, Object> alarmList(HttpServletRequest request) {
+		String email = request.getParameter("email");
+		Map<String, Object> map = new HashMap<>();
+		map.put("alarmList", alarmMapper.selectIsAlarmByEmail(email));
+		
 		return map;
 	}
 

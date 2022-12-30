@@ -31,6 +31,7 @@ import com.gdu.tagmusic.domain.ProfileImageDTO;
 import com.gdu.tagmusic.domain.RetireUserDTO;
 import com.gdu.tagmusic.domain.SleepUserDTO;
 import com.gdu.tagmusic.domain.UserDTO;
+import com.gdu.tagmusic.mapper.AlarmMapper;
 import com.gdu.tagmusic.mapper.UserMapper;
 import com.gdu.tagmusic.util.JavaMailUtil;
 import com.gdu.tagmusic.util.MyFileUtil;
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService {
 	private SecurityUtil securityUtil;
 	private JavaMailUtil javaMailUtil;
 	private MyFileUtil myFileUtil;
+	private AlarmMapper alarmMapper;
 	
 	// 로그인
 	@Override
@@ -829,11 +831,22 @@ public class UserServiceImpl implements UserService {
 	// 3개월 - 비밀번호 수정
 	@Override
 	public void pwHandle() {
-		// 3개월 전 비밀번호 수정 체크
-		List<UserDTO> user = userMapper.selectNoticePassword();
+	
+		Map<String, Object> map = new HashMap<>();
+		List<UserDTO> user = userMapper.selectNoticePassword();//3개월이 지난 유저들
+		String txt = "";
+		txt += "<a href='user/mypage/info'>비밀번호를 변경한지 3개월이 지났습니다.</a>";	
 		for(int i=0; i < user.size(); i++) {
-			
+			map.put("title", "보안");
+			map.put("email", user.get(i).getEmail());
+			map.put("content",txt);
+			alarmMapper.insertAlarm(map);
 		}
+		
+	
+
+		
+		
 	}
 	
 	// 휴면 - 로그인 시, 휴면 체크

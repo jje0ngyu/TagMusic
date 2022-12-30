@@ -91,6 +91,7 @@ ul, ol {
 	position: relative;
 	margin: auto;
 	width: 100%;
+	max-width: 940px;
 }
 
 /* 이용권 종류 box */
@@ -110,6 +111,7 @@ ul, ol {
 .pass_box_left {
 	display: flex;
 	align-items: center;
+	width:100%;
 }
 .pass_name {
 	position: relative;
@@ -134,10 +136,12 @@ ul, ol {
 	flex-direction: column;
 	justify-content: left;
 	padding-left: 40px;
+	width:100%;
 }
 .pass_msg {
 	font-size: 24px;
 	color: darkgray;
+	width:100%;
 }
 
 .pass_price {
@@ -167,8 +171,9 @@ ul, ol {
 .coupon_input {
 	border: 0;
 	outline: none;
-	width: 400px;
+	/* width: 220%; */
 	height: 50px;
+	width:100%;
 	background-color: #fdfdfd;
 	font-weight: 600;
 	font-size: 21px;
