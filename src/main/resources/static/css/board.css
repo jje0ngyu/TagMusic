@@ -89,7 +89,7 @@ input[type=reset], button {
 
 /* 중간 (작성, 목록) */
 .board_middle_controller {
-	margin-top: 50px;
+	margin-top: 30px;
 }
 .detail_title {
 	display: flex;

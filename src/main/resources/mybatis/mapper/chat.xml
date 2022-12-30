@@ -89,12 +89,13 @@
 
 
 
-	<select id="getChatList" parameterType="map" resultType="ChatDTO">
-	
-		SELECT CHAT_NO, USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER
-          FROM CHAT_ADMIN
-         WHERE GROUP_NO = #{groupNo}
-		   AND DEPTH = 1
+	<select id="getChatList" parameterType="map" resultMap="ChatMap">
+		   
+		 SELECT U.PROFILE_IMAGE, U.NAME, C.CHAT_NO, C.USER_NO, C.CHAT_DATE, C.IP, C.CONTENT, C.STATE, C.DEPTH, C.GROUP_NO, C.GROUP_ORDER
+		   FROM CHAT_ADMIN C INNER JOIN USERS U
+			 ON C.USER_NO = U.USER_NO
+	      WHERE C.GROUP_NO = #{groupNo}
+		    AND DEPTH = 1
 	
 	</select>
 	
