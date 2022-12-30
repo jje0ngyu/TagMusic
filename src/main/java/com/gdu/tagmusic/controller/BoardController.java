@@ -68,8 +68,9 @@ public class BoardController {
 	}
 	
 	@PostMapping("/board/modify")
-	public void modify(HttpServletRequest request, HttpServletResponse response) {
+	public String modify(HttpServletRequest request, HttpServletResponse response) {
 		boardService.modifyBoard(request, response);
+		return "board/detail";
 	}
 	
 	@PostMapping("/board/remove")

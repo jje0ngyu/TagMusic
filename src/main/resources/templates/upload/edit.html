@@ -10,6 +10,16 @@
 	$(function(){
 		fn_fileCheck();
 		fn_removeAttach();
+		
+		$('#btn_submit').click(function(event){
+			if($('#title').val() == ''){
+				alert('제목은 필수입니다.');
+				event.preventDefault();
+				return;
+			} else {
+				$('#frm_edit').submit();
+			}
+		})
 	});
 		
 	function fn_fileCheck(){
@@ -36,16 +46,6 @@
 		});
 		
 	}
-		
-		$('#frm_edit').submit(function(event){
-			if($('#title').val() == ''){
-				alert('제목은 필수입니다.');
-				event.preventDefault();
-				return;
-				
-			}
-		});
-	
 	
 	function fn_removeAttach(){
 		
@@ -70,64 +70,42 @@
 		<!-- 상단 (tap) -->
 		<div class="board_top_controller">
 			<div class="board_tab_controller">
-				<div class="board_tab" id="tabHome">홈</div>
 				<div class="board_tab" id="tabNotice">공지사항</div>
 				<div class="board_tab tab_click" id="tabFAQ">자주 하는 질문</div>
 				<div class="board_tab" id="tabChat">1:1 문의하기</div>
 			</div>
 		</div>
 				
-
-	   <div>
-	
-	  <form id="frm_edit" th:action="@{/upload/modify}" method="post" enctype="multipart/form-data">
-		  <table class="table table-striped">
-		   <input type="hidden" name="uploadNo" th:value="${upload.uploadNo}">
-			<thead>
-			  <tr>
-			    <td style="background-color:rgb(192, 192, 192)">
-				 <h2><label for="title" style="background-color:rgb(192, 192, 192)">제목</label></h2>	
-			    </td>	
-			    <td style="height:95%;width:95%; background-color:rgb(192, 192, 192)">	
-				 <input type="text" id="title" name="title" th:value="${upload.title}" required="required" style="height: 45px;width:100%;border: 0; background-color:rgb(255, 255, 255)">
-			   </td>
-			</thead>
+		<form id="frm_edit" th:action="@{/upload/modify}" method="post" enctype="multipart/form-data">
+			<!-- 중간 (내용) -->
+			<div class="board_middle_controller">
+				<!--파라미터 전달 값-->
+			    <input type="hidden" name="uploadNo" th:value="${upload.uploadNo}">
+				<!--게시글 제목 입력-->
+			    <div class="board_title_box">
+					<label for="title"><div class="board_txt_title">제목</div></label>
+					<input type="text" id="title" name="title" th:value="${upload.title}" required="required" class="board_input_title">
+				</div>
+			   
+			    <!--게시글 내용 입력-->
+			    <div class="board_content_box">
+					<textarea name="content" id="content" class="input_content" th:text="${upload.Content}"></textarea>				
+				</div>
+			</div> <!--board_middle_controller-->
 			
-			<tbody>
-			  <tr>
-			   <td style="background-color:rgb(192, 192, 192)">  
-				<h3><label for="title" style="background-color:rgb(192, 192, 192)">내용</label></h3>	
-			   </td>
-			   <td style="height:100%;width:100%;">	
-				<textarea name="content" id="content" th:text="${upload.Content}" style="height:100%;width:100%;border: 0; background-color:rgb(255, 255, 255)"></textarea>				
-			   </td>
-			  </tr> 
-			</tbody>
-			
-			<tfoot>
-			 <tr>
-			  <td>
-			     <input type="file" id="files" name="files" multiple="multiple">
-				  <div id="file_list"></div>
-			  </td>	  
-			  <td style="text-align:right;">
-				<input type="button" value="목록" onclick="location.href='/upload/list'">
-				<button>편집완료</button>
-			  </td>
-			 </tr>  	
-			</tfoot>	
-		  </table>
+			<div class="board_middle_bottom_controller">
+				<div class="board_txt_title" style="width:auto; justify-content: left;">첨부삭제</div>
+				<div th:each="attach : ${attachList}">
+					<a class="lnk_remove_attach board_file" th:href="@{/upload/attach/remove(uploadNo=${upload.uploadNo},attachNo=${attach.attachNo})}" th:text="${attach.origin}"></a>
+				 </div>
+			</div> <!--board_middle_bottom_controller-->
 		</form>
 		
-		<hr>
-		
-		<div>
-			<h4>첨부삭제</h4>
-			 <tr th:each="attach : ${attachList}">
-			  <a class="lnk_remove_attach" th:href="@{/upload/attach/remove(uploadNo=${upload.uploadNo},attachNo=${attach.attachNo})}"><td th:text="${attach.origin}"></td></a>
-			 </tr>
-		</div>
-	</div>
+		<div class="board_bottom_controller">
+			<input type="button" value="목록" id="btn_list" class="btn" onclick="location.href='/upload/list'">
+			<input type="reset" value="입력초기화" id="reset" class="btn">
+			<input type="button" value="편집완료" id="btn_submit" class="btn">
+		</div> <!--board_bottom_controller-->
 	</div> <!--board_controller-->
 </body>
 </html>
