@@ -247,6 +247,10 @@ body {
 	font-weight: bold;
 	margin-bottom: 30px;
 }
+.current_info {
+	color: #bdc2ce;
+	padding: 5px 0;
+}
 
 /* myinfo - input 타입 모음 */
 #artist, #name, #originPw, #newPw, #reNewPw, #pw, #email ,#mobile {

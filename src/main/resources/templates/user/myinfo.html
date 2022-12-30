@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" th:href="@{/css/mypage.css}">
+<link rel="stylesheet" th:href="@{/css/user/mypage.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/user/myinfo.js}"></script>
 </head>
@@ -65,7 +65,10 @@
 							댓글, 좋아요 등<br/> 태그뮤직 서비스 이용 시 노출되는<br/> 닉네임입니다.
 						</div>
 						<div class="current_info">
-							현재 닉네임 : <span th:text="${session.loginUser.artist}"></span>
+							<div>
+								현재 닉네임
+							</div>
+							<div></div><span th:text="${session.loginUser.artist}"></span>
 						</div>
 						<div class="input_artist">
 							<input type="text" id="artist" name="artist" placeholder="닉네임 입력">
