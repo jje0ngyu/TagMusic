@@ -10,6 +10,10 @@
 	
 	}
 	
+	body {
+		
+		background-color: #fbfbfb;
+	}
 	
 	.playlist_container {
 
@@ -19,6 +23,18 @@
 	margin: 35px auto;
 	padding: 60px 270px;	
 	
+	
+	animation: fadein-container 2s;
+	}
+	
+	@keyframes fadein-container {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 	}
 	
 	.playlist {
@@ -34,7 +50,8 @@
 	.playlist_area {
 	
 	box-shadow: 0 3px 10px 0 #37486b;
-	}
+	
+}
 	
 	
 	.playlist_top {
@@ -43,10 +60,15 @@
 	font-size: 43px;
 	font-weight: 900;
 	margin-bottom: 20px;
+	
+	
+	
+	}
+	
+	.playlist_userName {
 	border-bottom: 2px solid #20325A;
-	box-shadow: 0px 10px 10px -20px #37486b;
-	
-	
+	box-shadow: 0px 10px 10px 0 -20px #37486b;
+		
 	}
 	
 	.playlist_header {
@@ -103,15 +125,17 @@
 	
 	
 	.playlist_body {
+		height: auto;
 		
 		background-color: #efefef;
 		box-shadow: 0 1px 10px 0 #808080;
-		height: 1200px;
+	
 		border-radius: 10px;
 		font-size: 20px;
 		font-weight: 800;
 		color: 212121;
 		padding: 20px;
+		
 	}
 	
 	.playlist_list {
@@ -122,19 +146,23 @@
 		padding: 20px 30px;
 		margin-bottom: 10px;
 		border-radius: 5px;
-		
+		transition-timing-function: ease;
+		-webkit-transition:width 2s, height 2s, background-color 2s, -webkit-transform 2s;
 	}
 	
+	
+	
+	
 	.playlist_list_click {
-		
 		
 		background-color: #EFEFEF;
 		height: 760px;
 		padding: 20px 30px;
 		margin-bottom: 15px;
 		border-radius: 5px;
-		
+		-webkit-transition:width 2s, height 2s, background-color 2s, -webkit-transform 2s;
 		box-shadow: 0 40px 40px 0 #ababcd;
+		transition-timing-function: ease;
 	}
 	
 	
@@ -142,6 +170,7 @@
 	.playlist_musicBoard {
 		
 		display: none;
+		
 	}
 	
 	.playlist_musicBoard_click {
@@ -289,6 +318,8 @@
 		
 	}
 	
+	
+	
 	.playlist_musicBoard {
 	
 	display: none;
@@ -296,6 +327,8 @@
 	}
 	
 	.playlist_table {
+		
+	animation: fadein 3s;
 	
   	background: radial-gradient(#efefef, #eeeeee);
 
@@ -311,6 +344,18 @@
     table-layout: fixed;
    
 	}
+	
+	@keyframes fadein {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		height: 100px;
+		opacity: 0;
+	}
+	to {
+		height: 400px;
+		opacity: 2;
+	}
+}
 	
 	tbody {
 		
@@ -345,6 +390,7 @@
 	}
 	
 	.playlist_tr:nth-of-type(1):hover {
+	
 	
 		background-color: #efefef;
 		color: #323232;
@@ -522,7 +568,6 @@
 	height: 40px;
 	
 }
-
 
 
 
