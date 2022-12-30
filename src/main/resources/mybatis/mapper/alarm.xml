@@ -8,7 +8,7 @@
 	
 	<!-- 해당 유저의 알람의 전체 목록 -->
 	<select id="selectIsAlarmByEmail" resultType="AlarmDTO" parameterType="String">
-		SELECT ALARM_NO, EMAIL, ALARM_STATUS, ALARM_CONTENT, ALARM_ARRIVAL_TIME
+		SELECT ALARM_NO, EMAIL, ALARM_STATUS, ALARM_CONTENT, ALARM_ARRIVAL_TIME, ALARM_TITLE
 		  FROM ALARM
 		 WHERE EMAIL = #{email}
 		 ORDER BY ALARM_NO DESC
@@ -16,9 +16,9 @@
 	
 	<insert id="insertAlarm" parameterType="Map">
 		INSERT INTO ALARM
-			(EMAIL, ALARM_STATUS, ALARM_CONTENT, ALARM_ARRIVAL_TIME)
+			(EMAIL, ALARM_STATUS, ALARM_CONTENT, ALARM_ARRIVAL_TIME, ALARM_TITLE)
 		VALUES
-			(#{email}, 1, #{content}, NOW())
+			(#{email}, 1, #{content}, NOW(), #{title})
 	</insert>
 	
 	

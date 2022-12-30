@@ -66,6 +66,7 @@ public class PaymentServiceImpl implements PaymentService {
 			if (passResult > 0 && logResult > 0) {
 				//성공시 알림생성
 				//map 만들어서 매퍼에 전달. content라는 맵에다 "이용권을 구매하셨습니다.
+				map.put("title", "결제");
 				map.put("content", "<a href='/user/mypage'><b>이용권</b>을 구매하셨습니다!</a>");
 				int alarm = alarmMapper.insertAlarm(map);
 				if(alarm == 1) {
@@ -82,6 +83,7 @@ public class PaymentServiceImpl implements PaymentService {
 			if (extendResult > 0 && logResult > 0) {
 				//성공시 알림생성
 				//map 만들어서 매퍼에 전달. content라는 맵에다 "이용권을 구매하셨습니다.
+				map.put("title", "결제");
 				map.put("content", "<a href='/user/mypage'><b>이용권</b>기간을 연장했습니다.!</a>");
 				int alarm = alarmMapper.insertAlarm(map);
 				if(alarm == 1) {

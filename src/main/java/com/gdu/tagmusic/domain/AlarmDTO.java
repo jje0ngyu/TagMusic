@@ -17,4 +17,5 @@ public class AlarmDTO {
 	private int alarmStatus; //알람을 확인했는지 0이면 확인 1이면 확인안함
 	private String alarmContent; //알람내용
 	private Date alarmArrivalTime; //알람 받은 시간
+	private String alarmTitle; //알람 종류
 }

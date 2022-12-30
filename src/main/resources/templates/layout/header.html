@@ -204,7 +204,7 @@ function fn_remainingDay(){
 							    			$.each(resData.alarmList, function(i, alarm){
 							    				txt += '<div class="alarm_content">' ;
 							    				txt += '<div class="alarm_info">';
-													txt += '<div class="alarm_gubun">쿠폰</div>';
+													txt += '<div class="alarm_gubun">'+alarm.alarmTitle+'</div>';
 														txt += '<div class="alarm_createDate">'+ moment(alarm.alarmArrivalTime).format('YYYY-MM-DD A h:mm') +'</div>';
 													txt += '</div>';
 												txt += '<div class="alarm_msg">' +alarm.alarmContent+ '</div>';
