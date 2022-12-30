@@ -102,9 +102,12 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public Map<String, Object> presentPass(HttpServletRequest request) {
 
-
+		
 		Map<String, Object> map = new HashMap<>();
 		//세션 FROMemail이메일 보낸사람의 이메일
+		HttpSession session = request.getSession();
+		String fromArtist = ((UserDTO) session.getAttribute("loginUser")).getArtist();
+		
 		String email = request.getParameter("email");//선물받는사람의 이메일
 		String price = request.getParameter("price");
 		String passNo = request.getParameter("passNo");
@@ -130,7 +133,15 @@ public class PaymentServiceImpl implements PaymentService {
 			if (passResult > 0 && logResult > 0) {
 				//성공시 알림생성
 				//map 만들어서 매퍼에 전달. content라는 맵에다 "FROMemail님이 이용권을 선물하셨습니다."
-				result.put("result", 1);
+				map.put("title", "선물");
+				map.put("content", "<a href='/user/mypage'><b>"+ fromArtist +"</b>님이 <b>이용권</b>을 선물하셨습니다!</a>");
+				int alarm = alarmMapper.insertAlarm(map);
+				
+				if(alarm == 1) {
+					result.put("result", 1);
+				} else {
+					result.put("result", 0);
+				}
 			} else {
 				result.put("result", 0);
 			}
@@ -138,7 +149,16 @@ public class PaymentServiceImpl implements PaymentService {
 			int extendResult = paymentMapper.updatePaymentExtend(map);
 			int logResult = paymentMapper.insertPaymentGiftLog(map);
 			if (extendResult > 0 && logResult > 0) {
-				result.put("result", 1);
+				//성공시 알림생성
+				//map 만들어서 매퍼에 전달. content라는 맵에다 "FROMemail님이 이용권을 선물하셨습니다."
+				map.put("title", "선물");
+				map.put("content", "<a href='/user/mypage'><b>"+ fromArtist +"</b>님이 <b>이용권</b>을 선물하셨습니다!</a>");
+				int alarm = alarmMapper.insertAlarm(map);
+				if(alarm == 1) {
+					result.put("result", 1);
+				} else {
+					result.put("result", 0);
+				}
 			} else {
 				result.put("result", 0);
 			}
@@ -177,7 +197,6 @@ public class PaymentServiceImpl implements PaymentService {
 		String email = request.getParameter("email");
 		result.put("email", email);
 		result.put("result", paymentMapper.selectRecipientByEmail(result));
-		System.out.println(result.get("result"));
 		return result;
 	}
 
@@ -292,6 +311,14 @@ public class PaymentServiceImpl implements PaymentService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("alarmList", alarmMapper.selectIsAlarmByEmail(email));
 		
+		return map;
+	}
+	
+	@Override
+	public Map<String, Object> alarmRemove(HttpServletRequest request) {
+		String email = request.getParameter("email");
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", alarmMapper.deleteAlarmByEmail(email));
 		return map;
 	}
 

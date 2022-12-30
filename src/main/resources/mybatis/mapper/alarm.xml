@@ -11,6 +11,7 @@
 		SELECT ALARM_NO, EMAIL, ALARM_STATUS, ALARM_CONTENT, ALARM_ARRIVAL_TIME, ALARM_TITLE
 		  FROM ALARM
 		 WHERE EMAIL = #{email}
+		   OR EMAIL = 'gongji@web.com'
 		 ORDER BY ALARM_NO DESC
 	</select>
 	
@@ -20,6 +21,12 @@
 		VALUES
 			(#{email}, 1, #{content}, NOW(), #{title})
 	</insert>
+	
+	<delete id="deleteAlarmByEmail" parameterType="String">
+		DELETE
+		  FROM ALARM
+		 WHERE EMAIL = #{email}
+	</delete>
 	
 	
 </mapper>

@@ -23,6 +23,12 @@ public class AlarmController {
 	public Map<String, Object> paymentResult(HttpServletRequest request){
 		return paymentService.alarmList(request);
 	}
+	
+	@ResponseBody
+	@PostMapping(value="/alarm/remove", produces="application/json; charset=UTF-8")
+	public Map<String, Object> alarmRemove(HttpServletRequest request){
+		return paymentService.alarmRemove(request);
+	}
 }
 
 
