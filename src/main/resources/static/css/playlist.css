@@ -39,7 +39,7 @@
 	
 	.playlist {
 		
-		
+		position: relative;
 		background-color: #fbfbfb;
  		margin: 15px auto;
 		width : 1300px;
