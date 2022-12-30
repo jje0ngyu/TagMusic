@@ -12,5 +12,6 @@ public interface AlarmMapper{
 	
 	public List<AlarmDTO> selectIsAlarmByEmail(String email);
 	public int insertAlarm(Map<String, Object> map);
+	public int deleteAlarmByEmail(String email);
 	
 }

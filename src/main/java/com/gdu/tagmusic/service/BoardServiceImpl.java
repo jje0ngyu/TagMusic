@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.tagmusic.domain.BoardDTO;
 import com.gdu.tagmusic.domain.SummernoteImageDTO;
+import com.gdu.tagmusic.mapper.AlarmMapper;
 import com.gdu.tagmusic.mapper.BoardMapper;
 import com.gdu.tagmusic.util.MyFileUtil;
 import com.gdu.tagmusic.util.PageUtil;
@@ -31,12 +32,14 @@ public class BoardServiceImpl implements BoardService {
 	private BoardMapper boardMapper;
 	private PageUtil pageUtil;
 	private MyFileUtil myFileUtil;
+	private AlarmMapper alarmMapper;
 	
 	@Autowired
-	public void set(BoardMapper boardMapper, PageUtil pageUtil, MyFileUtil myFileUtil) {
+	public void set(BoardMapper boardMapper, PageUtil pageUtil, MyFileUtil myFileUtil, AlarmMapper alarmMapper) {
 		this.boardMapper = boardMapper;
 		this.pageUtil = pageUtil;
 		this.myFileUtil = myFileUtil;
+		this.alarmMapper = alarmMapper;
 	}	
 	
 	@Override
@@ -131,15 +134,23 @@ public class BoardServiceImpl implements BoardService {
 	
 	try {
 		
+		
 		response.setContentType("text/html; charset=UTF-8");
 		PrintWriter out = response.getWriter();
 		
 		out.println("<script>");
 		if(result > 0) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("title", "공지");
+			map.put("email", "gongji@web.com");
 			
+			map.put("content", "<a href='/board/list'><b>공지사항</b>을 확인해주세요</a>");
+			int inserAlarm = alarmMapper.insertAlarm(map);
+			if(inserAlarm == 1) {
+				System.out.println("성공");
+			}
 			
 			String[] summernoteImageNames = request.getParameterValues("summernoteImageNames");
-			
 			
 			if(summernoteImageNames !=  null) {
 				for(String filesystem : summernoteImageNames) {

@@ -5,6 +5,7 @@
 <title th:text="${title}"></title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- layout CSS 외에 다른 CSS 넣지 말아주세요 ㅠㅠ -->
 <link rel="stylesheet" th:href="@{/css/layout.css}">
 <link rel="stylesheet" th:href="@{/css/alarm.css}">
@@ -182,6 +183,7 @@ function fn_remainingDay(){
 							moment.locale('ko');
 							$(document).ready(function(){
 								fn_alarm();
+								fn_alarmAllremove();	
 							});
 							function fn_alarm(){
 								$('.alarm_middle_controller').empty();
@@ -220,12 +222,24 @@ function fn_remainingDay(){
 							    	}
 							    });
 							}
-							
+							function fn_alarmAllremove(){
+								$('#btn_all_read').click(function(){
+									$.ajax({
+										type: 'post',
+								    	url: '/alarm/remove',
+								    	data: 'email=' + userEmail,
+								    	dataType: 'json',
+								    	success: function(resData){
+								    		fn_alarm();
+								    	}
+									});
+								});
+							}
 							
 							
 						</script>
 						<div class="alarm_top_controller">
-							<div id="btn_all_read">모두 읽음</div>
+							<div id="btn_all_read">알림 삭제</div>
 						</div>
 						<div class="alarm_middle_controller">
 							<!-- 알람들어가는곳 -->

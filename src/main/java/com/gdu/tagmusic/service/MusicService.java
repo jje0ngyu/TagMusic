@@ -77,6 +77,25 @@ public interface MusicService {
 	// 4. 좋아요 개수 조회
 	public Map<String, Object> checkMusicLikeCnt(HttpServletRequest request);
 	
+	// 5. 좋아요 선택/해제
+	public Map<String, Object> toggleMusicLike(HttpServletRequest request);
+
+	// # 최근들은
+	// 1) 최근들은 목록 조회
+	public Map<String, Object> selectMusicLastlyList(HttpServletRequest request);
+	
+	// 2) 최근들은, 많이들은 목록 삭제
+	public Map<String, Object> deleteUserMusicLog(HttpServletRequest request);
+
+	// # 많이들은
+	// 1) 많이들은 목록 조회
+	public Map<String, Object> selectMusicManyList(HttpServletRequest request);
+		
+	// 2) 최근들은, 많이들은 전체 삭제
+	public Map<String, Object> deleteALLUserMusicLog(HttpServletRequest request);
+	
+
+	
 
 	/*
 	 * // 1. 유저의 listNo 가져오기 public void selectUserPlaylist(HttpServletRequest
