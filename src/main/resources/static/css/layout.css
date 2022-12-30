@@ -14,7 +14,7 @@
 		text-decoration: none;
 	}
 	input[type=button] {
-		background-color: #bdc2ce;
+		background-color:#bdc2ce;
 		border: none;
 		border-radius: 30px;
 	}
@@ -256,10 +256,11 @@
 		padding: 20px 10px 30px;
 		border-radius: 10px;
 		width: 300px;
-		background-color: #474545;
+		background-color: #37486b;
 		text-align: center;
 		line-height: 30px;
-		color: #aaaaaa;
+		color: #bdc2ce;
+		box-shadow: 0px 1px 3px 0px #1f1f1f;
 	}
 	.profile_artist {
 		color: #fdfdfd;
@@ -273,23 +274,22 @@
 		height: 30px;
 		color: #1f1f1f;
 		padding: 0 10px;
+		background-color: #f8f9fa;
 	}
 	.profile_box  input[type=button]:hover {
 		box-shadow: 0 3px 10px -3px #1f1f1f;
 		color: #fdfdfd;
 	}
-	.profile_box  .btn_logout:hover {
+	
+	#account_manage:hover{
+		color: #1f1f1f;
+		background-color: #FFD654;
+	}
+	.profile_box  #btn_logout:hover {
+		color: #1f1f1f;
 		background-color: #FF5361;
 	}
 	
-	
-	/* 레이아웃(사이드) : 상단 로고 영역설정 */
-	.menu_logo_area {
-	width : 190px;
-	height : 100px;
-		
-		
-	}
 
 	
 	/* 전체영역 : 좌측 레이아웃 + 우측 컨텐츠 영역 */
@@ -303,15 +303,16 @@
 	- 좌측 레이아웃 설정을 통해 우측의 컨텐츠 영역과 분리하기위한 클래스
 	 */
 	.menu {
-	background-color: #B0B0B0;
-	width : 220px;
+	background-color : #fdfdfd;
+	width : 185px;
 	height : 1000px;
 	z-index: 1;
+	box-shadow: 0.05px 0px 4px 0 #37486b;
 	
 	/* 레이아웃 설정 */
 	position : fixed;
 	top : 0; right: 0; left: 0;
-	padding-left: 10px;
+	padding: 100px 0px 0px;
 	}
 	
 	
@@ -325,10 +326,9 @@
 	- 범위 : 홈, 플레이리스트, 좋아요, 많이들은 최근들은, 이용권, 고객센터 포함 
 	 */
 	.menu_body {
-	margin-bottom: 100px;
-	padding: 0 10px;
+	margin-bottom: 170px;
 	}
-	
+
 	
 	/* 레이아웃(사이드) : 각각 좌측 레이아웃의 기능들(- 홈, 플레이리스트, 좋아요, 많이들은 최근들은, 이용권, 고객센터) 
 	- 용도 : 각 기능들 간의 거리를 벌리기 위해 사용
@@ -336,20 +336,19 @@
 	
 	.body_menus {
 	margin : 10px 0;
-	
 	height: 50px;
 	line-height: 25px;
 	padding: 10px 5px;
-	border-bottom: 1px solid #888888;
-	
-	
+	/* border-bottom : 1px solid rgb(189, 189, 189); */
 	font-size: 16px;
 	font-weight: 600;
+	color: #474545;
+	transition: all 0.25s ease-in-out;
 	}
 	
 	.body_menus:hover {
-		
-	background-color: #bbbbbb;
+		box-shadow: 0 8px 18px rgba(0, 0, 0, 0.19), 0 4px 4px rgba(0, 0, 0, 0.23);
+	/* background-color: #bbbbbb; */
 		
 	}
 	
@@ -362,8 +361,24 @@
 	.body_menus:nth-of-type(5) {
 	
 	
-	margin-bottom: 70px;
+	margin-bottom: 50px;
 	}
+	
+	/* 정은지 추가 
+		
+		사이드바영역의 이모티콘과 각 옆의 글씨 사이를 벌리는 css 속성
+	 */
+	 
+	 
+	.menu_body img{
+		margin:0px 20px;
+		position: relative;
+		top : 2px;
+	}
+	
+	
+	
+	
 	
 	
 	/* 내용(최상위) : 레이아웃이 아닌 모든 영역 

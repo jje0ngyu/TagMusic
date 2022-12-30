@@ -15,17 +15,17 @@
 			<div id="mypageHome" class="text_box text_box_click">
 				<span class="mypageNav_text">내 정보 홈</span>
 			</div>
-			<div class="text_box">
-				<span class="mypageNav_text">로그인 및 보안</span>
-			</div>
 			<div id="info" class="text_box">
 				<span class="mypageNav_text">개인정보 관리</span>
+			</div>
+			<div id="addMusic" class="text_box">
+				<span class="mypageNav_text">음원 등록</span>
 			</div>
 			<div id="paymentHistory" class="text_box">
 				<span class="mypageNav_text">결제이력</span>
 			</div>
-			<div class="text_box">
-				<span class="mypageNav_text">내 글 관리</span>
+			<div id="chat" class="text_box">
+				<span class="mypageNav_text">1:1문의</span>
 			</div>
 			<div class="text_box logout_box">
 				<span class="mypageNav_text">로그아웃</span>
@@ -34,6 +34,7 @@
 		<form th:action="@{/payment/history}" method="post" id="submit_history">
            <input type="hidden" name="userName" th:value="${session.loginUser.name}">
         </form>
+        
 		<script>
 			// 내 정보 홈
 			$('#mypageHome').click(function(){
@@ -43,16 +44,22 @@
 			$('#info').click(function(){
 				location.href="/user/mypage/info";
 			});
+			// 음원 등록
+			$('#addMusic').click(function(){
+				location.href="/tune/write";
+			});
 			// 결제이력
 			$('#paymentHistory').click(function(){
 				$('#submit_history').submit();
 			});
+			// 1:1 문의
+			$('#chat').click(function() {
+				location.href="/customerService/chat";
+			})
 			// 로그아웃
 			$('.logout_box').click(function() {
 				location.href="/user/logout";
 			})
-		
-			
 		</script>
 	</nav>
 </body>

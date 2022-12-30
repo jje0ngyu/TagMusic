@@ -31,6 +31,7 @@ import com.gdu.tagmusic.domain.ProfileImageDTO;
 import com.gdu.tagmusic.domain.RetireUserDTO;
 import com.gdu.tagmusic.domain.SleepUserDTO;
 import com.gdu.tagmusic.domain.UserDTO;
+import com.gdu.tagmusic.mapper.AlarmMapper;
 import com.gdu.tagmusic.mapper.UserMapper;
 import com.gdu.tagmusic.util.JavaMailUtil;
 import com.gdu.tagmusic.util.MyFileUtil;
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService {
 	private SecurityUtil securityUtil;
 	private JavaMailUtil javaMailUtil;
 	private MyFileUtil myFileUtil;
+	private AlarmMapper alarmMapper;
 	
 	// 로그인
 	@Override
@@ -738,19 +740,15 @@ public class UserServiceImpl implements UserService {
 		// 비밀번호 일치하는지 확인
 		String email = ((UserDTO)session.getAttribute("loginUser")).getEmail();
 		String pw = securityUtil.sha256(request.getParameter("originPw"));
-		System.out.println("email : " + email);
-		System.out.println("pw : " + pw);
 		
 		// 조회 조건으로 사용할 Map
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("email", email);
 		map.put("pw", pw);
 		UserDTO selectUser = userMapper.selectUserByMap(map);
-		System.out.println("selectUSer:" + selectUser);
+
 		Map<String, Object> result = new HashMap<>();
-		
 		result.put("result", selectUser != null);
-		System.out.println("result: " + result);
 		
 		// 회원정보수정
 		/*Map<String, Object> result = new HashMap<>();
@@ -763,11 +761,34 @@ public class UserServiceImpl implements UserService {
 	public void modifyPw(HttpServletRequest request, HttpServletResponse response) {
 		
 		// 사용자의 아이디
-		HttpSession session = request.getSession();
-		UserDTO User = (UserDTO)session.getAttribute("User");
-		int userNo = User.getUserNo();
 		
-		String pw = securityUtil.sha256(request.getParameter("pw"));
+		// 파라미터
+		String email = request.getParameter("email");
+		String pw = securityUtil.sha256(request.getParameter("newPw"));
+		
+		// DB로 보낼 UserDTO 만들기
+		UserDTO user = UserDTO.builder()
+				.email(email)
+				.pw(pw)
+				.build();
+		// 회원정보수정
+		int result = userMapper.updateUser(user);
+		// 응답
+		try {
+			
+			response.setContentType("text/html; charset=UTF-8");
+			if(result > 0) {
+				// 조회 조건으로 사용할 Map
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("email", email);
+				// session에 올라간 정보를 수정된 내용으로 업데이트
+				request.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 		
 		
 	}
@@ -810,11 +831,22 @@ public class UserServiceImpl implements UserService {
 	// 3개월 - 비밀번호 수정
 	@Override
 	public void pwHandle() {
-		// 3개월 전 비밀번호 수정 체크
-		List<UserDTO> user = userMapper.selectNoticePassword();
+	
+		Map<String, Object> map = new HashMap<>();
+		List<UserDTO> user = userMapper.selectNoticePassword();//3개월이 지난 유저들
+		String txt = "";
+		txt += "<a href='user/mypage/info'>비밀번호를 변경한지 3개월이 지났습니다.</a>";	
 		for(int i=0; i < user.size(); i++) {
-			
+			map.put("title", "보안");
+			map.put("email", user.get(i).getEmail());
+			map.put("content",txt);
+			alarmMapper.insertAlarm(map);
 		}
+		
+	
+
+		
+		
 	}
 	
 	// 휴면 - 로그인 시, 휴면 체크
@@ -920,7 +952,7 @@ public class UserServiceImpl implements UserService {
 		
 		// 비밀번호 일치하는지 확인
 		String email = ((UserDTO)session.getAttribute("loginUser")).getEmail();
-		String pw = securityUtil.sha256(request.getParameter("originPw"));
+		String pw = securityUtil.sha256(request.getParameter("pw"));
 		
 		// 조회 조건으로 사용할 Map
 		Map<String, Object> map = new HashMap<String, Object>();

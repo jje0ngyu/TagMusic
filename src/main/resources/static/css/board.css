@@ -39,8 +39,9 @@ input[type=reset], button {
 }
 
 .board_controller {
-	margin: 100px 0 0 230px;
+	margin: 80px 0 0 230px;
 	max-width: 100%;
+	min-width: 1000px;
 	padding: 50px 70px;
 }
 .board_title {
@@ -51,7 +52,7 @@ input[type=reset], button {
 .board_top_controller {
 	display: flex;
 	flex-direction: column;
-	margin-top: 50px;	
+	margin-top: 20px;	
 }
 .board_tab_controller {
 	display: flex;
@@ -66,7 +67,7 @@ input[type=reset], button {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 25%;
+	width: 33%;
 	height: 100%;
 	margin:0; padding: 0;
 	border-top: 2px solid #bdc2ce;
@@ -88,7 +89,7 @@ input[type=reset], button {
 
 /* 중간 (작성, 목록) */
 .board_middle_controller {
-	margin-top: 50px;
+	margin:30px 0;
 }
 .detail_title {
 	display: flex;
@@ -119,6 +120,7 @@ input[type=reset], button {
 #btn_write, #btn_id, .btn {
 	width: 100px;
 	height: 40px;
+	margin: 0 5px;
 }
 #btn_write:hover, #btn_id:hover {
 	background-color: lightcoral;
@@ -182,6 +184,41 @@ thead td:nth-child(4) {
 	width: 100%;
 }
 
+/* 중간 - write */
+.board_title_box {
+	display: flex;
+	align-items: center;
+	height: 50px;
+	border: 1px solid #bdc2ce;
+	margin-bottom: 10px;
+}
+.board_content_box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+board_middle_controller textarea {
+	width: 100%;
+}
+.input_content {
+	box-sizing: border-box;
+	width: 100%;
+	border: 1px solid #bdc2ce;
+	outline: none;
+	height: 500px;
+}
+
+.board_input_title {
+	height: 40px;
+	width:100%;
+	border:none;
+	outline: none;
+	font-size: 16px;
+	margin-left: 20px;
+}
+
+
 /* 중간 - 페이징(공통) */
 .paging {
 	display: inline-block;
@@ -189,6 +226,46 @@ thead td:nth-child(4) {
 	width: 30px;
 	height: 100px;
 	line-height: 100px;
+}
+.board_txt_title {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 18px;
+	font-weight: 600;
+	color: #20325A;
+	height: 100%;
+	width: 70px;
+	padding-left: 10px;
+}
+
+.board_middle_bottom_controller {
+	border: 1px solid #bdc2ce;
+	border-radius: 10px;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+.board_file {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	width: auto;
+	margin: 10px 20px;
+}
+.board_file:hover {
+	font-weight: 600;
+	color: #20325A;
+}
+.file_img {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50px; height: 50px;
+	margin-right: 10px;
+}
+.attach_img {
+	max-width: 50px;
+	max-height: 50px;
 }
 
 /* board_bottom_controller */
@@ -199,7 +276,8 @@ thead td:nth-child(4) {
 /* board/detail , upload/detail 순 */
 #btn_remove_board:hover, #btn_upload_remove:hover, #reset:hover {
 	background-color: indianred;
+	color: #fdfdfd;
 }
-#btn_edit_board:hover, #btn_upload_edit:hover, button:hover {
+#btn_submit:hover, #btn_edit_board:hover, #btn_upload_edit:hover, button:hover {
 	background-color: green;
 }

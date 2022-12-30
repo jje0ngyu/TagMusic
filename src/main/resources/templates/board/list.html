@@ -5,7 +5,7 @@
 <title>고객센터>태그뮤직</title>
 <link rel="stylesheet" th:href="@{/css/board.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<script>
+<script type="text/javascript" th:inline="javascript">
 	$(function(){
 		// 탭 (href)
 		$('#tabHome').click(function(){
@@ -24,8 +24,14 @@
 		// 새 글 작성
 		$('#btn_write').click(function(){
 			location.href = '/board/write';
-		});
-	})
+		});	
+		
+	});
+	
+	
+	
+	
+	
 </script>
 <body>
 	<div th:replace="~{layout/header.html::header_layout}"></div>
@@ -38,7 +44,6 @@
 		<!-- 상단 (tap) -->
 		<div class="board_top_controller">
 			<div class="board_tab_controller">
-				<div class="board_tab" id="tabHome">홈</div>
 				<div class="board_tab tab_click" id="tabNotice">공지사항</div>
 				<div class="board_tab" id="tabFAQ">자주 하는 질문</div>
 				<div class="board_tab" id="tabChat">1:1 문의하기</div>
@@ -48,10 +53,10 @@
 		<!-- 중간 (작성, 게시글) -->
 		<div class="board_middle_controller">
 			<!-- 관리자/일반회원 구분 -->
-			<div th:if="${session.loginUser.userNo != 1}" style="height: 40px;"></div>
-			<div th:if="${session.loginUser.userNo == 1}" class="middle_top" >
+			<div th:if="${session.loginUser != null && session.loginUser.userNo == 1}" class="middle_top" >
 				<input type="button" value="새 글 작성" id="btn_write">
 			</div>
+
 			
 			<table>
 				<thead>
@@ -68,7 +73,7 @@
 					<td th:text="${beginNo - vs.index}"></td>
 					<td><a th:href="@{/board/increse/hit(boardNo=${board.boardNo})}" th:text="${board.boardTitle}"></a></td>
 					<td th:text="${board.boardHit}"></td>
-					<td th:text="${board.boardCreateDate}"></td>
+					<td th:text="${#dates.format(board.boardCreateDate, 'yyyy-MM-dd')}"></td>
 				  </tr>
 				</tbody>
 				

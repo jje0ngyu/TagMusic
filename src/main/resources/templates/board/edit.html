@@ -12,7 +12,6 @@
 	
 	$(document).ready(function(){
 		$('#content').summernote({
-			width: 1250,
 			height: 600,
 			lang: 'ko-KR',
 			toolbar: [
@@ -93,38 +92,39 @@
 		<!-- 상단 (tap) -->
 		<div class="board_top_controller">
 			<div class="board_tab_controller">
-				<div class="board_tab" id="tabHome">홈</div>
 				<div class="board_tab tab_click" id="tabNotice">공지사항</div>
 				<div class="board_tab" id="tabFAQ">자주 하는 질문</div>
 				<div class="board_tab" id="tabChat">1:1 문의하기</div>
 			</div>
 		</div>
-	
-	<form id="frm_edit" th:object="${board}" th:action="@{/board/modify}" method="post">
-	
-		<input type="hidden" name="boardNo" th:field="*{boardNo}">
-	
-		<div>
-			<label for="title">제목</label>
-			<input type="text" name="title" id="title" th:value="${board.boardTitle}" style="height: 45px;width:100%;border: 0; background-color:#FFFFFF">
-		</div>
-	  
-		<div>
-			<label for="content">게시글 내용</label>
-			<textarea name="content" id="content" th:text="${board.boardContent}"></textarea>				
-		</div>
 		
-		<div>
+		<!-- 중간 (내용) -->
+		<div class="board_middle_controller">
+			<form id="frm_edit" th:object="${board}" th:action="@{/board/modify}" method="post">
+				<!--파라미터 전달 값-->
+				<input type="hidden" name="boardNo" th:field="*{boardNo}">
+	
+				<div class="board_title_box">
+					<label for="title"><div class="board_txt_title">제목</div></label>
+					<input type="text" name="title" id="title" th:value="${board.boardTitle}" class="board_input_title">
+				</div>
+				
+	  			<textarea name="content" id="content" th:text="${board.boardContent}"></textarea>				
+				<div id="summernote_image_list"></div>
+			</form>
+		</div> <!--board_middle_controller-->
+		
+		
+		<div class="board_bottom_controller">
 			<input type="button" value="목록" id="btn_list" class="btn">
 			<input type="reset" value="작성초기화" id="reset" class="btn">
-			<input type="button" id="btn_submit" class="btn" value="작성완료">
+			<input type="button" value="작성완료" id="btn_submit" class="btn">
 		</div>
 		<script>
 			$('#btn_submit').click(function(){
 				$('#frm_edit').submit();
 			});
 		</script>
-	</form>
 	</div> <!--board_controller-->
 
 </body>

@@ -113,4 +113,12 @@
 		 WHERE COMMENT_NO = #{commentNo}
 	</delete>
 	
+	
+	
+	<!-- 다음 트랙 (*음악 테이블 모든 음악 가져오기 : 수정필요) -->
+	<select id="selectMusic" resultType="MusicDTO">
+		SELECT MUSIC_NO, EMAIL, MUSIC_TITLE
+  		  FROM MUSIC
+	</select>
+	
 </mapper>

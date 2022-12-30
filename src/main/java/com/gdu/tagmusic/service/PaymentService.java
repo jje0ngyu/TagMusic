@@ -18,4 +18,8 @@ public interface PaymentService {
 	public Map<String, Object> isHavePass(HttpServletRequest request);
 	public Map<String, Object> couponUse(HttpServletRequest request);	
 	
+	//알람 서비스에 추가하기
+	public Map<String, Object> alarmList(HttpServletRequest request);
+	public Map<String, Object> alarmRemove(HttpServletRequest request);
+	
 }

@@ -109,12 +109,17 @@
 						개인정보를 확인하고관리합니다.</div>
 				</div>
 			</div>
-			<div class="mypage_small_box mypage_box">
+			<div class="mypage_small_box mypage_box" id="add_music">
 				<div class="flex_cloumn">
-					<div class="box_title">로그인 및 보안</div>
-					<div class="box_msg">로그인 시 비밀번호를 재설정하고<br/>
-						로그인 보안 기능을 사용합니다.</div>
+					<div class="box_title">음원 등록</div>
+					<div class="box_msg">태그뮤직에 음원을<br/>
+						등록합니다.</div>
 				</div>
+				<script>
+					$('#add_music').click(function(){
+						location.href='/tune/write';
+					});
+				</script>
 			</div>
 			<div id="mypaymentHistory" class="mypage_small_box mypage_box ">
 				<div class="flex_cloumn">
@@ -129,30 +134,33 @@
 		</div>
 		<!-- 마이페이지 - bottom -->
 		<div class="mypage_bottom_controller">
+			
 			<div class="mypage_small_box mypage_box">
 				<div class="flex_cloumn">
 					<div class="box_title">내가 쓴 글</div>
-					<div class="box_msg">태그뮤직에 작성한 게시글<br/>
-						내역을 확인하고관리합니다.</div>
+					<div class="box_msg">태그뮤직에 작성한<br/>
+						게시글 수</div>
 				</div>
 			</div>
 			<div class="mypage_small_box mypage_box">
 				<div class="flex_cloumn">
 					<div class="box_title">내가 쓴 댓글</div>
-					<div class="box_msg">태그뮤직에 작성한 댓글<br/>
-						내역을 확인하고관리합니다.</div>
+					<div class="box_msg">태그뮤직에 작성한<br/>
+						댓글 수</div>
 				</div>
 			</div>
-			<div class="mypage_small_box mypage_box">
+			<div class="mypage_small_box mypage_box" id="customerService">
 				<div class="flex_cloumn">
-					<div class="box_title">내가 문의한 글</div>
-					<div class="box_msg">태그뮤직에 문의한 내역을<br/>
-						확인하고관리합니다.</div>
+					<div class="box_title">1:1 문의하기</div>
+					<div class="box_msg">관리자에게 문의 가능한<br/>
+						채팅 페이지로 이동</div>
 				</div>
 			</div>
-		</div>
-		<div>
-			<a th:href="@{/tune/write}">음원 등록하기</a>
+			<script>
+				$('#customerService').click(function(){
+					location.href='/customerService/chat';
+				});
+			</script>
 		</div>
 	</div>
 	

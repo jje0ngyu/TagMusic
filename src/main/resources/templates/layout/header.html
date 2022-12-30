@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- layout CSS 외에 다른 CSS 넣지 말아주세요 ㅠㅠ -->
 <link rel="stylesheet" th:href="@{/css/layout.css}">
+<link rel="stylesheet" th:href="@{/css/alarm.css}">
 
 <style>
 	
@@ -166,7 +167,84 @@ function fn_remainingDay(){
 						$('.profile_image').click(function(){
 							$('.profile_box').toggleClass('blind');
 						});
-					</script>						
+					</script>		
+					<!-- 알림 아이콘 클릭시 팝업 창 -->				
+					<div class="header_alarm_controller blind">
+						<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
+						<script>
+							$('.bell_area').click(function(){
+								$('.header_alarm_controller').toggleClass('blind');
+								$('.profile_box').addClass('blind');
+							});
+							$('.profile_image').click(function(){
+								$('.header_alarm_controller').addClass('blind');
+							});
+							var userEmail = $('#userEmail').data('email');
+							moment.locale('ko');
+							$(document).ready(function(){
+								fn_alarm();
+								fn_alarmAllremove();	
+							});
+							function fn_alarm(){
+								$('.alarm_middle_controller').empty();
+								$.ajax({
+							    	type: 'post',
+							    	url: '/alarm/list',
+							    	data: 'email=' + userEmail,
+							    	dataType: 'json',
+							    	success: function(resData){
+							    		var txt = '';
+							    		console.log(resData.alarmList == 0);
+							    		if(resData.alarmList == 0){
+							    			txt += '<div class="alarm_content">' ;
+							    			txt += '<div class="alarm_info" style="justify-content: center;">';
+							    				txt += '<div class="alarm_msg">새로 도착한 알람이 없습니다.</div>';
+							    			txt += '</div>';
+							    			txt += '</div>'; 
+							    			$('.alarm_middle_controller').append(txt);
+							    		} else {
+							    			$.each(resData.alarmList, function(i, alarm){
+							    				txt += '<div class="alarm_content">' ;
+							    				txt += '<div class="alarm_info">';
+													txt += '<div class="alarm_gubun">'+alarm.alarmTitle+'</div>';
+														txt += '<div class="alarm_createDate">'+ moment(alarm.alarmArrivalTime).format('YYYY-MM-DD A h:mm') +'</div>';
+													txt += '</div>';
+												txt += '<div class="alarm_msg">' +alarm.alarmContent+ '</div>';
+											txt += '</div>'; 
+							    			
+											
+							    			});
+							    			$('.alarm_middle_controller').append(txt);
+							    		}
+							    		
+							    		
+							    		
+							    	}
+							    });
+							}
+							function fn_alarmAllremove(){
+								$('#btn_all_read').click(function(){
+									$.ajax({
+										type: 'post',
+								    	url: '/alarm/remove',
+								    	data: 'email=' + userEmail,
+								    	dataType: 'json',
+								    	success: function(resData){
+								    		fn_alarm();
+								    	}
+									});
+								});
+							}
+							
+							
+						</script>
+						<div class="alarm_top_controller">
+							<div id="btn_all_read">알림 삭제</div>
+						</div>
+						<div class="alarm_middle_controller">
+							<!-- 알람들어가는곳 -->
+						</div>
+					</div>
 					<!-- 프로필 사진 클릭시 팝업 창 -->
 					<div class="header_right_bottom_controller">
 						<div class="profile_box blind">
@@ -183,8 +261,8 @@ function fn_remainingDay(){
 								</div>
 							</div>					
 							<div>
-								<input type="button" value="TagMusic 계정관리" class="account_manage">
-								<input type="button" value="로그아웃" class="btn_logout">
+								<input type="button" value="TagMusic 계정관리" id="account_manage" class="account_manage">
+								<input type="button" value="로그아웃" id="btn_logout" class="btn_logout">
 							</div>
 							<script>
 								$('.account_manage').click(function(){
@@ -196,10 +274,10 @@ function fn_remainingDay(){
 							</script>
 							<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
 						</div>
-					</div>
-				</div>
-					
+					</div> <!-- 프로필 사진 창-->
+				</div> <!--로그인 유저 창-->
 			</div>
+			
 			<!--/*
 				<div class="header_left_menu"></div>
 				<div class="header_btn"></div>

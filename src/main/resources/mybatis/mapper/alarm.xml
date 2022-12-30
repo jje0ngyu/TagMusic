@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.tagmusic.mapper.AlarmMapper">
+	
+	<!-- 해당 유저의 알람의 전체 목록 -->
+	<select id="selectIsAlarmByEmail" resultType="AlarmDTO" parameterType="String">
+		SELECT ALARM_NO, EMAIL, ALARM_STATUS, ALARM_CONTENT, ALARM_ARRIVAL_TIME, ALARM_TITLE
+		  FROM ALARM
+		 WHERE EMAIL = #{email}
+		   OR EMAIL = 'gongji@web.com'
+		 ORDER BY ALARM_NO DESC
+	</select>
+	
+	<insert id="insertAlarm" parameterType="Map">
+		INSERT INTO ALARM
+			(EMAIL, ALARM_STATUS, ALARM_CONTENT, ALARM_ARRIVAL_TIME, ALARM_TITLE)
+		VALUES
+			(#{email}, 1, #{content}, NOW(), #{title})
+	</insert>
+	
+	<delete id="deleteAlarmByEmail" parameterType="String">
+		DELETE
+		  FROM ALARM
+		 WHERE EMAIL = #{email}
+	</delete>
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+

@@ -4,7 +4,12 @@
 <meta charset="UTF-8">
 <title>고객센터>태그뮤직</title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+<script th:src="@{/js/moment-with-locales.js}"></script>
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
+<style>
+
+
+</style>
 <script th:inline="javascript">
 
 /*<![CDATA[*/
@@ -12,6 +17,16 @@
 	$(function(){
 		fn_addChat();
 		fn_ChatList();
+		
+		$('#tabNotice').click(function(){
+			location.href='/board/list';
+		})
+		$('#tabFAQ').click(function(){
+			location.href='/upload/list';
+		})
+		$('#tabChat').click(function(){
+			location.href='/customerService/chat';
+		})
 	});
 	
 	
@@ -46,8 +61,9 @@
 			data : 'groupNo=[[${chatUserNo.groupNo}]]'+'&userNo=[[${chatUserNo.userNo}]]',
 			dataType : 'json',
 			success : function(resData){
-				$('#chat_box').empty();
+				console.log(resData.chatList);
 				
+				$('#chat_box').empty();
 				
 				var div1 = '';
 				
@@ -55,13 +71,10 @@
 					
 					div1 += '<div>';
 					div1 += /*[[${chatUserNo.userDTO.name}]]*/
-					div1 += '님 안녕하세요! <br> 궁금하신 사항이 있으신가요?'
+					div1 += '님 안녕하세요! <br> 궁금하신 사항이 있으신가요?';
 					div1 += '</div>';
 					$('#chat_box').append(div1);
 				}
-				
-				
-				
 				
 				$.each(resData.chatList, function(i, chat){
 					
@@ -71,29 +84,27 @@
 						
 						if(chat.userNo == 1){
 							// 관리자가 남긴 답변일 경우
-							div += '<div style="height:40px; width:500px; margin-left: 150px;">';
+							div += '<div class="chat_admin">';
 						}else{
-							
 							// 유저가 남긴 문의일 경우
-							div += '<div style="height:40px; width:500px; padding-left: 20px;">';
+							div += '<div class="chat_user">';
 							
 						}
 						
-						if(chat.state == 1){
-							div += '<div style="display:inline; text-align: center; line-height: 40px;">';
-							div += chat.content;
-							div += '</div>';
-						}
+						div += '<div><img src="'+chat.userDTO.profileImage+'" style="width:50px;"></img></div>';
+						
+						div += '<div>';
+						div += chat.content;
+						div += '</div>';
+						
 						
 						/// 나주에 추가 기능구현할 것 : 인접형제의 chatDate랑 시간 비교해서 같은 분이면 안나오게 하기
-						div += '<span style="font-size: 10px; color: silver;" id="chatDate">' + chat.chatDate + '</span>';
+						div += '<div>' + moment(chat.chatDate).format('YY.MM.DD hh:mm') + '</div>';
 						
 						// 로그인한 사용자만 볼 수 있도록 if 처리
 						div += '</div>';
 						$('#chat_box').append(div);
 						//$('#chat_box').append('<div style="border-bottom: 1px dotted gray;"></div>');
-						
-					
 				});
 			}
 		});
@@ -115,67 +126,46 @@
 <body>
 
 	<div th:replace="~{layout/header.html::header_layout}"></div>
-	<div class="session">
-		<div th:replace="~{layout/side.html::side_layout}"></div>
+	<div th:replace="~{layout/side.html::side_layout}"></div>
+	
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
-		<div class="container">
-		
-		
-		<div class="mainbox">
+		<div class="board_controller">
 
-			<div class="maintitle">태그뮤직 고객센터</div>
+			<div class="board_title">태그뮤직 고객센터</div>
 			
-			<div class="top_bar">
-			    <ul>
-			        <li>
-			            <a th:href="@{/customerService/home}">홈</a>
-			        </li>
-			        <li>
-			            <a th:href="@{/board/list}">공지사항</a>
-			        </li>
-			        <li>
-			            <a th:href="@{/upload/list}">자주 하는 질문</a>
-			        </li>
-			        <li class="click">
-			            <a th:href="@{/customerService/chat}">1:1문의하기</a>
-			        </li>
-			    </ul>
+			<div class="board_top_controller">
+				<div class="board_tab_controller">
+					<div class="board_tab" id="tabNotice">공지사항</div>
+					<div class="board_tab" id="tabFAQ">자주 하는 질문</div>
+					<div class="board_tab tab_click" id="tabChat">1:1 문의하기</div>
+				</div>
 			</div>
 			
-			
-
-			
-				
-				
-				
+		
 				
 			<div class="chat_box" id="chat_box">	
 			
-				
-				
-				
-			
 			
 			</div>
- 			<div>
+			
+			
+ 			<div class="add_chat">
 				<form id="frm_add_chat">
 					<!-- 원글의 DEPTH, GROUP_NO, GROUP_ORDER은 답글 남길 때 필요하니 히든으로 숨겨놔야함 -->
 					<input type="hidden" name="userNo" th:value="${chatUserNo.userNo}">
 					<input type="hidden" name="depth" th:value="${chatUserNo.depth}">
 					<input type="hidden" name="groupNo" th:value="${chatUserNo.groupNo}">
 					<input type="hidden" name="groupOrder" th:value="${chatUserNo.groupOrder}">
-					<div style="display : inline;">
+					<div class="plz_input_q">
+					
 						<input type="text" name="content" id="content" placeholder="문의내용" >
+						<input type="button" value="문의하기" id="btn_addChat" class="btn-3d blue">
 					</div>
-					<input type="button" value="문의하기" id="btn_addChat" style="display : inline;">
 				</form>
 			</div>
 			
 
 
-		</div>
-
-		</div>
 	</div>
 
 

@@ -1,51 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('태그뮤직>고객센터')}"></head>
+<head th:replace="~{layout/header::head('태그뮤직 > 고객센터')}"></head>
 <meta charset="UTF-8">
-<title>고객센터>태그뮤직</title>
+<title></title>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <link rel="stylesheet" th:href="@{/css/board.css}">
 <script>
 
 	$(function(){
 		fn_fileCheck();
-		});
-	
-	  function fn_fileCheck(){
 		
-	$('#files').change(function(){
-			
-		let maxSize = 1024 * 1024 * 1000;	
-		let files = this.files;
-			
-	$('#file_list').empty();
+		$('#btn_submit').click(function(){
+			$('#frm_add').submit();
+		});
+		
+		// 탭 (href)
+		$('#tabNotice').click(function(){
+			location.href='/board/list';
+		})
+		$('#tabFAQ').click(function(){
+			location.href='/upload/list';
+		})
+		$('#tabChat').click(function(){
+		location.href='/customerService/chat';
+		})
+		
+	});
 	
-	$.each(files, function(i, file){
-		if(file.size > maxSize){
-		 alert('1000MB 이하의 파일만 첨부할 수 있습니다.');
-	$(this).val(''); 
-	     return;   
-		}
+	function fn_fileCheck(){
+		
+		$('#files').change(function(){
 				
-	$('#file_list').append('<div>' + file.name + '</div>');
+			let maxSize = 1024 * 1024 * 1000;	
+			let files = this.files;
 				
-	    });
-	  });
+		$('#file_list').empty();
+		
+		$.each(files, function(i, file){
+			if(file.size > maxSize){
+			 alert('1000MB 이하의 파일만 첨부할 수 있습니다.');
+		$(this).val(''); 
+		     return;   
+			}
+					
+		$('#file_list').append('<div>' + file.name + '</div>');
+					
+		    });
+		  });
 	}
-	
-	// 탭 (href)
-	$('#tabHome').click(function(){
-		location.href='/customerService/home';
-	})
-	$('#tabNotice').click(function(){
-		location.href='/board/list';
-	})
-	$('#tabFAQ').click(function(){
-		location.href='/upload/list';
-	})
-	$('#tabChat').click(function(){
-	location.href='/customerService/chat';
-	})
 	
 </script>
 
@@ -54,75 +56,45 @@
 	<div th:replace="~{layout/header.html::header_layout}"></div>
 	<div th:replace="~{layout/side.html::side_layout}"></div>
 		
-	<div class="upload_controller">
+	<div class="board_controller">
 	
 		<!-- 제목 -->
-		<div class="mainbox">
-		<!-- 상단 (tap) -->		
-		<div class="maintitle">태그뮤직 고객센터</div>
-				
-		<div class="top_bar">
-				    <ul>
-				        <li>
-				            <a th:href="@{/customerService/home}">홈</a>
-				        </li>
-				       <li>
-				            <a th:href="@{/board/list}">공지사항</a>
-				        </li>
-				        <li class="click">
-				            <a th:href="@{/upload/list}">자주 하는 질문</a>
-				        </li>
-				        <li>
-				            <a th:href="@{/customerService/chat}">1:1문의하기</a>
-				        </li>
-				    </ul>
-					
-				</div>
-				
-		<h1>작성화면</h1>
+		<h1 class="board_title">자주 하는 질문 작성</h1>
+		<!-- 상단 (tap) -->
+		<div class="board_top_controller">
+			<div class="board_tab_controller">
+				<div class="board_tab" id="tabNotice">공지사항</div>
+				<div class="board_tab tab_click" id="tabFAQ">자주 하는 질문</div>
+				<div class="board_tab" id="tabChat">1:1 문의하기</div>
+			</div>
+		</div>
 		
-	<form id="frm_add" th:action="@{/upload/add}" method="post" enctype="multipart/form-data">
-		<table class="table table-striped">
-		 <thead>
-		   <tr>
-		    <td style="background-color:rgb(192, 192, 192)">
-				<h2><label for="title" style="background-color:rgb(192, 192, 192)">제목</label></h2>	
-		    </td>	
-			<td style="height:95%;width:95%; background-color:rgb(192, 192, 192)">	
-				<input type="text" id="title" name="title" required="required" style="height: 45px;width:100%;border: 0; background-color:rgb(255, 255, 255)">
-			 </td>
-		</thead>	
-		 
-		 <tbody>
-		   <tr>
-		   <td style="background-color:rgb(192, 192, 192)">
-				<h3><label for="title" style="background-color:rgb(192, 192, 192)">내용</label></h3>	
-		    </td>
-		    <td>	
-			  <textarea type="content" id="content" name="content" style="height:100%;width:100%;border: 0; background-color:rgb(255, 255, 255)"></textarea>
-		    </td>
-		   </tr>
-		 </tbody>     
-		 	
-		<tfoot>
-		  <tr>
-			<td>
-				<input type="file" id="files" name="files" multiple="multiple">
-				 <div id="file_list"></div> 
-			</td>	 
-			<td style="text-align:right;">
-				<input type="button" value="목록" onclick="location.href='/upload/list'"> 	
-				<input id="btn_submit" type="button" value="작성완료">
-		    </td>
-		 </tr>
-		</tfoot>
-	   </table>	   	
-	</form>
-	<script>
-		$('#btn_submit').click(function(){
-			$('#frm_add').submit();
-		});
-	</script>
+		<!-- 중간 (내용) -->
+		<div class="board_middle_controller">
+			<form id="frm_add" th:action="@{/upload/add}" method="post" enctype="multipart/form-data">
+				<!--게시글 제목 입력-->
+				<div class="board_title_box">
+					<label for="title"><div class="board_txt_title">제목</div></label>
+					<input type="text" name="title" id="title" class="board_input_title" required="required">
+				</div>
+					
+				<!--게시글 내용 입력-->
+				<div class="board_content_box">
+					<textarea type="content" id="content" name="content" class="input_content" placeholder="내용을 입력해주세요." ></textarea>
+					<div style="margin-top:10px	">
+						<input type="file" id="files" name="files" multiple="multiple">					
+					</div>
+					<div id="file_list"></div> 
+				</div>
+			</form>
+		</div> <!--board_middle_controller-->
+		
+		<div class="board_bottom_controller">
+			<input type="button" value="목록" id="btn_list" class="btn" onclick="location.href='/upload/list'">
+			<input type="reset" value="입력초기화" id="reset" class="btn">
+			<input type="button" value="작성완료" id="btn_submit" class="btn">
+		</div> <!--board_bottom_controller-->
 	
+	</div><!--board_controller-->
 </body>
 </html>
