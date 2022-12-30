@@ -132,6 +132,7 @@ html, body, div, input, a, form, textarea {
 	.tune_tab_content:hover {
 		background-color:#37486b;
 		color: #fdfdfd;
+		box-shadow: 1px 2px 5px #565758;
 		cursor: pointer;
 	}
 }

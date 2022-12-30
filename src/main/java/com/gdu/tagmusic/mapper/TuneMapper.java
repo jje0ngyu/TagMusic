@@ -25,6 +25,9 @@ public interface TuneMapper {
 	public List<MusicCommentDTO> selectCommentList(Map<String, Object> map);
 	public int insertComment(MusicCommentDTO comment);
 	public int deleteComment(int commentNo);
+	
+	// 음원 트랙
+	public List<MusicDTO> selectMusic();
 }
 	
 

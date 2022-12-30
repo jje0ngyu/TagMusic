@@ -3,7 +3,9 @@ $(function(){
 	fn_next_track_box();
 	fn_lyrics_box();
 	fn_comment_box();
-	fn_icon();
+	
+	// 음원트랙
+	fn_trackList();
 	
 	// 댓글
 	fn_commentCount();
@@ -42,26 +44,12 @@ function fn_comment_box(){
 	});
 }
 
+
+
 function fn_click_album_image(){
 	$('#albumImg').click(function(){
 		var imgSrc =  $(this).attr('src').val();
 		$('#music_iframe').attr('src', imgSrc);
-	});
-}
-
-var i = 0;	// 플레이 중인지 아닌지 확인하는 변슈
-function fn_icon() {
-	$('.tune_main_panel').on('click', function(){
-		if(i==0) {
-			$('i').attr('class', 'bi bi-pause-circle-fill');
-			$('i').css('animation-play-state','running');
-			i++;
-			location.href='/tune/iframe?musicNo=26';
-		} else {
-			$('i').attr('class', 'bi bi-play-circle-fill');
-			$('i').css('animation-play-state','running');
-			i--;
-		}
 	});
 }
 
