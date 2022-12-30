@@ -66,7 +66,7 @@
 				<div><spand th:text="|첨부파일 개수 : ${attachCnt}|"></spand></div>
 				<div class="flex0">
 					<div th:text="|조회수 : ${#numbers.formatInteger(upload.Hit,1,'COMMA')}|"></div>
-					<div class="create_date" th:text="|작성일 : ${#dates.format(upload.createDate, 'yyyy-MM-dd HH:mm:ss')}"></div>
+					<div class="create_date" th:text="|작성일 : ${#dates.format(upload.createDate, 'yyyy-MM-dd HH:mm')}"></div>
 				</div>
 			</div>
 			
