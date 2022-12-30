@@ -12,28 +12,27 @@
 	<div th:fragment="side_layout">
 		<div class="menu">
 			
-			<div class="menu_logo_area">
-				<a th:href="@{/}" class="menu_logo">로고</a>
-			</div>	
-			
 			<div class="menu_body">
 				<div class="body_menus">
-					<a class="menus_link" th:href="@{/}">홈</a>
+					<a class="menus_link" th:href="@{/}"><img alt="o" th:src="@{/images/musical-note.png}" style="width:15px;">홈</a>
 				</div>
 				<div class="body_menus">
-					<a th:href="@{/music/move/playlist}">플레이리스트</a>
+					<a th:href="@{/music/move/playlist}"><img alt="o" th:src="@{/images/add-list.png}" style="width:15px;">플레이리스트</a>
 				</div>
 				<div class="body_menus">
-					<a th:href="@{/music/move/musicLike}">좋아요</a>
+					<a th:href="@{/music/move/musicLike}"><img alt="o" th:src="@{/images/heart-solid.png}" style="width:15px;">좋아요</a>
 				</div>
-				<div class="body_menus">최근들은
-					
+				<div class="body_menus">
+					<a><img alt="o" th:src="@{/images/recent.png}" style="width:15px;">최근들은</a>
 				</div>
-				<div class="body_menus">많이들은
+				<div class="body_menus">
+					<a><img alt="o" th:src="@{/images/fire.png}" style="width:18px;">많이들은</a>
+				</div>
 				
-				</div>
-				<div class="body_menus"><a th:href="@{/payment/buy}">이용권</a></div>
-				<div class="body_menus"><a th:href="@{/board/list}">고객센터</a></div>
+				
+				<div class="body_menus"><img alt="o" th:src="@{/images/ticket.png}" style="width:18px;"><a th:href="@{/payment/buy}">이용권</a></div>
+				<div class="body_menus"><img alt="o" th:src="@{/images/headphones.png}" style="width:18px;"><a th:href="@{/board/list}">고객센터</a></div>
+				
 				
 			</div>		
 			<div class="footer_menu">발영역
