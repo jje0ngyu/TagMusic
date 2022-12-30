@@ -12,6 +12,7 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
+<link rel="stylesheet" th:href="@{/css/chatListForAdmin.css}">
 <script th:inline="javascript">
 
 	fn_detail();
@@ -105,19 +106,20 @@
 					
 						var div = '';
 						
-						div += '<div>';
-						
 						if(detail.depth == 1){
-							if(detail.userNo =! 1){
+							if(detail.userNo == 1){
+								div += '<div class="chat_admin_for_detail">';
+								div += '<div><img src="'+detail.userDTO.profileImage+'" style="width:50px;"></img></div>';
 								div += '<div>'+ detail.userDTO.name +'</div>';
 								div += '<div>'+ detail.content +'</div>';
-								moment.locale('ko-KR');
 								div += '<div>'+ moment(detail.chatDate).format('YY-MM-DD A h:mm:ss') +'</div>';
 								
 							}else {
+								div += '<div class="chat_user_for_detail">';
+								div += '<div><img src="'+detail.userDTO.profileImage+'" style="width:50px;"></img></div>';
 								div += '<div>'+ detail.userDTO.name +'</div>';
 								div += '<div>'+ detail.content +'</div>';
-								div += '<div>'+ detail.chatDate +'</div>';
+								div += '<div>'+ moment(detail.chatDate).format('YY-MM-DD A h:mm:ss') +'</div>';
 							}
 							
 							
@@ -178,7 +180,6 @@
 			data: 'groupNo='+groupNo,
 			dataType: 'json',
 			success: function(resData){
-				
 				$('.chat_detail_container').empty();
 				
 				var div = '';
@@ -187,17 +188,20 @@
 				
 					var div = '';
 					
-					div += '<div>';
-					
 					if(detail.depth == 1){
-						if(detail.userNo =! 1){
+						if(detail.userNo == 1){
+							div += '<div class="chat_admin_for_detail">';
+							div += '<div><img src="'+detail.userDTO.profileImage+'" style="width:50px;"></img></div>';
 							div += '<div>'+ detail.userDTO.name +'</div>';
 							div += '<div>'+ detail.content +'</div>';
-							div += '<div>'+ detail.chatDate +'</div>';
+							div += '<div>'+ moment(detail.chatDate).format('YY-MM-DD A h:mm:ss') +'</div>';
+							
 						}else {
+							div += '<div class="chat_user_for_detail">';
+							div += '<div><img src="'+detail.userDTO.profileImage+'" style="width:50px;"></img></div>';
 							div += '<div>'+ detail.userDTO.name +'</div>';
 							div += '<div>'+ detail.content +'</div>';
-							div += '<div>'+ detail.chatDate +'</div>';
+							div += '<div>'+ moment(detail.chatDate).format('YY-MM-DD A h:mm:ss') +'</div>';
 						}
 						
 						
@@ -218,6 +222,7 @@
 					$('.chat_detail_container').append(div);
 				
 				});
+
 			}
 		});
 		
