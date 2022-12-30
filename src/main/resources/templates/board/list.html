@@ -73,7 +73,7 @@
 					<td th:text="${beginNo - vs.index}"></td>
 					<td><a th:href="@{/board/increse/hit(boardNo=${board.boardNo})}" th:text="${board.boardTitle}"></a></td>
 					<td th:text="${board.boardHit}"></td>
-					<td th:text="${board.boardCreateDate}"></td>
+					<td th:text="${#dates.format(board.boardCreateDate, 'yyyy-MM-dd')}"></td>
 				  </tr>
 				</tbody>
 				

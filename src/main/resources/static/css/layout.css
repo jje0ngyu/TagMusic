@@ -14,7 +14,7 @@
 		text-decoration: none;
 	}
 	input[type=button] {
-		background-color:#f8f9fa;
+		background-color:#bdc2ce;
 		border: none;
 		border-radius: 30px;
 	}
@@ -274,6 +274,7 @@
 		height: 30px;
 		color: #1f1f1f;
 		padding: 0 10px;
+		background-color: #f8f9fa;
 	}
 	.profile_box  input[type=button]:hover {
 		box-shadow: 0 3px 10px -3px #1f1f1f;
