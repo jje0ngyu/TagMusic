@@ -13,6 +13,7 @@
 	</article>
 	<!-- 음원 재생 바(bar) -->
 	<footer class="music_play_bar">
+		<input type="hidden" id="musicNo" th:value="${music.musicNo}">
 		<div>
 			<audio controls="controls" controlsList="nodownload" id="iframe_audio" class="iframe_audio blind">
 				<source th:src="@{/tune/display/music(musicNo=${music.musicNo})}" type="audio/mp3" />
@@ -20,22 +21,45 @@
 		</div>
 		
 		<div class="music_play_controller">
+			<!-- 왼쪽 (재생, 멈춤) -->
 			<div class="left_controlls">
-				<div class="left_controll">
+				<div id="previous" class="left_controll">
 					<img class="btn_side img_previous" th:src="@{/images/previous.png}">
 				</div>
+				<script>
+					var musicNo = parseInt($('#musicNo').val());
+					$('#previous').click(function(){
+						if(musicNo == 1) {
+							alert('이전 곡이 없습니다.');
+							return;
+						} else {
+							location.href='/tune/iframe?musicNo=' + (musicNo - 1);
+						}
+					})
+				</script>
 				<div class="left_controll">
-					<img class="btn_main img_play audio_play blind" th:src="@{/images/play.png}">			
-					<img class="btn_main img_stop audio_pause" th:src="@{/images/pause.png}">
+					<img class="btn_main img_play audio_play" th:src="@{/images/play.png}">			
+					<img class="btn_main img_stop audio_pause blind" th:src="@{/images/pause.png}">
 				</div>
-				<div class="left_controll">
+				<div id="next" class="left_controll">
 					<img class="btn_side img_next" th:src="@{/images/next.png}">
 				</div>
+				<script>
+					$('#next').click(function(){
+						if(musicNo ==24) {
+							alert('다음 곡이 없습니다.');
+							return;
+						} else {
+							location.href='/tune/iframe?musicNo=' + (musicNo + 1);
+						}
+					})
+				</script>
 				<div class="left_controll" >
 					<span class="current_time"></span>
 				</div>
 			</div>
 			
+			<!-- 중앙 (음원 정보) -->
 			<div class="center_controlls">
 				<div class="album_image">
 					<img th:src="@{/tune/display/image(musicNo=${music.musicNo})}" id="iframe_album_image" style="height: 68px;">
@@ -49,13 +73,15 @@
 				</div>
 			</div>
 			
+			<!-- 오른쪽 (뮤직플레이어 기능) -->
 			<div class="right_controlls">
+				<!--/* 볼륨 조절 : 구현 x 
 				<div class="right_controll">
 					<input class="mdl-slider mdl-js-slider" type="range"
 	  						min="0" max="100" value="25" tabindex="0">
 					<img class="btn_side img_sound" th:src="@{/images/sound.png}">
 					<img class="btn_side img_no_sound blind" th:src="@{/images/no_sound.png}">
-				</div>
+				</div> */-->
 				<div class="right_controll">
 					<img class="btn_side img_no_repeat" th:src="@{/images/repeat_one_gray.png}">
 					<img class="btn_side img_one_repeat blind" th:src="@{/images/repeat_one_white.png}">
@@ -64,7 +90,7 @@
 					<img class="btn_side img_shuffle" th:src="@{/images/shuffle.png}">
 				</div>
 				<div class="right_controll">
-					<input id="hide_detail" type="button" value="눌러!">
+					<input id="hide_detail" type="button" value="닫기">
 				</div>
 			</div>
 		</div>
@@ -83,98 +109,90 @@
 			fn_audio_pause();
 			fn_muted();
 			fn_repeat();
-			fn_checkPass();
-			isPassHave();
+			fn_checkPlay();
 		})
 		
 		// 보여지는 부분들
-			function fn_hiding() {
-				$('#hide_detail').click(function(){
-					alert('클릭!!!!');
-					$('.tune_container').toggleClass('blind');
-					window.parent.location.href="/user/mypage";
-				});
-			}
-			
-			function fn_audio_play() {
-				$('.audio_play').click(function(){
-					document.getElementById('iframe_audio').play();
-					$('.audio_play').addClass('blind');
-					$('.audio_pause').removeClass('blind');
-				});
-			}
-			function fn_audio_pause() {
-				$('.audio_pause').click(function(){
-					
-					document.getElementById('iframe_audio').pause();
-					$('.audio_play').removeClass('blind');
-					$('.audio_pause').addClass('blind');
-				});
-			}
-			
-			/* 음소거 */
-			function fn_muted() {
-				$('.img_no_sound').click(function(){
-					document.getElementById('iframe_audio').muted = false;
-					$('.img_no_sound').addClass('blind');
-					$('.img_sound').removeClass('blind');
-				});
-				$('.img_sound').click(function(){
-					document.getElementById('iframe_audio').muted = true;
-					$('.img_no_sound').removeClass('blind');
-					$('.img_sound').addClass('blind');
-				});
-			}
-			/* 한 곡 반복 재생 */
-			function fn_repeat() {
-				$('.img_no_repeat').click(function(){
-					alert('클릭!');
-					document.getElementById('iframe_audio').loop = true;
-					$('.img_no_repeat').addClass('blind');
-					$('.img_one_repeat').removeClass('blind');
-				});
-				$('.img_one_repeat').click(function(){
-					alert('아얐!!');
-					document.getElementById('iframe_audio').loop = false;
-					$('.img_no_repeat').toggleClass('blind');
-					$('.img_one_repeat').toggleClass('blind');
-				});
-			}
-			function fn_currentTime(){
-				document.getElementById('iframe_audio').currentTime = "seconds";
-			}
-	
-			
+		function fn_hiding() {
+			$('#hide_detail').click(function(){
+				alert('클릭!!!!');
+				window.parent.location.href="/";
+			});
+		}
 		
-		</script>	
+		function fn_audio_play() {
+			$('.audio_play').click(function(){
+				document.getElementById('iframe_audio').play();
+				$('.audio_play').addClass('blind');
+				$('.audio_pause').removeClass('blind');
+			});
+		}
+		function fn_audio_pause() {
+			$('.audio_pause').click(function(){
+				
+				document.getElementById('iframe_audio').pause();
+				$('.audio_play').removeClass('blind');
+				$('.audio_pause').addClass('blind');
+			});
+		}
 		
-<script>
-	function fn_checkPass() {
-		$('.img_play').click(function(){
-			if(confirm('이용권이 없는 회원입니다. 이용권을 구매하시겠습니까?')){
-				location.href='/payment/buy';
-			}
-		});
-	}
-	function isPassHave(){
-		$.ajax({
-			type: 'post',
-			url: '/payment/isPassHave',
-			dataType: 'json',
-			success: function(resData){
-				if(resData.result == 0){
-					fn_checkPass();
-				} else {
-					fn_audio_play();
-					
-				}
-				 if(resData.isNotLogin == 'loginPlz'){
-					if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
-						location.href="/user/login/form";
+		/* 음소거 */
+		function fn_muted() {
+			$('.img_no_sound').click(function(){
+				document.getElementById('iframe_audio').muted = false;
+				$('.img_no_sound').addClass('blind');
+				$('.img_sound').removeClass('blind');
+			});
+			$('.img_sound').click(function(){
+				document.getElementById('iframe_audio').muted = true;
+				$('.img_no_sound').removeClass('blind');
+				$('.img_sound').addClass('blind');
+			});
+		}
+		/* 한 곡 반복 재생 */
+		function fn_repeat() {
+			$('.img_no_repeat').click(function(){
+				document.getElementById('iframe_audio').loop = true;
+				$('.img_no_repeat').addClass('blind');
+				$('.img_one_repeat').removeClass('blind');
+			});
+			$('.img_one_repeat').click(function(){
+				document.getElementById('iframe_audio').loop = false;
+				$('.img_no_repeat').toggleClass('blind');
+				$('.img_one_repeat').toggleClass('blind');
+			});
+		}
+		function fn_currentTime(){
+			document.getElementById('iframe_audio').currentTime = "seconds";
+		}
+
+		// 음원 재생
+		function fn_checkPlay(){
+			$('.img_play').click(function(){
+				$.ajax({
+					type: 'post',
+					url: '/payment/isPassHave',
+					dataType: 'json',
+					success: function(resData){
+					    if(resData.isNotLogin == 'loginPlz'){
+							if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
+								location.href="/user/login/form";
+							} else {
+								return;
+							}
+						}
+						if(resData.result == 0){
+							if(confirm('이용권이 없는 회원입니다. 이용권을 구매하시겠습니까?')){
+								location.href='/payment/buy';
+							} else {
+								event.defaultPrevented();
+							}
+						} else {
+							fn_audio_play();
+						}
 					}
-				}
-			}
-		});
-	}
-</script>
+				});
+			});
+		}
+	</script>	
 </html>

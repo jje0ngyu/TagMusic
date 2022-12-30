@@ -5,11 +5,170 @@
 <title></title>
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
 <link rel="stylesheet" th:href="@{/css/playlist.css}">
-<link rel="stylesheet" th:href="@{/css/popup.css}">
-<link rel="stylesheet" th:href="@{/css/musicBoard.css}">
+<!-- <link rel="stylesheet" th:href="@{/css/musicBoard.css}"> -->
+<style>
+
+
+* {
+	box-sizing: border-box;
+	margin : 0;
+	padding : 0;
+	
+	}
+	
+
+
+.playlist_open {
+	
+	position : absolute;
+	top: 0px; left: 20px;
+	width: 300px;
+	height: 200px;
+	border: 1px solid #ababab;
+	background-color: #efefef;
+	padding: 20px;
+	
+	
+	
+}
+
+.modal_btn_area {
+	
+	display: flex;
+	justify-content: space-between;
+	width: 400px;
+	height: 50px;
+	margin-top: 20px;
+	
+}
+
+.btn_createPlaylist {
+	
+	border: 1px solid #889888;
+	background-color: #dddddd;
+	width: 80px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	
+}
+
+.btn_modal_close {
+	
+	border: 1px solid #889888;
+	background-color: #dddddd;
+	width: 80px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	
+	}
+	
+
+.createPlaylist_header {
+	
+	width: 400px;
+	height: 50px;
+	
+}
+
+.createPlaylist_body {
+	
+	line-height: 80px;
+	width: 400px;
+	height: 80px;
+	margin-bottom: 30px;
+	
+}
+
+.playlist_name {
+	
+	width: 350px;
+	height: 50px;
+	padding: 10px;
+	outline: none;
+	border-radius: 10px;
+	
+	
+}
+
+
+input[type=text] {
+	background-color: #efefef;
+	color: #323232;
+	font-size: 25px;
+	font-weight: 900;
+	}
+
+.createPlaylist_btn_area {
+	
+	display: flex;
+	justify-content: space-between;
+	
+	width: 400px;
+	height: 100px;
+	padding: 20px;
+	
+}
+
+
+
+.createPlaylist_btn, .createPlaylist_btn_cancel {
+	
+	border: none;
+	background-color: #dddddd;
+	width: 80px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	color: #323232;
+	border-radius: 20px;
+	
+	font-size: 20px;
+	font-weight: 900;
+	
+}
+.createPlaylist_btn:hover, .createPlaylist_btn_cancel:hover {
+
+	background-color: #ffd440;
+	color: #323232;
+	cursor: pointer;
+
+}
+
+/* 추가수정란  */
+.musicBoard_td_musicLike {
+	
+	padding: 20px;
+	
+}
+
+.musicBoard_musicLike {
+	
+	display: inline-block;
+	
+	
+
+	
+}
+
+.musicBoard_musicLikeCnt {
+	
+	display: inline-block;
+	margin-left: 3px;
+	font-size: 15px;
+	font-weight: 900;
+	
+	
+	
+}
+</style>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 
 <script th:inline="javascript">
+
+
+
 
 	$(document).ready(function() {
 		
@@ -27,6 +186,8 @@
 		fn_modalClose();				// 구현 : 모달창 닫기
 	});
 
+	// 전역변수
+	var upDownIcon;	// 상하아이콘
 
 	function fn_Playlist_list() {	// 플레이리스트 목록조회
 		
@@ -51,7 +212,7 @@
 						$('.playlist_header')
 						.append( $('<div class="playlistZero_area">') 
 								.append( $('<div class="playlistZero_left">')
-										.append('<div class="playlistZero_left_logo">물음표!</div>')
+										.append('<div class="playlistZero_left_logo"><i class="fa-solid fa-circle-exclamation"></i>!</div>')
 										.append('<div class="playlistZero_left_content">플레이리스트에 음악이 없습니다. 생성버튼으로 플레이리스트를 생성하실 수 있습니다</div>') 
 										.append('<div class="playlist_add">생성하기</div>') )
 								.append( $('<div class="playlistZero_right">')
@@ -66,6 +227,12 @@
 						
 						// 3) 제대로 요청된경우 
 						
+						// 목록조회
+						$('.playlist_top').empty();
+						// 1) 헤더
+						$('.playlist_top').
+						append('<div class=" playlist_userName">'+resData.userNickName +' 님의 플레이리스트 </div>')
+						
 						
 						
 						// 유저정보 갱신 
@@ -73,11 +240,10 @@
 						$('.playlist_header').empty();
 						$('.playlist_header')
 						.append( $('<div class="playlist_header_left">')
-							.append('<div class="playlist_userName">'  + resData.userNickName + '님의 플레이리스트</div>')
 							.append('<div class="playlist_cnt">'  + resData.userPlaylistCnt + '개의 플레이리스트 보유중</div>')
 							.append('<div class="playlist_emp">※ 플레이리스트는 총 5개 생성할 수 있습니다</div>') )
 						
-						$('.playlist_header').append( $('<div class="playlist_header_right">').append('<div class="playlist_add">플레이리스트 생성</div>') )  
+						$('.playlist_header').append( $('<div class="playlist_header_right">').append('<div class="playlist_add"><i class="fa-sharp fa-solid fa-plus"></i></div>') )  
 						
 
 						// 플레이리스트 목록
@@ -103,11 +269,11 @@
 											.append( $('<div class="playlist_list_middle"></div>')
 												.append('<div class="playlist_playlistName">' + playlist.listName +'</div>')
 												.append('<div class="playlist_musicCnt">'+ playlist.musicCnt+' 곡</div>') ) 
-												.append( $('<div class="playlist_list_right"></div>')
-														.append('<div class="playlist_updatePlaylistName playlist_btn" data-listno="'+playlist.listNo+'">변경</div>')
-														.append('<div class="playlist_deletePlaylist playlist_btn">삭제</div>') ) ) 
+											.append( $('<div class="playlist_list_right"></div>')
+														.append('<div class="playlist_updatePlaylistName playlist_btn" data-listno="'+playlist.listNo+'"><i class="fa-regular fa-pen-to-square"></i></div>')
+														.append('<div class="playlist_deletePlaylist playlist_btn"><i class="fa-regular fa-trash-can"></i></div>') ) ) 
 							.append($('<div class="playlist_bottom"></div>')
-								.append('<div class="btn_playlist_musicBoard" data-listno="' + playlist.listNo + '">음악목록 버튼</div>') ) 
+								.append('<div class="btn_playlist_musicBoard" data-listno="' + playlist.listNo + '"><i class="fa-solid fa-angles-down"></i></div>') ) 
 							.append('<div id="playlist_musicBoard" class="playlist_musicBoard"></div>') )
 							.appendTo( $('.playlist_body') );
 						});
@@ -144,6 +310,29 @@
 			$(this).parent().parent().toggleClass('playlist_list_click');
 			$(this).parent().next().toggleClass('playlist_musicBoard');
 			$(this).parent().next().toggleClass('playlist_musicBoard_click');
+	
+			$(this).parent().prev().children().eq(1).toggleClass('playlist_list_middle');
+			$(this).parent().prev().children().eq(1).toggleClass('playlist_list_middle_click');
+
+
+			$(this).parent().prev().children().eq(2).toggleClass('playlist_list_right');
+			$(this).parent().prev().children().eq(2).toggleClass('playlist_list_right_click');
+			
+			upDownIcon = $(this).toggleClass('upDownIcon');
+			if ($(upDownIcon).hasClass("upDownIcon")) {
+				$(upDownIcon)
+				.empty()
+				.append('<i class="fa-solid fa-angles-up"></i>');
+			} else {
+				$(upDownIcon)
+				.empty()
+				.append('<i class="fa-solid fa-angles-down"></i>');
+			}
+			
+			
+			
+		
+			
 			
 			
 			// ajax 응답에서는 this를 인식할수 없어서 변수로 만들어줘야한다
@@ -178,14 +367,14 @@
 							}
 		
 							
-							$('<tr>')
+							$('<tr class="playlist_tr">')
 							.append('<td class="td_no">'+ (index + 1) +'</td>') 
-							.append( $('<td>').append('<img class="board_thumbnail" src="'+ thumbnail+'">') )
-							.append( $('<td class="">')
+							.append( $('<td class="playlist_td">').append('<img class="board_thumbnail" src="'+ thumbnail+'">') )
+							.append( $('<td class="playlist_td">')
 								.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'</div>')
 								.append('<div class="playlist_musicArtist">'+ musicList.playlistDTO.userDTO.artist +'</div>') )
-							.append( $('<td>').append('<div class="playlist_musicGenre">'+ musicList.musicDTO.musicGenre +'</div>') )
-							.append( $('<td>').append( '<input type="button" value="삭제" class="deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'">') )
+							.append( $('<td class="playlist_td">').append('<div class="playlist_musicGenre">'+ musicList.musicDTO.musicGenre +'</div>') )
+							.append( $('<td class="playlist_td">').append( '<i class="fa-regular fa-trash-can deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'"></i>') )
 							.appendTo($(body));
 
 							});
@@ -211,8 +400,8 @@
 						}
 						
 
-						$(board).append( $('<table>')
-							.append('<thead><tr><td>No</td><td colspan="3">곡 정보</td><td>삭제</td></tr></thead>')
+						$(board).append( $('<table class="playlist_table">')
+							.append('<thead><tr class="playlist_tr"><th>No</th><th colspan="3">곡 정보</th><th>삭제</th></tr></thead>')
 							.append($(body)) )
 							.append( $('<div class="page_block">').append(paging) );				
 				}	
@@ -318,7 +507,7 @@
 						.append('<div class="playlist_cnt">'  + resData.userPlaylistCnt + '개의 플레이리스트 보유중</div>')
 						.append('<div class="playlist_emp">※ 플레이리스트는 총 5개 생성할 수 있습니다</div>') )
 					
-					$('.playlist_header').append( $('<div class="playlist_header_right">').append('<div class="playlist_add">플레이리스트 생성</div>') )  
+					$('.playlist_header').append( $('<div class="playlist_header_right">').append('<div class="playlist_add"><i class="fa-sharp fa-solid fa-plus"></i></div>') )  
 					
 
 					// 플레이리스트 목록
@@ -344,7 +533,7 @@
 											.append( $('<div class="playlist_list_middle"></div>')
 													.append('<input type="text" id="listName" name="listName" value="'+playlist.listName+'">')
 													.append('<div class="playlist_musicCnt">'+ playlist.musicCnt+' 곡</div>') ) 
-												.append( $('<div class="playlist_list_right"></div>')
+											.append( $('<div class="playlist_list_right"></div>')
 														.append('<div class="playlist_modifyPlaylistName playlist_btn" data-listno="'+playlist.listNo+'">변경</div>')
 														.append('<div class="playlist_deletePlaylist playlist_btn">삭제</div>') ) ) 
 							.append($('<div class="playlist_bottom"></div>')
@@ -547,7 +736,7 @@
     		.append('<div class="createPlaylist_body"><input type="text" class="playlist_name" id="playlist_name"></div>')
     		.append( $('<div class="createPlaylist_btn_area">')
     				.append('<div class="createPlaylist_btn">생성</div>')
-    				.append('<div class="createPlaylist_btn_cancel">뒤로가기</div>')
+    				.append('<div class="createPlaylist_btn_cancel">뒤로</div>')
     		)
 		});
 	}
@@ -589,6 +778,8 @@
 		$(document).on('click', '.createPlaylist_btn_cancel', function() {	// 모달창 종료
 			
 			$('#modal').css('display', 'none');
+			$('#modal').hasClass('modal_close');
+			
 			
 		});
 		
@@ -600,7 +791,7 @@
 </head>
 <body>
 
-	<!--  page : 최신리스트 게시판 -->
+	
 	
 	<div th:replace="~{layout/header.html::header_layout}"></div>
 
@@ -612,6 +803,7 @@
 		
 		<input type="hidden" th:value="1" id="page">
 		<input type="hidden" th:value="1" id="listNo">
+		
 		
 
 			<!-- 구현 : 플레이리스트 목록 -->
@@ -626,7 +818,7 @@
 			    <div class="modal_layer"></div>
 			</div>
 		
-		
+			<div class="playlist_top"></div>
 		
 			<div class="playlist_header">
 			

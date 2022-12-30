@@ -43,6 +43,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		registry.addInterceptor(pleaseLogininterceptor)
 		.addPathPatterns("/music/move/playlist")	
 		.addPathPatterns("/music/move/musicLike")	
+		.addPathPatterns("/music/move/musicLastly")	
 		.addPathPatterns("/music/move/playlistModal");	// 플레이리스트
 		
 		// 플레이리스트 5개 초과방지 

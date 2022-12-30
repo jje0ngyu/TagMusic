@@ -429,15 +429,76 @@
 	<select id="checkUserMusicLike" parameterType="Map" resultType="int">
 		SELECT COUNT(LIKE_NO)
 		FROM MUSIC_LIKE
-		WHERE MUSIC_NO = #{musicNo} AND EMAIL = #{email}
+		WHERE EMAIL = #{email} AND MUSIC_NO = #{musicNo}
 	</select>
 	
+	<!-- 5. 좋아요 개수 확인 -->
 	<select id="checkMusicLikeCnt" parameterType="Map" resultType="int">
 		SELECT COUNT(LIKE_NO)
 		FROM MUSIC_LIKE
 		WHERE MUSIC_NO = #{musicNo}
 	</select>
 	
+	<!-- 6. 좋아요 추가 -->
+	<insert id="insertMusicLike" parameterType="Map">
+		INSERT INTO MUSIC_LIKE (EMAIL, MUSIC_NO) VALUES(#{email}, #{musicNo})
+	</insert>
+	
+	<!-- 7. 유저 좋아요 본인여부 확인 -->
+	<select id="checkUserMusicWriter" parameterType="int" resultType="String">
+		SELECT EMAIL
+		FROM MUSIC
+		WHERE MUSIC_NO = #{musicNo}
+	</select>
+	
+	<!--  # 최근들은 -->
+	<!-- 1. 최근들은 게시글 수 -->
+	<select id="selectUserMusicLastlyCnt" parameterType="Map" resultType="int">
+		SELECT COUNT(ACTIVE_NO)
+		FROM ACTIVE_LOG
+		WHERE EMAIL = #{email}
+	</select>
+	
+	
+	<!--  # 2. 유저_최근들은 목록조회 -->
+	<select id="selectUserMusicLastlyList" parameterType="Map" resultMap="MusicMap">
+		SELECT U.USER_NO, L.LAST_LISTEN_DATE, U.EMAIL, U.ARTIST, U.NAME, U.PW, U.PROFILE_IMAGE, U.MOBILE, M.MUSIC_NO, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
+		FROM ACTIVE_LOG L INNER JOIN MUSIC M
+		ON L.MUSIC_NO = M.MUSIC_NO INNER JOIN USERS U
+		ON U.EMAIL = L.EMAIL
+		WHERE U.EMAIL = #{email} 
+		ORDER BY L.LAST_LISTEN_DATE DESC
+		LIMIT #{begin}, #{recordPerPage}	
+	</select>
+	
+		<!--  # 많이들은 -->
+	<!-- 1. 많이들은 게시글 수 -->
+	<select id="selectUserMusicManyCnt" parameterType="Map" resultType="int">
+		SELECT COUNT(ACTIVE_NO)
+		FROM ACTIVE_LOG
+		WHERE EMAIL = #{email}
+	</select>
+	
+	<!--  # 2. 유저_많이들은 목록조회 -->
+	<select id="selectUserMusicManyList" parameterType="Map" resultMap="MusicMap">
+		SELECT U.USER_NO, L.LISTEN_COUNT, L.LAST_LISTEN_DATE, U.EMAIL, U.ARTIST, U.NAME, U.PW, U.PROFILE_IMAGE, U.MOBILE, M.MUSIC_NO, M.MUSIC_TITLE, M.MUSIC_CONTENT, M.MUSIC_ALBUM, M.MUSIC_GENRE, M.MUSIC_UPLOAD_DATE, M.MUSIC_MODIFY_DATE, M.IP, M.IMG_ORIGIN, M.IMG_FILESYSTEM, M.MUSIC_ORIGIN, M.MUSIC_FILESYSTEM, M.DOWNLOAD_CNT, M.IMG_PATH, M.MUSIC_PATH, M.HAS_THUMBNAIL
+		FROM ACTIVE_LOG L INNER JOIN MUSIC M
+		ON L.MUSIC_NO = M.MUSIC_NO INNER JOIN USERS U
+		ON U.EMAIL = L.EMAIL
+		WHERE U.EMAIL = #{email} 
+		ORDER BY L.LISTEN_COUNT DESC
+		LIMIT #{begin}, #{recordPerPage}	
+	</select>
+	
+	<!--  3. 유저_많이들은 삭제 -->
+	<delete id="deleteMusicLog" parameterType="Map">
+		DELETE FROM ACTIVE_LOG WHERE MUSIC_NO = #{musicNo} AND EMAIL = #{email}
+	</delete>
+	
+	<!-- 4. 최근들은, 많이들은 전부 삭제 -->
+	<delete id="deleteAllMusicLog" parameterType="Map">
+		DELETE FROM ACTIVE_LOG WHERE EMAIL = #{email}
+	</delete>
 	
 	<!--  3. 유저 플레이리스트 썸네일 가져오기	<select id="selectUserPlaylistThumbnail" parameterType="int" resultType="MusicDTO">
 		SELECT B.LIST_NO, B.MUSIC_NO, B.EMAIL, B.MUSIC_TITLE, B.MUSIC_CONTENT, B.MUSIC_ALBUM, B.MUSIC_GENRE, B.MUSIC_UPLOAD_DATE, B.MUSIC_MODIFY_DATE, B.IP, B.IMG_ORIGIN, B.IMG_FILESYSTEM, B.MUSIC_ORIGIN, B.MUSIC_FILESYSTEM, B.DOWNLOAD_CNT, B.IMG_PATH, B.MUSIC_PATH, B.HAS_THUMBNAIL

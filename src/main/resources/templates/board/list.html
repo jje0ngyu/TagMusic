@@ -54,7 +54,7 @@
 		<div class="board_middle_controller">
 			<!-- 관리자/일반회원 구분 -->
 			<div th:if="${session.loginUser != null && session.loginUser.userNo == 1}" class="middle_top" >
-				<input type="button" value="새 글 작성" id="btn_id">
+				<input type="button" value="새 글 작성" id="btn_write">
 			</div>
 
 			
@@ -73,7 +73,7 @@
 					<td th:text="${beginNo - vs.index}"></td>
 					<td><a th:href="@{/board/increse/hit(boardNo=${board.boardNo})}" th:text="${board.boardTitle}"></a></td>
 					<td th:text="${board.boardHit}"></td>
-					<td th:text="${board.boardCreateDate}"></td>
+					<td th:text="${#dates.format(board.boardCreateDate, 'yyyy-MM-dd')}"></td>
 				  </tr>
 				</tbody>
 				
