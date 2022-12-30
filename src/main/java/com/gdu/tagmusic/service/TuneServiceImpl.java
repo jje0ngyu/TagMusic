@@ -253,6 +253,14 @@ public class TuneServiceImpl implements TuneService {
 	
 	}
 	
+	// 트랙 - 리스트
+	@Override
+	public Map<String, Object> getTrack() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("musicList", tuneMapper.selectMusic());
+		return result;
+	}
+	
 	// 댓글 - 리스트
 	@Override
 	public Map<String, Object> getCommentCount(int musicNo) {

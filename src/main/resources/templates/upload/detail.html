@@ -9,9 +9,6 @@
 
 	$(function(){
 		// 탭 (href)
-		$('#tabHome').click(function(){
-			location.href='/customerService/home';
-		})
 		$('#tabNotice').click(function(){
 			location.href='/board/list';
 		})
@@ -51,69 +48,57 @@
 	<div class="board_controller">
 		
 		<!-- 제목 -->
-		<div class="board_title">업로드 게시글 정보</div>
+		<div class="board_title">고객센터</div>
 		<!-- 상단 (tap) -->
 		<div class="board_top_controller">
 			<div class="board_tab_controller">
-				<div class="board_tab" id="tabHome">홈</div>
 				<div class="board_tab" id="tabNotice">공지사항</div>
 				<div class="board_tab tab_click" id="tabFAQ">자주 하는 질문</div>
 				<div class="board_tab" id="tabChat">1:1 문의하기</div>
 			</div>
 		</div>
-	<div>	
-	  <ul>
-		 <table class="table table-striped"> 
-			<thead>
-				<tr bgcolor="#DCDCDC">
-			   <td background-color:"#FFFFFF">
-			     <li th:text="|제목 : ${upload.title}|"></li>
-			   </td>
-			   <td>
-			     <li th:text="|작성일 : ${#dates.format(upload.createDate, 'yyyy-MM-dd HH:mm:ss')}|"></li>
-			   </td>
-			  <td>
-			    <li th:text="|조회수 : ${#numbers.formatInteger(upload.Hit,1,'COMMA')}|"></li>
-			  </td>	
-			  <td>
-			    <li th:text="|첨부파일 개수 : ${attachCnt}|"></li>
-			   </td>
-			  </tr>	
-			</thead>
-			  
-			<tbody>
-			  <tr>
-			 	 <td align=left valign=top> 
-			      <li th:text="|${upload.content}|"></li>
-			     </td>
-			  </tr>   
-			</tbody>  
-	
-		 <tfoot>
-		  </tfoot>   
-         </table>
-	    </ul> 	 
-	   </div>
-	
-		  <hr>
-				<h2>첨부파일 및 다운로드</h2>
-			        <div th:each="attach : ${attachList}">
-				     <a th:href="@{/upload/download(attachNo=${attach.attachNo})}">
-					  <div th:if="${attach.hasThumbnail == 1}">
-						<img th:src="@{/upload/display(attachNo=${attach.attachNo})}" class="attach_img" th:title="${attach.origin}" th:text="${attach.origin}">
-					  </div>
-					 <div th:if="${attach.hasThumbnail == 0}">
+		
+		<!-- 내용 (제목, 작성자/좋아요/작성일, 내용) -->
+	    <div class="board_middle_controller">
+			<div class="detail_title" th:text="|${upload.title}|"></div>
+			
+			<div class="detail_info">
+				<div><spand th:text="|첨부파일 개수 : ${attachCnt}|"></spand></div>
+				<div class="flex0">
+					<div th:text="|조회수 : ${#numbers.formatInteger(upload.Hit,1,'COMMA')}|"></div>
+					<div class="create_date" th:text="|작성일 : ${#dates.format(upload.createDate, 'yyyy-MM-dd HH:mm:ss')}"></div>
+				</div>
+			</div>
+			
+			<div class="detail_content">
+				<div th:utext="|${upload.content}|"></div>
+			</div>
+		</div> <!--board_middle_controller-->
+		
+		<div class="board_middle_bottom_controller">
+			<div class="board_txt_title" style="width:auto; justify-content: left;">첨부파일 및 다운로드</div>
+	        <div th:each="attach : ${attachList}">
+		    	<a th:href="@{/upload/download(attachNo=${attach.attachNo})}">
+					<div class="board_file" th:if="${attach.hasThumbnail == 1}">
+						<div class="file_img">
+							<img th:src="@{/upload/display(attachNo=${attach.attachNo})}" class="attach_img" th:title="${attach.origin}">
+						</div>
+						<div th:text="${attach.origin}"></div>
+					</div>
+					<div class="board_file" th:if="${attach.hasThumbnail == 0}">
 						<img th:src="@{/images/text.png}" width="50px" class="attach_img" th:title="${attach.origin}" th:text="${attach.origin}">
-					 </div>
-				     </a>
-			       </div>
-			<hr>
+					</div>
+			    </a>
+		    </div>
+	    </div> <!--board_middle_bottom_controller-->
+       
+        <!--하단 (버튼)-->
 		<div class="board_bottom_controller">
 			<form id="frm_upload" method="post">
 				<input type="hidden" name="uploadNo" th:value="${upload.uploadNo}">
-				<input type="button" value="게시글목록" id="btn_upload_list" class="btn"> 			
-				<input type="button" value="게시글삭제" id="btn_upload_remove" class="btn"> 			
-				<input type="button" value="게시글편집" id="btn_upload_edit" class="btn"> 			
+				<input type="button" value="목록" id="btn_upload_list" class="btn"> 			
+				<input type="button" value="삭제" id="btn_upload_remove" class="btn"> 			
+				<input type="button" value="편집" id="btn_upload_edit" class="btn"> 			
 			</form>
 		</div>
 	</div> <!--board_controller-->

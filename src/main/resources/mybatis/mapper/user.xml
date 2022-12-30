@@ -114,6 +114,7 @@
 		<set>
 			<if test="artist != null">ARTIST = #{artist},</if>
 			<if test="name != null">NAME = #{name},</if>
+			<if test="pw != null">PW = #{pw}, PW_MODIFY_DATE = NOW(),</if>
 			<if test="birthyear != null">BIRTHYEAR = #{birthyear},</if>
 			<if test="birthday != null">BIRTHDAY = #{birthday},</if>
 			<if test="mobile != null">MOBILE = #{mobile},</if>

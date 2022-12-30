@@ -25,6 +25,8 @@ public interface TuneService {
 	// 음원 다운로드
 	public ResponseEntity<Resource> download(String userAgent, int musicNo);
 	
+	// 트랙
+	public Map<String, Object> getTrack();
 	
 	// 댓글
 	public Map<String, Object> getCommentCount(int musicNo);

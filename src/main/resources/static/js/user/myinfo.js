@@ -100,6 +100,7 @@
 						$('#originPw').attr('readonly',true);
 					} else {
 						alert('조회에 실패');
+						$('#originPw').val('');
 					}
 				},
 				error : function(){
@@ -138,15 +139,15 @@
 				data: $('#frm_modifyUser').serialize(),
 				dataType: 'text',
 				success : function() {
-					$('#pw').val('');
+					$('#originPw').val('');
+					$('#newPw').val('');
+					$('#reNewPw').val('');
 					$('.box_backlayer').addClass('blind');
 					$('.modify_box').addClass('blind');
 					$('.modify_pw').addClass('blind');
 					alert('회원정보가 변경되었습니다.');
 					
-				},
-				error : function(jqXHR){
-					console.log('error가 찍혔다');
+					
 				}
 			})
 		});
@@ -220,13 +221,25 @@
 			$('.box_backlayer').addClass('blind');
 			$('.modify_box').addClass('blind');
 			$('.modify_artist').addClass('blind');
+			$('#artist').val('');
+			
 			$('.modify_name').addClass('blind');
+			$('#name').val('');
+			
 			$('.modify_pw').addClass('blind');
 			$('.new_pw_box').addClass('blind');
 			$('#originPw').attr('readonly',false);
+			$('#originPw').val('');
+			$('#newPw').val('');
+			$('#reNewPw').val('');
+			
 			$('.modify_mobile').addClass('blind');
+			$('#mobile').val('');
+			
 			$('.modify_agreeCode').addClass('blind');
+			
 			$('.retire_box').addClass('blind');
+			$('#pw').val('');
 		})
 	}
 	function fn_retire(){
