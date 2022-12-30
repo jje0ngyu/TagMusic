@@ -509,7 +509,39 @@
   height:100%;
   z-index:1;
   display: none;
+  
+
+animation: fadein-modal-open 1s;
+
+	}
+	
+	@keyframes fadein-modal-open {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
+
+.modal_close {
+
+	animation: fadein-modal-close 1s;
+}	
+	
+	@keyframes fadein-modal-close {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+	
+
+
 
 #modal h2 {
   margin:0;   
@@ -526,12 +558,13 @@
   margin:30px auto;
  
   background-color:#474545;
-  border:2px solid #666;
+  order:none;
   color: #efefef;
   border-radius: 10px;
   font-size: 16px;
   text-align: center;
   padding: 30px;
+  
   
   
 }

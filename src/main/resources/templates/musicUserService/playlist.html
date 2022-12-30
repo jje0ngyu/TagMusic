@@ -62,7 +62,8 @@
 	text-align: center;
 	line-height: 40px;
 	
-}
+	}
+	
 
 .createPlaylist_header {
 	
@@ -92,9 +93,11 @@
 }
 
 
-input[type=text]:keydown {
+input[type=text] {
 	background-color: #efefef;
 	color: #323232;
+	font-size: 25px;
+	font-weight: 900;
 	}
 
 .createPlaylist_btn_area {
@@ -120,6 +123,9 @@ input[type=text]:keydown {
 	line-height: 40px;
 	color: #323232;
 	border-radius: 20px;
+	
+	font-size: 20px;
+	font-weight: 900;
 	
 }
 .createPlaylist_btn:hover, .createPlaylist_btn_cancel:hover {
@@ -180,6 +186,8 @@ input[type=text]:keydown {
 		fn_modalClose();				// 구현 : 모달창 닫기
 	});
 
+	// 전역변수
+	var upDownIcon;	// 상하아이콘
 
 	function fn_Playlist_list() {	// 플레이리스트 목록조회
 		
@@ -310,8 +318,17 @@ input[type=text]:keydown {
 			$(this).parent().prev().children().eq(2).toggleClass('playlist_list_right');
 			$(this).parent().prev().children().eq(2).toggleClass('playlist_list_right_click');
 			
-			$(this).empty();
-			$(this).append('<i class="fa-solid fa-angles-up"></i>');
+			upDownIcon = $(this).toggleClass('upDownIcon');
+			if ($(upDownIcon).hasClass("upDownIcon")) {
+				$(upDownIcon)
+				.empty()
+				.append('<i class="fa-solid fa-angles-up"></i>');
+			} else {
+				$(upDownIcon)
+				.empty()
+				.append('<i class="fa-solid fa-angles-down"></i>');
+			}
+			
 			
 			
 		
@@ -357,7 +374,7 @@ input[type=text]:keydown {
 								.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'</div>')
 								.append('<div class="playlist_musicArtist">'+ musicList.playlistDTO.userDTO.artist +'</div>') )
 							.append( $('<td class="playlist_td">').append('<div class="playlist_musicGenre">'+ musicList.musicDTO.musicGenre +'</div>') )
-							.append( $('<td class="playlist_td">').append( '<input type="button" value="삭제" class="deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'">') )
+							.append( $('<td class="playlist_td">').append( '<i class="fa-regular fa-trash-can deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'"></i>') )
 							.appendTo($(body));
 
 							});
@@ -719,7 +736,7 @@ input[type=text]:keydown {
     		.append('<div class="createPlaylist_body"><input type="text" class="playlist_name" id="playlist_name"></div>')
     		.append( $('<div class="createPlaylist_btn_area">')
     				.append('<div class="createPlaylist_btn">생성</div>')
-    				.append('<div class="createPlaylist_btn_cancel">뒤로가기</div>')
+    				.append('<div class="createPlaylist_btn_cancel">뒤로</div>')
     		)
 		});
 	}
@@ -761,6 +778,8 @@ input[type=text]:keydown {
 		$(document).on('click', '.createPlaylist_btn_cancel', function() {	// 모달창 종료
 			
 			$('#modal').css('display', 'none');
+			$('#modal').hasClass('modal_close');
+			
 			
 		});
 		
