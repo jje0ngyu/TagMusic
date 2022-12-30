@@ -42,23 +42,30 @@ function fn_albumCheck(){
 	$('#musicAlbum').keyup(function(){
 		let albumValue = $(this).val();
 		if(albumValue != null && albumValue != '') {
-			albumValue = true;
+			albumPass = true;
 		}
 	});
 }
 function fn_titleCheck(){
 	$('#musicTitle').keyup(function(){
-		let albumValue = $(this).val();
-		if(albumValue != null && albumValue != '') {
-			albumValue = true;
+		let titleValue = $(this).val();
+		if(titleValue != null && titleValue != '') {
+			titlePass = true;
 		}
 	});
 }
 
 function fn_musicCheck(){
-	$('#music').keyup(function(){
-		let musicPass = $(this).val();
-		if(musicPass != null && musicPass != '') {
+	$('#music').change(function(event){
+		let musicValue = $(this).val();
+		if(musicValue != null && musicValue != '') {
+			let other = musicValue.split('.').pop().toLowerCase();
+        	//아래 확장자가 있는지 체크
+       	 	if(other != 'mp3' && other != 'mp4' && other != 'org') {
+          		alert('지원하지 않는 파일 형식입니다.');
+          		$(this).val('');
+          		return;
+			}
 			musicPass = true;
 		}
 	});
@@ -66,8 +73,8 @@ function fn_musicCheck(){
 
 function fn_genreCheck(){
 	$('#musicGenre').keyup(function(){
-		let genrePass = $(this).val();
-		if(genrePass != null && genrePass != '') {
+		let genreValue = $(this).val();
+		if(genreValue != null && genreValue != '') {
 			genrePass = true;
 		}
 	});
