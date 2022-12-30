@@ -9,13 +9,14 @@
 
 <script th:inline="javascript">
 
-	// 유저 좋아요
+	// 유저 최근들은
 
 	$(document).ready(function() {
-		fn_musicLikeList();			// 구현 : 유저 좋아요 리스트 조회
-		fn_changeMusicLikePage();	// 기능 : 유저 좋아요 페이징 이동
-		fn_deleteMusicLike();		// 구현 : 유저 좋아요 리스트에서 해제
-
+		fn_musicLastlyList();			// 구현 : 유저 최근들은 리스트 조회
+		fn_changeMusicLastylPage();		// 기능 : 유저 최근들은 페이징 이동
+		fn_deleteMusicLastly();			// 구현 : 유저 최근들은 리스트에서 해제
+		fn_deleteMusicManyAll();		// 구현 : 유저 최근들은 전체 삭제
+		
 	});
 	
 	// 전역변수
@@ -26,17 +27,19 @@
 	var pagingUtil;	// 페이지 유틸
 	var musicNo;	// 삭제할 음악 변수
 	
-	function fn_musicLikeList() {	// 구현 : 유저 좋아요 리스트 조회
+	function fn_musicLastlyList() {	// 구현 : 유저 최근들은 리스트 조회
 		
 	//	let page = $('#page').val();
 		
 		$.ajax({
 			type: 'get',
-			url: '/music/user/musicLikeList',
+			url: '/music/user/musicLastlyList',
 			data : 'page=' + page,
 			dataType: 'json',
 			success: function(resData) {
-				console.log(resData)
+				//console.log(resData)
+				
+				
 				// 최신화
 				$('.musicLike_top').empty();
 				$('.musicLike_header').empty();
@@ -45,18 +48,22 @@
 				// 목록조회
 				// 1) 헤더
 				$('.musicLike_top').
-				append('<div class="musicLike_title">좋아요 게시판</div>');
+				append('<div class="musicLike_title">최근들은 게시판</div>')
 				
 				
 				$('.musicLike_header')
-				.append('<div class="musicLike_title">'+resData.userNickName+' 님의 좋아요 리스트입니다</div><div class="musicLike_cnt">현재 '+resData.musicLikeCnt+' 개의 곡이 있습니다</div>') ;
-						
+				.append( $('<div class="musicLike_header_left">')
+						.append('<div class="musicLike_title">'+resData.userNickName+' 님이 최근들은 음악리스트입니다</div><div class="musicLike_cnt">현재 '+resData.musicLastlyCnt+' 개의 곡이 있습니다</div>') )
+				.append( $('<div class="musicLike_header_right">')
+						.append('<div class="musicLastly_deleteAll">전부삭제</div>') );
 				// 2) 목록
 				
 				body = $('<tbody>');
 				
 				// (1) tbody 생성
-				$.each(resData.selectUserMusicLikeList, function(index, musicList) {
+				$.each(resData.musicLastlyList, function(index, musicList) {
+					
+					
 					
 					
 					// 썸네일 조건부여
@@ -71,7 +78,7 @@
 					.append( $('<td class="musicLike_td_del"><div class="musicLike_del"><img class="musicLike_thumbnail" src="' + thumbnail + '"></div></td>') )	
 					.append( $('<td class="musicLike_td_del"><div class="musicLike_del">'+musicList.musicTitle+'</div><div class="musicLike_del">'+musicList.userDTO.artist+'</div></td>') )
 					.append( $('<td class="musicLike_td_del"><div class="musicLike_del">'+musicList.musicGenre+'</div></td>') )
-					.append( $('<td class="musicLike_td"><div class="musicLike_delete" data-musicno="'+musicList.musicNo+'">하트깨짐</div></td>') )
+					.append( $('<td class="musicLike_td"><div class="musicLastly_delete" data-musicno="'+musicList.musicNo+'">지우기</div></td>') )
 					.appendTo( $(body) );
 
 				});
@@ -110,29 +117,29 @@
 		});
 	}
 	
-	function fn_changeMusicLikePage(){	// 기능 : 페이지 이동
+	function fn_changeMusicLastylPage(){	// 기능 : 페이지 이동
 		$(document).on('click', '.musicLike_btn', function(){
 			page = $(this).data('page');
-			fn_musicLikeList();
+			fn_musicLastlyList();
 		});
 	}
 	
-	function fn_deleteMusicLike() {	// 구현 : 좋아요 리스트에서 삭제
+	function fn_deleteMusicLastly() {	// 구현 : 최근들은 리스트에서 삭제
 		
-		$(document).on('click', '.musicLike_delete', function(){
+		$(document).on('click', '.musicLastly_delete', function(){
 			
 			musicNo = $(this).data('musicno');
 			
 			$.ajax({
 				type: 'post',
-				url: '/music/user/deleteUserMusicLike',
+				url: '/music/user/deleteMusicLog',
 				data : 'musicNo=' + musicNo,
 				dataType: 'json',
 				success: function(resData) {
 				
 					if(resData.result == 1) {
 						alert('삭제했습니다');
-						fn_musicLikeList();
+						fn_musicLastlyList();
 						
 					}
 					
@@ -143,6 +150,25 @@
 		});
 		
 	};	
+	
+	function fn_deleteMusicManyAll() {	// 구현 : 최근들은 전체삭제
+		
+		$(document).on('click', '.musicLastly_deleteAll', function(){
+			
+				$.ajax({
+					type: 'post',
+					url: '/music/user/deleteAllUserMusicLog',
+					dataType: 'json',
+					success: function(resData) {
+					
+						if(resData.result == 1) {
+							alert('전부 삭제했습니다');
+							fn_musicLastlyList();
+						}
+					}
+				});
+			});
+		}
 
 
 </script>
@@ -164,7 +190,7 @@
 			
 				<div class="musicLike_header">
 				
-					<div class="musicLike_title">~님의 좋아요게시판입니다</div>
+					<div class="musicLike_title">~님이 최근들은 음악리스트입니다</div>
 					<div class="musicLike_cnt">총 곡수는 5개입니다</div>
 				
 				</div>

@@ -68,8 +68,8 @@
 						
 						$('<div class="main_item">') 
 						.append(text)
-						.append('<a class="item_title" href="music/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-						.append('<a class="item_artist" href="music/detail?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+						.append('<a class="item_title" href="tune/detail?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
+						.append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
 						.appendTo(('#updatedMusicList'));   
 						/* .append(text)
 						.append( $('<a class="item_title" href="/music/detail?musicNo=' + music.musicNo +'">').text(music.musicTitle) )
