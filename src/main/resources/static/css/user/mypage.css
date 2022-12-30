@@ -250,16 +250,70 @@ body {
 .current_info {
 	color: #bdc2ce;
 	padding: 5px 0;
+	
+	display: flex;
+	align-items: center;
+}
+.current_info_content {
+	margin-left: 20px;
+	font-size: 18px;
+}
+.info_input {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 50px;
+	border: 1px solid #bdc2ce;
+	margin: 10px 0;
 }
 
+.info_input_newPw {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	height: 50px;
+	border: 1px solid #bdc2ce;
+	margin: 10px 0;
+}
 /* myinfo - input 타입 모음 */
 #artist, #name, #originPw, #newPw, #reNewPw, #pw, #email ,#mobile {
-	width: 90%;
-	height: 30px;
+	width: 100%;
+	height: 80%;
 	outline: none;
 	border: none;
 	font-size: 18px;
-	border-bottom: 3px solid #37486b;
+	margin: 0 20px;
+	color: #37486b;
+	box-sizing: border-box;
+}
+#originPw:read-only {
+	background-color: inherit;
+	color: #37486b;
+	font-weight: 600;
+}
+/* 비밀번호 변경 */
+.read_only {
+	background-color: #e1e2e3;
+}
+#btn_checkPw {
+	padding: 5px 10px;
+	margin-right: 20px;
+	border-radius: 30px;
+	background-color: #bdc2ce;
+	border: none;
+}
+#btn_checkPw:hover {
+	background-color: #37486b;
+	color: #fdfdfd;
+	box-shadow: 0px 1px 3px 0 #989796;
+}
+
+.info_msg {
+	font-size: 13px;
+	color: #989796;
+	padding: 0 10px;
 }
 
 /* 로그아웃 버튼 (user 전역 공통) */
