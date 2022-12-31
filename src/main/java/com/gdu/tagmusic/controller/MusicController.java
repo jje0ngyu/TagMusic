@@ -110,7 +110,6 @@ public class MusicController {
 	// 구현 : 플레이리스트 페이지 이동 
 	@GetMapping("/music/move/playlist")
 	public String movePlaylist(HttpServletRequest request, Model model) {
-		//musicService.selectUserPlaylist(request, model);
 		return "/musicUserService/playlist";
 	}
 	
@@ -119,6 +118,13 @@ public class MusicController {
 	@GetMapping(value="/music/user/playlist", produces="application/json")
 	public Map<String, Object> userPlaylist(HttpServletRequest request) {	
 		return musicService.selectUserPlaylist(request);
+	}
+	
+	// 구현 : 플레이리스트 최신등록곡 썸네일 가져오기
+	@ResponseBody
+	 @GetMapping("/music/user/playlistThumbnail") 
+	public ResponseEntity<byte[]> playlistThubnail (HttpServletRequest request) { 
+		return musicService.selectPlaylistThumbnail(request); 
 	}
 	
 	// 구현: 플레이리스트에 수록된 곡 조회

@@ -39,7 +39,7 @@
 	
 	.playlist {
 		
-		
+		position: relative;
 		background-color: #fbfbfb;
  		margin: 15px auto;
 		width : 1300px;
@@ -55,21 +55,17 @@
 	
 	
 	.playlist_top {
-	
-	width: 690px;
-	font-size: 43px;
+	padding: 10px;
+	width: 700px;
+	font-size: 35px;
 	font-weight: 900;
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 	
 	
 	
 	}
 	
-	.playlist_userName {
-	border-bottom: 2px solid #20325A;
-	box-shadow: 0px 10px 10px 0 -20px #37486b;
-		
-	}
+	
 	
 	.playlist_header {
 		
@@ -85,8 +81,6 @@
 		margin-bottom: 20px;	
 		box-shadow: 0 1px 10px 0 #37486b;
 	}
-	
-	
 	
 	
 	
@@ -119,8 +113,20 @@
 	color: #323232;
 	cursor: pointer;
 	
+	animation: fadein-btn3 1s;
+	}
 	
-	
+	@keyframes fadein-btn3 {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		
+		opacity: 0;
+	}
+	to {
+		background-color: #ffd440;
+		opacity: 1;
+		
+	}
 	}
 	
 	
@@ -236,6 +242,15 @@
 	
 	}
 	
+	#listName {
+		
+		outline: none;
+		width: 300px;
+		height: 30px;
+		font-size:18px;
+		font-weight: 900;		
+	}
+	
 	
 	.playlist_list_right {
 		
@@ -269,6 +284,8 @@
 	
 	}
 	
+	
+	
 	.playlist_bottom {
 		
 		width : 1100px;
@@ -294,6 +311,29 @@
 	}
 	
 	
+	.btn_playlist_musicBoard:hover {
+		
+
+	background-color: #ffd440;
+	color: #323232;
+	cursor: pointer;
+	animation: fadein-btn 1s;
+	}
+	
+	@keyframes fadein-btn {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		
+		opacity: 0;
+	}
+	to {
+		
+		opacity: 1;
+		
+	}
+	}
+	
+	
 	
 	.playlist_btn {
 		background-color: #fefefe;
@@ -313,11 +353,29 @@
 		padding: 0 10px;
 		list-style: none;
 
-		
-		
-		
 	}
 	
+	.playlist_btn:hover {
+		
+		background-color: #ffd440;
+		color: #323232;
+		cursor: pointer;
+		
+	animation: fadein-btn2 1s;
+	}
+	
+	@keyframes fadein-btn2 {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		
+		opacity: 0;
+	}
+	to {
+		
+		opacity: 1;
+		
+	}
+	}
 	
 	
 	.playlist_musicBoard {
@@ -345,17 +403,18 @@
    
 	}
 	
-	@keyframes fadein {
-/* 효과를 동작시간 동안 0 ~ 1까지 */
-	from {
-		height: 100px;
-		opacity: 0;
+		@keyframes fadein {
+	/* 효과를 동작시간 동안 0 ~ 1까지 */
+		from {
+		
+			opacity: 0;
+		}
+		to {
+			height: 400px;
+			
+			opacity: 2;
+		}
 	}
-	to {
-		height: 400px;
-		opacity: 2;
-	}
-}
 	
 	tbody {
 		
@@ -376,7 +435,7 @@
 	height: 40px;
 	font-size: 20px;
   	height: 30px;
-    border-top: 1px solid #888888;
+    border-top: 1px solid #aaaaaa;
     padding: 10px;
 	
 	
@@ -388,17 +447,6 @@
 		margin-bottom: 20px;
 	
 	}
-	
-	.playlist_tr:nth-of-type(1):hover {
-	
-	
-		background-color: #efefef;
-		color: #323232;
-		margin-bottom: 20px;
-	
-	}
-	
-	
 	
 	.playlist_td  {
 	
@@ -429,9 +477,22 @@
 	
 	}
 	.playlist_tr:hover {
-		background-color: #50bcdf;
+
 		color: #efefef;
+		background: linear-gradient(#37486b, #50bcdf);
+		
+
+	animation: fadein-container2 1s;
+	}
 	
+	@keyframes fadein-container2 {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 	}
 	
 	.playlist_tr:nth-of-type(2):hover {
@@ -492,8 +553,18 @@
 	color: #efefef;
 	background: #203254;
 	cursor: pointer;
-}
-
+animation: fadein-paging 1s;
+	}
+	
+	@keyframes fadein-paging {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+	}
 	
 .playlist_musicBoard {
 	
@@ -508,20 +579,28 @@
 	background-color: #dddddd;
 	padding: 20px;
 	width: 1200px;
-	height: 500px;
+	height: 300px;
 	text-align:center;
 	display: flex;
-	padding-top: 250px;
+	
 	
 
 }
 
 .playlistZero_left {
 	
-	width: 1100px;
-	height: 500px;
+	margin-top: 60px;
+	margin-left: 30px;
+	width: 1200px;
+	height: 100px;
 	
 	
+	
+}
+
+.playlistZero_left_logo {
+	
+	margin-bottom: 30px;
 	
 }
 
@@ -535,8 +614,9 @@
 	
 	
 	width: 200px;
-	height: 500px;
-}
+	height: 100px;
+	margin-bottom: 20px;
+	}
 
 .playlist_add {
 	
@@ -545,27 +625,45 @@
 }
 
 .playlistZero_right_btn {
-	background-color: #fefefe;
+
 	border: none;
 	border-radius: 30px;
-	margin-top: 200px;
+	margin: 100px 0 10px;
 	
 	width: 50px;
-	height: 40px;
-	line-height: 40px;
+	height: 30px;
+	line-height: 30px;
 	text-align: center;
 	
+	padding: 40px 55px;
 	font-size: 14px;
-	margin-left:50px;
+
 	
-	
+}
+.playlistZero_right_btn:hover { 
+
+	cursor: pointer;
+
 }
 
 .playlistZero_right_content {
 	
-	font-size: 12px;
+	font-size: 14px;
 	width: 150px;
-	height: 40px;
+	height: 60px;
+	
+}
+
+.playlist_thumbnail {
+	
+
+	
+}
+
+.playlist_content_thumbnail {
+	
+	width : 50px;
+	height : 50px;
 	
 }
 
