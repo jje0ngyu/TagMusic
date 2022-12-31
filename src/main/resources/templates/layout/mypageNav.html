@@ -38,10 +38,14 @@
 		<script>
 			// 내 정보 홈
 			$('#mypageHome').click(function(){
+				$('.text_box').removeClass('.text_box_click');
+				$('#mypageHome').addClass('.text_box_click');
 				location.href='/user/mypage';
 			});
 			// 개인정보 관리
 			$('#info').click(function(){
+				$('.text_box').removeClass('.text_box_click');
+				$('#info').addClass('.text_box_click');
 				location.href="/user/mypage/info";
 			});
 			// 음원 등록
@@ -50,16 +54,23 @@
 			});
 			// 결제이력
 			$('#paymentHistory').click(function(){
+				$('.text_box').removeClass('.text_box_click');
+				$('#mypageHome').addClass('.text_box_click');
 				$('#submit_history').submit();
 			});
 			// 1:1 문의
 			$('#chat').click(function() {
+				$('.text_box').removeClass('.text_box_click');
+				$('#mypageHome').addClass('.text_box_click');
 				location.href="/customerService/chat";
 			})
 			// 로그아웃
 			$('.logout_box').click(function() {
-				location.href="/user/logout";
+				$('.text_box').removeClass('.text_box_click');
+				$('#mypageHome').addClass('.text_box_click');
+				window.parent.location.href="/user/logout";
 			})
+			
 		</script>
 	</nav>
 </body>

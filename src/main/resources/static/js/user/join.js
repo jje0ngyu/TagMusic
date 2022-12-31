@@ -300,10 +300,10 @@
 				alert('휴대전화번호를 확인하세요.');
 				event.preventDefault();
 				return;
-			} else if($('#birthyear').val() == '' || $('#birthmonth').val() == '' || $('#birthdate').val() == ''){
+			/*} else if($('#birthyear').val() == '' || $('#birthmonth').val() == '' || $('#birthdate').val() == ''){
 				alert('생년월일을 확인하세요.');
 				event.preventDefault();
-				return;
+				return;*/
 			} else if(authCodePass == false){
 				alert('이메일 인증을 받으세요.');
 				event.preventDefault();

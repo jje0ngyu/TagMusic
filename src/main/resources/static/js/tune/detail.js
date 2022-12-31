@@ -5,7 +5,8 @@ $(function(){
 	fn_comment_box();
 	
 	// 음원트랙
-	fn_trackList();
+	fn_shuffleTrack();
+	fn_nextTrack();
 	
 	// 댓글
 	fn_commentCount();
@@ -15,7 +16,7 @@ $(function(){
 
 });
 
-	
+var nextMusicNo = 0;
 
 function fn_tabContent(){
 	$('.tune_tab_content').click(function(){
@@ -55,10 +56,11 @@ function fn_click_album_image(){
 
 	
 function fn_commentCount(){
+	var musicNo = $('#musicNo').val();
 	$.ajax({
 		type: 'get',
 		url: '/comment/getCount',
-		data: 'musicNo=[[${music.musicNo}]]',
+		data: 'musicNo=' + musicNo,	// 'musicNo=[[${music.musicNo}]]'
 		dataType: 'json',
 		success: function(resData){  // resData = {"commentCount": 개수}
 			alert('resData.commentCount: ' + resData.commentCount);
@@ -68,10 +70,11 @@ function fn_commentCount(){
 }
 	
 function fn_commentList(){
+	var musicNo = $('#musicNo').val();
 	$.ajax({
 		type: 'get',
 		url: '/comment/list',
-		data: 'musicNo=[[${music.musicNo}]]&page=' + $('#page').val(),
+		data: 'musicNo=' + musicNo,
 		dataType: 'json',
 		success: function(resData){
 			/*
@@ -91,46 +94,25 @@ function fn_commentList(){
 			$('#comment_list').empty();
 			$.each(resData.commentList, function(i, comment){
 				var div = '';
-					div += '<div>';
-					div += '<div style="margin-left: 40px;">';
-				
-					div += '<div>';
-					div += comment.commentContent;
-					// 작성자만 삭제할 수 있도록 if 처리
-					if ('${session.loginUser}' != null && comment.email == $('#email')) {
+					div += '<div class="comment_bottom_comment">';
+						// 코맨트 리스트 상단 (닉네임, 작성일)
+						div += '<div class="bottom_comment_info">';
+						div += comment.userDTO.artist;
+						moment.locale('ko-KR');
+						div += '<span  class="comment_info_date">' + moment(comment.createDate).format('YYYY. MM. DD A hh:mm') + '</span>';
+						div += "</div>";
+						// 코맨트 리스트 하단 (내용)
+						div += '<div class="comment_bottom_content">';
+						div += comment.commentContent;
+						// 작성자만 삭제할 수 있도록 if 처리
+						if ('${session.loginUser}' != null && comment.email == $('#email')) {
 						div += '<input type="button" value="삭제" class="btn_comment_remove" data-comment_no="' + comment.commentNo + '">';
-					}
+						}
+						div += '</div>';
 					div += '</div>';
-				
-				div += '<div>';
-				moment.locale('ko-KR');
-				div += '<span style="font-size: 12px; color: silver;">' + moment(comment.createDate).format('YYYY. MM. DD hh:mm') + '</span>';
-				div += '</div>';
-				div += '</div>';
 				$('#comment_list').append(div);
 				$('#comment_list').append('<div style="border-bottom: 1px dotted gray;"></div>');
 			});
-			// 페이징
-			$('#paging').empty();
-			var pageUtil = resData.pageUtil;
-			var paging = '';
-			// 이전 블록
-			if(pageUtil.beginPage != 1) {
-				paging += '<span class="enable_link" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
-			}
-			// 페이지번호
-			for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
-				if(p == $('#page').val()){
-					paging += '<strong>' + p + '</strong>';
-				} else {
-					paging += '<span class="enable_link" data-page="'+ p +'">' + p + '</span>';
-				}
-			}
-			// 다음 블록
-			if(pageUtil.endPage != pageUtil.totalPage){
-				paging += '<span class="enable_link" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
-			}
-			$('#paging').append(paging);
 		}
 	});
 }  // fn_commentList
