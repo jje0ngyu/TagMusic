@@ -194,7 +194,6 @@ function fn_remainingDay(){
 							    	dataType: 'json',
 							    	success: function(resData){
 							    		var txt = '';
-							    		console.log(resData.alarmList == 0);
 							    		if(resData.alarmList == 0){
 							    			txt += '<div class="alarm_content">' ;
 							    			txt += '<div class="alarm_info" style="justify-content: center;">';
@@ -269,7 +268,7 @@ function fn_remainingDay(){
 									location.href='/user/mypage';
 								});
 								$('.btn_logout').click(function(){
-									location.href='/user/logout';
+									window.parent.location.href='/user/logout';
 								})
 							</script>
 							<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">

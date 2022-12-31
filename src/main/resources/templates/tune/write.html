@@ -4,21 +4,11 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" th:href="@{/css/layout.css}">
-<link rel="stylesheet" th:href="@{/css/tuneWrite.css}">
+<link rel="stylesheet" th:href="@{/css/tune/write.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<script>
-	$(function(){
-		fn_add();
-	});
-	
-	function fn_add(){
-		$('#frm_upload').submit(function(){
-			alert('음원을 등록합니다.');
-		});
-	}
-	
-</script>
+<script th:src="@{/js/tune/write.js}"></script>
 </head>
+
 <body>
 	<div th:replace="~{layout/header.html::header_layout}"></div>
 	<div th:replace="~{layout/side.html::side_layout}"></div>
@@ -35,25 +25,33 @@
 						<div class="write_title">
 							앨범 이름*
 						</div>
-						<input type="text" name="musicAlbum">
+						<div class="music_input">
+							<input type="text" id="musicAlbum" name="musicAlbum">
+						</div>
 					</div>
 					<div class="flex">
 						<div class="write_title">
 							음원 이름*
 						</div>
-						<input type="text" name="musicTitle">
+						<div class="music_input">
+							<input type="text" id="musicTitle" name="musicTitle">
+						</div>
 					</div>
 					<div class="flex">
 						<div class="write_title">
 							음원 등록*
 						</div>
-						<input type="file" name="music">
+						<div>
+							<input type="file" id="music" name="music">
+						</div>
 					</div>
 					<div class="flex">
 						<div class="write_title">
 							장르*
 						</div>
-						<input type="text" name="musicGenre">
+						<div class="music_input">
+							<input type="text" id="musicGenre" name="musicGenre">
+						</div>
 					</div>
 				</div>
 				<div class="write_bottom_controller">
@@ -65,13 +63,16 @@
 							<input type="file" name="image" id="albumImg">
 						</div>
 					</div>
-					<div class="flex">
-						<div class="write_title">가사				
+					<div class="flex" style="height: 500px;">
+						<div class="write_title">
+							가사				
 						</div>
-						<textarea name="musicContent" placeholder="가사"></textarea>
+						<div class="music_input">
+							<textarea id="musicContent" name="musicContent" placeholder="가사" style="height: 100%; resize: none;"></textarea>
+						</div>
 					</div>
 				</div>
-				<div>
+				<div class="btn_area">
 					<input type="button" id="btn_cancel" value="취소">
 					<input type="submit" id="btn_add" value="등록하기">
 				</div>

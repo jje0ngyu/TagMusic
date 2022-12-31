@@ -83,6 +83,12 @@ public class TuneController {
 	public Map<String, Object> getTrack() {
 		return tuneService.getTrack();
 	}
+	// 음원 상세보기 - 셔플 트랙
+	@ResponseBody
+	@GetMapping("/tune/shuffleTrack")
+	public Map<String, Object> getRandomTrack() {
+		return tuneService.getRandomTrack();
+	}
 	
 	// 음원 상세보기 - 댓글
 	// 댓글 - 카운트

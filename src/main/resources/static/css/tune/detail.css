@@ -8,8 +8,10 @@ html, body, div, input, a, form, textarea {
 }
 /* 크기 공통 */
 .tune_container {
+	box-sizing: border-box;
 	width: 100%;
 	height: 100%;
+	margin-bottom: 80px;
 }
 
 /* main_controller */
@@ -21,26 +23,7 @@ html, body, div, input, a, form, textarea {
 	width: 100%;
 	height: 100%;
 }
-.bi-play-circle-fill, .bi-pause-circle-fill {
-	position: absolute;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 72px;
-	z-index: 100;
-	color: #fdfdfd;
-	animation: icon_ani 1s ease-out;
-	animation-play-state: paused;
-}
 
-@keyframes icon_ani {
-	0% {
-		font-size: 32px;
-	}
-	100% {
-		font-size: 90px;
-	}
-}
 .tune_album_title {
 	justify-content: center;
 	color: white;
@@ -63,19 +46,147 @@ html, body, div, input, a, form, textarea {
 	border-bottom-style: solid;
 	box-shadow: 0 10px 10px -10px #20325a;
 }
+
+/* 트랙박스 */
+.music_track_box {
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	width: 100%;
+	height: 80px;
+	border-bottom: 1px solid #bdc2ce;
+	padding: 5px 10px;
+}
+.music_track_box:hover {
+	background-color: #37486b;
+	color: #fdfdfd;
+	cursor: pointer;
+}
+.music_img {
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100px;
+	height: 100%;
+}
+.music_info {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	padding: 0 10px;
+	height: 100%;
+}
+#iframe_album_image {
+	max-width: 60px;
+	max-height: 60px;
+}
+.tune_next_track_box {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+.tune_next_track_box::-webkit-scrollbar {
+	display: none; /* for Chrome, Safari, and Opera */
+}
+
+
 /* 가사박스 */
 .tune_lyrics_box {
 	height: 100%;
+	border: 1px solid #bdc2ce;
+	padding: 10px 5px 10px 20px;
 }
 .tune_lyrics {
 	position: relative;
-	background-color: rgb(0,0,0);
-	color: white;
+	color: #1f1f1f;
+	font-size: 15px;
+	line-height: 25px;
 	border: none;
 	width: 100%;
 	height: 100%;
 	resize: none;
 	outline: none;
+}
+
+/* 댓글박스 */
+.tune_comment_box {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	overflow-y: scroll;
+}
+.tune_comment_box::-webkit-scrollbar {
+	display: none; /* for Chrome, Safari, and Opera */
+}
+.comment_top {
+	display: flex;
+	justify-content: right;
+	width: 100%;
+	height: 25px;
+	color: #bdc2ce;
+}
+.comment_middle {
+	display: flex;
+	justify-content: right;
+}
+#frm_comment { width:100% }
+.comment_middle_comment {
+	border: 1px solid #bdc2ce;
+	width: 100%;
+	height: 40px;
+	padding: 0 10px;
+}
+#commentContent {
+	width: 100%;
+	height: 100%;
+	font-size: 16px;
+	outline: none;
+	border: none;
+}
+.comment_middle_btn {
+	display: flex;
+	justify-content: right;
+	align-items: center;
+	height: 30px;
+	margin: 5px;
+}
+#btn_add_comment, #btn_cancel_comment {
+	margin-left: 10px;
+	width: 60px;
+	height: 30px;
+	font-size: 16px;
+	border-radius: 30px;
+	border: none;
+	background-color: #bdc2ce;
+}
+#btn_add_comment:hover {
+	background-color: #27046a;
+	font-weight: 600;
+}
+#btn_cancel_comment:hover {
+	background-color: indianred;
+	font-weight: 600;
+	color: #fdfdfd;
+}
+
+.comment_bottom_comment {
+	width: 100%;
+	height: auto;
+	padding: 5px 10px;
+}
+.bottom_comment_info {
+	height: 20px;
+}
+.comment_info_date {
+	margin-left:10px;
+	font-size: 12px;
+	color: silver;
+}
+.comment_bottom_content {
+	padding: 5px 0;
+	height: auto;
 }
 @media only screen and (max-width: 940px) {
 	.header, .menu {
@@ -88,15 +199,15 @@ html, body, div, input, a, form, textarea {
 @media only screen and (min-width: 940px) {
 	.tune_container {
 		position: absolute;
-		padding-top: 100px;
-		padding-left: 220px;
+		padding-top: 70px;
+		padding-left: 180px;
 
 	}
 	.tune_content {
 		position: relative;
 		display: flex;
 		box-sizing: border-box;
-		padding: 32px 56px 0;
+		padding: 30px 56px 0;
 		height: 100%;
 	}
 	.tune_main_panel {
@@ -104,9 +215,9 @@ html, body, div, input, a, form, textarea {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		margin: auto;
-	    width: 60%;
-	    height: 100%;
+		margin: 0 auto 80px;
+	    width: 50%;
+	    max-height: 100%;
 	    text-align: center;
 	}
 	
@@ -115,7 +226,9 @@ html, body, div, input, a, form, textarea {
 		position: relative;
 		display: flex;
 		flex-direction: column;
-	    width: 35%;
+	    width: 40%;
+	    max-height: 100%;
+	    margin-bottom: 120px;
 	}
 	
 	.tune_tab{
@@ -123,6 +236,7 @@ html, body, div, input, a, form, textarea {
 		margin: 25px 0;
 	}
 	.tune_tab_content {
+		font-size: 18px;
 		width: 40%;
 		height: 40px;
 		line-height: 40px;

@@ -7,6 +7,11 @@ width는 1250px, 80퍼센트면 1000px;
  /* a링크처리 */
  
 
+body {
+	
+	background-color: #fbfbfb;
+	
+}
  
  .main_container{
  
@@ -15,14 +20,14 @@ width는 1250px, 80퍼센트면 1000px;
  	width: 100%;
  	/* margin : auto : 내용 영역을 페이지 가운데로 정렬하기 위해 사용됨  */
  	padding-left : 240px;
- 	background-color: #ECECEC;
+ 	background-color: #fbfbfb;
 }
  
 .main {
 	
 	margin: 35px auto;
 	margin-top: 75px;
-	background-color: #212121;
+	background-color: #fbfbfb;
 	width : 1650px;
 	height: 900px;
 	padding: 30px;
@@ -37,30 +42,33 @@ a {
 	
 }
 
-.main_list {
+.main_lastList {
 	
 	width : 100%;
 	height: 350px;
-	background-color: #212121;
+	background-color: #fbfbfb;
 	margin-bottom: 70px;
 	margin-top: 20px;
-	
-	
+	color: #323232;
 
-	
-	
 }
 
-.main_header {
+
+.main_lastList_header {
 	
 	padding: 20px;
 	display: flex;
 	justify-content: space-between;
+	margin: 0 50px;
+	
 	
 	font-size: 25px;
 	font-weight: 600;
 	
 }
+
+
+
 
 /*
 	전체 : width: 670
@@ -68,16 +76,36 @@ a {
 
 */
 
+.main_lastList_body {
+	
+	width: 1600px;
+	display: flex;
+	height : 320px;
+	
+}
 
-.main_item_area {
+
+.main_lastList_body_content {
 	
 	display: flex;
+	
 	
 	background-color: #323232;
 	width: 100%;
 	height: 300px;
+	background-color: #efefef;
+	box-shadow: 0 1px 10px 0 #808080;
+	
+	border-radius: 10px;
 	
 	
+}
+
+.main_lastList_body_Btn {
+	
+	height : 320px;
+	line-height: 320px;	
+	margin : 0 20px;
 }
 
 /* 아이템 하나 */
@@ -91,12 +119,16 @@ a {
 	padding: 3px 10px;
 	border-radius: 10px;
 	
-	
 }
 
 .main_item:hover {
-	
 	background-color: #545454;
+}
+
+.main_item:focus {
+	
+	box-shadow: 0 3px 20px 0 #37486b;
+	
 }
 
 
@@ -145,7 +177,7 @@ a {
  
  .list_title {
  
- 	color: #eeeeee;
+ 	color: #323232;
  	display:inline-block;
  	font-size: 28px;
  	margin-right: 400px;

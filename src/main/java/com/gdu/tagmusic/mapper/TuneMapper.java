@@ -22,12 +22,13 @@ public interface TuneMapper {
 	
 	// 댓글
 	public int selectCommentCount(int musicNo);
-	public List<MusicCommentDTO> selectCommentList(Map<String, Object> map);
+	public List<MusicCommentDTO> selectComment(Map<String, Object> map);
 	public int insertComment(MusicCommentDTO comment);
 	public int deleteComment(int commentNo);
 	
 	// 음원 트랙
 	public List<MusicDTO> selectMusic();
+	public List<MusicDTO> selectMusicByRandom();
 }
 	
 

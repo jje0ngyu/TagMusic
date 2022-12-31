@@ -24,6 +24,15 @@
 					<div class="tune_tab_content tab_next_track border_bottom_solid_white">
 						다음 트랙
 					</div>
+					<script>
+						function fn_nextTrack(){
+							$(document).on('change','.tune_next_track_box',function(){
+								alert('진행된다~!');
+								var nextMusicNo = $('#0').val();
+								console.log("nextMusicNo : " + nextMusicNo); 
+							});
+						}
+					</script>
 					<div class="tune_tab_content tab_lyrics">
 						가사
 					</div>
@@ -31,6 +40,7 @@
 						댓글
 					</div>
 				</div>
+				<!-- 트랙 -->
 				<div class="tune_next_track_box">
 					<script>
 						$.ajax({
@@ -41,45 +51,50 @@
 								var txt = '';
 								if(resData.musicList != 0) {
 									$.each(resData.musicList, function(i, music){
-										txt += '<div>' + music.musicNo+ '</div>';
-										txt += '<div>' + music.musicTitle + '</div>';
-										txt += '<div>' + music.email + '</div>';
+										txt += '<div class="music_track_box">';
+											txt += '<input type="hidden" class="musicNo" name="musicNo" data-music="' + music.musicNo +  '">';
+											txt += '<div class="music_img">';
+											txt += '<img src="/tune/display/image?musicNo='+ music.musicNo + '" id="iframe_album_image">'
+											txt += '</div>';
+											txt += '<div class="music_info">';
+												txt += '<div style="font-weight:600">' + music.musicTitle + '</div>';
+												txt += '<div style="font-size:14px color: #bdc2ce">' + music.userDTO.artist + '</div>';
+											txt += '</div>';
+										txt += '</div>'
 									});
-									
 									$('.tune_next_track_box').append(txt);
 								}
 							},
-							error : function() {
-								console.log('에러');
-							}
 						});
 						
 					</script>
 				</div>
+				<!-- 가사 -->
 				<div class="tune_lyrics_box blind">
-					<textarea class="tune_lyrics" th:text="${music.musicContent}"></textarea>
+					<textarea class="tune_lyrics" th:text="${music.musicContent}" readonly></textarea>
 				</div>
 				
 				<!-- 댓글 -->
 				<div class="tune_comment_box blind">
-					<span id="btn_comment_list">
-						댓글
-						<span id="comment_count"></span>개
-					</span>
-					<div>
+					<!--댓글 TOP-->
+					<div class="comment_top">댓글<span id="comment_count"></span>개</div>
+					<!--댓글 MIDDLE-->
+					<div class="comment_middle">
 						<form id="frm_comment">
-							<div>
+							<div class="comment_middle_comment">
 								<input th:if="${session.loginUser != null}" type="hidden" name="email" id="email" th:value="${session.loginUser.email}">
-								<input type="hidden" name="musicNo" th:value="${music.musicNo}">	
+								<input type="hidden" id="musicNo" name="musicNo" th:value="${music.musicNo}">	
 								<input type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성하려면 로그인 해 주세요.">
-								<input type="button" value="작성완료" id="btn_add_comment">
+							</div>
+							<div class="comment_middle_btn">
+								<input type="reset" value="취소" id="btn_cancel_comment">
+								<input type="button" value="댓글" id="btn_add_comment">
 							</div>
 						</form>
 					</div>
+					<!--댓글 BOTTOM-->
 					<div id="comment_list"></div>
 					<div id="paging"></div>
-					<!--/* 현재 페이지 번호를 저장하고 있는 hidden */-->
-					<input type="hidden" id="page" value="1">
 				</div>
 				
 				
@@ -89,7 +104,6 @@
 				</div>
 			</div>
 		</div>
-			
 	</div>
 </body>
 </html>

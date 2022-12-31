@@ -45,6 +45,9 @@ public interface MusicService {
 	// 1. 유저 플레이리스트 목록조회
 	public Map<String, Object> selectUserPlaylist(HttpServletRequest request);
 	
+	// 2. 유저 플레이리스트 썸네일 
+	public ResponseEntity<byte[]> selectPlaylistThumbnail(HttpServletRequest request);
+	
 	// 2. 플레이리스트 수록곡 조회
 	public Map<String, Object> selectUserPlaylistMusicList(HttpServletRequest request);
 	
