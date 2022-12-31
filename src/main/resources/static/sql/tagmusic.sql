@@ -965,72 +965,74 @@ VALUES
 
 
 -- 음악 게시물 기초 데이터
+
+-- 음악 게시물 기초 데이터
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('practice@web.com', '관리제목1', '내용1', '앨범1' , '락', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('practice@web.com', '관리제목1', '내용1', '앨범1' , '락', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('practice@web.com', '관리제목2', '내용1', '앨범2' , '팝송', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('practice@web.com', '관리제목2', '내용1', '앨범2' , '팝송', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목3', '내용1', '앨범3' , '발라드', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목3', '내용1', '앨범3' , '발라드', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목4', '내용1', '앨범4' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목4', '내용1', '앨범4' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('practice@web.com', '관리제목5', '내용1', '앨범5' , '락', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('practice@web.com', '관리제목5', '내용1', '앨범5' , '락', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목6', '내용1', '앨범1' , '팝송', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목6', '내용1', '앨범1' , '팝송', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목7', '내용1', '앨범2' , '발라드', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', '', '음악1', 'DB음악1', 0, '', '', 0);
+('admin@web.com', '관리제목7', '내용1', '앨범2' , '발라드', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', '', '음악1', 'DB음악1', 0, '', 'storage\\\\2022\\\\12\\\\23', 0);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목8', '내용1', '앨범3' , '팝송', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목8', '내용1', '앨범3' , '팝송', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목9', '내용1', '앨범4' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목9', '내용1', '앨범4' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목10', '내용1', '앨범5' , '팝송', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목10', '내용1', '앨범5' , '팝송', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('practice@web.com', '관리제목11', '내용1', '앨범1' , '트로트', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('practice@web.com', '관리제목11', '내용1', '앨범1' , '트로트', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목12', '내용1', '앨범2' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목12', '내용1', '앨범2' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('practice@web.com', '관리제목13', '내용1', '앨범3' , '트로트', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('practice@web.com', '관리제목13', '내용1', '앨범3' , '트로트', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목14', '내용1', '앨범4' , '발라드', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목14', '내용1', '앨범4' , '발라드', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목15', '내용1', '앨범5' , '락', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', '', '음악1', 'DB음악1', 0, '', '', 0);
+('admin@web.com', '관리제목15', '내용1', '앨범5' , '락', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', '', '음악1', 'DB음악1', 0, '', 'storage\\\\2022\\\\12\\\\23', 0);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목16', '내용1', '앨범1' , '트로트', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목16', '내용1', '앨범1' , '트로트', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목17', '내용1', '앨범2' , '발라드', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', '', '음악1', 'DB음악1', 0, '', '', 0);
+('admin@web.com', '관리제목17', '내용1', '앨범2' , '발라드', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', '', '음악1', 'DB음악1', 0, '', 'storage\\\\2022\\\\12\\\\23', 0);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목18', '내용1', '앨범3' , '트로트', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목18', '내용1', '앨범3' , '트로트', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목19', '내용1', '앨범4' , '발라드', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', '', '음악1', 'DB음악1', 0, '', '', 0);
+('admin@web.com', '관리제목19', '내용1', '앨범4' , '발라드', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', '', '음악1', 'DB음악1', 0, '', 'storage\\\\2022\\\\12\\\\23', 0);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목20', '내용1', '앨범5' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목20', '내용1', '앨범5' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목21', '내용1', '앨범5' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목21', '내용1', '앨범5' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 INSERT INTO MUSIC (EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL )
 VALUES 
-('admin@web.com', '관리제목22', '내용1', '앨범5' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\2022\\12\\23', 'storage\\2022\\12\\23', 1);
+('admin@web.com', '관리제목22', '내용1', '앨범5' , '클래식', '2022-12-12 12:12:12', '2022-12-12 12:12:12', '00000001', '이미지1', 'animal1.jpg', '음악1', 'DB음악1', 0, 'storage\\\\2022\\\\12\\\\23', 'storage\\\\2022\\\\12\\\\23', 1);
 
 
 -- 로그 기초데이터 : USER 테이블의 EMAIL과  MUSIC 테이블의 MUSIC_NO를 복수의 FK로 받는다
