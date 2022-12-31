@@ -27,6 +27,7 @@ public interface TuneService {
 	
 	// 트랙
 	public Map<String, Object> getTrack();
+	public Map<String, Object> getRandomTrack();
 	
 	// 댓글
 	public Map<String, Object> getCommentCount(int musicNo);
