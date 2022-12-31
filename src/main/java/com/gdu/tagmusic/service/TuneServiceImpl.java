@@ -34,7 +34,6 @@ public class TuneServiceImpl implements TuneService {
 
 	private TuneMapper tuneMapper;
 	private MyFileUtil myFileUtil; 
-	private PageUtil pageUtil;
 	
 	
 	// 음원 등록
@@ -260,6 +259,13 @@ public class TuneServiceImpl implements TuneService {
 		result.put("musicList", tuneMapper.selectMusic());
 		return result;
 	}
+	// 트랙 - 셔플
+	@Override
+	public Map<String, Object> getRandomTrack() {
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put("musicList", tuneMapper.selectMusicByRandom());
+		return result;
+	}
 	
 	// 댓글 - 리스트
 	@Override
@@ -271,19 +277,14 @@ public class TuneServiceImpl implements TuneService {
 	@Override
 	public Map<String, Object> getCommentList(HttpServletRequest request) {
 		int musicNo = Integer.parseInt(request.getParameter("musicNo"));
-		int page = Integer.parseInt(request.getParameter("page"));
 		int commentCount = tuneMapper.selectCommentCount(musicNo);
-		pageUtil.setPageUtil(page, 10 ,commentCount);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("musicNo", musicNo);
-		map.put("begin", pageUtil.getBegin() - 1);  // MySQL은 begin이 0부터 시작함
-		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("resData.commentCount", commentCount);
-		result.put("commentList", tuneMapper.selectCommentList(map));
-		result.put("pageUtil", pageUtil);
+		result.put("commentList", tuneMapper.selectComment(map));
 		
 		return result;
 		

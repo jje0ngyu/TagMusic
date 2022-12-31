@@ -20,5 +20,6 @@ public class MusicCommentDTO {
 	private String commentContent;
 	private Date createDate;
 	
+	private UserDTO userDTO;
 	
 }

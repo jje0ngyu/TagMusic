@@ -46,12 +46,23 @@
 				</div>
 				<script>
 					$('#next').click(function(){
+						 window.addEventListener('message', function(e) {
+						  console.log('parent message');
+						  console.log(e.data); // { childData : 'test data' }
+						  console.log("e.origin : " + e.origin); //http://123.com(자식창 도메인)
+						 
+						  if(e.data.childData === 'test data'){
+							// ...처리 로직 (부모창 함수 호출)
+						  }
+						});
+						alert('dmㅠㅠ' + nextMusicNo);
+						/*
 						if(musicNo ==24) {
 							alert('다음 곡이 없습니다.');
 							return;
 						} else {
 							location.href='/tune/iframe?musicNo=' + (musicNo + 1);
-						}
+						}*/
 					})
 				</script>
 				<div class="left_controll" >
@@ -75,20 +86,27 @@
 			
 			<!-- 오른쪽 (뮤직플레이어 기능) -->
 			<div class="right_controlls">
-				<!--/* 볼륨 조절 : 구현 x 
+				<!--/* 볼륨 조절 : 구현 x */-->
 				<div class="right_controll">
-					<input class="mdl-slider mdl-js-slider" type="range"
-	  						min="0" max="100" value="25" tabindex="0">
+					<!--<input class="mdl-slider mdl-js-slider" type="range"
+	  						min="0" max="100" value="25" tabindex="0">-->
 					<img class="btn_side img_sound" th:src="@{/images/sound.png}">
 					<img class="btn_side img_no_sound blind" th:src="@{/images/no_sound.png}">
-				</div> */-->
+				</div> 
 				<div class="right_controll">
 					<img class="btn_side img_no_repeat" th:src="@{/images/repeat_one_gray.png}">
 					<img class="btn_side img_one_repeat blind" th:src="@{/images/repeat_one_white.png}">
 				</div>
-				<div class="right_controll">
+				<div class="right_controll shuffle">
 					<img class="btn_side img_shuffle" th:src="@{/images/shuffle.png}">
 				</div>
+				<script>
+					var nextMusicNo;
+					$('.shuffle').click(function(){
+						document.getElementById('music_iframe').contentWindow.fn_shuffleTrack();
+						$('#music_iframe').get(0).contentWindow.nextMusicNo;
+					});
+				</script>
 				<div class="right_controll">
 					<input id="hide_detail" type="button" value="닫기">
 				</div>

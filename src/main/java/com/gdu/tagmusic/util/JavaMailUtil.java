@@ -69,7 +69,7 @@ public class JavaMailUtil {
 				}
 			}));
 			
-			message.setFrom(new InternetAddress(username, "사이트관리자"));  // 보내는사람
+			message.setFrom(new InternetAddress(username, "태그뮤직(Tagmusic)"));  // 보내는사람
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(email));  // 받는사람
 			message.setSubject(title);  // 제목
 			message.setContent(content, "text/html; charset=UTF-8");  // 내용
