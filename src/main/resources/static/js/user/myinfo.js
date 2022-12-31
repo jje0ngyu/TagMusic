@@ -163,8 +163,6 @@
 					$('.modify_pw').addClass('blind');
 					alert('회원정보가 변경되었습니다.');
 					location.reload();
-					
-					
 				}
 			})
 		});
@@ -193,10 +191,6 @@
 					$('.modify_mobile').addClass('blind');
 					alert('회원정보가 변경되었습니다.');
 					location.reload();
-					
-				},
-				error : function(jqXHR){
-					console.log('error가 찍혔다');
 				}
 			})
 		});
@@ -222,10 +216,6 @@
 					$('.modify_mobile').addClass('blind');
 					alert('회원정보가 변경되었습니다.');
 					location.reload();
-					
-				},
-				error : function(jqXHR){
-					console.log('error가 찍혔다');
 				}
 			})
 		});

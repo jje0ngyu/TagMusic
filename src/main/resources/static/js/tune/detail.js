@@ -5,8 +5,9 @@ $(function(){
 	fn_comment_box();
 	
 	// 음원트랙
-	fn_shuffleTrack();
+	fn_goMusic();
 	fn_nextTrack();
+//	fn_shuffleTrack();
 	
 	// 댓글
 	fn_commentCount();
@@ -27,10 +28,48 @@ function fn_tabContent(){
 		$(this).addClass('border_bottom_solid_white');
 	});
 }
+function fn_goMusic() {
+	$(document).on('click', '.music_track_box', function(){
+		var musicNo = $(this).children().data('music');
+		if(musicNo != null){
+			window.parent.location.href = '/tune/iframe?musicNo=' + musicNo;
+			
+		}
+	});
+}
 
 function fn_next_track_box(){
 	$('.tab_next_track').click(function(){
 		$('.tune_next_track_box').removeClass('blind');
+	});
+}
+function fn_shuffleTrack(){
+	$.ajax({
+		type: 'get',
+		url : '/tune/shuffleTrack',
+		dataType: 'json',
+		success : function(resData) {
+			var txt = '';
+			if(resData.musicList != 0) {
+				$('.tune_next_track_box').empty();
+				$.each(resData.musicList, function(i, music){
+					
+					txt += '<input type="hidden" id="'+ i +'" value="'+ music.musicNo+ '">';
+					txt += '<div>' + music.musicNo+ '</div>';
+					txt += '<div><a href="/tune/iframe?musicNo=' + music.musicNo + '" data-no="'+ i +'">'  + music.musicTitle + '</a></div>';
+					txt += '<div>' + music.email + '</div>';
+				});
+				$('.tune_next_track_box').append(txt);
+				nextMusicNo = $('#0').val();
+				/*
+					window.onload = function() {
+					console.log('child load');  
+					window.parent.postMessage({ childData : 'nextMusicNo' }, '*	');
+				}
+				alert('부모창으로 보내기!');
+				*/
+			}
+		},
 	});
 }
 
@@ -63,7 +102,6 @@ function fn_commentCount(){
 		data: 'musicNo=' + musicNo,	// 'musicNo=[[${music.musicNo}]]'
 		dataType: 'json',
 		success: function(resData){  // resData = {"commentCount": 개수}
-			alert('resData.commentCount: ' + resData.commentCount);
 			$('#comment_count').text(resData.commentCount);
 		}
 	});

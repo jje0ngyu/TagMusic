@@ -124,9 +124,10 @@
 	
 	
 	<!-- 다음 트랙 (*음악 테이블 모든 음악 가져오기 : 수정필요) -->
-	<select id="selectMusic" resultType="MusicDTO">
-		SELECT MUSIC_NO, EMAIL, MUSIC_TITLE
-  		  FROM MUSIC
+	<select id="selectMusic" resultMap="MusicMap">
+		SELECT MUSIC_NO, M.EMAIL, MUSIC_TITLE, ARTIST
+  		  FROM MUSIC M INNER JOIN USERS U
+  		    ON M.EMAIL = U.EMAIL
 	</select>
 	<!--셔플-->
 	<select id="selectMusicByRandom" resultType="MusicDTO">

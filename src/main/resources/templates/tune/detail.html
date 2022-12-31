@@ -25,35 +25,6 @@
 						다음 트랙
 					</div>
 					<script>
-						function fn_shuffleTrack(){
-							$.ajax({
-								type: 'get',
-								url : '/tune/shuffleTrack',
-								dataType: 'json',
-								success : function(resData) {
-									var txt = '';
-									if(resData.musicList != 0) {
-										$('.tune_next_track_box').empty();
-										$.each(resData.musicList, function(i, music){
-											
-											txt += '<input type="hidden" id="'+ i +'" value="'+ music.musicNo+ '">';
-											txt += '<div>' + music.musicNo+ '</div>';
-											txt += '<div><a href="/tune/iframe?musicNo=' + music.musicNo + '" data-no="'+ i +'">'  + music.musicTitle + '</a></div>';
-											txt += '<div>' + music.email + '</div>';
-										});
-										$('.tune_next_track_box').append(txt);
-										nextMusicNo = $('#0').val();
-										/*
-											window.onload = function() {
-											console.log('child load');  
-											window.parent.postMessage({ childData : 'nextMusicNo' }, '*	');
-										}
-										alert('부모창으로 보내기!');
-										*/
-									}
-								},
-							});
-						}
 						function fn_nextTrack(){
 							$(document).on('change','.tune_next_track_box',function(){
 								alert('진행된다~!');
@@ -80,32 +51,33 @@
 								var txt = '';
 								if(resData.musicList != 0) {
 									$.each(resData.musicList, function(i, music){
-										txt += '<div>' + music.musicNo+ '</div>';
-										txt += '<div>' + music.musicTitle + '</div>';
-										txt += '<div>' + music.email + '</div>';
+										txt += '<div class="music_track_box">';
+											txt += '<input type="hidden" class="musicNo" name="musicNo" data-music="' + music.musicNo +  '">';
+											txt += '<div>';
+											txt += '<img src="/tune/display/image?musicNo='+ music.musicNo + '" id="iframe_album_image" style="height: 60px;">'
+											txt += '</div>';
+											txt += '<div>';
+												txt += '<div>' + music.musicTitle + '</div>';
+												txt += '<div>' + music.userDTO.artist + '</div>';
+											txt += '</div>';
+										txt += '</div>'
 									});
-									
 									$('.tune_next_track_box').append(txt);
 								}
 							},
-							error : function() {
-								console.log('에러');
-							}
 						});
 						
 					</script>
 				</div>
 				<!-- 가사 -->
 				<div class="tune_lyrics_box blind">
-					<textarea class="tune_lyrics" th:text="${music.musicContent}"></textarea>
+					<textarea class="tune_lyrics" th:text="${music.musicContent}" readonly></textarea>
 				</div>
 				
 				<!-- 댓글 -->
 				<div class="tune_comment_box blind">
 					<!--댓글 TOP-->
-					<div class="comment_top">
-						댓글<span id="comment_count"></span>개
-					</div>
+					<div class="comment_top">댓글<span id="comment_count"></span>개</div>
 					<!--댓글 MIDDLE-->
 					<div class="comment_middle">
 						<form id="frm_comment">
