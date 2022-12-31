@@ -53,12 +53,12 @@
 									$.each(resData.musicList, function(i, music){
 										txt += '<div class="music_track_box">';
 											txt += '<input type="hidden" class="musicNo" name="musicNo" data-music="' + music.musicNo +  '">';
-											txt += '<div>';
-											txt += '<img src="/tune/display/image?musicNo='+ music.musicNo + '" id="iframe_album_image" style="height: 60px;">'
+											txt += '<div class="music_img">';
+											txt += '<img src="/tune/display/image?musicNo='+ music.musicNo + '" id="iframe_album_image">'
 											txt += '</div>';
-											txt += '<div>';
-												txt += '<div>' + music.musicTitle + '</div>';
-												txt += '<div>' + music.userDTO.artist + '</div>';
+											txt += '<div class="music_info">';
+												txt += '<div style="font-weight:600">' + music.musicTitle + '</div>';
+												txt += '<div style="font-size:14px color: #bdc2ce">' + music.userDTO.artist + '</div>';
 											txt += '</div>';
 										txt += '</div>'
 									});

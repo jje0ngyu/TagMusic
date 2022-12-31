@@ -53,11 +53,17 @@ function fn_shuffleTrack(){
 			if(resData.musicList != 0) {
 				$('.tune_next_track_box').empty();
 				$.each(resData.musicList, function(i, music){
-					
-					txt += '<input type="hidden" id="'+ i +'" value="'+ music.musicNo+ '">';
-					txt += '<div>' + music.musicNo+ '</div>';
-					txt += '<div><a href="/tune/iframe?musicNo=' + music.musicNo + '" data-no="'+ i +'">'  + music.musicTitle + '</a></div>';
-					txt += '<div>' + music.email + '</div>';
+					txt += '<div class="music_track_box">';
+						txt += '<input type="hidden" id="'+ i +'" value="'+ music.musicNo+ '">';
+						txt += '<div class="music_img">';
+						txt += '<img src="/tune/display/image?musicNo='+ music.musicNo + '" id="iframe_album_image">'
+						txt += '</div>';
+						txt += '<div class="music_info">';
+						txt += '<div>' + music.musicNo+ '</div>';
+							txt += '<div style="font-weight:600">' + music.musicTitle + '</div>';
+							txt += '<div style="font-size:14px color: #bdc2ce">' + music.userDTO.artist + '</div>';
+						txt += '</div>'
+					txt += '</div>'
 				});
 				$('.tune_next_track_box').append(txt);
 				nextMusicNo = $('#0').val();

@@ -58,7 +58,28 @@ html, body, div, input, a, form, textarea {
 	padding: 5px 10px;
 }
 .music_track_box:hover {
+	background-color: #37486b;
+	color: #fdfdfd;
 	cursor: pointer;
+}
+.music_img {
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100px;
+	height: 100%;
+}
+.music_info {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	padding: 0 10px;
+	height: 100%;
+}
+#iframe_album_image {
+	max-width: 60px;
+	max-height: 60px;
 }
 .tune_next_track_box {
 	width: 100%;
