@@ -93,7 +93,7 @@
 }
 
 
-input[type=text] {
+input[type=text]:keyup {
 	background-color: #efefef;
 	color: #323232;
 	font-size: 25px;
@@ -169,7 +169,6 @@ input[type=text] {
 
 
 
-
 	$(document).ready(function() {
 		
 		//fn_checkUserPlaylistZero();	// 구현 : 플레이리스트가 0개일경우 생성유도화면 띄우기
@@ -183,11 +182,13 @@ input[type=text] {
 		//fn_updatePlaylist_music();	// 가능 : 플레이리스트 수록곡 최신화
 		fn_modal_createPlaylist();		// 기능 : 플레이리스트 생성 모달창
 		fn_createPlaylist();			// 구현 : 플레이리스트 생성
-		fn_modalClose();				// 구현 : 모달창 닫기
+		//fn_modalClose();				// 구현 : 모달창 닫기
+		fn_totalMusicBoard();			// 기능 : 전체게시판 이동
 	});
 
 	// 전역변수
 	var upDownIcon;	// 상하아이콘
+	var thumbnail;
 
 	function fn_Playlist_list() {	// 플레이리스트 목록조회
 		
@@ -209,20 +210,17 @@ input[type=text] {
 						$('.playlist_header').empty();
 						$('.playlist_body').empty();
 
-						$('.playlist_header')
+						$('.playlist_body')
 						.append( $('<div class="playlistZero_area">') 
 								.append( $('<div class="playlistZero_left">')
-										.append('<div class="playlistZero_left_logo"><i class="fa-solid fa-circle-exclamation"></i>!</div>')
+										.append('<div class="playlistZero_left_logo"><i class="fa-solid fa-circle-exclamation fa-3x"></i></div>')
 										.append('<div class="playlistZero_left_content">플레이리스트에 음악이 없습니다. 생성버튼으로 플레이리스트를 생성하실 수 있습니다</div>') 
 										.append('<div class="playlist_add">생성하기</div>') )
 								.append( $('<div class="playlistZero_right">')
-										.append('<div class="playlistZero_right_btn">게시판 이동</div>')
+										.append('<div class="playlistZero_right_btn"><i class="fa-solid fa-circle-chevron-right fa-3x"></i></div>')
 										.append('<div class="playlistZero_right_content">게시판에서 음악을 등록하실수 있습니다.</div>') )
-								
-						
 						);
-						
-						
+
 					} else {
 						
 						// 3) 제대로 요청된경우 
@@ -231,10 +229,8 @@ input[type=text] {
 						$('.playlist_top').empty();
 						// 1) 헤더
 						$('.playlist_top').
-						append('<div class=" playlist_userName">'+resData.userNickName +' 님의 플레이리스트 </div>')
-						
-						
-						
+						append('<div class=" playlist_userName"><i class="fa-solid fa-list"></i>&nbsp;'+resData.userNickName +' 님의 플레이리스트 </div>')
+
 						// 유저정보 갱신 
 						
 						$('.playlist_header').empty();
@@ -250,22 +246,25 @@ input[type=text] {
 						
 						$('.playlist_body').empty();	// 상단 리스트 최신화
 	
+						 
+							var thumbnail;
 						
-		
 						$.each(resData.userPlaylist, function(index, playlist) {
 							
+							
 							// 썸네일 조건부여
-							//if(playlist.myMusicDTO.musicDTO.hasThumbNail == 1) {
-							//	//let thumbnail = '/music/user/playlistThumbnail';
-							//} else if (playlist.myMusicDTO.musicDTO.hasThumbNail == 0) {
-								let thumbnail = '/images/defaultImage.png';
-							//}
+							
+							if(playlist.myMusicDTO.musicDTO.hasThumbNail == 1) {
+								thumbnail = '/music/user/playlistThumbnail?listNo=' + playlist.listNo;
+							} else if (playlist.myMusicDTO.musicDTO.hasThumbNail == 0) {
+								thumbnail = '/images/defaultImage.png';
+							}
 							
 							$('<div class="playlist_area">')
 							.append( $('<div class="playlist_list">')
-									.append( $('<div class="playlist_list_top"></div>')
+									.append( $('<div class="playlist_list_top">')
 											.append( $('<div class="playlist_list_left">')
-													.append('<img class="playlist_thumbnail" src="' + thumbnail + '"></div>') ) 
+													.append('<img class="playlist_thumbnail" src="' + thumbnail + '">') ) 
 											.append( $('<div class="playlist_list_middle"></div>')
 												.append('<div class="playlist_playlistName">' + playlist.listName +'</div>')
 												.append('<div class="playlist_musicCnt">'+ playlist.musicCnt+' 곡</div>') ) 
@@ -348,7 +347,7 @@ input[type=text] {
 				data: 'listNo=' + listNo,
 				dataType: 'json',
 				success: function(resData) {
-						console.log(resData);
+	
 						
 						// 수록곡 목록 갱신
 						$(board).empty();
@@ -356,20 +355,22 @@ input[type=text] {
 						// 수록곡 목록조회
 			
 						let body = $('<tbody>');
-						let thumbnail = '';
+						var img;
 
 						$.each(resData.PlaylistMusiclist, function(index, musicList) {
 							
+							
+							
 							if(musicList.musicDTO.hasThumbNail == 1) {
-								let thumbnail = '/music/thumbnail';
+								img = '/music/thumbnail?musicNo=' + musicList.musicNo;
 							} else if (musicList.musicDTO.hasThumbNail == 0) {
-								let thumbnail = '/images/defaultImage.png';
+								img = '/images/defaultImage.png';
 							}
-		
+							
 							
 							$('<tr class="playlist_tr">')
 							.append('<td class="td_no">'+ (index + 1) +'</td>') 
-							.append( $('<td class="playlist_td">').append('<img class="board_thumbnail" src="'+ thumbnail+'">') )
+							.append( $('<td class="playlist_td">').append('<img class="playlist_content_thumbnail" src="'+ img+'">') )
 							.append( $('<td class="playlist_td">')
 								.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'</div>')
 								.append('<div class="playlist_musicArtist">'+ musicList.playlistDTO.userDTO.artist +'</div>') )
@@ -401,7 +402,7 @@ input[type=text] {
 						
 
 						$(board).append( $('<table class="playlist_table">')
-							.append('<thead><tr class="playlist_tr"><th>No</th><th colspan="3">곡 정보</th><th>삭제</th></tr></thead>')
+							.append('<thead><tr class=""><th>No</th><th colspan="3">곡 정보</th><th>삭제</th></tr></thead>')
 							.append($(body)) )
 							.append( $('<div class="page_block">').append(paging) );				
 				}	
@@ -434,20 +435,20 @@ input[type=text] {
 						// 수록곡 목록조회
 			
 						let body = $('<tbody>');
-						let thumbnail = '';
+						var img;
 
 						$.each(resData.PlaylistMusiclist, function(index, musicList) {
 							
 							if(musicList.musicDTO.hasThumbNail == 1) {
-								let thumbnail = '/music/thumbnail';
+								img = '/music/thumbnail?musicNo=' + musicList.musicNo;
 							} else if (musicList.musicDTO.hasThumbNail == 0) {
-								let thumbnail = '/images/defaultImage.png';
+								img = '/images/defaultImage.png';
 							}
 		
 							
 							$('<tr>')
 							.append('<td class="td_no">'+ (index + 1) +'</td>') 
-							.append( $('<td>').append('<img class="board_thumbnail" src="'+ thumbnail+'">') )
+							.append( $('<td>').append('<img class="playlist_content_thumbnail" src="'+ img+'">') )
 							.append( $('<td class="">')
 								.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'</div>')
 								.append('<div class="playlist_musicArtist">'+ musicList.playlistDTO.userDTO.artist +'</div>') )
@@ -502,36 +503,38 @@ input[type=text] {
 					
 					$('.playlist_header').empty();
 					$('.playlist_header')
-					.append( $('<div class="playlist_header_left">')
-						.append('<div class="playlist_userName">'  + resData.userNickName + '님의 플레이리스트</div>')
-						.append('<div class="playlist_cnt">'  + resData.userPlaylistCnt + '개의 플레이리스트 보유중</div>')
-						.append('<div class="playlist_emp">※ 플레이리스트는 총 5개 생성할 수 있습니다</div>') )
-					
+						.append( $('<div class="playlist_header_left">')
+							.append('<div class="playlist_cnt">'  + resData.userPlaylistCnt + '개의 플레이리스트 보유중</div>')
+							.append('<div class="playlist_emp">※ 플레이리스트는 총 5개 생성할 수 있습니다</div>') )
+						
 					$('.playlist_header').append( $('<div class="playlist_header_right">').append('<div class="playlist_add"><i class="fa-sharp fa-solid fa-plus"></i></div>') )  
+						
 					
 
 					// 플레이리스트 목록
 					
 					$('.playlist_body').empty();	// 상단 리스트 최신화
 	
-						
-		
+							
+				
 						$.each(resData.userPlaylist, function(index, playlist) {
 							
+							var thumbnail;
+							
 							// 썸네일 조건부여
-							//if(playlist.myMusicDTO.musicDTO.hasThumbNail == 1) {
-							//	//let thumbnail = '/music/user/playlistThumbnail';
-							//} else if (playlist.myMusicDTO.musicDTO.hasThumbNail == 0) {
-								let thumbnail = '/images/defaultImage.png';
-							//}
+							if(playlist.myMusicDTO.musicDTO.hasThumbNail == 1) {
+								thumbnail = '/music/user/playlistThumbnail?listNo=' + playlist.listNo;
+							} else if (playlist.myMusicDTO.musicDTO.hasThumbNail == 0) {
+								thumbnail = '/images/defaultImage.png';
+							}
 							
 							$('<div class="playlist_area">')
 							.append( $('<div class="playlist_list">')
 									.append( $('<div class="playlist_list_top"></div>')
 											.append( $('<div class="playlist_list_left">')
-													.append('<img class="playlist_thumbnail" src="' + thumbnail + '"></div>') ) 
+													.append('<img class="playlist_thumbnail" src="' + thumbnail + '">') ) 
 											.append( $('<div class="playlist_list_middle"></div>')
-													.append('<input type="text" id="listName" name="listName" value="'+playlist.listName+'">')
+													.append('<input type="text" id="listName" name="listName" value="'+playlist.listName+'"><div>※ 변경할 리스트명을 입력하세요</div> ')
 													.append('<div class="playlist_musicCnt">'+ playlist.musicCnt+' 곡</div>') ) 
 											.append( $('<div class="playlist_list_right"></div>')
 														.append('<div class="playlist_modifyPlaylistName playlist_btn" data-listno="'+playlist.listNo+'">변경</div>')
@@ -640,6 +643,7 @@ input[type=text] {
 
 						alert('삭제에 성공했습니다');
 						fn_Playlist_list();
+						fn_updatePlaylist_music();
 						// fn_updatePlaylist_music();
 					}
 				}
@@ -668,14 +672,14 @@ input[type=text] {
 					// 수록곡 목록조회
 		
 					let body = $('<tbody>');
-					let thumbnail = '';
+					var thumbnail;
 
 					$.each(resData.PlaylistMusiclist, function(index, musicList) {
 						
 						if(musicList.musicDTO.hasThumbNail == 1) {
-							let thumbnail = '/music/thumbnail';
+							thumbnail = '/music/thumbnail';
 						} else if (musicList.musicDTO.hasThumbNail == 0) {
-							let thumbnail = '/images/defaultImage.png';
+							thumbnail = '/images/defaultImage.png';
 						}
 	
 						

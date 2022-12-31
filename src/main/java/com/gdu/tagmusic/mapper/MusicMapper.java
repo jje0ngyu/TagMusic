@@ -52,6 +52,9 @@ public interface MusicMapper {
 		
 	// 2) 유저의 플레이리스트 조회
 	public List<PlaylistDTO> selectUserPlaylist(Map<String, Object> map);
+	
+	// 3) 최신썸네일 음악 조회
+	public MusicDTO selectUserPlaylistThumbnail(int listNo);
 
 	// 3) 플레이리스트 수록곡 수 조회
 	public int selectUserPlaylistMusicCnt(int listNo);
@@ -134,8 +137,7 @@ public interface MusicMapper {
 
 	
 	/*
-	 * // 2) 유저의 플레이리스트 썸네일 반환 public MusicDTO selectUserPlaylistThumbnail(int
-	 * listNo);
+	 * // 2) 유저의 플레이리스트 썸네일 반환 public MusicDTO selectUserPlaylistThumbnail(int listNo);
 	 * 
 	 * // 3) 플레이리스트 추가 public int insertPlaylist(Map<String, Object> map);
 	 * 
