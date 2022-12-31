@@ -80,7 +80,6 @@ public class AdminServiceImpl implements AdminService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("chatDetail", adminMapper.getChatDetail(groupNo));
-System.out.println(adminMapper.getChatDetail(groupNo));		
 		return map;
 	}
 	
