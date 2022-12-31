@@ -51,8 +51,14 @@
 					page = $('#page_updated').val();
 					
 					// (1) # 기능 : 페이징 좌측버튼 보여주기
+					if(page == pageUtil.beginPage) {
+						$('.main_lastList_body').append('<div class="main_lastList_body_left_btn" data-page="' +(pageUtil.endPage) + '"><i class="fa-solid fa-circle-chevron-left fa-3x"></i></div>');
+					} else {
+						$('.main_lastList_body').append('<div class="main_lastList_body_left_btn" data-page="' +(pageUtil.page -1) + '"><i class="fa-solid fa-circle-chevron-left fa-3x"></i></div>');
+					}
 					
-					$('.main_lastList_body').append('<div class="main_lastList_body_Btn" data-page="' +(pageUtil.page -1) + '"><i class="fa-solid fa-circle-chevron-left fa-3x"></i></div>');
+					
+					
 	
 					content = $('<div id="main_lastList_body_content" class="main_lastList_body_content"></div>');
 
@@ -78,27 +84,104 @@
 				
 					
 					// (3) # 기능 : 페이징 우측버튼 보여주기
-					$('.main_lastList_body').append('<div class="main_lastList_body_Btn"  data-page="' + (pageUtil.page + 1) + '"><i class="fa-solid fa-circle-chevron-right fa-3x"></i></div>');
+					if(page != pageUtil.endPage) {
+						$('.main_lastList_body').append('<div class="main_lastList_body_right_btn"  data-page="' + (pageUtil.page + 1) + '"><i class="fa-solid fa-circle-chevron-right fa-3x"></i></div>');
+					} else {
+						$('.main_lastList_body').append('<div class="main_lastList_body_right_btn"  data-page="1"><i class="fa-solid fa-circle-chevron-right fa-3x"></i></div>');
+					}
+					
+				}
+			});	
+		}
+		
+		// 기능 : 우측버튼 최신화
+			function fn_updatedMusicr() {
+			
+			$.ajax({
+				type: 'get',
+				url: '/music/list/updated',
+				data : 'page=' + $('#page_updated').val(),	
+				dataType: 'json',
+				success: function(resData) {	
+					
+					// 갱신
+					$('.main_lastList_body').empty();
+			
+					// 페이징
+					pageUtil = resData.pageUtil;
+					page = $('#page_updated').val();
+					
+					// (1) # 기능 : 페이징 좌측버튼 보여주기
+					
+					if(page == pageUtil.beginPage) {
+						$('.main_lastList_body').append('<div class="main_lastList_body_left_btn" data-page="' +(pageUtil.endPage) + '"><i class="fa-solid fa-circle-chevron-left fa-3x"></i></div>');
+					} else {
+						$('.main_lastList_body').append('<div class="main_lastList_body_left_btn" data-page="' +(pageUtil.page -1) + '"><i class="fa-solid fa-circle-chevron-left fa-3x"></i></div>');
+					}
+					
+					content = $('<div id="main_lastList_body_content" class="main_lastList_body_content"></div>');
+
+					// (2) 가운데 : 게시글
+					$.each(resData.musicList, function(index, music) {
+						
+						
+						// # 구현 : 썸네일 가져오기
+						if(music.hasThumbNail == 1) {
+							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+						} else if(music.hasThumbNail == 0) {
+							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+						}
+						
+					    $('<div class="main_item_r">')
+					   .append(text)
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .appendTo( $(content) );
+					}); 
+		
+					 $('.main_lastList_body').append( $(content) );
+				
+					
+					// (3) # 기능 : 페이징 우측버튼 보여주기
+					if(page != pageUtil.endPage) {
+						$('.main_lastList_body').append('<div class="main_lastList_body_right_btn"  data-page="' + (pageUtil.page + 1) + '"><i class="fa-solid fa-circle-chevron-right fa-3x"></i></div>');
+					} else {
+						$('.main_lastList_body').append('<div class="main_lastList_body_right_btn"  data-page="1"><i class="fa-solid fa-circle-chevron-right fa-3x"></i></div>');
+					}
 					
 					
 				}
 			});	
 		}
 		
+		
+		
+	
 		// # 기능 : 최신리스트바 페이지 버튼
 		function fn_updatedPageMove() {
-			 $(document).on('click', '.main_lastList_body_Btn', function(){
+			 $(document).on('click', '.main_lastList_body_left_btn', function(){  	        
 		         $('#page_updated').val($(this).data('page'));	// 버튼에 저장된 page 태그값을 hidden의 페이지값에 전달 -> 새로운 페이지를 파라미터로 전달해서 재요청
+		         fn_updatedMusicr();
+		      });
+		      
+		      $(document).on('click', '.main_lastList_body_right_btn', function(){
+		        	    
+		         $('#page_updated').val($(this).data('page'));	// 버튼에 저장된 page 태그값을 hidden의 페이지값에 전달 -> 새로운 페이지를 파라미터로 전달해서 재요청
+		       
 		         fn_updatedMusic();
 		      });
 		}
-		
+
 		// # 구현 : 최신리스트 게시판조회, mvc
 		function fn_updatedMusicBoard() {
 			$('#btn_updatedMusicBoard').click(function() {
 				location.href="/music/board/updatedMusic?page=1";
 			});
 		}
+		
+		
+		
+		
 		
 		// # 구현 : 인기음악 전체리스트바
 		function fn_popularMusic() {
@@ -110,45 +193,39 @@
 				success: function(resData) {	// resData : musicList, pageUtil, artist
 					
 					// 갱신
-					$('#popularMusicList').empty();
+					$('.main_musicLike_body').empty();
 			
 			
 					// 페이징
 					pageUtil = resData.pageUtil;
 					page = $('#page_popular').val();
 					
-					// (1) # 기능 : 페이징 좌측버튼 보여주기
-					if(pageUtil.page > 1) {
-						//$('.main_lastList_body')
-						//.append('div class="main_lastList_body_Btn data-page="' +(pageUtil.page -1) +'"><i class="fa-solid fa-circle-chevron-left fa-3x"></i></div>')
-
-					}
 					
+					
+					content = $('<div id="main_musicLike_body_content" class="main_musicLike_body_content"></div>');
+
 					// (2) 가운데 : 게시글
 					$.each(resData.musicList, function(index, music) {
 						
+						
 						// # 구현 : 썸네일 가져오기
-						// * 방법 : 자바스크립트로 텍스트 추가하는 방식을 사용
-
 						if(music.hasThumbNail == 1) {
-							// (1) 썸네일이 존재하는 경우 썸네일 맵핑 요청
 							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
 						} else if(music.hasThumbNail == 0) {
-							// (2) 디폴트 이미지 : 정적 파일의 경로는 static 이하 폴더부터
 							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
 						}
 						
-						$('<div class="main_item">') 
-						.append(text)
-						.append('<a class="item_title" href="music/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-						.append('<a class="item_artist" href="music/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
-						.appendTo(('#popularMusicList'));   
-						
+					    $('<div class="main_item_p">')
+					   .append(text)
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .appendTo( $(content) );
 					}); 
-					// (3) # 기능 : 페이징 우측버튼 보여주기
-					if(pageUtil.page != pageUtil.totalPage) {
-						$('#popularMusicList').append($('<span class="enable_listLink page_popular_right" data-page="' + (pageUtil.page + 1) + '">').text('▶'));						
-					}	
+		
+					 $('.main_musicLike_body').append( $(content) );
+				
+					
+					
 				}
 			});	
 			
@@ -203,10 +280,7 @@
 					pageUtil = resData.pageUtil;
 					page = $('#page_popular_genre').val();
 					
-					// (1) # 기능 : 페이징 좌측버튼 보여주기
-					if(pageUtil.page > 1) {
-						$('#popularMusicList').append($('<span class="enable_listLink2" data-genre="' + $('#genre').text()  + '"data-page="' +(pageUtil.page -1) + '">').text('◀'));
-					}
+				
 					
 					// (2) 가운데 : 게시글
 					$.each(resData.musicList, function(index, music) {
@@ -228,10 +302,7 @@
 						.appendTo(('#popularMusicList'));   
 						
 					}); 
-					// (3) # 기능 : 페이징 우측버튼 보여주기
-					if(pageUtil.page != pageUtil.totalPage) {
-						$('#popularMusicList').append($('<span class="enable_listLink2" data-genre="' + $('#genre').text()  + '"data-page="' + (pageUtil.page + 1) + '">').text('▶'));						
-					}	
+					
 				}
 			});		
 		});
@@ -442,8 +513,8 @@
 					<div class="main_lastList_header">
 						<div class="list_title">
 							<i class="fa-solid fa-headphones"></i>
-							<span class="bar_title">최신곡 리스트</span>
-							<span class="bar_content">최기</span>
+							<span class="bar_title">최신리스트</span>
+							<span class="bar_content">최신 곡들을 들어보세요</span>
 						</div>
 						<i id="btn_updatedMusicBoard" class="fa-solid fa-plus fa-2x"></i>
 					</div>
@@ -460,9 +531,10 @@
 				</div>
 				<!--  # 믹스리스트 -->
 				<div class="main_likeList">
-					<div class="main_header">
-						<div class="list_title">
-							<span class="bar_title">인기있는 음악</span>
+					<div class="main_musicLike_header">
+						<div class="list_title_like">
+							<i class="fa-solid fa-fire"></i>
+							<span class="bar_title">인기리스트</span>
 							<span class="bar_content">많은 사랑을 받은 음악입니다</span>
 						
 						</div>
@@ -489,12 +561,16 @@
 							</div>
 
 							
+							<i id="btn_popularMusicBoard" class="fa-solid fa-plus fa-2x"></i>
 						</div><!-- header에서 flex를 줘서 수평이됨 -->
 						
-						<input type="button" value="더보기" id="btn_popularMusicBoard">
 					</div>
 		
-					<div id="popularMusicList" class="main_lastList_body_content">
+					<div class="main_musicLike_body">
+					
+						<div id="main_musicLike_body_content" class="main_musicLike_body_content"></div>
+						
+					</div>
 					
 					
 					</div>

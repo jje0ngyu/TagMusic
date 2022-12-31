@@ -9,6 +9,8 @@ width는 1250px, 80퍼센트면 1000px;
 
 body {
 	
+	height: 1400px;
+	
 	background-color: #fbfbfb;
 	
 }
@@ -25,11 +27,11 @@ body {
  
 .main {
 	
-	margin: 35px auto;
-	margin-top: 75px;
+	margin: 65px auto;
+	
 	background-color: #fbfbfb;
 	width : 1650px;
-	height: 900px;
+	height: 1100px;
 	padding: 30px;
 	
 
@@ -47,10 +49,24 @@ a {
 	width : 100%;
 	height: 350px;
 	background-color: #fbfbfb;
-	margin-bottom: 70px;
+	margin-bottom: 90px;
 	margin-top: 20px;
 	color: #323232;
 
+}
+
+.main_likeList_genre_bar {
+	
+	width: 100%;
+	height: 200px;
+	margin-bottom: 50px;
+	
+}
+
+.bar_title {
+	
+	font-size: 35px;
+	font-weight: 900;
 }
 
 
@@ -59,7 +75,20 @@ a {
 	padding: 20px;
 	display: flex;
 	justify-content: space-between;
-	margin: 0 50px;
+	margin: 0 70px;
+	
+	
+	font-size: 25px;
+	font-weight: 600;
+	
+}
+
+.main_musicLike_header {
+	
+		
+	padding-left: 90px;
+	
+	margin-bottom: 50px;
 	
 	
 	font-size: 25px;
@@ -76,32 +105,53 @@ a {
 
 */
 
-.main_lastList_body {
+.main_lastList_body, .main_musicLike_body {
 	
 	width: 1600px;
 	display: flex;
 	height : 320px;
+	margin-bottom: 40px;
 	
 }
 
 
 .main_lastList_body_content {
-	
 	display: flex;
 	
-	
+	overflow: hidden;
 	background-color: #323232;
-	width: 100%;
+	width: 1500px;
 	height: 300px;
 	background-color: #efefef;
 	box-shadow: 0 1px 10px 0 #808080;
+	border-radius: 10px;
 	
+	
+	
+}
+.main_musicLike_body_content {
+	
+	
+	display: flex;
+	flex-wrap: wrap;
+	overflow: auto;
+	background-color: #323232;
+	width: 1420px;
+	height: 600px;
+	background-color: #efefef;
+	box-shadow: 0 1px 10px 0 #808080;
+	margin-left: 90px;
 	border-radius: 10px;
 	
 	
 }
+.main_musicLike_body_content::-webkit-scrollbar {
 
-.main_lastList_body_Btn {
+    display: none; 
+}
+
+
+.main_lastList_body_left_btn, .main_lastList_body_right_btn, .main_musicLike_body_left_btn, .main_musicLike_body_rightt_btn  {
 	
 	height : 320px;
 	line-height: 320px;	
@@ -113,13 +163,90 @@ a {
 	
 	
 	background-color: #212121;
-	width: 280px;
+	width: 264px;
 	height: 260px;
 	margin: 20px 10px;
 	padding: 3px 10px;
+	
+	
 	border-radius: 10px;
+	flex-wrap:nowrap;
+    animation: bannermove 1s ease ;
 	
 }
+
+@keyframes bannermove {
+  from {
+    transform: translate(100%, 0);
+    visibility: none;
+  }
+
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+/* 아이템 하나 */
+.main_item_r {
+	
+	
+	background-color: #212121;
+	width: 264px;
+	height: 260px;
+	margin: 20px 10px;
+	padding: 3px 10px;
+	
+	
+	border-radius: 10px;
+	flex-wrap:nowrap;
+   animation: bannermove2 1s ease ;
+	
+}
+
+@keyframes bannermove2 {
+  from {
+    transform: translate(-100%, 0);
+    visibility: none;
+  }
+
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+.main_item_p {
+	
+	background-color: #212121;
+	width: 264px;
+	height: 260px;
+	margin: 20px 10px;
+	padding: 3px 10px;
+	
+	
+	border-radius: 10px;
+	flex-wrap:nowrap;
+   animation: bannermove3 1s ease ;
+	
+}
+
+@keyframes bannermove3 {
+  from {
+    transform: translate(0, -30%);
+    visibility: none;
+  }
+
+  to {
+    transform: translate(0, 0);
+  }
+}
+
+.main_item_p:hover {
+	
+	background-color: #545454;
+
+	
+}
+ 
 
 .main_item:hover {
 	background-color: #545454;
@@ -177,18 +304,30 @@ a {
  
  .list_title {
  
- 	color: #323232;
+ 	color:  #20325A;
  	display:inline-block;
  	font-size: 28px;
  	margin-right: 400px;
+ 	
+
+ }
+ 
+ .list_title_like {
+	 
+	 color:  #20325A;
+ 	display:inline-block;
+ 	font-size: 28px;
+ 	margin-right: 400px;
+ 	margin-bottom: 20px;
+	 
  }
 
  
  .bar_content {
  
 	margin-left: 17px;
- 	font-size: 15px;
- 
+ 	font-size: 17px;
+ 	font-weight: 900;
  
  }
 
@@ -197,9 +336,9 @@ a {
 .bar_header_menus {
 	
 	display: flex;
-	justify-content: space-around;
-	width: 590px;
-	height: 40px;
+
+	width: 1520px;
+	height: 20px;
 
 	
 }
@@ -207,19 +346,51 @@ a {
 
 .bar_header_menu {
 	
-	background-color: #323232;
-	width: 90px;
+	background-color: #37486b;
+	width: 70px;
 	
-	
+	margin-right: 5px;
 	text-align: center;
 	color: #eeeeee;
 	font-size: 17px;
-	border: 1px solid #323232;
+	border: none;
 	border-radius: 20px;
-	height: 40px;
-	line-height: 40px;
+	height: 30px;
+	line-height: 30px;
 	
 	
+}
+
+.bar_header_menu:hover {
+	animation: fadein-btn3 0.5s;
+	background-color: #efefef;
+	cursor: pointer;
+	}
+	
+	@keyframes fadein-btn3 {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		
+		background-color: #efefef;
+		opacity: 0;
+	}
+	to {
+		background-color: #37486b;
+		opacity: 1;
+		
+	}
+	}
+	
+
+#btn_popularMusicBoard {
+	
+	margin-left: 990px;
+	cursor: pointer;
+	
+}
+
+#btn_updatedMusicBoard {
+	cursor: pointer;
 }
 
 
