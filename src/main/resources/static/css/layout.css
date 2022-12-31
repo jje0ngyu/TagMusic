@@ -376,7 +376,10 @@
 		top : 2px;
 	}
 	
-	
+	.footer_menu > div {
+		color : #474545;
+		margin-left : 14px;
+	}
 	
 	
 	

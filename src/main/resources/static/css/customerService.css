@@ -177,6 +177,7 @@
 .chat_list_container{
    height : 700px;
    overflow: scroll;
+
 }
 .chat_list_container::-webkit-scrollbar{
     display: none;
@@ -192,9 +193,10 @@ position: fixed;
    
 }
  .chat_detail_container{
-    width: 400px;
+   width: 400px;
    height: 700px;
    overflow: scroll;
+  
 }
  .chat_detail_container::-webkit-scrollbar{
     display: none;
@@ -204,9 +206,30 @@ position: fixed;
    padding: 8px;
 }
 
+#id_addChat {
+	width : 380px;
+	height: 60px;
+	border: 1px solid black;
+	position: relative;
+}
 
+#id_addChat > input {
+	position: absolute;
+}
 
-
+#id_addChat > input:nth-of-type(1) {
+    height: 40px;
+    top: 8px;
+    width: 300px;
+    padding: 15px;
+    border:none;
+}
+#id_addChat > input:nth-of-type(5) {
+	height: 40px;
+    right: 10px;
+    top: 8px;
+    width: 50px;
+}
 
 
 /* 유저 관리 테이블 css */

@@ -913,11 +913,11 @@ VALUES
 INSERT INTO CHAT_ADMIN
     (USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER)
 VALUES
-    (24, NOW() ,'0:0:0:0:0:0:0:1', NULL, 1, 0, 15, 0);    
+    (24, NOW() ,'0:0:0:0:0:0:0:1', NULL, 1, 0, 24, 0);    
 INSERT INTO CHAT_ADMIN
     (USER_NO, CHAT_DATE, IP, CONTENT, STATE, DEPTH, GROUP_NO, GROUP_ORDER)
 VALUES
-    (24, NOW() ,'0:0:0:0:0:0:0:1', 'Then was shot back down to Earth', 1, 1, 15, 1);   
+    (24, NOW() ,'0:0:0:0:0:0:0:1', 'Then was shot back down to Earth', 1, 1, 24, 1);   
     
     
 INSERT INTO CHAT_ADMIN

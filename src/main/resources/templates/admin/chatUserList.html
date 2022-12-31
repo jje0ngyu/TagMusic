@@ -17,9 +17,8 @@
 
 	fn_detail();
 	fn_getChatList();
-	const $element = document.querySelecotr($('.chat_detail_container'));
-	$element.scrollTop = $element.scrollHeight;
 	
+
 
 	function fn_getChatList() {
 		
@@ -101,11 +100,13 @@
 						}else {
 							
 							div += '<div><form id="addChat" onkeypress="show_name(event)">';
-							div += '<input type="text" name="content">';
+							div += '<div id="id_addChat">';
+							div += '<input type="text" name="content" autofocus>';
 							div += '<input type="hidden" name="depth" value="'+ detail.depth+'">';
 							div += '<input type="hidden" name="groupNo" value ="'+detail.groupNo+'">';
 							div += '<input type="hidden" name="groupOrder" value ="'+detail.groupOrder+'">';
-							div += '<input type="button" value="전송하기" onclick="fn_addChat();">';
+							div += '<input type="button" value="전송" onclick="fn_addChat();">';
+							div += '</div>';
 							div += '</form></div>';
 							
 						}
@@ -113,7 +114,9 @@
 						div += '</div>';
 						
 						$('.chat_detail_container').append(div);
-					
+						
+						$('.chat_detail_container').scrollTop($(".chat_detail_container")[0].scrollHeight);
+						
 					});
 				}
 			});
@@ -183,11 +186,13 @@
 					}else {
 						
 						div += '<div><form id="addChat" onkeypress="show_name(event)">';
-						div += '<input type="text" name="content">';
+						div += '<div id="id_addChat">';
+						div += '<input type="text" name="content" autofocus>';
 						div += '<input type="hidden" name="depth" value="'+ detail.depth+'">';
 						div += '<input type="hidden" name="groupNo" value ="'+detail.groupNo+'">';
 						div += '<input type="hidden" name="groupOrder" value ="'+detail.groupOrder+'">';
-						div += '<input type="button" value="전송하기" onclick="fn_addChat();">';
+						div += '<input type="button" value="전송" onclick="fn_addChat();">';
+						div += '</div>';
 						div += '</form></div>';
 						
 					}
@@ -195,7 +200,7 @@
 					div += '</div>';
 					
 					$('.chat_detail_container').append(div);
-				
+					$('.chat_detail_container').scrollTop($(".chat_detail_container")[0].scrollHeight);
 				});
 
 			}
@@ -207,6 +212,7 @@
     function show_name(e){
         if(e.keyCode == 13){
         	fn_addChat();
+        	e.preventDefault();
         }
      }
 	
