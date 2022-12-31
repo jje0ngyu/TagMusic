@@ -82,7 +82,7 @@ public class MusicServiceImpl implements MusicService {
 		MusicDTO music = musicMapper.selectMusicByNo(musicNo);
 		File file = new File(music.getImgPath(), "s_" + music.getImgFilesystem());
 
-		System.out.println(music);
+		
 		
 		// db 정보를 통해 이미지를 담은 responseentity객체 반환
 		ResponseEntity<byte[]> result = null;
@@ -418,11 +418,7 @@ public class MusicServiceImpl implements MusicService {
 		 // 해당 플레이리스트 음악 개수
 		 int playlistMusicCnt = musicMapper.selectUserPlaylistMusicCnt(listNo);
 		 
-			/*
-			 * System.out.println(user); System.out.println(email);
-			 * System.out.println(userNo); System.out.println(playlistMusicCnt);
-			 * System.out.println(listNo);
-			 */
+		
 		 // 한 페이지당 10개의 게시글 조회
 		 pageUtil.setPageUtil(page, 5, playlistMusicCnt);
 		 
@@ -434,10 +430,9 @@ public class MusicServiceImpl implements MusicService {
 		 map.put("email", email);
 		 map.put("userNo", userNo);
 		 
-		// System.out.println( "end : "+ pageUtil.getEnd());
+		
 		 List<MyMusicDTO> PlaylistMusiclist = musicMapper.selectUserPlaylistMusiclist(map);
-		 //System.out.println(PlaylistMusiclist);
-		 //PlaylistMusiclist.stream().forEach(System.out::println);
+		
 		 
 		 map.put("pageUtil", pageUtil);								// 페이지
 		 map.put("paging", pageUtil.getPaging("/music/user/playlistMusiclist"));								// 페이지
@@ -609,7 +604,7 @@ public class MusicServiceImpl implements MusicService {
 			
 			// 1) 플레이리스트 생성
 			int result = musicMapper.insertPlaylist(map);
-			System.out.println("결과:" + result);
+			
 			
 			// 2) 생성한 플레이리스트명과 이메일이 동일한 리스트 pk값 가져오기
 			int listNo = musicMapper.selectPlaylistNo(map);
@@ -664,21 +659,13 @@ public class MusicServiceImpl implements MusicService {
 		
 		// 4. 좋아요 목록 조회
 		List<MusicDTO> musicLikeList = musicMapper.selectUserMusicLikeList(map);
-		System.out.println("==" + musicLikeList.size());
+	
 		map.put("pageUtil", pageUtil);
 		map.put("beginNo", pageUtil.getBegin());
 		map.put("userNickName", userNickName);
 		map.put("selectUserMusicLikeList", musicLikeList);
 		map.put("result", 1);
 		map.put("musicLikeCnt", musicLikeCnt);
-		/*
-		 * System.out.println(pageUtil.getBegin()); //1
-		 * System.out.println(pageUtil.getEnd()); // 10
-		 * System.out.println(pageUtil.getBeginPage()); // 1
-		 * System.out.println(pageUtil.getEndPage()); //1
-		 * System.out.println(pageUtil.getRecordPerPage());// 10
-		 * System.out.println(pageUtil.getTotalPage()); //1
-		 */		//System.out.println(map);
 		
 		return map;
 	}
@@ -755,7 +742,7 @@ public class MusicServiceImpl implements MusicService {
 		Map<String, Object> result = new HashMap<>();
 		//int aaa =  musicMapper.checkMusicLikeCnt(map);
 		result.put("musicLikeCnt", musicMapper.checkMusicLikeCnt(map));
-		//System.out.println(aaa);
+		
 		
 		return result;
 	}
@@ -832,7 +819,7 @@ public class MusicServiceImpl implements MusicService {
 		
 		// 4. 최근들은 목록 조회
 	    List<MusicDTO> musicLastlyList = musicMapper.selectUserMusicLastlyList(map);
-	    //System.out.println(musicLastlyList);
+
 		
 	    Map<String, Object> result = new HashMap<>();
 		result.put("musicLastlyCnt", musicLastlyCnt);
@@ -906,7 +893,7 @@ public class MusicServiceImpl implements MusicService {
 				
 				// 4. 최근들은 목록 조회
 			    List<MusicDTO> musicManyList = musicMapper.selectUserMusicManyList(map);
-			    //System.out.println(musicLastlyList);
+			   
 				
 			    Map<String, Object> result = new HashMap<>();
 				result.put("userMusicManyCnt", userMusicManyCnt);
