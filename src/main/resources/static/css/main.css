@@ -10,7 +10,7 @@ width는 1250px, 80퍼센트면 1000px;
 body {
 	
 	height: 1400px;
-	
+	overflow-x: hidden;
 	background-color: #fbfbfb;
 	
 }
@@ -363,7 +363,7 @@ a {
 
 .bar_header_menu:hover {
 	animation: fadein-btn3 0.5s;
-	background-color: #efefef;
+		background-color: #37486b;
 	cursor: pointer;
 	}
 	
@@ -394,11 +394,6 @@ a {
 }
 
 
-.bar_header_menu:hover {
-	
-	background-color: #545454;
-	
-}
 
 
 

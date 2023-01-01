@@ -232,12 +232,13 @@ public class MusicServiceImpl implements MusicService {
 		map.put("begin", pageUtil.getBegin() -1);
 		map.put("recordPerPage", pageUtil.getRecordPerPage());
 		map.put("genre", genre);
-
+		System.out.println(map);
 		List<MusicDTO> musicList = musicMapper.selectPopularMusicGenreList(map);
 
 		// 5. 모든 데이터를 전달할 map
 		map.put("musicList", musicList);
 		map.put("pageUtil", pageUtil);
+		System.out.println(musicList);
 		return map;
 
 	}

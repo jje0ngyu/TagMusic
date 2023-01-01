@@ -14,11 +14,11 @@ body {
 	background-color: #fbfbfb;
 }
 
-.board_thumbnail, .good_checked, .modal_open_btn, .fa-download {
+.board_thumbnail, .good_checked, .modal_open_btn, .fa-download, .musicBoard_musicLike {
 transition: all 0.2s linear;
 }
 
-.board_thumbnail:hover, .good_checked:hover, .modal_open_btn:hover, .fa-download:hover {
+.board_thumbnail:hover, .good_checked:hover, .modal_open_btn:hover, .fa-download:hover, .musicBoard_musicLike:hover {
 	cursor: pointer;
 	transform: scale(1.4);
 	
@@ -34,17 +34,6 @@ transition: all 0.2s linear;
 	width: 100%;
 	margin: 35px auto;
 	padding: 60px 270px;	
-	animation: fadein-container 2s;
-		}
-		
-		@keyframes fadein-container {
-	/* 효과를 동작시간 동안 0 ~ 1까지 */
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
 	}
 
 .list_page {
@@ -54,7 +43,7 @@ transition: all 0.2s linear;
 	background-color: #fbfbfb;
 	margin: 15px auto;
 	width : 1300px;
-	height: 1450px;
+	height: 1650px;
 	padding: 10px 30px;
 	
 	
@@ -117,9 +106,9 @@ transition: all 0.2s linear;
 .musicBoard_table {
 	
    
-    height : 600px;
+    height :80px;
     text-align: center;
-    animation: fadein 3s;
+    animation: fadein 1s;
 	
   	background: radial-gradient(#efefef, #eeeeee);
 	width: 1150px;
@@ -131,22 +120,14 @@ transition: all 0.2s linear;
     color : #333333;
     text-align: center;
     table-layout: fixed;
-  animation: fadein-container 2s;
-		}
-		
-		@keyframes fadein-container {
-	/* 효과를 동작시간 동안 0 ~ 1까지 */
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
+    
+  
+
 	}
 
 	tbody {
 		
-		  height : 300px;
+		  height : 200px;
 
 	}
 	th {
@@ -172,11 +153,12 @@ transition: all 0.2s linear;
   th, td {
   
     font-size: 13px;
-  	height: 60px;
+  	height: 40px;
     border-top: 1px solid #888888;
     padding: 6px 3px;
     
 }
+
 
 
 #musicBoard_query {
@@ -191,38 +173,67 @@ transition: all 0.2s linear;
 	
 }
 
+.upload_btn {
+	
+	margin-left: 1090px;
+	
+}
+
 .upload_btn:hover {
 	
 	
-	
-animation: fadein-container 2s;
-		}
-		
-		@keyframes fadein-container {
-	/* 효과를 동작시간 동안 0 ~ 1까지 */
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
+	color: #efefef;
+	background-color: #20325A;
+	cursor: pointer;
+	animation: fadein-paging 1s;
 	}
+	
+	@keyframes fadein-paging {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+	}
+	
 	
 	.list_page_search_btn:hover {
-		
-	animation: fadein-container 2s;
+		color: #efefef;
+		background-color: #20325A;
+		cursor: pointer;
+		animation: fadein-paging 1s;
 		}
-		
-		@keyframes fadein-container {
-	/* 효과를 동작시간 동안 0 ~ 1까지 */
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
+	
+	@keyframes fadein-paging {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 	}
 	
+	
+.paging:hover {
+	
+	color: #efefef;
+	background-color: #20325A;
+	cursor: pointer;
+	animation: fadein-paging 1s;
+	}
+	
+	@keyframes fadein-paging {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+	}
 	
 
 tr:nth-of-type(10) {
@@ -245,7 +256,7 @@ tr:nth-of-type(1) {
 .btn_area {
 	
 	display: flex;
-	justify-content: space-between;
+	
 	padding-top: 15px;
 	width: 100%;
 
@@ -263,32 +274,22 @@ tr:nth-of-type(1) {
 	padding: 40px;
 	background-color: #efefef;
 	box-shadow: 0 1px 10px 0 #808080;
-	
+	height: auto;
 	border-radius: 10px;
-	
 
-animation: fadein-container 2s;
-		}
-		
-		@keyframes fadein-container {
-	/* 효과를 동작시간 동안 0 ~ 1까지 */
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
 	}
 
 .select_genre {
 	
-	margin-bottom: 30px;
+	padding-top: 30px;
+	
 	
 }
 
 .select_genre_title {
 	
-	
+	margin-top: 20px;
+	margin-left: 570px;
 	font-size: 20px;
 	font-weight: 900;
 	margin-bottom: 20px;
@@ -303,6 +304,7 @@ animation: fadein-container 2s;
 
 .list_select_ul {
 	
+	margin-left: 450px;
 	width : 1000px;
 	height: 80px;
 	color : #333333;
@@ -316,6 +318,7 @@ animation: fadein-container 2s;
 	text-align: center;
 	height: 50px;
 	
+	cursor: pointer;
 	line-height: 50px;
 	margin-bottom: 7px;
 	margin-right: 7px;
@@ -331,25 +334,23 @@ animation: fadein-container 2s;
 
 
 .list_select_li:hover {
-	
-	background-color: #dddddd;
-	color: #323232;
-	animation: fadein-btn 1s;
-	font-weight: 900;
+	color: #efefef;
+	background: #203254;
+	cursor: pointer;
+animation: fadein-paging 1s;
 	}
 	
-	@keyframes fadein-btn {
+	@keyframes fadein-paging {
 /* 효과를 동작시간 동안 0 ~ 1까지 */
 	from {
-		
 		opacity: 0;
 	}
 	to {
-		
 		opacity: 1;
-		
 	}
 	}
+	
+	
 /* 버튼 : 기본옵션  */
 input[type=button] {
 	cursor: pointer;
@@ -412,12 +413,6 @@ input[type=button] {
 	border: 1px solid #444444;
 }
 
-.paging:hover {
-	
-	background-color: #888888; 
-	color: #eeeeee;
-	
-}
 
 .list_page_search {
 	
@@ -443,10 +438,10 @@ input[type=button] {
 	
 	position : absolute;
 	top: 0px; left: 20px;
-	width: 300px;
+	width: 430px;
 	height: 200px;
 	border: 1px solid #ababab;
-	background-color: #efefef;
+	background-color: #323232;
 	padding: 20px;
 	
 	
@@ -456,38 +451,102 @@ input[type=button] {
 .modal_btn_area {
 	
 	display: flex;
-	justify-content: space-between;
-	width: 300px;
+	background-color: #323232;
+	width: 410bpx;
 	height: 50px;
-	margin-top: 20px;
+	margin: 10px 0;
+	padding: 5px;
 	
 }
 
 .btn_createPlaylist {
 	
-	border: 1px solid #889888;
+	border-radius: 5px;
+	border: none;
 	background-color: #dddddd;
-	width: 80px;
-	height: 40px;
+	width: 120px;
+	height: 30px;
 	text-align: center;
-	line-height: 40px;
+	line-height: 25px;
+	margin-right: 260px;
+	color: #323232;
+	padding: 3px;
+	font-size: 11px;
 	
 }
 
+.createPlaylist_btn {
+	
+	border-radius: 5px;
+	border: none;
+	background-color: #dddddd;
+	width: 60px;
+	height: 30px;
+	text-align: center;
+	line-height: 25px;
+	margin-left: 40px;
+	margin-right: 230px;
+	color: #323232;
+	padding: 3px;
+	font-size: 11px;
+	
+}
+
+.createPlaylist_btn_cancel {
+	
+	border-radius: 5px;
+	border: none;
+	background-color: #dddddd;
+	width: 60px;
+	height: 30px;
+	text-align: center;
+	line-height: 25px;
+	
+	color: #323232;
+	padding: 3px;
+	font-size: 11px;
+	
+	
+}
+
+
+.btn_createPlaylist:hover, .btn_modal_close:hover, .createPlaylist_btn_cancel:hover, .createPlaylist_btn:hover {
+	
+	cursor: pointer;
+	background-color: #efefef;
+	animation: fadein-btn 0.5s;
+		}
+		
+		@keyframes fadein-btn{
+	/* 효과를 동작시간 동안 0 ~ 1까지 */
+		from {
+			
+			opacity: 0.8;
+		}
+		to {
+			background-color: #efefef;
+			opacity: 1;
+		}
+	}
+
 .btn_modal_close {
 	
-	border: 1px solid #889888;
+	border-radius: 5px;
+	border: none;
 	background-color: #dddddd;
-	width: 80px;
-	height: 40px;
+	width: 70px;
+	height: 30px;
 	text-align: center;
-	line-height: 40px;
+	line-height: 25px;
+	color: #323232;
+	padding: 3px;
+	font-size: 11px;
 	
 }
 
 .createPlaylist_header {
 	
-	width: 430px;
+	width: 400px;
 	height: 50px;
 	
 }
@@ -500,34 +559,29 @@ input[type=button] {
 }
 
 .playlist_name {
-	
-	width: 200px;
-	height: 30px;
-	
+	background-color: #efefef;
+	 box-shadow: 0 3px 20px 0 #37486b;
+	border-radius: 5px;
+	width: 350px;
+	height: 50px;
+	outline:none;
+	padding: 10px;
+	font-size: 15px;
+	font-weight: 900;
 }
 
 .createPlaylist_btn_area {
 	
 	display: flex;
-	justify-content: space-between;
 	
-	width: 420px;
+	width: 430px;
 	height: 100px;
 	
 }
 
 
 
-.createPlaylist_btn, .createPlaylist_btn_cancel {
-	
-	border: 1px solid #889888;
-	background-color: #dddddd;
-	width: 80px;
-	height: 40px;
-	text-align: center;
-	line-height: 40px;
-	
-}
+
 
 /* 추가수정란  */
 .musicBoard_td_musicLike {
@@ -560,7 +614,11 @@ input[type=button] {
 #modal {
 	
 
-  position:absolute;
+  position:relative;
+  top: 60px;
+  right: 0px;
+  width: 20px;
+  height: 20px;
 
   z-index:1;
   display: none;
@@ -608,25 +666,81 @@ animation: fadein-modal-open 1s;
   margin-left:calc(100% - 100px - 10px);
 }
 
-#modal .modal_content {
-  width:450px;
 
+
+
+.modal_content {
+  width:450px;
+  height: auto;
   position:absolute;
-   top: 100px;
+   top: 60px;
    right: 0px;
-	
  
-  background-color:#474545;
+ box-shadow: 0 3px 20px 0 #37486b;
+  background-color:#323232;
   order:none;
   color: #efefef;
   border-radius: 10px;
   font-size: 16px;
   text-align: center;
-  padding: 30px;
-  
-  
-  
+  padding: 10px 17px;
+ 
+
 }
+
+.modal_musicBoard_title {
+	
+	margin: 15px 0;
+	
+}
+
+h2 {
+	
+	font-size: 20px;
+	
+	
+}
+
+ .modal_table {
+	border-radius: 3px;
+    width: 410px;
+    background-color: #323232;
+    border-top: 1px solid #444444;
+    border-collapse: collapse;
+    height: 220px;
+    table-layout: fixed;
+    
+  }
+  
+  .modal_td, .modal_tr {
+    border-bottom: 1px solid #444444;
+    padding: 5px;
+    color: #fefefe;
+    font-size: 17px;
+    font-weight: 900;
+  }
+  
+  .modal_tr {
+	  
+	border-bottom: 1px solid #444444;
+    padding: 10px;
+    color: #fefefe;
+    height: 10px;
+    
+	  
+  }
+  
+  .modal_tr_head:hover {
+	  
+	  background-color: #323232;
+  }
+  
+  .modal_tr:hover {
+	  
+	  background-color: #454545;
+	  
+  }
+
 
 #modal .modal_layer {
   position:fixed;
@@ -638,6 +752,15 @@ animation: fadein-modal-open 1s;
   z-index:-1;
 }   
 
+
+.modal_create_area {
+	text-align: center;
+	margin-top: 40px;
+	margin-bottom: 10px;
+	width: 430px;
+	padding: 10px 20px;
+	
+}
 
 
 
