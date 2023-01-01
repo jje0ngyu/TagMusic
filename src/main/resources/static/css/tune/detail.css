@@ -48,6 +48,39 @@ html, body, div, input, a, form, textarea {
 }
 
 /* 트랙박스 */
+.music_track_box {
+	display: flex;
+	justify-content: left;
+	align-items: center;
+	width: 100%;
+	height: 80px;
+	border-bottom: 1px solid #bdc2ce;
+	padding: 5px 10px;
+}
+.music_track_box:hover {
+	background-color: #37486b;
+	color: #fdfdfd;
+	cursor: pointer;
+}
+.music_img {
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100px;
+	height: 100%;
+}
+.music_info {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	padding: 0 10px;
+	height: 100%;
+}
+#iframe_album_image {
+	max-width: 60px;
+	max-height: 60px;
+}
 .tune_next_track_box {
 	width: 100%;
 	height: 100%;
@@ -62,11 +95,14 @@ html, body, div, input, a, form, textarea {
 /* 가사박스 */
 .tune_lyrics_box {
 	height: 100%;
+	border: 1px solid #bdc2ce;
+	padding: 10px 5px 10px 20px;
 }
 .tune_lyrics {
 	position: relative;
-	background-color: rgb(0,0,0);
-	color: white;
+	color: #1f1f1f;
+	font-size: 15px;
+	line-height: 25px;
 	border: none;
 	width: 100%;
 	height: 100%;
@@ -200,6 +236,7 @@ html, body, div, input, a, form, textarea {
 		margin: 25px 0;
 	}
 	.tune_tab_content {
+		font-size: 18px;
 		width: 40%;
 		height: 40px;
 		line-height: 40px;

@@ -72,6 +72,7 @@
 	
 	/* 헤더_중앙 (검색, 실시간차트) */
 	.header_center_area {
+		margin-left : 100px;
 		display: flex;
 		width: 55%;
 	 }
@@ -80,58 +81,47 @@
 	- 감싼이유 : 검색영역과 버튼을 감싸는 css를 꾸미기위해(ex 유튜브)
 	 */
 	.header_search_area {
-		background-color: #323232;
-		display : flex;
+		background-color: #d5d5d5;
+		position: relative;
 		justify-content: space-between;
-		padding : 5px;
-		width : 50%;
-		height: 50px;
+		width: 50%;
+   		min-width: 200px;
+		height: 42px;
 		line-height: 40px;
 		border-radius: 25px;
-	
+		top: 2px;
 	}
 	
 	.header_search {
-		margin-left: 5px;
-		border: 0;
-		outline: none;
-		width: 100%;
-		height: 35px;
-		background-color: #323232;
-		padding-left: 13px;
-		
+		position: absolute;
+		border: none;
+		width: 70%;
+		height: 25px;
 		font-weight: 600;
 		font-size: 17px;
 		color: #eeeeee;
-		
-	}
-	
-	
-	.header_search_area_left {
-		
-		border-right: 2px solid #555555;
-		
-	}
-	
-	.header_search_area_right {
-		
-		margin-right: 30px;
+		left : 25px;
+		top: 10px;
 		
 	}
 	
 	.header_search_btn {
+		position: absolute;
+		
 		font-weight: 900;
 		font-size: 13px;
 		color: #eeeeee;
 		display: inline-block;
 		text-align: center;
+		right: 30px;
+   		top: 1px;
 	}
 	
 		
 	/* 레이아웃(헤더) : 랭킹 영역 */
 	.header_rank {
 
-	width: 220px;
+	min-width: 200px;
 	background-color: #eeeeee;
 	border-radius: 14px;
 	height: 40px;
@@ -376,7 +366,10 @@
 		top : 2px;
 	}
 	
-	
+	.footer_menu > div {
+		color : #474545;
+		margin-left : 14px;
+	}
 	
 	
 	
@@ -422,7 +415,6 @@
 	
 	text-decoration: none;
 	color: inherit;
-	
 	font-weight: 600;
 	
 }

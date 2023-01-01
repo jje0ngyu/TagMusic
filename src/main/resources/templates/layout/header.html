@@ -108,16 +108,20 @@ function fn_remainingDay(){
 			</div>
 			<!-- 헤더 중앙 -->
 			<div class="header_center_area">
+			
+			
+			
+			
 				<div class="header_search_area">
-					<div class="header_search_area_left">
 						<input type="text" id="query" name="query" placeholder="검색" class="header_search">
 						<!-- * 검색시 page 파라미터 디폴트값-->
 						<input type="hidden" id="layout_page" value="1">
-					</div>
-					<div class="header_search_area_right">
 						<a class="header_search_btn" id="totalSearch">검색</a>
-					</div>
 				</div>
+				
+				
+				
+				
 				<div class="header_rank">
 					<ol class="ranking_ol" id="ranking_ol">
 						
@@ -194,7 +198,6 @@ function fn_remainingDay(){
 							    	dataType: 'json',
 							    	success: function(resData){
 							    		var txt = '';
-							    		console.log(resData.alarmList == 0);
 							    		if(resData.alarmList == 0){
 							    			txt += '<div class="alarm_content">' ;
 							    			txt += '<div class="alarm_info" style="justify-content: center;">';
@@ -269,7 +272,7 @@ function fn_remainingDay(){
 									location.href='/user/mypage';
 								});
 								$('.btn_logout').click(function(){
-									location.href='/user/logout';
+									window.parent.location.href='/user/logout';
 								})
 							</script>
 							<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">

@@ -121,17 +121,26 @@
 		 WHERE COMMENT_NO = #{commentNo}
 	</delete>
 	
+	<!-- 내가 쓴 댓글 수 -->
+	<select id="selectCommentByEmail" resultType="int" parameterType="Map">
+		SELECT COUNT(EMAIL)
+		  FROM MUSIC_COMMENT
+		 WHERE EMAIL = #{email}
+	</select>
+	
 	
 	
 	<!-- 다음 트랙 (*음악 테이블 모든 음악 가져오기 : 수정필요) -->
-	<select id="selectMusic" resultType="MusicDTO">
-		SELECT MUSIC_NO, EMAIL, MUSIC_TITLE
-  		  FROM MUSIC
+	<select id="selectMusic" resultMap="MusicMap">
+		SELECT MUSIC_NO, M.EMAIL, MUSIC_TITLE, ARTIST
+  		  FROM MUSIC M INNER JOIN USERS U
+  		    ON M.EMAIL = U.EMAIL
 	</select>
 	<!--셔플-->
-	<select id="selectMusicByRandom" resultType="MusicDTO">
-		SELECT MUSIC_NO, EMAIL, MUSIC_TITLE, MUSIC_ALBUM
-		  FROM MUSIC
+	<select id="selectMusicByRandom" resultMap="MusicMap">
+		SELECT MUSIC_NO, M.EMAIL, MUSIC_TITLE, MUSIC_ALBUM, ARTIST
+		  FROM MUSIC M INNER JOIN USERS U
+		    ON M.EMAIL = U.EMAIL
 		 ORDER BY RAND()
 	</select>
 	
