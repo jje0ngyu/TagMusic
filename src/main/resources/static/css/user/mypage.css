@@ -203,6 +203,25 @@ body {
 	color: #fdfdfd;
 	cursor: pointer;
 }
+.info_agree_box {
+	display: flex;
+	flex-direction: column;
+	border-bottom: 1px solid #bdc2ce;
+	padding: 5px 20px;
+}
+.info_agree_box label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.info_agree {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	border-top: 1px solid #bdc2ce;
+	height: 60px;
+}
 
 /* 모달창 */
 .box_backlayer {

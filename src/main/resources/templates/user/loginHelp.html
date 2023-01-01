@@ -3,144 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Tag Music > 이메일/비밀번호 찾기</title>
-<style>
-	* {
-		margin : 0;
-		padding: 0;
-	}
-	.blind {
-		display: none;
-	}
-	body {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		overflow: hidden;
-		background-color: black;
-		color: whitesmoke;
-	}
-	.background_image {
-		position: fixed;
-		z-index: -100;
-		top: 90;
-		left: 0;
-		width: 100%;
-		height: 80%;
-		margin : auto;
-	}
-	.contain {
-		position: relative;
-		width: 420px;
-		height: 500px;
-		margin: auto;
-		text-align: center;
-		padding-top: 40px;
-		background-color: rgba(0,0,0,0.5);
-		border-radius: 4px;
-	}
-	.find_box {
-		position: relative;
-		width: 410px;
-		margin: 30px auto 0;
-	}
-	.btn_find {
-		position: relative;
-		width: 100%;
-	}
-	/* 선택영역 */
-	.choose_find {
-		padding: 10px;
-		width: 160px;
-		background-color: green;
-		border: 1px solid floralwhite;
-	}
-	.btn_email {
-		display: inline-block;
-	}
-	.btn_pw {
-		display: inline-block;
-	}
-	/* 공통 */
-	.input_area {
-		position: relative;
-		width: 90%;
-		margin: 0 auto;
-		text-align: left;
-	}
-	.input_box_area {
-		position: relative;
-		text-align: center;
-		width: 100%;
-	}
-	.input_box {
-		position: relative;
-		width: 365px;
-		height: 40px;
-		line-height: 40px;
-	}
-	.btn {
-		margin-top: 20px;
-		width: 180px;
-		height: 40px;
-		background-color: #9aeced;
-	}
-	#btn_find:hover {
-		background-color: #141D48;
-		color: white;
-		outline: 1px solid gray;
-	}
-	/* 이메일 찾기 */
-	.find_id_box {
-		position: relative;
-		width: 100%;
-		padding: 30px 0;
-		border: none;
-	}
-	
-	/* 비밀번호 찾기 */
-	.find_pw_box {
-		position: relative;
-		width: 100%;
-		padding: 30px 0;
-		border: none;
-	}
-	/* 결과창 (모달창) */
-	.backlayer {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0,0,0,0.8);
-	}
-	.result_wrap {
-		position: fixed;
-		top: 260px;
-		left: 0;
-		width: 100%;
-		height: 100px;
-	}
-	.result_box {
-		position: relative;
-		margin: auto;
-		width: 460px;
-		height: 160px;
-		background-color: rgb(33,33,33);
-		border-radius: 8px;
-		padding-top: 26px;
-		line-height: 43px;
-	}
-	
-</style>
+<link rel="stylesheet" th:href="@{/css/user/header.css}">
+<link rel="stylesheet" th:href="@{/css/user/help.css}">
+
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <script>
 	$(document).ready(function(){
+		fn_clickTab();
 		fn_findEmail();
 		fn_findPw();
 		fn_chooseFind();
 		fn_close_popup_msg();
+		fn_join();
 	});
 	
 	function fn_findEmail(){
@@ -218,6 +93,13 @@
 		});
 	}
 	
+	function fn_clickTab(){
+		$('.find_tab').click(function(){
+			$('.find_tab').removeClass('find_tab_click');
+			$(this).addClass('find_tab_click');
+		})
+	}
+	
 	function fn_chooseFind(){
 		$('.btn_email').click(function(){
 			$('.find_id_box').removeClass('blind');
@@ -231,32 +113,38 @@
 	}
 	
 	function fn_close_popup_msg(){
+		$('.btn').click(function(){
+			$('.backlayer').addClass('blind');
+			$('.result_wrap').addClass('blind');
+		});
 		$('.backlayer').click(function(){
 			$('.backlayer').addClass('blind');
 			$('.result_wrap').addClass('blind');
 		});
+	}
+	function fn_join(){
+		$('.msg_login_box').click(function(){
+			location.href='/user/join/agree';
+		})	
 	}
 </script>
 </head>
 
 <body>
 	<div th:replace="~{layout/loginHeader.html::loginFragment}"></div>
-	<img class="background_image" th:src="@{/images/login_help.jpeg}">
 	<div class="contain">
-		<div>
-			이메일/비밀번호를 잊으셨나요?		
-		</div>
-		<div>
+		<div class="contain_title">
+			이메일/비밀번호를 잊으셨나요?<br/>	
 			비밀번호 재설정 안내를 받을 방법을 선택하세요.
 		</div>
 		
 		<!--아이디 / 비밀번호 찾기 박스-->
 		<div class="find_box">
 			<div class="btn_find">
-				<div class="choose_find btn_email">
+				<div class="find_tab find_tab_click btn_email">
 					<span class="find_email">이메일 찾기</span>
 				</div>
-				<div class="choose_find btn_pw">
+				<div class="find_tab btn_pw">
 					<span class="find_pw">비밀번호 찾기</span>
 				</div>
 			</div>
@@ -275,8 +163,9 @@
 							휴대폰 번호
 						</div>
 						<div class="input_box_area">
-							<input type="text" name="mobile" id="mobile" class="input_box"> * 하이푼(-) 없이 입력해주세요.
+							<input type="text" name="mobile" id="mobile" class="input_box">
 						</div>
+						<span style="color:indianred;">* 하이픈(-) 없이 입력해주세요.</span>
 					</div>
 					<div>
 						<input type="button" value="이메일찾기" id="btn_findEmail" class="btn btn_findEmail">
@@ -292,26 +181,26 @@
 						<div class="input_box_area">
 							<input type="text" name="email" id="email" class="input_box">
 						</div>
-						<div class="input_box_area">
-							<input type="button" value="비밀번호찾기" id="btn_findPw" class="btn btn_findPw">
+						<div class="btn_box">
+							<input type="button" value="임시 비밀번호 발송" id="btn_findPw" class="btn btn_findPw">
 						</div>
 					</div>
 				</form>
 			</div>
-		</div>
-		
-		--------------
-		
-		<div>
-			<a th:href="@{/user/join/agree}">회원가입</a>
-		</div>
-		<div class="backlayer blind"></div>
-		<div class="result_wrap blind">
-			<div class="result_box">
-				<div id="msg_result"></div>
+			<div class="result_wrap blind">
+				<div class="backlayer blind"></div>
+				<div class="result_box">
+					<div id="msg_result"></div>
+					<div class="btn">확인</div>
+				</div>
 			</div>
 		</div>
-		
+	</div> <!--contain-->
+	<div class="help_bottom_controller">
+		<div class="msg_login_box hover">TagMusic 회원이 아닌가요?</div>
+		<div class="login_join_content">
+			<a th:href="@{/user/join/agree}" id="join_text" class="login_join_content">가입하기</a>
+		</div>
 	</div>
 </body>
 </html>

@@ -7,6 +7,7 @@ $(function(){
 	fn_titleCheck();
 	fn_musicCheck();
 	fn_genreCheck();
+	fn_imgCheck();
 });
 
 // 전역변수 (각종 검사를 통과하였는지 점검하는 플래그 변수)
@@ -14,6 +15,7 @@ let albumPass = false;	// 앨범이름
 let titlePass = false;	// 음원이름
 let musicPass = false;	// 음원파일
 let genrePass = false;	// 장르선택
+let imgPass = false;	// 이미지
 
 function fn_add(){
 	$('#frm_upload').submit(function(event){
@@ -31,6 +33,10 @@ function fn_add(){
 			return;
 		} else if(genrePass == false) {
 			alert('장르를 선택해주세요.');
+			event.preventDefault();
+			return;
+		} else if(imgPass == false) {
+			alert('이미지를 등록해주세요.');
 			event.preventDefault();
 			return;
 		}
@@ -76,6 +82,14 @@ function fn_genreCheck(){
 		let genreValue = $(this).val();
 		if(genreValue != null && genreValue != '') {
 			genrePass = true;
+		}
+	});
+}
+function fn_imgCheck(){
+	$('#albumImg').change(function(){
+		let imgValue = $(this).val();
+		if(imgValue != null && imgValue != '') {
+			imgPass = true;
 		}
 	});
 }
