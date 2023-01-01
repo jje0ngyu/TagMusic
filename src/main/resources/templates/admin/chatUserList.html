@@ -116,7 +116,7 @@
 						$('.chat_detail_container').append(div);
 						
 						$('.chat_detail_container').scrollTop($(".chat_detail_container")[0].scrollHeight);
-						
+						$("input[name=content]").focus();
 					});
 				}
 			});
@@ -145,7 +145,7 @@
 					/*fn_getChatList();*/
 					
 				}
-				
+				$("input[name=content]").focus();
 			}
 		});
 	}
@@ -201,6 +201,8 @@
 					
 					$('.chat_detail_container').append(div);
 					$('.chat_detail_container').scrollTop($(".chat_detail_container")[0].scrollHeight);
+					$("input[name=content]").focus();
+				
 				});
 
 			}
@@ -229,25 +231,22 @@
 	<div class="container1">
 		<div class="board_title" style="padding-bottom: 10px;">1:1 문의 관리자 페이지</div>
 		<hr class="hr-1">
-		
+	</div>
+
+	<div class="container2">
 		<div class="chat_list_main">
 			<div id="chat_list" class="chat_list">
 				<div class="chat_list_container" id="chat_list_container"></div>
 			</div>
 				
-				
 			<div class="wrapper">	
 				<div class="loading_bar"></div>
 			</div>	
 		</div>
-	
 		
 		<div class="chat_detail_main">
 			<div class="chat_detail_container"></div>
 		</div>
-		
-		
-		
 	</div>
 	
 

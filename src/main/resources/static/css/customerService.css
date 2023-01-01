@@ -166,13 +166,21 @@
    margin: 80px 0 0 230px;
    max-width: 100%;
    min-width: 1000px;
-   padding: 50px 70px;
+   padding: 50px 70px 0px 70px;
+}
+.container2 {
+   margin: 0px 0 0 230px;
+   max-width: 100%;
+   min-width: 1000px;
+   padding: 10px 70px;
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
 }
 
  .chat_list_main{
-    position: absolute;
+ /*position: absolute;*/
     width: 400px;
-    padding-top:15px;
 }
 .chat_list_container{
    height : 700px;
@@ -184,7 +192,7 @@
 }
 
  .chat_detail_main{
-position: fixed;
+ /*position: fixed;*/
     top: 199px;
     left: 700px;
     border: 1px solid black;
@@ -223,6 +231,7 @@ position: fixed;
     width: 300px;
     padding: 15px;
     border:none;
+    outline: none;
 }
 #id_addChat > input:nth-of-type(5) {
 	height: 40px;
@@ -373,13 +382,13 @@ position: fixed;
 
 .chat_box {
    height: 400px; /*높이*/
-   width : 600px;
    margin: 30px 50px;
    /* overflow: scroll; */
    overflow-y: scroll; 
 }
 
-.chat_box ::-webkit-scrollbar {
+
+.chat_box::-webkit-scrollbar {
   display: none; /* for Chrome, Safari, and Opera */
 }
 
@@ -500,7 +509,7 @@ position: fixed;
 
 .plz_input_q {
    position: relative;
-   width: 600px;
+   margin-left: 48px;
 }
 .plz_input_q >input {
    position: absolute;
@@ -510,11 +519,11 @@ position: fixed;
 }
 .plz_input_q :nth-of-type(2){
    top: 0;
-   right: 0px;
+   right: 37px;
 }
 #content{
    border-radius: 30px;
-   width: 450px;
+   width: 75%;
    height: 50px;
    padding : 20px;
 }
