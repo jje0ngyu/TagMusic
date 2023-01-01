@@ -73,14 +73,14 @@
 		
 		display: flex;
 		border-radius: 10px;
-		background-color: #20325A;
 		height: 60px;
 		width: 1240px;
 		font-size: 15px;
 		font-weight: 800;
-		color: #fdfdfd;
 		padding: 10px 20px;
 		margin-bottom: 20px;	
+		background-color: #20325A;
+		color: #fdfdfd;
 		box-shadow: 0 1px 10px 0 #37486b;
 	}
 	

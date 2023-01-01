@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title></title>
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
+<link rel="stylesheet" th:href="@{/css/layout.css}">
 <link rel="stylesheet" th:href="@{/css/playlist.css}">
 <!-- <link rel="stylesheet" th:href="@{/css/musicBoard.css}"> -->
 <style>
@@ -16,6 +17,8 @@
 	
 	}
 	
+	
+
 
 
 .playlist_open {
@@ -372,8 +375,8 @@ input[type=text]:keyup {
 							.append('<td class="td_no">'+ (index + 1) +'</td>') 
 							.append( $('<td class="playlist_td">').append('<img class="playlist_content_thumbnail" src="'+ img+'">') )
 							.append( $('<td class="playlist_td">')
-								.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'</div>')
-								.append('<div class="playlist_musicArtist">'+ musicList.playlistDTO.userDTO.artist +'</div>') )
+								.append('<div class="playlist_musicTitle"><a class="item_title" href="/tune/iframe?musicNo=' + musicList.musicDTO.musicNo + '">'+ musicList.musicDTO.musicTitle +'</a></div>')
+								.append('<div class="playlist_musicArtist"><a class="item_title" href="/tune/iframe?musicNo=' + musicList.musicDTO.musicNo + '">'+ musicList.playlistDTO.userDTO.artist +'</a></div>') )
 							.append( $('<td class="playlist_td">').append('<div class="playlist_musicGenre">'+ musicList.musicDTO.musicGenre +'</div>') )
 							.append( $('<td class="playlist_td">').append( '<i class="fa-regular fa-trash-can deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'"></i>') )
 							.appendTo($(body));
@@ -450,7 +453,7 @@ input[type=text]:keyup {
 							.append('<td class="td_no">'+ (index + 1) +'</td>') 
 							.append( $('<td>').append('<img class="playlist_content_thumbnail" src="'+ img+'">') )
 							.append( $('<td class="">')
-								.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'</div>')
+								.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'<a class="item_title" href="/tune/iframe?musicNo=' + musicList.musicDTO.musicNo + '"></a></div>')
 								.append('<div class="playlist_musicArtist">'+ musicList.playlistDTO.userDTO.artist +'</div>') )
 							.append( $('<td>').append('<div class="playlist_musicGenre">'+ musicList.musicDTO.musicGenre +'</div>') )
 							.append( $('<td>').append( '<input type="button" value="삭제" class="deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'">') )
