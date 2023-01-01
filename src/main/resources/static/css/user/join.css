@@ -40,7 +40,7 @@
 .join_box {
 	background-color: #fdfdfd;
 	position: relative;
-	margin: 0 auto;
+	margin: 0 auto 30px;
 	padding: 30px 70px;
 	width: 580px;
 	border: 1px solid #bdc2ce;
@@ -137,7 +137,7 @@ textarea {
 }
 
 /* join 에서 input 박스 */
-#email, #authCode, #pw, #re_pw, #name, #artist, #gender, #mobile {
+#email, #authCode, #pw, #re_pw, #name, #artist, #gender, #mobile, #birthyear, #birthmonth, #birthdate {
 	border: none;
 	width: 100%;
 	outline: none;
@@ -175,7 +175,9 @@ textarea {
 	border-radius: 30px;
 }
 #btn_close:hover {
-	
+	background-color: indianred;
+	color: #fdfdfd;
+	cursor: pointer;
 }
 #msg_extra_info {
 	display: flex;
@@ -190,4 +192,17 @@ textarea {
 	cursor: pointer;
 	background-color: #37486b;
 	color: #fdfdfd;
+}
+.birth_flex {
+	margin: 10px 0;
+	display:flex;
+	justify-content: space-between;
+}
+.select_box_year {
+	border: 1px solid #bdc2ce;
+	width: 40%;
+}
+.select_box {
+	border: 1px solid #bdc2ce;
+	width: 25%;
 }
