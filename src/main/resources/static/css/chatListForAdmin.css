@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+/*
+	display : hidden 자리차지함, 안보임
+	display : none; 자리차지안하고 그냥 없어짐
+*/
+
+
+ * {
+     padding: 0;
+     margin: 0;
+ }
+ 
+.chat_admin_for_detail{
+    height: 100px;
+    position: relative;
+}
+.chat_admin_for_detail>div{
+   position: absolute;
+}
+.chat_admin_for_detail>div:nth-of-type(1){
+   /* 프로필사진 */
+   top: 25px;
+    right: 15px;
+}
+.chat_admin_for_detail>div:nth-of-type(2){
+   /* 이름 */
+    top: 25px;
+    right: 70px;
+    font-size: 6px;
+}
+.chat_admin_for_detail>div:nth-of-type(3){
+   /* 내용 */
+   top: 40px;
+    right: 70px;
+}
+.chat_admin_for_detail>div:nth-of-type(4){
+   /* 시간 */
+    top: 23px;
+   left : 10px;
+   font-size: 5px;
+}
+
+.chat_user_for_detail{
+    position: relative;
+    min-height: 80px;
+}
+.chat_user_for_detail>div{
+   position: absolute;
+}
+.chat_user_for_detail>div:nth-of-type(1){
+   /* 프로필사진 */
+   top: 25px;
+    left: 15px;
+}
+.chat_user_for_detail>div:nth-of-type(2){
+   /* 이름 */
+    top: 25px;
+    left: 70px;
+    font-size: 6px;
+}
+.chat_user_for_detail>div:nth-of-type(3){
+   /* 내용 */
+   top: 40px;
+    left: 70px;
+}
+.chat_user_for_detail>div:nth-of-type(4){
+   /* 시간 */
+    top: 23px;
+   right : 10px;
+   font-size: 5px;
+}

@@ -12,10 +12,13 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
+<link rel="stylesheet" th:href="@{/css/chatListForAdmin.css}">
 <script th:inline="javascript">
 
 	fn_detail();
 	fn_getChatList();
+	
+
 
 	function fn_getChatList() {
 		
@@ -25,33 +28,13 @@
 			dataType: 'json',
 			success: function(resData){
 				$('.chat_list_container').empty();
-				//console.log(resData);
-				//console.log(resData.arrayList);
-				//console.log(resData.arrayList.length);
-				//console.log(resData.arrayList[0][1].content);
-				//for (let i = 0; i < resData.arrayList.length; i++){}
-				
 				$.each(resData.arrayList, function(i, chat){
-					
-					//console.log(chat[0]);
-					//console.log(chat[0].content);
-					//console.log(chat[0].chatDate > chat[1].chatDate);
-					//console.log(chat.length);
-					
-					
-				
-						
-						
 						
 					var chats = '<div class="chat_warp" data-groupno="' + chat[0].groupNo + '">';
 					chats += '<div><img src="'+chat[0].userDTO.profileImage+'"></img></div>'; 
 					chats += '<div>'+chat[0].userDTO.name+'</div>';
 					
-					
-					
-					
 					if(Array.isArray(chat[1])){
-					//if(chat.length = 2){
 						if(chat[0].chatDate > chat[1].chatDate) {
 							
 							chats += '<div>'+chat[0].content+'</div>';
@@ -69,17 +52,9 @@
 						chats += '<div>'+chat[0].content+'</div>';
 						moment.locale('ko-KR');
 						chats += '<div>'+moment(chat[0].chatDate).format('YY-MM-DD A h:mm:ss') +'</div>';
-						
 					}
-					
-					
-					
-					
-					
 					chats += '</div>';
 					$('.chat_list_container').append(chats);
-					
-					
 				});
 				
 			}
@@ -105,30 +80,33 @@
 					
 						var div = '';
 						
-						div += '<div>';
-						
 						if(detail.depth == 1){
-							if(detail.userNo =! 1){
+							if(detail.userNo == 1){
+								div += '<div class="chat_admin_for_detail">';
+								div += '<div><img src="'+detail.userDTO.profileImage+'" style="width:50px;"></img></div>';
 								div += '<div>'+ detail.userDTO.name +'</div>';
 								div += '<div>'+ detail.content +'</div>';
-								moment.locale('ko-KR');
 								div += '<div>'+ moment(detail.chatDate).format('YY-MM-DD A h:mm:ss') +'</div>';
 								
 							}else {
+								div += '<div class="chat_user_for_detail">';
+								div += '<div><img src="'+detail.userDTO.profileImage+'" style="width:50px;"></img></div>';
 								div += '<div>'+ detail.userDTO.name +'</div>';
 								div += '<div>'+ detail.content +'</div>';
-								div += '<div>'+ detail.chatDate +'</div>';
+								div += '<div>'+ moment(detail.chatDate).format('YY-MM-DD A h:mm:ss') +'</div>';
 							}
 							
 							
 						}else {
 							
-							div += '<div><form id="addChat">';
-							div += '<input type="text" name="content">';
+							div += '<div><form id="addChat" onkeypress="show_name(event)">';
+							div += '<div id="id_addChat">';
+							div += '<input type="text" name="content" autofocus>';
 							div += '<input type="hidden" name="depth" value="'+ detail.depth+'">';
 							div += '<input type="hidden" name="groupNo" value ="'+detail.groupNo+'">';
 							div += '<input type="hidden" name="groupOrder" value ="'+detail.groupOrder+'">';
-							div += '<input type="button" value="전송하기" onclick="fn_addChat();">';
+							div += '<input type="button" value="전송" onclick="fn_addChat();">';
+							div += '</div>';
 							div += '</form></div>';
 							
 						}
@@ -136,7 +114,9 @@
 						div += '</div>';
 						
 						$('.chat_detail_container').append(div);
-					
+						
+						$('.chat_detail_container').scrollTop($(".chat_detail_container")[0].scrollHeight);
+						
 					});
 				}
 			});
@@ -162,7 +142,7 @@
 				
 				if(resData.insertChat){
 					fn_re_detail(resData.groupNo);
-					fn_getChatList();
+					/*fn_getChatList();*/
 					
 				}
 				
@@ -178,7 +158,6 @@
 			data: 'groupNo='+groupNo,
 			dataType: 'json',
 			success: function(resData){
-				
 				$('.chat_detail_container').empty();
 				
 				var div = '';
@@ -187,28 +166,33 @@
 				
 					var div = '';
 					
-					div += '<div>';
-					
 					if(detail.depth == 1){
-						if(detail.userNo =! 1){
+						if(detail.userNo == 1){
+							div += '<div class="chat_admin_for_detail">';
+							div += '<div><img src="'+detail.userDTO.profileImage+'" style="width:50px;"></img></div>';
 							div += '<div>'+ detail.userDTO.name +'</div>';
 							div += '<div>'+ detail.content +'</div>';
-							div += '<div>'+ detail.chatDate +'</div>';
+							div += '<div>'+ moment(detail.chatDate).format('YY-MM-DD A h:mm:ss') +'</div>';
+							
 						}else {
+							div += '<div class="chat_user_for_detail">';
+							div += '<div><img src="'+detail.userDTO.profileImage+'" style="width:50px;"></img></div>';
 							div += '<div>'+ detail.userDTO.name +'</div>';
 							div += '<div>'+ detail.content +'</div>';
-							div += '<div>'+ detail.chatDate +'</div>';
+							div += '<div>'+ moment(detail.chatDate).format('YY-MM-DD A h:mm:ss') +'</div>';
 						}
 						
 						
 					}else {
 						
-						div += '<div><form id="addChat">';
-						div += '<input type="text" name="content">';
+						div += '<div><form id="addChat" onkeypress="show_name(event)">';
+						div += '<div id="id_addChat">';
+						div += '<input type="text" name="content" autofocus>';
 						div += '<input type="hidden" name="depth" value="'+ detail.depth+'">';
 						div += '<input type="hidden" name="groupNo" value ="'+detail.groupNo+'">';
 						div += '<input type="hidden" name="groupOrder" value ="'+detail.groupOrder+'">';
-						div += '<input type="button" value="전송하기" onclick="fn_addChat();">';
+						div += '<input type="button" value="전송" onclick="fn_addChat();">';
+						div += '</div>';
 						div += '</form></div>';
 						
 					}
@@ -216,13 +200,21 @@
 					div += '</div>';
 					
 					$('.chat_detail_container').append(div);
-				
+					$('.chat_detail_container').scrollTop($(".chat_detail_container")[0].scrollHeight);
 				});
+
 			}
 		});
 		
 	}
+	
 
+    function show_name(e){
+        if(e.keyCode == 13){
+        	fn_addChat();
+        	e.preventDefault();
+        }
+     }
 	
 
 
@@ -240,7 +232,7 @@
 		
 		<div class="chat_list_main">
 			<div id="chat_list" class="chat_list">
-				<div class="chat_list_container"></div>
+				<div class="chat_list_container" id="chat_list_container"></div>
 			</div>
 				
 				
