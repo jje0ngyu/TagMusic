@@ -4,251 +4,12 @@
 <meta charset="UTF-8">
 <title></title>
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
-<link rel="stylesheet" th:href="@{/css/layout.css}">
+
 <link rel="stylesheet" th:href="@{/css/playlist.css}">
 <!-- <link rel="stylesheet" th:href="@{/css/musicBoard.css}"> -->
 <style>
 
 
-* {
-	box-sizing: border-box;
-	margin : 0;
-	padding : 0;
-	
-	}
-	
-	
-
-#modal {
-	
-
-  position:absolute;
-
-  z-index:1;
-  display: none;
-  
-
-animation: fadein-modal-open 1s;
-
-	}
-	
-	@keyframes fadein-modal-open {
-/* 효과를 동작시간 동안 0 ~ 1까지 */
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-
-.modal_close {
-
-	animation: fadein-modal-close 1s;
-}	
-	
-	@keyframes fadein-modal-close {
-/* 효과를 동작시간 동안 0 ~ 1까지 */
-	from {
-		opacity: 1;
-	}
-	to {
-		opacity: 0;
-	}
-}
-		
-	
-
-
-
-
-#modal h2 {
-  margin:0;   
-}
-
-#modal button {
-  display:inline-block;
-  width:100px;
-  margin-left:calc(100% - 100px - 10px);
-}
-
-#modal .modal_content {
-  width:450px;
-
-  position:absolute;
-   top: 200px;
-	left:290px;
- 
-  background-color:#474545;
-  order:none;
-  color: #efefef;
-  border-radius: 10px;
-  font-size: 16px;
-  text-align: center;
-  padding: 30px;
-  
-  
-  
-}
-
-#modal .modal_layer {
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0, 0, 0, 0.8);
-  z-index:-1;
-}   
-
-
-
-
-
-.playlist_open {
-	
-	position : absolute;
-	top: 0px; left: 20px;
-	width: 300px;
-	height: 200px;
-	border: 1px solid #ababab;
-	background-color: #efefef;
-	padding: 20px;
-	
-	
-	
-}
-
-.modal_btn_area {
-	
-	display: flex;
-	justify-content: space-between;
-	width: 400px;
-	height: 50px;
-	margin-top: 20px;
-	
-}
-
-.btn_createPlaylist {
-	
-	border: 1px solid #889888;
-	background-color: #dddddd;
-	width: 80px;
-	height: 40px;
-	text-align: center;
-	line-height: 40px;
-	
-}
-
-.btn_modal_close {
-	
-	border: 1px solid #889888;
-	background-color: #dddddd;
-	width: 80px;
-	height: 40px;
-	text-align: center;
-	line-height: 40px;
-	
-	}
-	
-
-.createPlaylist_header {
-	
-	width: 400px;
-	height: 50px;
-	
-}
-
-.createPlaylist_body {
-	
-	line-height: 80px;
-	width: 400px;
-	height: 80px;
-	margin-bottom: 30px;
-	
-}
-
-.playlist_name {
-	
-	width: 350px;
-	height: 50px;
-	padding: 10px;
-	outline: none;
-	border-radius: 10px;
-	
-	
-}
-
-
-input[type=text]:keyup {
-	background-color: #efefef;
-	color: #323232;
-	font-size: 25px;
-	font-weight: 900;
-	}
-
-.createPlaylist_btn_area {
-	
-	display: flex;
-	justify-content: space-between;
-	
-	width: 400px;
-	height: 100px;
-	padding: 20px;
-	
-}
-
-
-
-.createPlaylist_btn, .createPlaylist_btn_cancel {
-	
-	border: none;
-	background-color: #dddddd;
-	width: 80px;
-	height: 40px;
-	text-align: center;
-	line-height: 40px;
-	color: #323232;
-	border-radius: 20px;
-	
-	font-size: 20px;
-	font-weight: 900;
-	
-}
-.createPlaylist_btn:hover, .createPlaylist_btn_cancel:hover {
-
-	background-color: #ffd440;
-	color: #323232;
-	cursor: pointer;
-
-}
-
-/* 추가수정란  */
-.musicBoard_td_musicLike {
-	
-	padding: 20px;
-	
-}
-
-.musicBoard_musicLike {
-	
-	display: inline-block;
-	
-	
-
-	
-}
-
-.musicBoard_musicLikeCnt {
-	
-	display: inline-block;
-	margin-left: 3px;
-	font-size: 15px;
-	font-weight: 900;
-	
-	
-	
-}
 </style>
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 
@@ -276,6 +37,8 @@ input[type=text]:keyup {
 	// 전역변수
 	var upDownIcon;	// 상하아이콘
 	var thumbnail;
+	var pageUtil;
+	var paging;
 
 	function fn_Playlist_list() {	// 플레이리스트 목록조회
 		
@@ -334,7 +97,6 @@ input[type=text]:keyup {
 						$('.playlist_body').empty();	// 상단 리스트 최신화
 	
 						 
-							var thumbnail;
 						
 						$.each(resData.userPlaylist, function(index, playlist) {
 							
@@ -414,13 +176,7 @@ input[type=text]:keyup {
 				.empty()
 				.append('<i class="fa-solid fa-angles-down"></i>');
 			}
-			
-			
-			
-		
-			
-			
-			
+
 			// ajax 응답에서는 this를 인식할수 없어서 변수로 만들어줘야한다
 			let board = $(this).parent().next();
 			let listNo = $(this).data('listno');
@@ -468,30 +224,29 @@ input[type=text]:keyup {
 							});
 						
 						
-						// 페이징 처리
-						var pageUtil = resData.pageUtil;
-						var paging = '';
+							// 페이징 처리
+							pageUtil = resData.pageUtil;
+							paging = $('<div class="page_block">');
 
-						
-						if(pageUtil.beginPage != 1) {
-							paging += '<span class="page_left" data-page="' + (pageUtil.beginPage - 1) + '" data-listno="' + listNo + '">이전 ◀</span>';
-						}
-						// 페이지번호
-						for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+	
+							if(page != 1) {
+								$(paging).append('<div class="paging" data-page="' + (page - 1) + '" data-listno="'+listNo+'">◀</div>');
+							}
 							
-							paging += '<span class="paging" data-page="' + p + '" data-listno="' + listNo + '">' + p + '</span>';
+							for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+								
+									$(paging).append( '<div class="paging" data-page="'+p+'" data-listno="'+ listNo +'">'+p+'</div>' );
+							}
 							
-						}
-						// 다음 블록
-						if(pageUtil.endPage != pageUtil.totalPage){
-							paging += '<span class="page_right" data-page="' + (pageUtil.endPage + 1) + '" data-listno="' + listNo + '">이전 ◀</span>';
-						}
-						
-
-						$(board).append( $('<table class="playlist_table">')
-							.append('<thead><tr class=""><th>No</th><th colspan="3">곡 정보</th><th>삭제</th></tr></thead>')
-							.append($(body)) )
-							.append( $('<div class="page_block">').append(paging) );				
+							if(page != pageUtil.totalPage) {
+								$(paging).append('<div class="paging" data-page="' + (page + 1) + '" data-listno="'+listNo+'">▶</div>');
+							}
+							
+	
+							$(board).append( $('<table class="playlist_table">')
+								.append('<thead><tr class=""><th>No</th><th colspan="3">곡 정보</th><th>삭제</th></tr></thead>')
+								.append($(body)) )
+								.append($(paging) );				
 				}	
 			});
 		});
@@ -502,7 +257,7 @@ input[type=text]:keyup {
 		$(document).on('click', '.paging', function(){
 
 			let page = $(this).data('page');
-			let board = $(this).parent().prev().parent();
+			let board = $(this).parent().parent();
 			let listNo = $(this).data('listno');
 			
 			$('#page').val( $(this).data('page'));
@@ -533,43 +288,42 @@ input[type=text]:keyup {
 							}
 		
 							
-							$('<tr>')
+							$('<tr class="playlist_tr">')
 							.append('<td class="td_no">'+ (index + 1) +'</td>') 
-							.append( $('<td>').append('<img class="playlist_content_thumbnail" src="'+ img+'">') )
-							.append( $('<td class="">')
-								.append('<div class="playlist_musicTitle">'+ musicList.musicDTO.musicTitle +'<a class="item_title" href="/tune/iframe?musicNo=' + musicList.musicDTO.musicNo + '"></a></div>')
-								.append('<div class="playlist_musicArtist">'+ musicList.playlistDTO.userDTO.artist +'</div>') )
-							.append( $('<td>').append('<div class="playlist_musicGenre">'+ musicList.musicDTO.musicGenre +'</div>') )
-							.append( $('<td>').append( '<input type="button" value="삭제" class="deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'">') )
+							.append( $('<td class="playlist_td">').append('<img class="playlist_content_thumbnail" src="'+ img+'">') )
+							.append( $('<td class="playlist_td">')
+								.append('<div class="playlist_musicTitle"><a class="item_title" href="/tune/iframe?musicNo=' + musicList.musicDTO.musicNo + '">'+ musicList.musicDTO.musicTitle +'</a></div>')
+								.append('<div class="playlist_musicArtist"><a class="item_title" href="/tune/iframe?musicNo=' + musicList.musicDTO.musicNo + '">'+ musicList.playlistDTO.userDTO.artist +'</a></div>') )
+							.append( $('<td class="playlist_td">').append('<div class="playlist_musicGenre">'+ musicList.musicDTO.musicGenre +'</div>') )
+							.append( $('<td class="playlist_td">').append( '<i class="fa-regular fa-trash-can deletePlaylistMusic" data-listno="'+ musicList.playlistDTO.listNo+ '" data-mymusicno="'+musicList.myMusicNo+'"></i>') )
 							.appendTo($(body));
 
 							});
+					
 						
-						
-						// 페이징 처리
-						var pageUtil = resData.pageUtil;
-						var paging = '<div>';
-						
+							// 페이징 처리
+							pageUtil = resData.pageUtil;
+							paging = $('<div class="page_block">');
 
-						if(pageUtil.beginPage != 1) {
-							paging += '<span class="page_left" data-page="' + (pageUtil.beginPage - 1) + '" data-listno="' + listNo + '">이전 ◀</span>';
-						}
-						// 페이지번호
-						for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+	
+							if(page != 1) {
+								$(paging).append('<div class="paging" data-page="' + (page - 1) + '" data-listno="'+listNo+'">◀</div>');
+							}
 							
-							paging += '<span class="paging" data-page="' + p + '" data-listno="' + listNo + '">' + p + '</span>';
+							for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++) {
+								
+									$(paging).append( '<div class="paging" data-page="'+p+'" data-listno="'+ listNo +'">'+p+'</div>' );
+							}
 							
-						}
-						// 다음 블록
-						if(pageUtil.endPage != pageUtil.totalPage){
-							paging += '<span class="page_right" data-page="' + (pageUtil.endPage + 1) + '" data-listno="' + listNo + '">이전 ◀</span>';
-						}
-						
-
-						$(board).append( $('<table>')
-							.append('<thead><tr><td>No</td><td colspan="3">곡 정보</td><td>삭제</td></tr></thead>')
-							.append($(body)) )
-							.append( $('<div class="page_block">').append(paging) );					
+							if(page != pageUtil.totalPage) {
+								$(paging).append('<div class="paging" data-page="' + (page + 1) + '" data-listno="'+listNo+'">▶</div>');
+							}
+							
+	
+							$(board).append( $('<table class="playlist_table">')
+								.append('<thead><tr class=""><th>No</th><th colspan="3">곡 정보</th><th>삭제</th></tr></thead>')
+								.append($(body)) )
+								.append($(paging) );					
 				}	
 			});
 		});

@@ -370,7 +370,7 @@
 	
 	<!-- 8. 수록곡 추가  -->
 	<insert id="insertMusicToPlaylist" parameterType="Map">
-		INSERT INTO MY_MUSIC VALUES (MY_MUSIC_SEQ.NEXTVAL, #{listNo} , #{musicNo})
+		INSERT INTO MY_MUSIC (LIST_NO, MUSIC_NO) VALUES (#{listNo} , #{musicNo})
 	</insert>
 	
 	<!-- 9. 수록곡 조회  -->

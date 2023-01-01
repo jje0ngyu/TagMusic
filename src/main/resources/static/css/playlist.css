@@ -15,14 +15,14 @@
 		background-color: #fbfbfb;
 	}
 	
-	.fa-regular {
-transition: all 0.2s linear;
-}
-
-.fa-regular:hover {
-	transform: scale(1.4);
+	.fa-regular, .playlist_content_thumbnail {
+	transition: all 0.2s linear;
+	}
 	
-}
+	.fa-regular:hover, .playlist_content_thumbnail:hover{
+		transform: scale(1.2);
+		
+	}
 	
 	.playlist_container {
 
@@ -164,7 +164,7 @@ transition: all 0.2s linear;
 		margin-bottom: 10px;
 		border-radius: 5px;
 		transition-timing-function: ease;
-		-webkit-transition:width 2s, height 2s, background-color 2s, -webkit-transform 2s;
+		-webkit-transition:width 1s, height 1s, background-color 1s, -webkit-transform 1s;
 	}
 	
 	
@@ -173,13 +173,13 @@ transition: all 0.2s linear;
 	.playlist_list_click {
 		
 		background-color: #EFEFEF;
-		height: 760px;
+		height: 700px;
 		padding: 20px 30px;
 		margin-bottom: 15px;
 		border-radius: 5px;
 		box-shadow: 0 40px 40px 0 #ababcd;
 		transition-timing-function: ease;
-		-webkit-transition:width 2s, height 2s, background-color 2s, -webkit-transform 2s;
+		-webkit-transition:width 1s, height 1s, background-color 1s, -webkit-transform 1s;
 	}
 	
 	
@@ -397,11 +397,11 @@ transition: all 0.2s linear;
 	
 	.playlist_table {
 		
-	animation: fadein 3s;
+	animation: fadein 1s;
 	
   	background: radial-gradient(#efefef, #eeeeee);
 
-    height : 400px;
+    height : 30px;
 	width: 1150px;
     padding: 10px;
     border-radius: 10px;
@@ -421,7 +421,7 @@ transition: all 0.2s linear;
 			opacity: 0;
 		}
 		to {
-			height: 400px;
+			height: 80px;
 			
 			opacity: 2;
 		}
@@ -429,11 +429,10 @@ transition: all 0.2s linear;
 	
 	tbody {
 		
-		  height : 300px;
+		  height : 60px;
 
 	}
 	th {
-	
 		font-size: 20px;
 		height: 20px;
 		margin-bottom: 20px;
@@ -443,14 +442,18 @@ transition: all 0.2s linear;
 	.playlist_tr {
 	
 	width: 1200px;
-	height: 40px;
+	height: 30px;
 	font-size: 20px;
   	height: 30px;
     border-top: 1px solid #aaaaaa;
     padding: 10px;
+    
+
 	
 	
 	}
+	
+	
 	
 	.playlist_tr:nth-of-type(1) {
 	
@@ -462,9 +465,8 @@ transition: all 0.2s linear;
 	.playlist_td  {
 	
 	width: 1200px;
-	height: 40px;
+	height: 30px;
 	font-size: 15px;
-  	height: 30px;
     border-top: 1px solid #888888;
     padding: 10px;
 	
@@ -524,6 +526,103 @@ transition: all 0.2s linear;
 	
 
 
+
+
+.createPlaylist_header {
+	
+	width: 430px;
+	height: 50px;
+	margin-top:  40px;
+	text-align: center;
+	
+}
+
+.createPlaylist_body {
+	
+	margin-top:  10px;
+	width: 430px;
+	height: 80px;
+	
+}
+
+.playlist_name {
+	background-color: #efefef;
+	 box-shadow: 0 3px 20px 0 #37486b;
+	border-radius: 5px;
+	width: 350px;
+	height: 50px;
+	outline:none;
+	padding: 10px;
+	font-size: 15px;
+	font-weight: 900;
+	color: #323232;
+}
+
+.createPlaylist_btn_area {
+	
+	display: flex;
+	
+	width: 430px;
+	height: 100px;
+	
+}
+
+.createPlaylist_btn {
+	
+	border-radius: 5px;
+	border: none;
+	background-color: #dddddd;
+	width: 60px;
+	height: 30px;
+	text-align: center;
+	line-height: 25px;
+	margin-left: 40px;
+	margin-right: 230px;
+	color: #323232;
+	padding: 3px;
+	font-size: 11px;
+	
+}
+
+.createPlaylist_btn_cancel {
+	
+	border-radius: 5px;
+	border: none;
+	background-color: #dddddd;
+	width: 60px;
+	height: 30px;
+	text-align: center;
+	line-height: 25px;
+	
+	color: #323232;
+	padding: 3px;
+	font-size: 11px;
+	
+	
+}
+
+
+.btn_createPlaylist:hover, .btn_modal_close:hover, .createPlaylist_btn_cancel:hover, .createPlaylist_btn:hover {
+	
+	cursor: pointer;
+	background-color: #efefef;
+	animation: fadein-btn 0.5s;
+		}
+		
+		@keyframes fadein-btn{
+	/* 효과를 동작시간 동안 0 ~ 1까지 */
+		from {
+			
+			opacity: 0.8;
+		}
+		to {
+			background-color: #efefef;
+			opacity: 1;
+		}
+	}
+
+
+
 .playlist_thumbnail {
 	
 	display: inline-block;
@@ -556,7 +655,26 @@ transition: all 0.2s linear;
 	font-weight: 900;
 	border: 1px solid #444444;
 	background-color: #dedede;
+animation: fadein-paging 2s;
+	}
 	
+	@keyframes fadein-paging {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+	}
+	
+.playlist_musicBoard {
+	
+	height: 400px;
+	
+	
+	
+
 }
 
 .paging:hover {
@@ -675,6 +793,186 @@ animation: fadein-paging 1s;
 	
 	width : 50px;
 	height : 50px;
+	
+}
+
+
+* {
+	box-sizing: border-box;
+	margin : 0;
+	padding : 0;
+	
+	}
+	
+	
+
+#modal {
+	
+ position:relative;
+  top: 60px;
+  left: 800px;
+  width: 20px;
+  height: 20px;
+
+  z-index:1;
+  display: none;
+  
+
+animation: fadein-modal-open 1s;
+
+	}
+	
+	@keyframes fadein-modal-open {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+
+.modal_close {
+
+	animation: fadein-modal-close 1s;
+}	
+	
+	@keyframes fadein-modal-close {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+.modal_content {
+	
+	width:450px;
+  height: auto;
+  position:absolute;
+   top: 60px;
+   right: 0px;
+ 
+ box-shadow: 0 3px 20px 0 #37486b;
+  background-color:#323232;
+  order:none;
+  color: #efefef;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: center;
+  padding: 15px;
+	
+}
+		
+	
+
+
+
+
+#modal h2 {
+  margin:0;   
+}
+
+#modal button {
+  display:inline-block;
+  width:100px;
+  margin-left:calc(100% - 100px - 10px);
+}
+
+
+#modal .modal_layer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.8);
+  z-index:-1;
+}   
+
+
+
+
+
+.playlist_open {
+	
+	position : absolute;
+	top: 0px; left: 20px;
+	width: 300px;
+	height: 200px;
+	border: 1px solid #ababab;
+	background-color: #efefef;
+	padding: 20px;
+	
+	
+	
+}
+
+.modal_btn_area {
+	
+	display: flex;
+	justify-content: space-between;
+	width: 400px;
+	height: 50px;
+	margin-top: 20px;
+	
+}
+
+
+.btn_modal_close {
+	
+	border: 1px solid #889888;
+	background-color: #dddddd;
+	width: 80px;
+	height: 40px;
+	text-align: center;
+	line-height: 40px;
+	
+	}
+	
+
+
+
+
+input[type=text]:keyup {
+	background-color: #efefef;
+	color: #323232;
+	font-size: 25px;
+	font-weight: 900;
+	}
+
+
+
+
+
+
+/* 추가수정란  */
+.musicBoard_td_musicLike {
+	
+	padding: 20px;
+	
+}
+
+.musicBoard_musicLike {
+	
+	display: inline-block;
+	
+	
+
+	
+}
+
+.musicBoard_musicLikeCnt {
+	
+	display: inline-block;
+	margin-left: 3px;
+	font-size: 15px;
+	font-weight: 900;
+	
+	
 	
 }
 
