@@ -7,6 +7,7 @@
 
 
 
+
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 
@@ -28,6 +29,8 @@
 		fn_updatedMusicBoard();			// 기능 : 최신순 게시판 이동
 		fn_popularMusicBoard();			// 기능 : 인기순게시판 이동
 		fn_musicBoard_search();			// 기능 : 게시판에서 검색
+		fn_musicBoardDownload();		// 기능 : 다운로드_비회원 및 이용권 소지여부 확인
+		fn_musicBoard_upload();			// 기능 : 음원업로드
 	});
 	
 	
@@ -61,6 +64,14 @@
     function fn_modal() {	// 플레이리스트 목록창
     	
     		$('.modal_open_btn').click(function() {
+				
+				if(loginUser == null) {				// 제약 : 비회원금지
+	    			if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
+						location.href="/user/login/form";
+						}
+					return;
+    			}
+				
     			
     			$('#modal').css('display', 'block');
     			
@@ -86,7 +97,7 @@
 	    					// 플레이리스트 목록
 	    					$('.modal_content').empty();	// 상단 리스트 최신화
 	   						
-	    					$('.modal_content').append(' <h2>플레이리스트를 선택하세요</h2>');	// 제목
+	    					$('.modal_content').append(' <div class="modal_musicBoard_title"><h2>플레이리스트를 선택하세요</h2></div>');	// 제목
 	    				
 	    					
 	    					var body = $('<tbody class="modal_body">');
@@ -104,7 +115,7 @@
 	    					$('.modal_content').append( 
 	    	    					$('<div class="playlist_items">')
 	    	    					.append( $('<table class="modal_table">')
-	    							.append('<thead class="modal_table_head"><tr class="modal_tr"><td>No</td><td class="modal_td">플레이리스트명</td><td class="modal_td">선택</td></tr></thead>')
+	    							.append('<thead class="modal_table_head"><tr class="modal_tr_head"><td>No</td><td class="modal_td">플레이리스트명</td><td class="modal_td">선택</td></tr></thead>')
 	    							.append($(body)) ) ) ;
 	    	    					
    	    					$('.modal_content')
@@ -164,7 +175,7 @@
     		// 플레이리스트 생성화면으로 재구성
     		
     		$('.modal_content')
-    		.append('<div class="createPlaylist_header"><h2>플레이리스트 이름을 입력하세요</h2></div>')
+    		.append('<div class="modal_create_area"><div class="createPlaylist_header"><h2>플레이리스트 이름을 지어주세요</h2></div></div>')
     		.append('<div class="createPlaylist_body"><input type="text" class="playlist_name" id="playlist_name"></div>')
     		.append( $('<div class="createPlaylist_btn_area">')
     				.append('<div class="createPlaylist_btn">생성</div>')
@@ -246,7 +257,7 @@
 					
 					var body = $('<tbody class="modal_body">');
 					
-					$('.modal_content').append(' <h2>플레이리스트를 선택하세요</h2>');	// 제목
+					$('.modal_content').append('<div class="modal_musicBoard_title"><h2>플레이리스트를 선택하세요</h2></div>');	// 제목
 
 					
 					$.each(resData.userPlaylist, function(index, playlist) {			// 플레이리스트 목록
@@ -262,7 +273,7 @@
 					$('.modal_content').append( 
 					$('<div class="playlist_items">')
 					.append( $('<table class="modal_table">')
-					.append('<thead class="modal_table_head"><tr class="modal_tr"><td>No</td><td class="modal_td">플레이리스트명</td><td class="modal_td">선택</td></tr></thead>')
+					.append('<thead class="modal_table_head"><tr class="modal_tr_head"><td>No</td><td class="modal_td">플레이리스트명</td><td class="modal_td">선택</td></tr></thead>')
 					.append($(body)) ) ) ;
 					
 					$('.modal_content')
@@ -346,8 +357,10 @@
 			writer = $('.writer').val();
     		
     		if(loginUser == null) {				// 제약 : 비회원금지
-    			alert('회원만 가능합니다');
-				return;
+    			if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
+					location.href="/user/login/form";
+					return;
+				}
     		}
     		
     		if(loginUser.email == writer) {		// 제약 : 본인 좋아요 금지
@@ -394,7 +407,7 @@
     	
     }
     
-    function fn_musicBoard_search() {
+    function fn_musicBoard_search() {	// 기능 : 검색
 		
 		$('#list_page_search_btn').click(function() {
 			
@@ -410,6 +423,50 @@
 			
 		});
 		
+		
+	}
+	
+	function fn_musicBoardDownload() {	// 기능 : 다운로드 + 방지
+	
+		$('.musicBoard_download').click(function(event) {
+			
+		
+			$.ajax({		// 방지 : 이용권 소지 여부 확인
+				type: 'post',
+				url: '/payment/isPassHave',
+				dataType: 'json',
+				success: function(resData){
+					if(resData.result == 0){
+						if(confirm('이용권이 없는 회원입니다. 이용권을 구매하러 가시겠습니까?')){
+							location.href="/payment/buy";
+						}
+					} 
+					if(resData.isNotLogin == 'loginPlz'){
+						if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
+						location.href="/user/login/form";
+						}
+					}		
+					
+				}
+			});
+
+		});	
+	}
+	
+	function fn_musicBoard_upload() {	// 기능 : 업로드
+		
+		$('.upload_btn').click(function() {
+			
+			if(loginUser == null) {
+				if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
+							location.href="/user/login/form";
+				}
+				return;	
+			}
+			location.href='/tune/upload';
+		});
+		
+	
 		
 	}
 
@@ -440,7 +497,7 @@
 					<div class="list_page_header">
 					<!--  구현 : 장르별 조회하기 -->
 						<div class="select_genre">
-							<div class="select_genre_title"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;게시판 이동</div>
+							<div class="select_genre_title"></div>
 							<ul class="list_select_ul">
 								<li id="list_select_li_musicLast" class="list_select_li">최신순</li>
 								<li id="list_select_li_musicLike" class="list_select_li">인기순</li>
@@ -515,13 +572,16 @@
 										<div id="modal">
    
 										    <div class="modal_content">
-										        <h2>플레이리스트를 선택하세요</h2>
+										    	<div class="modal_musicBoard_title">
+											        <h2>플레이리스트를 선택하세요</h2>
+										    	
+										    	</div>
 										        	<div class="playlist_items">
 										        	
 										        		<table class="modal_table">
 										        			<thead class="modal_table_head">
-										        				<tr class="modal_tr">
-										        					<td class="modal_td">no</td>
+										        				<tr class="modal_tr_head">
+										        					<td class="modal_td_title">no</td>
 										        					<td class="modal_td" >플레이리스트명</td>
 										        					<td class="modal_td">선택</td>
 										        				</tr>
@@ -564,11 +624,13 @@
 					
 					<!-- 구현 : 게시글 업로드 -->
 					<div class="btn_area">
-						<input type="button" value="삭제" class="upload_btn">
+						
 						<div>
 							<input type="button" value="업로드" class="upload_btn">
 						</div>
 					</div>
+					
+					
 					
 					<!-- 구현 : 게시글 페이징 처리 + 검색기능 -->
 					<div class="list_page_footer">
