@@ -99,22 +99,18 @@
 		height: 25px;
 		font-weight: 600;
 		font-size: 17px;
-		color: #eeeeee;
+		color: #443E36;
 		left : 25px;
-		top: 10px;
-		
+		top: 8px;
+		outline: none;
 	}
 	
 	.header_search_btn {
 		position: absolute;
-		
-		font-weight: 900;
-		font-size: 13px;
-		color: #eeeeee;
 		display: inline-block;
-		text-align: center;
-		right: 30px;
-   		top: 1px;
+		right: 19px;
+	    top: 13px;
+	    width: 16px;
 	}
 	
 		
