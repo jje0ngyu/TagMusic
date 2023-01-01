@@ -15,6 +15,15 @@
 		background-color: #fbfbfb;
 	}
 	
+	.fa-regular {
+transition: all 0.2s linear;
+}
+
+.fa-regular:hover {
+	transform: scale(1.4);
+	
+}
+	
 	.playlist_container {
 
 	

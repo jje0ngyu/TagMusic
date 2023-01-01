@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title></title>
 <link rel="stylesheet" th:href="@{/css/musicBoard.css}">
-<link rel="stylesheet" th:href="@{/css/playlist.css}">
+
 
 
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
@@ -27,6 +27,7 @@
 		
 		fn_updatedMusicBoard();			// 기능 : 최신순 게시판 이동
 		fn_popularMusicBoard();			// 기능 : 인기순게시판 이동
+		fn_musicBoard_search();			// 기능 : 게시판에서 검색
 	});
 	
 	
@@ -392,6 +393,25 @@
     	});
     	
     }
+    
+    function fn_musicBoard_search() {
+		
+		$('#list_page_search_btn').click(function() {
+			
+			var query = $('#musicBoard_query').val();
+			
+			if($('#musicBoard_query').val() == '') {
+				alert('검색어를 입력하세요');
+				event.preventDefault();
+				return;
+		}
+		location.href='/music/main/totalSearch?query=' + query + '&page=' + $('.page').val();
+			
+			
+		});
+		
+		
+	}
 
 
 </script>
@@ -454,15 +474,21 @@
 								
 								<td class="musicBoard_td">
 									<span th:if="${music.hasThumbNail == 1}" >
-										<img class="board_thumbnail" th:src="@{/music/thumbnail(musicNo=${music.musicNo})}">
+										<a class="item_artist" th:href="@{/tune/iframe(musicNo=${music.musicNo})}">
+											<img class="board_thumbnail" th:src="@{/music/thumbnail(musicNo=${music.musicNo})}">
+										</a>
 									</span>
 									<span th:unless="${music.hasThumbNail == 1}" >
 										<img class="board_thumbnail" th:src="@{/images/defaultImage.png}">
 									</span>
 								<td class="musicBoard_td">
 									
-									<div th:text="${music.musicTitle}" class="title_artist"></div>
-									<div th:text="${music.email}" class="title_artist"></div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
+									<div class="title_artist">
+										<a class="item_artist" th:href="@{/tune/iframe(musicNo=${music.musicNo})}" th:text="${music.musicTitle}"></a>
+									</div>
+									<div class="title_artist">
+										<a class="item_artist" th:href="@{/tune/iframe(musicNo=${music.musicNo})}" th:text="${music.email}"></a>
+									</div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
 								</td>
 								
 								<td class="musicBoard_td">
@@ -481,7 +507,7 @@
 										
 										
 										<div id="root">   
-										    <button type="button" th:data-musicno="${music.musicNo}" class="modal_open_btn">플레이리스트에 담기</button>
+										    <i class="fa-solid fa-basket-shopping fa-2x modal_open_btn" th:data-musicno="${music.musicNo}"></i>
 										    <input type="hidden" class="musicNo" th:value="${music.musicNo}">
 										</div>
 										
@@ -530,8 +556,7 @@
 									
 								</td>
 								<td>
-									<i class="fa-solid fa-arrow-down-to-line"></i>
-									<input type="button" id="modal_close" value="다운받기">
+									<a class="musicBoard_download" th:href="@{/tune/download(musicNo=${music.musicNo})}"><i class="fa-solid fa-download fa-2x"></i></a>
 								</td>
 							</tr>
 						</tbody>
@@ -541,7 +566,7 @@
 					<div class="btn_area">
 						<input type="button" value="삭제" class="upload_btn">
 						<div>
-							<input type="button" value="업로드" class="delete_btn">
+							<input type="button" value="업로드" class="upload_btn">
 						</div>
 					</div>
 					
@@ -549,8 +574,8 @@
 					<div class="list_page_footer">
 						<div class="page_block" th:utext="${paging}" ></div>
 						<div class="list_page_search">
-							<input type="text" placeholder="검색" class="list_page_search_text">
-							<input type="button" value="검색" class="list_page_search_btn">
+							<input type="text" placeholder="검색" id="musicBoard_query" class="list_page_search_text">
+							<input type="button" value="검색" id="list_page_search_btn" class="list_page_search_btn">
 						</div>
 					</div>
 					</div>

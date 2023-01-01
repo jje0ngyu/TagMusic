@@ -6,6 +6,15 @@
 	padding : 0;
 	
 	}
+
+.musicLike_delete {
+transition: all 0.2s linear;
+}
+
+.musicLike_delete:hover {
+	transform: scale(1.4);
+	
+}
 	
 
 .musicLike_container {
@@ -150,8 +159,10 @@ thead {
 	
 }
 
+
+
 /* * 게시판 버튼 표준양식 */
-.musicLike_delete, .musicLastly_delete, .musicMany_delete  {
+ .musicLastly_delete, .musicMany_delete  {
 	
 	
 	border: 1px solid #888888;
@@ -190,7 +201,7 @@ thead {
 	
 } 
 
-.musicLike_delete:hover, .musicLastly_delete:hover, .musicMany_delete:hover {
+.musicLastly_delete:hover, .musicMany_delete:hover {
 	
 	background-color: #20325A;
 	color: #fdfdfd;

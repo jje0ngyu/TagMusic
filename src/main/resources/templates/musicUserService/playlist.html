@@ -19,6 +19,90 @@
 	
 	
 
+#modal {
+	
+
+  position:absolute;
+
+  z-index:1;
+  display: none;
+  
+
+animation: fadein-modal-open 1s;
+
+	}
+	
+	@keyframes fadein-modal-open {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.modal_close {
+
+	animation: fadein-modal-close 1s;
+}	
+	
+	@keyframes fadein-modal-close {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+		
+	
+
+
+
+
+#modal h2 {
+  margin:0;   
+}
+
+#modal button {
+  display:inline-block;
+  width:100px;
+  margin-left:calc(100% - 100px - 10px);
+}
+
+#modal .modal_content {
+  width:450px;
+
+  position:absolute;
+   top: 200px;
+	left:290px;
+ 
+  background-color:#474545;
+  order:none;
+  color: #efefef;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: center;
+  padding: 30px;
+  
+  
+  
+}
+
+#modal .modal_layer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.8);
+  z-index:-1;
+}   
+
+
+
 
 
 .playlist_open {
