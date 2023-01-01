@@ -17,7 +17,6 @@
  
 	$(function(){
 		fn_ChatList();
-		enterkey();
 		$('#tabNotice').click(function(){
 			location.href='/board/list';
 		})
@@ -27,7 +26,7 @@
 		$('#tabChat').click(function(){
 			location.href='/customerService/chat';
 		})
-	});
+	});  // $(function()
 	
 	
 	
@@ -47,6 +46,7 @@
 						// 채팅목록을 가져오는 함수필요
 						$('#content').val('');
 						fn_ChatList();
+						$('#content').focus();
 					}
 				}
 			});
@@ -61,8 +61,6 @@
 			data : 'groupNo=[[${chatUserNo.groupNo}]]'+'&userNo=[[${chatUserNo.userNo}]]',
 			dataType : 'json',
 			success : function(resData){
-				console.log(resData.chatList);
-				
 				$('#chat_box').empty();
 				
 				var div1 = '';
@@ -100,31 +98,24 @@
 						
 						/// 나주에 추가 기능구현할 것 : 인접형제의 chatDate랑 시간 비교해서 같은 분이면 안나오게 하기
 						div += '<div>' + moment(chat.chatDate).format('YY.MM.DD hh:mm') + '</div>';
-						
-						// 로그인한 사용자만 볼 수 있도록 if 처리
 						div += '</div>';
 						$('#chat_box').append(div);
 						//$('#chat_box').append('<div style="border-bottom: 1px dotted gray;"></div>');
+						$('#chat_box').scrollTop($("#chat_box")[0].scrollHeight);
+						$('#content').focus();
 				});
 			}
 		});
-		
-		
-		
-		
-		
-		
-	}; 
- 
- 
-	/*]]>*/
-	function enterkey() {
-   		if (window.event.keyCode == 13) {
-   			fn_addChat();
-   			fn_ChatList();
-    	}
 	}
+	/*]]>*/
+	
 
+    function show_name(e){
+        if(e.keyCode == 13){
+        	fn_addChat();
+        	e.preventDefault();
+        }
+     }
 	
 	
 </script>
@@ -136,7 +127,7 @@
 		<!--  ** 모든 컨텐츠는 해당 content태그 아래에서 작성하시오  ** -->
 		<div class="board_controller">
 
-			<div class="board_title">태그뮤직 고객센터</div>
+			<div class="board_title">고객센터</div>
 			
 			<div class="board_top_controller">
 				<div class="board_tab_controller">
@@ -162,7 +153,7 @@
 					<input type="hidden" name="groupNo" th:value="${chatUserNo.groupNo}">
 					<input type="hidden" name="groupOrder" th:value="${chatUserNo.groupOrder}">
 					<div class="plz_input_q">
-						<input type="text" name="content" id="content" placeholder="문의내용" >
+						<input type="text" name="content" id="content" placeholder="문의내용" onkeypress="show_name(event)">
 						<input type="button" value="문의하기" id="btn_addChat" class="btn-3d blue" onclick="fn_addChat();">
 					</div>
 				</form>
