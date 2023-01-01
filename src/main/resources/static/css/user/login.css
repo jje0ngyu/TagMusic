@@ -55,6 +55,7 @@ header {
 }
 .login_api:hover {
 	background-color: #e5e8eb;
+	cursor: pointer;
 }
 .line_gray {
 	height: 1px;

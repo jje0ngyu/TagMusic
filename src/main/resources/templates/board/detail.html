@@ -44,8 +44,8 @@
 			<form id="frm_btn" method="post">
 				<input type="hidden" name="boardNo" class="btn" th:value="${board.boardNo}">
 				<input type="button" value="목록" class="btn" onclick="location.href='/board/list'">
-				<input type="button" value="삭제" id="btn_remove_board" class="btn">
-				<input type="button" value="수정" id="btn_edit_board" class="btn btn_edit">
+				<input th:if="${session.loginUser != null && session.loginUser.userNo == 1}" type="button" value="삭제" id="btn_remove_board" class="btn">
+				<input th:if="${session.loginUser != null && session.loginUser.userNo == 1}" type="button" value="수정" id="btn_edit_board" class="btn btn_edit">
 			</form>
 		</div>
 	</div> <!-- board_controller -->

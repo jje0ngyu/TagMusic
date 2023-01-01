@@ -21,8 +21,17 @@
 			<div id="addMusic" class="text_box">
 				<span class="mypageNav_text">음원 등록</span>
 			</div>
-			<div id="paymentHistory" class="text_box">
+			<div th:if="${session.loginUser.userNo != 1}"  id="paymentHistory" class="text_box">
 				<span class="mypageNav_text">결제이력</span>
+			</div>
+			<div th:if="${session.loginUser.userNo == 1}"  id="userManagement" class="text_box">
+				<span class="mypageNav_text">회원관리</span>
+			</div>
+			<div th:if="${session.loginUser.userNo == 1}"  class="notice text_box">
+				<span class="mypageNav_text">공지사항</span>
+			</div>
+			<div th:if="${session.loginUser.userNo == 1}"  class="faq text_box">
+				<span class="mypageNav_text">자주 하는 질문</span>
 			</div>
 			<div id="chat" class="text_box">
 				<span class="mypageNav_text">1:1문의</span>
@@ -57,6 +66,18 @@
 				$('.text_box').removeClass('.text_box_click');
 				$('#mypageHome').addClass('.text_box_click');
 				$('#submit_history').submit();
+			});
+			// 관리자 - 유저관리
+			$('#userManagement').click(function(){
+				location.href="/admin/user/control";
+			});
+			// 관리자 - 공지사항
+			$('.notice').click(function(){
+				location.href="/board/list";
+			});
+			// 관리자 - 자주 하는 질문
+			$('.faq').click(function(){
+				location.href="/upload/list";
 			});
 			// 1:1 문의
 			$('#chat').click(function() {

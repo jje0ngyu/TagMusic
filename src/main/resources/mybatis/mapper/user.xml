@@ -118,6 +118,7 @@
 			<if test="birthyear != null">BIRTHYEAR = #{birthyear},</if>
 			<if test="birthday != null">BIRTHDAY = #{birthday},</if>
 			<if test="mobile != null">MOBILE = #{mobile},</if>
+			<if test="profileImage != null">PROFILE_IMAGE = #{profileImage},</if>
 			<if test="postcode != null">POSTCODE = #{postcode},</if>
 			<if test="roadAddress != null">ROAD_ADDRESS = #{roadAddress},</if>
 			<if test="jibunAddress != null">JIBUN_ADDRESS = #{jibunAddress},</if>

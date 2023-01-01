@@ -137,7 +137,7 @@ public class UserController {
 	}
 	
 	// 마이페이지 - 프로필 사진 수정
-	// @ResponseBody
+	@ResponseBody
 	@PostMapping("/user/info/modifyImage")
 	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
 		userService.modifyImage(multipartRequest, response);

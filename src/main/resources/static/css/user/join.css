@@ -59,7 +59,7 @@
 
 .lbl_all {
 	background-position-y: 5px;
-	font-size: 18px;
+	font-size: 20px;
 	font-weight: 700;
 	margin-bottom: 20px;
 }
@@ -141,7 +141,7 @@ textarea {
 	border: none;
 	width: 100%;
 	outline: none;
-	height: 32px;
+	height: 40px;
 }
 /* join_middle_controller */
 .join_middle_controller {
@@ -197,12 +197,15 @@ textarea {
 	margin: 10px 0;
 	display:flex;
 	justify-content: space-between;
+	text-align: center;
 }
 .select_box_year {
 	border: 1px solid #bdc2ce;
 	width: 40%;
+	text-align: center;
 }
 .select_box {
 	border: 1px solid #bdc2ce;
 	width: 25%;
+	text-align: center;
 }

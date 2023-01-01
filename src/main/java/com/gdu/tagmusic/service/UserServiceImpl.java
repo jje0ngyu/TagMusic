@@ -582,14 +582,11 @@ public class UserServiceImpl implements UserService {
 	// 회원정보 수정 - 이미지 변경
 	@Override
 	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
-		/*
-		HttpSession session = multipartRequest.getSession(); String email =
-		((UserDTO)session.getAttribute("loginUser")).getEmail();
-		 */
 		String email = multipartRequest.getParameter("email");
 		
 		// 첨부된 파일 목록
 		MultipartFile imageFile = multipartRequest.getFile("profileImagefile");  // <input type="file" name="file">
+		System.out.println("이미지파일 정보 : " + imageFile);
 		// 첨부 결과
 		int attachResult;
 		if(imageFile.getSize() == 0) {  // 첨부가 없는 경우 (files 리스트에 [MultipartFile[field="files", filename=, contentType=application/octet-stream, size=0]] 이렇게 저장되어 있어서 files.size()가 1이다.
@@ -597,6 +594,7 @@ public class UserServiceImpl implements UserService {
 		} else {
 			attachResult = 0;
 		}
+		System.out.println("첨부결과 : " + attachResult);
 		try {
 			
 			// 첨부가 있는지 점검
@@ -624,26 +622,17 @@ public class UserServiceImpl implements UserService {
 				// 첨부파일 서버에 저장(업로드 진행)
 				imageFile.transferTo(file);
 
-				// ProfileImageDTO 생성
-				ProfileImageDTO profile = ProfileImageDTO.builder()
-						.profileImagePath(ImagePath)
-						.profileImageOrigin(origin)
-						.profileImageFilesystem(filesystem)
+				// UserDTO 생성
+				UserDTO user = UserDTO.builder()
 						.email(email)
+						.profileImage(ImagePath + filesystem)
 						.build();
 				
 				// 첨부파일의 Content-Type 확인
 				String contentType = Files.probeContentType(file.toPath());  // 이미지의 Content-Type(image/jpeg, image/png, image/gif)
 
 				// DB에 AttachDTO 저장
-				attachResult += userMapper.insertImage(profile);
-				
-				ProfileImageDTO profileImage = ProfileImageDTO.builder()
-						.profileImagePath(ImagePath)
-						.profileImageFilesystem(filesystem)
-						.email(email)
-						.build();
-				int result = userMapper.updateImagePath(profileImage);
+				int result = userMapper.updateUser(user);
 				
 				response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
@@ -656,7 +645,6 @@ public class UserServiceImpl implements UserService {
 					
 					out.println("<script>");
 					out.println("alert('사진이 변경되었습니다.');");
-					out.println("location.href='/';");
 					out.println("</script>");
 				}
 			}
