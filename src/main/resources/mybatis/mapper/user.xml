@@ -82,15 +82,6 @@
 			(#{artist}, #{pw}, #{name}, #{gender}, #{email}, #{mobile}, #{birthyear}, #{birthday}, NULL, NULL, NULL, NULL, NULL, #{agreeCode}, #{snsType}, NOW(), NOW(), NOW(), NULL, NULL)
 	</insert>
 	
-	
-	
-	<!-- 프로필 이미지 -->
-	<select id="selectProfileImage" parameterType="String" resultType="String">
-		SELECT PROFILE_IMAGE
-		  FROM USERS
-		 WHERE EMAIL = #{email}
-	</select>
-	
 	<!-- 프로필 이미지 변경 -->
 	<insert id="insertImage" parameterType="ProfileImageDTO">
 		INSERT INTO PROFILEIMAGE
@@ -100,12 +91,12 @@
 	</insert>
 	
 	<!-- 콘캣 오류 발생 가능성 높음! -->
-	<!-- 프로필 경로 수정 -->
-	<update id="updateImagePath" parameterType="ProfileImageDTO">
-		UPDATE USERS
+	<!-- 프로필 가져오기 -->
+	<select id="selectImageByEmail" parameterType="UserDTO" resultType="UserDTO">
+		SELECT 
 		   SET PROFILE_IMAGE = CONCAT(#{profileImagePath},\),#{profileImageFilesystem})
 		 WHERE EMAIL = #{email}
-	</update>
+	</select>
 	
 	
 	<!-- 회원정보수정 -->

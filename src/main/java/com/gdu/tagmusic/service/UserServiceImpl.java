@@ -22,11 +22,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.gdu.tagmusic.domain.MusicDTO;
 import com.gdu.tagmusic.domain.ProfileImageDTO;
 import com.gdu.tagmusic.domain.RetireUserDTO;
 import com.gdu.tagmusic.domain.SleepUserDTO;
@@ -36,6 +41,8 @@ import com.gdu.tagmusic.mapper.UserMapper;
 import com.gdu.tagmusic.util.JavaMailUtil;
 import com.gdu.tagmusic.util.MyFileUtil;
 import com.gdu.tagmusic.util.SecurityUtil;
+
+import groovyjarjarantlr4.v4.parse.ANTLRParser.exceptionGroup_return;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -574,16 +581,29 @@ public class UserServiceImpl implements UserService {
 	
 	// 회원정보 수정 - 프로필 이미지 가져오기
 	@Override
-	public Map<String, Object> getImage(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<byte[]> getImage(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		String email = ((UserDTO)session.getAttribute("loginUser")).getEmail();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", email);
+		UserDTO user = userMapper.selectUserByMap(map);
+		File image = new File(user.getProfileImage());
+		
+		ResponseEntity<byte[]> result = null;
+		try {
+			result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(image), HttpStatus.OK);
+			System.out.println("result : " + result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	// 회원정보 수정 - 이미지 변경
 	@Override
 	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
 		String email = multipartRequest.getParameter("email");
-		
+		System.out.println("이미지저장 임플");
 		// 첨부된 파일 목록
 		MultipartFile imageFile = multipartRequest.getFile("profileImagefile");  // <input type="file" name="file">
 		System.out.println("이미지파일 정보 : " + imageFile);
@@ -645,6 +665,7 @@ public class UserServiceImpl implements UserService {
 					
 					out.println("<script>");
 					out.println("alert('사진이 변경되었습니다.');");
+					out.println("location.href='/user/mypage'");
 					out.println("</script>");
 				}
 			}

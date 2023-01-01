@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -125,8 +126,9 @@ public class UserController {
 
 	
 	// 마이페이지 - 프로필 사진 불러오기 
+	@ResponseBody
 	@PostMapping("/user/info/getImage")
-	public Map<String, Object> getImage(HttpServletRequest request){
+	public ResponseEntity<byte[]> getImage(HttpServletRequest request){
 		return userService.getImage(request);
 	}
 	
@@ -141,6 +143,7 @@ public class UserController {
 	@PostMapping("/user/info/modifyImage")
 	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
 		userService.modifyImage(multipartRequest, response);
+		System.out.println("이미지 저장");
 	}
 
 	// 마이페이지 - 개인정보 수정

@@ -7,6 +7,7 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script>
 	$(function(){
+		fn_displayImage();
 		fn_popupProfileImage();
 		fn_changeImage();
 		fn_closePopup();
@@ -23,7 +24,10 @@
 		$.ajax({
 			type: 'post',
 			url : '/user/info/getImage',
-			data: 'email=${session.loginUser.email}',
+			enctype: 'multipart/form-data',
+			processData: false,
+			contentType: false,
+			dataType: 'json',
 			success: function(resData){
 				console.log(resData.imagePath)
 				$('#profileImage').attr('src',resData.iamgePath);
@@ -53,9 +57,6 @@
    				contentType: false,
 				success: function(resData){
 					console.log('성공');
-				},
-				error: function(){
-					console.log('에러');
 				}
 			})
 		});
@@ -206,7 +207,10 @@
 	<div class="box_backlayer blind">
 		<div class="profile_image_controller blind">
 			<div class="profile_title">프로필 이미지</div>
-			<img class="profile_image" id="profileImage" th:src="${session.loginUser.profileImage}">
+			<img th:if="${session.loginUser.profileImage == '/images/basic_profileImage.png'}"
+				 class="profile_image" id="profileImage" th:src="${session.loginUser.profileImage}">
+			<img th:if="${session.loginUser.profileImage != '/images/basic_profileImage.png'}"
+				 class="profile_image" id="profileImage" th:src="@{/user/info/getImage}">
 			<form id="frm_progileImage" th:action="@{/user/info/modifyImage}" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="email" id="email" th:value="${session.loginUser.email}">
 			    <div class="profile_file">
