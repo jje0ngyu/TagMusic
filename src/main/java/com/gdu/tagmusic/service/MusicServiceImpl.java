@@ -49,7 +49,7 @@ public class MusicServiceImpl implements MusicService {
 		// - 한 페이지(바)당 4개를 보여줄 것
 
 		// 2. 페이징 처리
-		int recordPerPage = 4;
+		int recordPerPage = 5;
 		int totalRecordCnt = musicMapper.selectMusicCnt();
 
 		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
@@ -152,16 +152,10 @@ public class MusicServiceImpl implements MusicService {
 		// 1. 파라미터 : page
 		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
 		int page = Integer.parseInt(opt.orElse("1"));
-		// - 한 페이지(바)당 4개를 보여줄 것
-
-		// 파라미터 : 장르
-		/*
-		 * String genre = request.getParameter("genre"); Optional<String> opt2 =
-		 * Optional.ofNullable(request.getParameter("page"));
-		 */
+	
 
 		// 2. 페이징 처리
-		int recordPerPage = 6;
+		int recordPerPage = 100;
 		int totalRecordCnt = musicMapper.selectPopularMusicCnt();
 		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
 

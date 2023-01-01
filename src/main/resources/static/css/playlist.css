@@ -15,6 +15,15 @@
 		background-color: #fbfbfb;
 	}
 	
+	.fa-regular {
+transition: all 0.2s linear;
+}
+
+.fa-regular:hover {
+	transform: scale(1.4);
+	
+}
+	
 	.playlist_container {
 
 	
@@ -56,10 +65,12 @@
 	
 	.playlist_top {
 	padding: 10px;
-	width: 700px;
+	width: 650px;
 	font-size: 35px;
 	font-weight: 900;
 	margin-bottom: 15px;
+	 border-bottom: 2px solid #20325A;
+ 	box-shadow: 0px 10px 10px -10px #37486b;
 	
 	
 	
@@ -71,14 +82,14 @@
 		
 		display: flex;
 		border-radius: 10px;
-		background-color: #20325A;
 		height: 60px;
 		width: 1240px;
 		font-size: 15px;
 		font-weight: 800;
-		color: #fdfdfd;
 		padding: 10px 20px;
 		margin-bottom: 20px;	
+		background-color: #20325A;
+		color: #fdfdfd;
 		box-shadow: 0 1px 10px 0 #37486b;
 	}
 	

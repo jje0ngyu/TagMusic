@@ -7,35 +7,71 @@ p {
 	font-size: 30px;
 }
 
-.list_container {
+body {
 	
- 	width: 100%;
- 	/* margin : auto : 내용 영역을 페이지 가운데로 정렬하기 위해 사용됨  */
- 	padding-left : 250px;
- 	height : 100%;
- 	background-color: #ECECEC;
 	
+	height: 1400px;
+	background-color: #fbfbfb;
+}
 
+.board_thumbnail, .good_checked, .modal_open_btn, .fa-download {
+transition: all 0.2s linear;
+}
+
+.board_thumbnail:hover, .good_checked:hover, .modal_open_btn:hover, .fa-download:hover {
+	cursor: pointer;
+	transform: scale(1.4);
+	
 }
 
 
+.list_container {
+	
+ 	
+ 	/* margin : auto : 내용 영역을 페이지 가운데로 정렬하기 위해 사용됨  */
+ 	
+ 	background-color: #fbfbfb;
+	width: 100%;
+	margin: 35px auto;
+	padding: 60px 270px;	
+	animation: fadein-container 2s;
+		}
+		
+		@keyframes fadein-container {
+	/* 효과를 동작시간 동안 0 ~ 1까지 */
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
 .list_page {
 	
-	margin : 150px auto;
-	
-	width: 1000px;
-	height: 800px;
-	padding-right: 30px;
+
 	display: block;
+	background-color: #fbfbfb;
+	margin: 15px auto;
+	width : 1300px;
+	height: 1450px;
+	padding: 10px 30px;
 	
 	
 }
 
 .page_title {
 	
-	font-size: 45px;
+	padding: 5px;
+	width: auto;
+	min-width: 240px;
+	max-width: 400px;
+	font-size: 35px;
 	font-weight: 900;
-	margin-bottom: 70px;
+	margin-bottom: 25px;
+	border-bottom: 2px solid #20325A;
+ 	box-shadow: 0px 10px 10px -10px #37486b;
+	
 	
 }
 
@@ -78,17 +114,61 @@ p {
 
 
 /* 테이블 */
-table {
+.musicBoard_table {
 	
-    width: 970px;
+   
     height : 600px;
+    text-align: center;
+    animation: fadein 3s;
+	
+  	background: radial-gradient(#efefef, #eeeeee);
+	width: 1150px;
+    padding: 30px;
+    border-radius: 10px;
    
     border-collapse: collapse;
-    font-size: 15px;
+    font-size: 25px;
     color : #333333;
     text-align: center;
-   
-}
+    table-layout: fixed;
+  animation: fadein-container 2s;
+		}
+		
+		@keyframes fadein-container {
+	/* 효과를 동작시간 동안 0 ~ 1까지 */
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	tbody {
+		
+		  height : 300px;
+
+	}
+	th {
+	
+		font-size: 20px;
+		height: 20px;
+		margin-bottom: 20px;
+	
+	}
+	
+	.musicBoard_tr {
+		
+			
+	width: 1150px;
+	height: 40px;
+	font-size: 20px;
+  	height: 30px;
+    border-top: 1px solid #aaaaaa;
+    padding: 10px;
+		
+	}
+	
   th, td {
   
     font-size: 13px;
@@ -97,6 +177,53 @@ table {
     padding: 6px 3px;
     
 }
+
+
+#musicBoard_query {
+	
+	width: 200px;
+	height: 30px;
+	padding: 10px;
+	background-color: #fefefe;
+	outline: none;
+	font-weight: 900;
+	
+	
+}
+
+.upload_btn:hover {
+	
+	
+	
+animation: fadein-container 2s;
+		}
+		
+		@keyframes fadein-container {
+	/* 효과를 동작시간 동안 0 ~ 1까지 */
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	
+	.list_page_search_btn:hover {
+		
+	animation: fadein-container 2s;
+		}
+		
+		@keyframes fadein-container {
+	/* 효과를 동작시간 동안 0 ~ 1까지 */
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+	
+	
 
 tr:nth-of-type(10) {
 	border-bottom: 1px solid #888888;
@@ -133,9 +260,25 @@ tr:nth-of-type(1) {
 
 .list_page_table {
 	
-	padding-bottom: 30px;
+	padding: 40px;
+	background-color: #efefef;
+	box-shadow: 0 1px 10px 0 #808080;
 	
-}
+	border-radius: 10px;
+	
+
+animation: fadein-container 2s;
+		}
+		
+		@keyframes fadein-container {
+	/* 효과를 동작시간 동안 0 ~ 1까지 */
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 
 .select_genre {
 	
@@ -146,7 +289,7 @@ tr:nth-of-type(1) {
 .select_genre_title {
 	
 	
-	font-size: 15px;
+	font-size: 20px;
 	font-weight: 900;
 	margin-bottom: 20px;
 	
@@ -154,8 +297,8 @@ tr:nth-of-type(1) {
 
 .select_all_btn_area {
 	
-
-	margin-top: 80px;
+	height: 10px;
+	margin-top: 10px;
 }
 
 .list_select_ul {
@@ -172,10 +315,15 @@ tr:nth-of-type(1) {
 	width : 185px;
 	text-align: center;
 	height: 50px;
-	background-color: #999999;
+	
 	line-height: 50px;
 	margin-bottom: 7px;
 	margin-right: 7px;
+	
+	background-color: #20325A;
+	color: #fdfdfd;
+	box-shadow: 0 1px 10px 0 #37486b;
+	font-weight: 900;
 	
 	
 }
@@ -185,8 +333,23 @@ tr:nth-of-type(1) {
 .list_select_li:hover {
 	
 	background-color: #dddddd;
+	color: #323232;
+	animation: fadein-btn 1s;
+	font-weight: 900;
+	}
 	
-}
+	@keyframes fadein-btn {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		
+		opacity: 0;
+	}
+	to {
+		
+		opacity: 1;
+		
+	}
+	}
 /* 버튼 : 기본옵션  */
 input[type=button] {
 	cursor: pointer;
@@ -230,7 +393,7 @@ input[type=button] {
 
 .list_page_footer {
 	
-	margin: 50px 400px;
+	margin: 50px 460px;
 	
 }
 
@@ -271,7 +434,7 @@ input[type=button] {
 
 .board_playlist_area {
 	
-	position: relative;
+	
 	
 }
 
@@ -392,5 +555,90 @@ input[type=button] {
 	
 	
 }
+
+
+#modal {
+	
+
+  position:absolute;
+
+  z-index:1;
+  display: none;
+  
+
+animation: fadein-modal-open 1s;
+
+	}
+	
+	@keyframes fadein-modal-open {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.modal_close {
+
+	animation: fadein-modal-close 1s;
+}	
+	
+	@keyframes fadein-modal-close {
+/* 효과를 동작시간 동안 0 ~ 1까지 */
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+	
+
+
+
+#modal h2 {
+  margin:0;   
+}
+
+#modal button {
+  display:inline-block;
+  width:100px;
+  margin-left:calc(100% - 100px - 10px);
+}
+
+#modal .modal_content {
+  width:450px;
+
+  position:absolute;
+   top: 100px;
+   right: 0px;
+	
+ 
+  background-color:#474545;
+  order:none;
+  color: #efefef;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: center;
+  padding: 30px;
+  
+  
+  
+}
+
+#modal .modal_layer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.8);
+  z-index:-1;
+}   
+
+
+
 
 

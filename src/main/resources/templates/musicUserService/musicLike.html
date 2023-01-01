@@ -71,7 +71,7 @@
 					.append( $('<td class="musicLike_td_del"><div class="musicLike_del"><img class="musicLike_thumbnail" src="' + thumbnail + '"></div></td>') )	
 					.append( $('<td class="musicLike_td_del"><div class="musicLike_del">'+musicList.musicTitle+'</div><div class="musicLike_del">'+musicList.userDTO.artist+'</div></td>') )
 					.append( $('<td class="musicLike_td_del"><div class="musicLike_del">'+musicList.musicGenre+'</div></td>') )
-					.append( $('<td class="musicLike_td"><div class="musicLike_delete" data-musicno="'+musicList.musicNo+'">하트깨짐</div></td>') )
+					.append( $('<td class="musicLike_td"><i class="fa-solid fa-heart-crack fa-2x musicLike_delete" data-musicno="'+musicList.musicNo+'"></i></td>') )
 					.appendTo( $(body) );
 
 				});
