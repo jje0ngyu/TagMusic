@@ -3,7 +3,7 @@
 <head th:replace="~{layout/header::head('Tag Music > 로그인')}"></head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" th:href="@{/css/login.css}">
+<link rel="stylesheet" th:href="@{/css/user/login.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -131,123 +131,88 @@
 			<div class="login_top_controller">
 				<div class="login_contents">
 					<div class="login_title">로그인</div>
-						<input type="hidden" name="url" th:value="${url}">
-						<div class="login_email">
-							<input type="text" name="email" id="email" class="input_box" placeholder="이메일 주소">
-						</div>
-						<div>
-							<input type="text" class="msg_email msg_check blind" value="정확한 이메일 주소를 입력하세요.">
-						</div>
-						<div>
-							<input type="password" name="pw" id="pw" class="input_box" placeholder="비밀번호">
-						</div>
-						<div>
-							<!-- 패스워드 보여주기도 구현해 볼 것 -->
-							<input type="text" class="msg_pw msg_check blind" value="비밀번호는 4~60자 사이여야 합니다.">
-						</div>
-						<!-- 이메일 기억/자동로그인/계정찾기 -->
-						<div class="login_tom_middle_controller">
-							<!-- 왼쪽 정렬 -->
-							<div class="login_left">
-								<label for="rememberEmail">
-									<div class="remember_box"></div>
-										<input type="checkbox" id="rememberEmail">
-									<div class="msg_login_box">
-										이메일 기억하기
-									</div>
-								</label>
-								<label for="keepLogin">
-									<input type="checkbox" name="keepLogin" id="keepLogin">
-									<div class="msg_login_box">
-										자동로그인
-									</div>
-								</label>
-							</div>
-							<!-- 오른쪽 정렬 -->
-							<div class="login_right">
-								<div class="login_box_right">
-									<a class="msg_login_box msg_help" th:href="@{/user/loginHelp}">도움이 필요하신가요?</a>
+					<input type="hidden" name="url" th:value="${url}">
+					<div class="login_email">
+						<input type="text" name="email" id="email" class="input_box" placeholder="이메일 주소">
+					</div>
+					<div>
+						<input type="text" class="msg_email msg_check blind" value="정확한 이메일 주소를 입력하세요.">
+					</div>
+					<div>
+						<input type="password" name="pw" id="pw" class="input_box" placeholder="비밀번호">
+					</div>
+					<div>
+						<!-- 패스워드 보여주기도 구현해 볼 것 -->
+						<input type="text" class="msg_pw msg_check blind" value="비밀번호는 4~60자 사이여야 합니다.">
+					</div>
+					<!-- 이메일 기억/자동로그인/계정찾기 -->
+					<div class="login_tom_middle_controller">
+						<!-- 왼쪽 정렬 -->
+						<div class="login_left">
+							<label for="rememberEmail">
+								<div class="remember_box"></div>
+									<input type="checkbox" id="rememberEmail">
+								<div class="msg_login_box">
+									이메일 기억하기
 								</div>
-							</div>
-						</div>
-						<div>
-							<button class="btn_login">로그인</button>
-						</div>
-						<div class="flex_center" style="margin-bottom: 15px;">
-							<div class="line_gray"></div><div style="color:#bdc2ce;">또는</div><div class="line_gray"></div>
-						</div>
-						<!-- 간편 로그인 : 네이버 -->
-						<div class="flex_center">
-							<div class="login_naver_content login_api" th:data-url="${apiURL}">
-								<div class="login_naver_div">
-									<img style="width:25px" th:src="@{/images/login_naver.png}"/>
+							</label>
+							<label for="keepLogin">
+								<input type="checkbox" name="keepLogin" id="keepLogin">
+								<div class="msg_login_box">
+									자동로그인
 								</div>
-								<script>
-									$('.login_naver_content').click(function(){
-										var url = $(this).data('url');
-										location.href=url;
-									})
-								</script>
-								<div>
-									네이버 로그인
-								</div>
-								<div></div>
+							</label>
+						</div>
+						<!-- 오른쪽 정렬 -->
+						<div class="login_right">
+							<div class="login_box_right">
+								<a class="msg_login_box msg_help" th:href="@{/user/loginHelp}">도움이 필요하신가요?</a>
 							</div>
 						</div>
-						<!-- 간편 로그인 : 카카오 -->
-						<div class="flex_center">
-							<div class="login_kakao_content login_api">
-								<a id="kakao-login-btn" href="javascript:loginWithKakao()">
-								  <img style="width:25px" th:src="@{/images/login_cacao.png}"
-								    alt="카카오 로그인 버튼" />
-								</a>
-								<div>
-									카카오 로그인
-								</div>
-								<p id="token-result"></p>
+					</div>
+					<div>
+						<button class="btn_login">로그인</button>
+					</div>
+					<div class="flex_center" style="margin-bottom: 15px;">
+						<div class="line_gray"></div><div style="color:#bdc2ce;">또는</div><div class="line_gray"></div>
+					</div>
+					<!-- 간편 로그인 : 네이버 -->
+					<div class="flex_center">
+						<div class="login_naver_content login_api" th:data-url="${apiURL}">
+							<div class="login_naver_div">
+								<img style="width:25px" th:src="@{/images/login_naver.png}"/>
 							</div>
+							<script>
+								$('.login_naver_content').click(function(){
+									var url = $(this).data('url');
+									location.href=url;
+								})
+							</script>
+							<div>
+								네이버 로그인
+							</div>
+							<div></div>
 						</div>
+					</div>
+					<!-- 간편 로그인 : 카카오 -->
+					<div class="flex_center">
+						<div class="login_kakao_content login_api">
+							<a id="kakao-login-btn" href="javascript:loginWithKakao()">
+								<img style="width:25px" th:src="@{/images/login_cacao.png}" alt="카카오 로그인 버튼" />
+							</a>
+							<div>
+								카카오 로그인
+							</div>
+							<p id="token-result"></p>
+						</div>
+					</div>
 				</div>
 			</div>
-						<script>
-							function loginWithKakao() {
-							    Kakao.Auth.authorize({
-							      redirectUri: 'http://localhost:9090',
-							    });
-							}
-						    Kakao.Auth.setAccessToken('${ACCESS_TOKEN}');
-							displayToken();
-						    function displayToken() {
-						    	var token = getCookie('authorize-access-token');
-						    	
-						    	if(token) {
-									Kakao.Auth.setAccessToken(token);
-									Kakao.Auth.getStatusInfo()
-									    .then(function(res) {
-									    if (res.status === 'connected') {
-									        document.getElementById('token-result').innerText
-									             = 'login success, token: ' + Kakao.Auth.getAccessToken();
-									        }
-									    })
-									    .catch(function(err) {
-									        Kakao.Auth.setAccessToken(null);
-									    });
-								}
-							}
-							
-							function getCookie(name) {
-							    var parts = document.cookie.split(name + '=');
-							    if (parts.length === 2) { return parts[1].split(';')[0]; }
-							}
-						
-						</script>
-			
 			<div class="login_bottom_controller">
-					<div class="msg_login_box hover">TagMusic 회원이 아닌가요?</div>
-					<div class="login_join_content">
-						<a th:href="@{/user/join/agree}" id="join_text" class="login_join_content">가입하기</a>
-					</div>
-					
+				<div class="msg_login_box hover">TagMusic 회원이 아닌가요?</div>
+				<div class="login_join_content">
+					<a th:href="@{/user/join/agree}" id="join_text" class="login_join_content">가입하기</a>
+				</div>
 			</div>
 		</form>
 	</div>
@@ -255,6 +220,36 @@
 		$('.msg_login_box').click(function(){
 			location.href='/user/join/agree';
 		})	
+		
+		function loginWithKakao() {
+		    Kakao.Auth.authorize({
+		      redirectUri: 'http://localhost:9090',
+		    });
+		}
+	    Kakao.Auth.setAccessToken('${ACCESS_TOKEN}');
+		displayToken();
+	    function displayToken() {
+	    	var token = getCookie('authorize-access-token');
+	    	
+	    	if(token) {
+				Kakao.Auth.setAccessToken(token);
+				Kakao.Auth.getStatusInfo()
+				    .then(function(res) {
+				    if (res.status === 'connected') {
+				        document.getElementById('token-result').innerText
+				             = 'login success, token: ' + Kakao.Auth.getAccessToken();
+				        }
+				    })
+				    .catch(function(err) {
+				        Kakao.Auth.setAccessToken(null);
+				    });
+			}
+		}
+		
+		function getCookie(name) {
+		    var parts = document.cookie.split(name + '=');
+		    if (parts.length === 2) { return parts[1].split(';')[0]; }
+		}
 	</script>
 </body>
 </html>

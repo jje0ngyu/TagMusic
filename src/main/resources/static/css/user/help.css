@@ -1,0 +1,187 @@
+@charset "UTF-8";
+
+.blind {
+	display: none;
+}
+body {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #f8f9fa;
+}
+.background_image {
+	position: fixed;
+	z-index: -100;
+	top: 90;
+	left: 0;
+	width: 100%;
+	height: 80%;
+	margin : auto;
+}
+.contain {
+	position: relative;
+	width: 420px;
+	height: auto;
+	margin: auto;
+	text-align: center;
+	margin-top: 60px;
+	padding: 51px 20px;
+	border-radius: 4px;
+	border: none;
+	border-radius: 10px;
+	box-shadow: 0 1px 10px -2px #37486b;
+}
+.contain_title {
+	font-size: 18px;
+	font-weight : 600;
+}
+.find_box {
+	position: relative;
+	width: 410px;
+	margin: 30px auto 0;
+}
+.btn_find {
+	position: relative;
+	width: 100%;
+}
+/* 선택영역 */
+.find_tab {
+	padding: 10px;
+	width: 160px;
+	background-color: #bdc2ce;
+	color: #37486b;
+	border: 1px solid floralwhite;
+}
+.find_tab:hover {
+	cursor: pointer;
+	background: #ffd654;
+	color: #1f1f1f;
+}
+.find_tab_click {
+	background-color: #37486b;
+	color: #fdfdfd;
+}
+.btn_email {
+	display: inline-block;
+}
+.btn_pw {
+	display: inline-block;
+}
+/* 공통 */
+.input_area {
+	position: relative;
+	width: 90%;
+	margin: 0 auto;
+	text-align: left;
+}
+.input_msg {
+	font-weight: 600;
+	padding: 5px 0;
+}
+.input_box_area {
+	position: relative;
+	text-align: center;
+	width: 100%;
+	border: 1px solid #bdc2ce;
+	padding: 3px 10px;
+}
+.input_box {
+	position: relative;
+	width: 365px;
+	height: 40px;
+	line-height: 40px;
+	border: none;
+	outline: none;
+}
+.btn {
+	margin-top: 20px;
+	width: 180px;
+	height: 40px;
+	background-color: #bdc2ce;
+	border-radius: 30px;
+}
+.btn:hover {
+	cursor: pointer;	
+	background-color: #37486b;
+	color: #fdfdfd;
+	font-weight: 600;
+}
+
+#btn_find:hover {
+	color: white;
+	outline: 1px solid gray;
+}
+/* 이메일 찾기 */
+.find_id_box {
+	position: relative;
+	width: 100%;
+	padding-top: 30px;
+	border: none;
+}
+
+/* 비밀번호 찾기 */
+.find_pw_box {
+	position: relative;
+	width: 100%;
+	padding: 30px 0;
+	border: none;
+}
+.btn_box {
+	display:flex;
+	justify-content: center;
+}
+/* 결과창 (모달창) */
+.backlayer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.8);
+}
+.result_wrap {
+	position: fixed;
+	top: 260px;
+	left: 0;
+	width: 100%;
+	height: 100px;
+}
+.result_box {
+	display: flex;
+	flex-direction:column;
+	justify-content: center;
+	align-items:center;
+	position: relative;
+	margin: auto;
+	width: 460px;
+	height: auto;
+	background-color: #fdfdfd;
+	border-radius: 8px;
+	padding: 40px 0;
+	line-height: 43px;
+}
+#msg_result {
+	font-weight: 600;
+	font-size: 16px;
+	height: auto;
+}
+.help_bottom_controller {
+	display: flex;
+	flex-direction: column;
+	padding: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.msg_login_box {
+	display: inline-block;
+	font-size: 13px;
+	font-weight: 400;
+	color: #b3b3b3;
+}
+.login_join_content {
+	font-weight: 600;
+	color: #37486b;
+}

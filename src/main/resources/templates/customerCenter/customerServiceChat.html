@@ -6,6 +6,7 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
 <link rel="stylesheet" th:href="@{/css/customerService.css}">
+<link rel="stylesheet" th:href="@{/css/chatListForAdmin.css}">
 <style>
 
 
@@ -15,9 +16,8 @@
 /*<![CDATA[*/
  
 	$(function(){
-		fn_addChat();
 		fn_ChatList();
-		
+		enterkey();
 		$('#tabNotice').click(function(){
 			location.href='/board/list';
 		})
@@ -32,7 +32,7 @@
 	
 	
 	function fn_addChat(){
-		$('#btn_addChat').click(function(){
+		//$('#btn_addChat').click(function(){
 			if($('#content').val() == ''){
 				alert('댓글 내용을 입력하세요');
 				return;
@@ -50,7 +50,7 @@
 					}
 				}
 			});
-		});
+		//});
 	}
 	
 	function fn_ChatList(){
@@ -118,7 +118,12 @@
  
  
 	/*]]>*/
-	
+	function enterkey() {
+   		if (window.event.keyCode == 13) {
+   			fn_addChat();
+   			fn_ChatList();
+    	}
+	}
 
 	
 	
@@ -157,9 +162,8 @@
 					<input type="hidden" name="groupNo" th:value="${chatUserNo.groupNo}">
 					<input type="hidden" name="groupOrder" th:value="${chatUserNo.groupOrder}">
 					<div class="plz_input_q">
-					
 						<input type="text" name="content" id="content" placeholder="문의내용" >
-						<input type="button" value="문의하기" id="btn_addChat" class="btn-3d blue">
+						<input type="button" value="문의하기" id="btn_addChat" class="btn-3d blue" onclick="fn_addChat();">
 					</div>
 				</form>
 			</div>
