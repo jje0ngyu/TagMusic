@@ -121,6 +121,13 @@
 		 WHERE COMMENT_NO = #{commentNo}
 	</delete>
 	
+	<!-- 내가 쓴 댓글 수 -->
+	<select id="selectCommentByEmail" resultType="int" parameterType="Map">
+		SELECT COUNT(EMAIL)
+		  FROM MUSIC_COMMENT
+		 WHERE EMAIL = #{email}
+	</select>
+	
 	
 	
 	<!-- 다음 트랙 (*음악 테이블 모든 음악 가져오기 : 수정필요) -->

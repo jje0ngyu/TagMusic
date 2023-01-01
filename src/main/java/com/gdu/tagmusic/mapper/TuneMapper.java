@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.gdu.tagmusic.domain.MusicCommentDTO;
 import com.gdu.tagmusic.domain.MusicDTO;
+import com.gdu.tagmusic.domain.UserDTO;
 
 @Mapper
 public interface TuneMapper {
@@ -25,6 +26,7 @@ public interface TuneMapper {
 	public List<MusicCommentDTO> selectComment(Map<String, Object> map);
 	public int insertComment(MusicCommentDTO comment);
 	public int deleteComment(int commentNo);
+	public int selectCommentByEmail(UserDTO user);
 	
 	// 음원 트랙
 	public List<MusicDTO> selectMusic();

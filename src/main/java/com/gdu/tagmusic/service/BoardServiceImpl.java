@@ -71,7 +71,7 @@ public class BoardServiceImpl implements BoardService {
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("boardList", boardMapper.selectBoardListByMap(map));
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/board/list"));
+		model.addAttribute("paging", pageUtil.getPaging("/board/list"));
 		model.addAttribute("recordPerPage", recordPerPage);
 	}
 	
@@ -82,7 +82,7 @@ public class BoardServiceImpl implements BoardService {
 		MultipartFile multipartFile = multipartRequest.getFile("file");
 			
 		
-		String path = "C:" + File.separator + "summernoteImage";
+		String path = File.separator + "summernoteImage";
 				
 		
 		String filesystem = myFileUtil.getFilename(multipartFile.getOriginalFilename());
@@ -105,7 +105,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("src", multipartRequest.getContextPath() + "/load/image/" + filesystem); 
+		map.put("src", "/load/image/" + filesystem); 
 		map.put("filesystem", filesystem); 
 		return map;
 		
@@ -147,7 +147,6 @@ public class BoardServiceImpl implements BoardService {
 			map.put("content", "<a href='/board/list'><b>공지사항</b>을 확인해주세요</a>");
 			int inserAlarm = alarmMapper.insertAlarm(map);
 			if(inserAlarm == 1) {
-				System.out.println("성공");
 			}
 			
 			String[] summernoteImageNames = request.getParameterValues("summernoteImageNames");
@@ -163,7 +162,7 @@ public class BoardServiceImpl implements BoardService {
 			}
 			
 			out.println("alert('삽입 성공');");
-			out.println("location.href='" + request.getContextPath() + "/board/list';");
+			out.println("location.href='/board/list';");
 		} else {
 			out.println("alert('삽입 실패');");
 			out.println("history.back();");
@@ -194,7 +193,7 @@ public class BoardServiceImpl implements BoardService {
 		if(summernoteImageList != null && summernoteImageList.isEmpty() == false) {
 			for(SummernoteImageDTO summernoteImage : summernoteImageList) {
 				if(board.getBoardContent().contains(summernoteImage.getFilesystem()) == false) {
-					File file = new File("C:" + File.separator + "summernoteImage", summernoteImage.getFilesystem());
+					File file = new File(File.separator + "summernoteImage", summernoteImage.getFilesystem());
 					if(file.exists()) {
 						file.delete();  
 					}
@@ -251,7 +250,7 @@ public class BoardServiceImpl implements BoardService {
 				}
 				
 				out.println("alert('수정 성공');");
-				out.println("location.href='" + request.getContextPath() + "/board/detail?boardNo=" + boardNo + "';");
+				out.println("location.href='/board/detail?boardNo=" + boardNo + "';");
 			} else {
 				out.println("alert('수정 실패');");
 				out.println("history.back();");
@@ -289,7 +288,7 @@ public class BoardServiceImpl implements BoardService {
 				
 				if(summernoteImageList != null && summernoteImageList.isEmpty() == false) {
 					for(SummernoteImageDTO summernoteImage : summernoteImageList) {
-						File file = new File("C:" + File.separator + "summernoteImage", summernoteImage.getFilesystem());
+						File file = new File(File.separator + "summernoteImage", summernoteImage.getFilesystem());
 						if(file.exists()) {
 							file.delete();
 						}
@@ -297,7 +296,7 @@ public class BoardServiceImpl implements BoardService {
 				}
 				
 				out.println("alert('삭제 성공');");
-				out.println("location.href='" + request.getContextPath() + "/board/list';");
+				out.println("location.href='/board/list';");
 			} else {
 				out.println("alert('삭제 실패');");
 				out.println("history.back();");

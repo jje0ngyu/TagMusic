@@ -253,8 +253,15 @@
 			$('#pw').val('');
 		})
 	}
+	
+	// 회원탈퇴
 	function fn_retire(){
-		$('#retire').click(function(){
+		$('#retire').click(function(event){
+			if($('#userNo').val() == 1) {
+				alert('관리자는 탈퇴할 수 없습니다.');
+				$('.box_backlayer').addClass('blind');
+				return;
+			}
 			$('.retire_box').removeClass('blind');
 			$('#btn_retire').click(function(){
 				if(confirm('탈퇴하면 동일한 이메일로 재가입할 수 없습니다. 그래도 탈퇴하시겠습니까?')) {

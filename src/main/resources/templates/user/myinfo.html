@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" th:href="@{/css/user/mypage.css}">
+<link rel="stylesheet" th:href="@{/css/user/switch.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/user/myinfo.js}"></script>
 </head>
@@ -49,6 +50,7 @@
 							태그뮤직 이용시 노출되는 닉네임입니다.</div>
 					</div>
 					<div class="info logout_box flex_cloumn" id="retire">
+						<input type="hidden" id="userNo" th:value="${session.loginUser.userNo}">
 						<div class="box_title">태그뮤직 탈퇴</div>
 						<div class="box_msg">탈퇴 시에 주의사항을 꼭!<br/> 확인해주시기 바랍니다.</div>
 					</div>
@@ -166,6 +168,22 @@
 					
 					<!-- 마케팅 정보이용 동의 -->
 					<div class="modify_agreeCode blind">
+						<div class="info_title">
+							태그뮤직에 제공할 정보를<br/>변경 할 수 있습니다.
+						</div>
+						<div class="info_agree_box">
+							<div class="info_agree">
+								<label>
+									<div style="width:80%">마케팅 활용 동의</div>
+								<input type="checkbox" role="switch"></div>
+								</label>
+							<div class="info_agree">
+								<label>
+									<div style="width:80%">위치정보 활용 동의</div>
+	  							    <input role="switch" type="checkbox" />
+								</label>
+							</div>
+						</div>
 						<div class="btn_box">
 							<input class="btn cancel" type="button" value="취소">
 							<input class="btn correct" id="btn_mobile" type="button" value="변경">
