@@ -127,9 +127,10 @@ public class UserController {
 	
 	// 마이페이지 - 프로필 사진 불러오기 
 	@ResponseBody
-	@PostMapping("/user/info/getImage")
-	public ResponseEntity<byte[]> getImage(HttpServletRequest request){
-		return userService.getImage(request);
+	@GetMapping("/user/info/getImage")
+	public ResponseEntity<byte[]> getImage(@RequestParam String email){
+		System.out.println("이미지 불러오기");
+		return userService.getImage(email);
 	}
 	
 	// 마이페이지 - 개인정보 관리
@@ -141,9 +142,9 @@ public class UserController {
 	// 마이페이지 - 프로필 사진 수정
 	@ResponseBody
 	@PostMapping("/user/info/modifyImage")
-	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
+	public String modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
 		userService.modifyImage(multipartRequest, response);
-		System.out.println("이미지 저장");
+		return "redirect:/user/mypage";
 	}
 
 	// 마이페이지 - 개인정보 수정

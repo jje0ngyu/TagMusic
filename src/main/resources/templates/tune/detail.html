@@ -69,7 +69,8 @@
 				</div>
 				<!-- 가사 -->
 				<div class="tune_lyrics_box blind">
-					<textarea class="tune_lyrics" th:text="${music.musicContent}" readonly></textarea>
+					<textarea th:if="${music.musicContent} != ''" class="tune_lyrics" th:text="${music.musicContent}" readonly></textarea>
+					<textarea th:if="${music.musicContent} == ''" class="tune_lyrics" readonly>등록된 가사가 없습니다.</textarea>
 				</div>
 				
 				<!-- 댓글 -->
@@ -82,7 +83,8 @@
 							<div class="comment_middle_comment">
 								<input th:if="${session.loginUser != null}" type="hidden" name="email" id="email" th:value="${session.loginUser.email}">
 								<input type="hidden" id="musicNo" name="musicNo" th:value="${music.musicNo}">	
-								<input type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성하려면 로그인 해 주세요.">
+								<input th:if="${session.loginUser == null}" type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성하려면 로그인 해 주세요.">
+								<input th:if="${session.loginUser != null}" type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성해주세요.">
 							</div>
 							<div class="comment_middle_btn">
 								<input type="reset" value="취소" id="btn_cancel_comment">

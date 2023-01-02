@@ -85,16 +85,23 @@
 	<!-- 프로필 이미지 변경 -->
 	<insert id="insertImage" parameterType="ProfileImageDTO">
 		INSERT INTO PROFILEIMAGE
-			(PROFILEIMAGE_PATH, PROFILEIMAGE_ORIGIN, PROFILEIMAGE_FILESYSTEM, EMAIL)
+			(PROFILEIMAGE_PATH, PROFILEIMAGE_ORIGIN, PROFILEIMAGE_FILESYSTEM, HAS_THUMBNAIL, EMAIL)
 		VALUES
-			(#{profileImagePath}, #{profileImageOrigin}, #{profileImageFilesystem}, #{email})
+			(#{profileImagePath}, #{profileImageOrigin}, #{profileImageFilesystem}, #{hasThumbNail}, #{email})
 	</insert>
 	
-	<!-- 콘캣 오류 발생 가능성 높음! -->
-	<!-- 프로필 가져오기 -->
-	<select id="selectImageByEmail" parameterType="UserDTO" resultType="UserDTO">
-		SELECT 
-		   SET PROFILE_IMAGE = CONCAT(#{profileImagePath},\),#{profileImageFilesystem})
+	<!-- 프로필 변경하기 -->
+	<update id="updateImage" parameterType="ProfileImageDTO">
+		UPDATE PROFILEIMAGE
+		   SET PROFILEIMAGE_PATH = #{profileImagePath},
+		   	   PROFILEIMAGE_ORIGIN = #{profileImageOrigin},
+		   	   PROFILEIMAGE_FILESYSTEM = #{profileImageFilesystem}
+		 WHERE EMAIL = #{email}
+	</update>
+	
+	<select id="selectImageByEmail" resultType="ProfileImageDTO" parameterType="map">
+		SELECT PROFILEIMAGE_No, PROFILEIMAGE_PATH, PROFILEIMAGE_ORIGIN, PROFILEIMAGE_FILESYSTEM, HAS_THUMBNAIL, EMAIL
+		  FROM PROFILEIMAGE
 		 WHERE EMAIL = #{email}
 	</select>
 	

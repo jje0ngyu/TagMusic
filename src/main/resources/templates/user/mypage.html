@@ -7,7 +7,7 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script>
 	$(function(){
-		fn_displayImage();
+		//fn_displayImage();
 		fn_popupProfileImage();
 		fn_changeImage();
 		fn_closePopup();
@@ -20,13 +20,11 @@
 		fn_faq();			 // 관리자 - 자주 하는 질문
 	});
 	// 이미지 노출
+	/*
 	function fn_displayImage(){
 		$.ajax({
 			type: 'post',
 			url : '/user/info/getImage',
-			enctype: 'multipart/form-data',
-			processData: false,
-			contentType: false,
 			dataType: 'json',
 			success: function(resData){
 				console.log(resData.imagePath)
@@ -36,7 +34,7 @@
 				console.log('에러떴다');
 			}
 		}); // ajax
-	}
+	} */
 	// 이미지 변경 모달팝업
 	function fn_popupProfileImage(){
 		$('#profile_image').click(function(){
@@ -56,7 +54,7 @@
 				processData: false,
    				contentType: false,
 				success: function(resData){
-					console.log('성공');
+					console.log('이미지 변경 성공');
 				}
 			})
 		});
@@ -110,7 +108,8 @@
 		<!-- 마이페이지 - top -->
 		<div class="mypage_top_controller flex_cloumn">
 			<div class="mypage_bix_box mypage_profile_box">
-				<img id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">				
+				<img th:if="${session.loginUser.profileImage == '1'}" id="profile_image" class="profile_image" th:src="@{/user/info/getImage(email=${session.loginUser.email})}" style="width:80px; border-radius:200px;">				
+				<img th:if="${session.loginUser.profileImage != '1'}" id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">				
 				<div class="flex_cloumn">
 					<div class="artist_title" th:text="|${session.loginUser.artist}님 안녕하세요.|"></div>
 					<div class="artist_msg" th:text="${session.loginUser.email}"></div>
@@ -207,10 +206,8 @@
 	<div class="box_backlayer blind">
 		<div class="profile_image_controller blind">
 			<div class="profile_title">프로필 이미지</div>
-			<img th:if="${session.loginUser.profileImage == '/images/basic_profileImage.png'}"
-				 class="profile_image" id="profileImage" th:src="${session.loginUser.profileImage}">
-			<img th:if="${session.loginUser.profileImage != '/images/basic_profileImage.png'}"
-				 class="profile_image" id="profileImage" th:src="@{/user/info/getImage}">
+			<img th:if="${session.loginUser.profileImage == '1'}" id="profile_image" class="profile_image" th:src="@{/user/info/getImage(email=${session.loginUser.email})}" style="width:80px; border-radius:200px;">				
+			<img th:if="${session.loginUser.profileImage != '1'}" id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">
 			<form id="frm_progileImage" th:action="@{/user/info/modifyImage}" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="email" id="email" th:value="${session.loginUser.email}">
 			    <div class="profile_file">

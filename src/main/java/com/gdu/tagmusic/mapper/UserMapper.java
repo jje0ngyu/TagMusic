@@ -28,9 +28,10 @@ public interface UserMapper {
 	public int insertUser(UserDTO user);
 	
 	// 개인정보 수정
+	public ProfileImageDTO selectImageByEmail(Map<String, Object> map);
 	public String selectProfileImage(String email);
 	public int insertImage(ProfileImageDTO image);
-	public int updateImagePath(ProfileImageDTO image);
+	public int updateImage(ProfileImageDTO image);
 	public int updateUser(UserDTO user);
 	public List<UserDTO> selectNoticePassword();
 	

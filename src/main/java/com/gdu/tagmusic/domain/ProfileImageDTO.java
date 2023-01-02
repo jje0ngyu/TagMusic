@@ -15,5 +15,5 @@ public class ProfileImageDTO {
 	private String profileImagePath;
 	private String profileImageOrigin;
 	private String profileImageFilesystem;
-	
+	private int hasThumbNail;
 }

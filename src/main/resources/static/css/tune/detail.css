@@ -188,6 +188,15 @@ html, body, div, input, a, form, textarea {
 	padding: 5px 0;
 	height: auto;
 }
+
+.btn_comment_remove {
+	font-size: 12px;
+	width: 30px;
+	height: 24px;
+	margin-left: 10px;
+	background-color: none;	
+}
+
 @media only screen and (max-width: 940px) {
 	.header, .menu {
 		display: none;
