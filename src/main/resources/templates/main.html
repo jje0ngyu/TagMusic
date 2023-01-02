@@ -84,8 +84,8 @@
 								
 							    $('<div class="main_item">')
 							   .append(text)
-							   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-							   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+							   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+							   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 							   .appendTo( $(content) );
 							}); 
 				
@@ -150,8 +150,8 @@
 						
 					    $('<div class="main_item_r">')
 					   .append(text)
-					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 					   .appendTo( $(content) );
 					}); 
 		
@@ -233,8 +233,8 @@
 						
 					    $('<div class="main_item_p">')
 					   .append(text)
-					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 					   .appendTo( $(content) );
 					}); 
 		
@@ -314,8 +314,8 @@
 						
 					    $('<div class="main_item_p">')
 					   .append(text)
-					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 					   .appendTo( $(content) );
 					}); 
 		
@@ -375,8 +375,8 @@
 						
 					    $('<div class="main_item_p">')
 					   .append(text)
-					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 					   .appendTo( $(content) );
 					}); 
 		
@@ -423,8 +423,8 @@
 						
 					    $('<div class="main_item_p">')
 					   .append(text)
-					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 					   .appendTo( $(content) );
 					}); 
 		
@@ -473,8 +473,8 @@
 						
 					    $('<div class="main_item_p">')
 					   .append(text)
-					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 					   .appendTo( $(content) );
 					}); 
 					 
@@ -500,10 +500,14 @@
 			
 			$(document).on('click', '.item_title', function() {
 				
+				musicNo = $(this).data('musno');
+				
 				window.parent.location.href="/tune/iframe?musicNo=" + musicNo;
 			});
 			
 			$(document).on('click', '.item_artist', function() {
+				
+				musicNo = $(this).data('musno');
 				
 				window.parent.location.href="/tune/iframe?musicNo=" + musicNo;
 			});
