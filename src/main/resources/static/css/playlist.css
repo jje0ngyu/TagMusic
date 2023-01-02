@@ -398,7 +398,6 @@
 	
 	.playlist_table {
 		
-	animation: fadein 1s;
 	
   	background: radial-gradient(#efefef, #eeeeee);
 
@@ -413,6 +412,7 @@
     text-align: center;
     table-layout: fixed;
    
+	animation: fadein 1s;
 	}
 	
 		@keyframes fadein {
