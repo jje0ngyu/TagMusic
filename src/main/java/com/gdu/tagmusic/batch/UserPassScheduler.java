@@ -6,14 +6,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.gdu.tagmusic.mapper.PaymentMapper;
-import com.gdu.tagmusic.service.PaymentService;
 
 @EnableScheduling
 @Component
 public class UserPassScheduler{
-
-	@Autowired
-	private PaymentService paymentService;
 	
 	@Autowired
 	private PaymentMapper paymentMapper;
