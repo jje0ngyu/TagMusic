@@ -417,17 +417,25 @@
 
 
 .ranking_ol_hover{
-	
+	box-shadow: 0 1px 10px 0 #808080;
 	list-style: none;
-	border-radius: 10px;
+	border-radius: 3px;
 	border: 1px solid #ababab;
-	background-color: #efefef;
+	background-color: #fefefe;
 	position:absolute;
 	top: 0px; left: 0;
-	width: 239px;
-	height: 400px;
-	padding: 5px 20px;
+	width: 260px;
+	height: 280px;
+	padding: 5px 30px;
 
+}
+
+
+
+
+.ranking_li:nth-of-type(1) {
+	
+	font-weight: 900;
 	
 }
 
@@ -475,6 +483,8 @@
 	
 	display: none;
 }
+
+
 
 /* 모달창 */
 
