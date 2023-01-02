@@ -156,9 +156,12 @@ public class UserServiceImpl implements UserService {
 		String apiURL = null;
 		
 		try {
+			String requestURL = request.getRequestURL().toString();
+			String requestURI = request.getRequestURI();
+			String host = requestURL.substring(0, requestURL.indexOf(requestURI));
 			
 			String clientId = "mtNSZZEJIiSUesKY51WB";
-			String redirectURI = URLEncoder.encode("http://localhost:9090/user/naver/login", "UTF-8");  // 네이버 로그인 Callback URL에 작성한 주소 입력 
+			String redirectURI = URLEncoder.encode(host + "/user/naver/login", "UTF-8");  // 네이버 로그인 Callback URL에 작성되어 있어야 함
 			SecureRandom random = new SecureRandom();
 			String state = new BigInteger(130, random).toString();
 			
@@ -336,6 +339,7 @@ public class UserServiceImpl implements UserService {
 		String location = request.getParameter("location");
 		String promotion = request.getParameter("promotion");
 		
+		System.out.println("birthyear" + birthyear);
 		// 일부 파라미터는 DB에 넣을 수 있도록 가공
 		name = securityUtil.preventXSS(name);
 		String birthday = birthmonth + birthdate;

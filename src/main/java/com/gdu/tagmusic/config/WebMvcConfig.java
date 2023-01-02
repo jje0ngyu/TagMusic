@@ -10,6 +10,7 @@ import com.gdu.tagmusic.interceptor.PleaseLogininterceptor;
 import com.gdu.tagmusic.interceptor.PreventCreatePlaylist;
 import com.gdu.tagmusic.interceptor.PreventLoginInterceptor;
 import com.gdu.tagmusic.interceptor.SleepUserCheckingInterceptor;
+import com.gdu.tagmusic.util.MyFileUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -22,6 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	private PreventLoginInterceptor preventLoginInterceptor;
 	private PleaseLogininterceptor pleaseLogininterceptor;
 	private PreventCreatePlaylist preventCreatePlaylist;
+	private MyFileUtil myFileUtil;
 	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -57,7 +59,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/load/image/**")
-			.addResourceLocations("file:///C:/summernoteImage/");
+		.addResourceLocations("file:" + myFileUtil.getSummernotePath() + "/");
 	}
 	
 }

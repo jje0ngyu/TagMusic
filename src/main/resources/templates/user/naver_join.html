@@ -113,9 +113,9 @@
 						<label for="birthyear" class="info_title">생년월일*</label>
 					</div>
 					<div class="birth_flex">
-						<div class="select_box_year"><input type="text" name="birthyear" id="birthyear" class="select_box_year"th:value="|${profile.birthyear}년|"></div>
-						<div class="select_box"><input type="text" name="birthmonth" id="birthmonth" class="select_box" th:value="|${profile.birthday.substring(0,2)}월|"></div>
-						<div class="select_box"><input type="text" name="birthdate" id="birthdate" class="select_box" th:value="|${profile.birthday.substring(2)}일|"></div>
+						<div class="select_box_year"><input type="text" name="birthyear" id="birthyear" class="select_box_year"th:value="|${profile.birthyear}|"></div>
+						<div class="select_box"><input type="text" name="birthmonth" id="birthmonth" class="select_box" th:value="|${profile.birthday.substring(0,2)}|"></div>
+						<div class="select_box"><input type="text" name="birthdate" id="birthdate" class="select_box" th:value="|${profile.birthday.substring(2)}|"></div>
 					</div>
 				</div>
 				<!-- 이메일(프로필에 포함-6) -->
