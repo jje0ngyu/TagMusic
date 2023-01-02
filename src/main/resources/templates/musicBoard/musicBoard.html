@@ -427,10 +427,19 @@
 	}
 	
 	function fn_musicBoardDownload() {	// 기능 : 다운로드 + 방지
+		
+		
 	
 		$('.musicBoard_download').click(function(event) {
 			var musicNo = $(this).data('musno');
-		
+			if(loginUser == null) {
+				
+				if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
+					location.href="/user/login/form";
+			
+				}
+			}
+			
 			$.ajax({		// 방지 : 이용권 소지 여부 확인
 				type: 'post',
 				url: '/payment/isPassHave',
@@ -440,18 +449,24 @@
 						if(confirm('이용권이 없는 회원입니다. 이용권을 구매하러 가시겠습니까?')){
 							location.href="/payment/buy";
 						} else {
-							location.href="/tune/download?musicNo=" + musicNo;
+							return;
 						}
-					} 
+					} else{
+						return;
+					}
 					if(resData.isNotLogin == 'loginPlz'){
 						if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
 							location.href="/user/login/form";
 						} else {
-							location.href="/tune/download?musicNo=" + musicNo;
+							return;
 						}
+					} else {
+						return;
 					}		
+						location.href="/tune/download?musicNo=" + musicNo;
 					
 				}
+				
 			});
 
 		});	
