@@ -427,10 +427,19 @@
 	}
 	
 	function fn_musicBoardDownload() {	// 기능 : 다운로드 + 방지
+		
+		
 	
 		$('.musicBoard_download').click(function(event) {
+			var musicNo = $(this).data('musno');
+			if(loginUser == null) {
+				
+				if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
+					location.href="/user/login/form";
 			
-		
+				}
+			}
+			
 			$.ajax({		// 방지 : 이용권 소지 여부 확인
 				type: 'post',
 				url: '/payment/isPassHave',
@@ -439,15 +448,25 @@
 					if(resData.result == 0){
 						if(confirm('이용권이 없는 회원입니다. 이용권을 구매하러 가시겠습니까?')){
 							location.href="/payment/buy";
+						} else {
+							return;
 						}
-					} 
+					} else{
+						return;
+					}
 					if(resData.isNotLogin == 'loginPlz'){
 						if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
-						location.href="/user/login/form";
+							location.href="/user/login/form";
+						} else {
+							return;
 						}
+					} else {
+						return;
 					}		
+						location.href="/tune/download?musicNo=" + musicNo;
 					
 				}
+				
 			});
 
 		});	
@@ -463,11 +482,8 @@
 				}
 				return;	
 			}
-			location.href='/tune/upload';
+			location.href='/tune/write';
 		});
-		
-	
-		
 	}
 
 
@@ -532,7 +548,7 @@
 								<td class="musicBoard_td">
 									<span th:if="${music.hasThumbNail == 1}" >
 										<a class="item_artist" th:href="@{/tune/iframe(musicNo=${music.musicNo})}">
-											<img class="board_thumbnail" th:src="@{/music/thumbnail(musicNo=${music.musicNo})}">
+											<img class="board_thumbnail" th:src="@{/tune/display/image(musicNo=${music.musicNo})}">
 										</a>
 									</span>
 									<span th:unless="${music.hasThumbNail == 1}" >
@@ -544,7 +560,7 @@
 										<a class="item_artist" th:href="@{/tune/iframe(musicNo=${music.musicNo})}" th:text="${music.musicTitle}"></a>
 									</div>
 									<div class="title_artist">
-										<a class="item_artist" th:href="@{/tune/iframe(musicNo=${music.musicNo})}" th:text="${music.email}"></a>
+										<a class="item_artist" th:href="@{/tune/iframe(musicNo=${music.musicNo})}" th:text="${music.userDTO.artist}"></a>
 									</div>	<!-- * 조인된 테이블에서 데이터 꺼내는 법  -->
 								</td>
 								
@@ -616,7 +632,7 @@
 									
 								</td>
 								<td>
-									<a class="musicBoard_download" th:href="@{/tune/download(musicNo=${music.musicNo})}"><i class="fa-solid fa-download fa-2x"></i></a>
+									<a class="musicBoard_download" data-msuno="${music.musicNo}" ><i class="fa-solid fa-download fa-2x"></i></a>
 								</td>
 							</tr>
 						</tbody>

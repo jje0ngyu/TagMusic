@@ -171,7 +171,7 @@ a {
 	
 	border-radius: 10px;
 	flex-wrap:nowrap;
-    animation: bannermove 1s ease ;
+    animation: bannermove 0.5s ease ;
 	
 }
 
@@ -362,9 +362,9 @@ a {
 }
 
 .bar_header_menu:hover {
-	animation: fadein-btn3 0.5s;
 		background-color: #37486b;
 	cursor: pointer;
+	animation: fadein-btn3 0.5s;
 	}
 	
 	@keyframes fadein-btn3 {

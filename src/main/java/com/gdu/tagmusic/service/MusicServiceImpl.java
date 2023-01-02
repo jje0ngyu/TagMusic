@@ -95,7 +95,6 @@ public class MusicServiceImpl implements MusicService {
 				headers.add("Content-Type", Files.probeContentType(file.toPath()));
 				File thumbnail = new File(music.getImgPath(), "s_" + music.getImgFilesystem());
 				result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(thumbnail), null, HttpStatus.OK);
-				return result;
 				
 				
 
@@ -104,8 +103,9 @@ public class MusicServiceImpl implements MusicService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
 
-		return null;
+		
 	}
 
 	// # 구현 : 최신리스트 게시판조회
@@ -363,31 +363,29 @@ public class MusicServiceImpl implements MusicService {
 	 // 파라미터 : listNo 
 		Optional<String> opt = Optional.ofNullable(request.getParameter("listNo")); 
 		int listNo = Integer.parseInt(opt.orElse("0"));
-	 
-		
-		
+	
 		MusicDTO music = musicMapper.selectUserPlaylistThumbnail(listNo); //
-		File file = new File(music.getImgPath(),
-		music.getImgFilesystem());
+		File file = new File(music.getImgPath(),music.getImgFilesystem());
 	  
 	 // db 정보를 통해 이미지를 담은 responseentity객체 반환 
 		ResponseEntity<byte[]> result = null;
 	 
 		 try {
-		 
-			 if (music.getHasThumbNail() == 1) {
-			 
-			 HttpHeaders headers = new HttpHeaders(); headers.add("Content-Type",
-			 Files.probeContentType(file.toPath())); File thumbnail = new
-			  File(music.getImgPath(), "s_" + music.getImgFilesystem()); result = new
-			 ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(thumbnail), null,
-			  HttpStatus.OK); return result;
+
+				 if(music.getHasThumbNail() == 1) {
+						HttpHeaders headers = new HttpHeaders();
+						headers.add("Content-Type", Files.probeContentType(file.toPath()));
+						File image = new File(music.getImgPath(), music.getImgFilesystem());
+						result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(image), null, HttpStatus.OK);
+	
+				 }
 		  
-			 }
+		  } catch (Exception e) {
+			  e.printStackTrace(); 
+		}
 		  
-		  } catch (Exception e) { e.printStackTrace(); }
-		  
-		 return null; }
+		 return result; 
+		}
 		
 	
 	// # 구현 : 플레이리스트 수록곡 조회
