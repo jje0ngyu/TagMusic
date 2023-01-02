@@ -66,31 +66,6 @@ function fn_userLog(){
 				.append($('<td>').append($('<input type="checkbox" name="logCheck" value="'+ buyLog.payLogNo +'">')))
 				.appendTo('#list_body');
 			});
-			$('<tr>')
-		       .append($('<td id="paging" colspan="6"></td>'))
-		       .appendTo('#list_foot');
-		       
-		       
-		       $('#paging').empty();
-				var pageUtil = resData.pageUtil
-				var paging = '';
-				// 이전 블록
-				if(pageUtil.beginPage != 1){
-					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
-				}
-				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++){
-					if(p == $('#page').val()){
-						paging += '<strong>' + p + '</strong>';
-					} else {
-						paging += '<span class="enable_findLink" data-page="'+ p +'">' + p + '</span>';
-					}
-				}
-				// 다음블록
-				if(pageUtil.endPage != pageUtil.totalPage){
-					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
-				}
-				
-				$('#paging').append(paging);
 				
 				
 		}
@@ -147,32 +122,6 @@ function fn_userBuyLog(){
 		    	.appendTo('#list_body');
 		  	}
 			$('#logCountDiv').append('구매 결제건 ' + count +'개');
-			$('<tr>')
-		       .append($('<td id="paging" colspan="6"></td>'))
-		       .appendTo('#list_foot');
-		       
-		       
-		       $('#paging').empty();
-				var pageUtil = resData.pageUtil
-				var paging = '';
-				// 이전 블록
-				if(pageUtil.beginPage != 1){
-					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
-				}
-				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++){
-					if(p == $('#page').val()){
-						paging += '<strong>' + p + '</strong>';
-					} else {
-						paging += '<span class="enable_findLink" data-page="'+ p +'">' + p + '</span>';
-					}
-				}
-				// 다음블록
-				if(pageUtil.endPage != pageUtil.totalPage){
-					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
-				}
-				
-				$('#paging').append(paging);
-				
 				
 		}
 		
@@ -202,11 +151,6 @@ function fn_userGiftLog(){
 		    	.append($('<th>').text("결제가격"))
 		    	.append($('<th>').append('<input type="button" value="선택 삭제" id="btn_logRemove" class="btn_logRemove">'))
 		    	.appendTo('#list_head');
-		    if(resData.logList.length == 0){
-		    	$('<tr>')
-		    	.append( $('<td colspan="6">').text('선물 내역이 없습니다!'))
-		    	.appendTo('#list_body');
-		  	}
 		    var count = 0;
 			$.each(resData.logList, function(i, buyLog){
 				
@@ -226,39 +170,14 @@ function fn_userGiftLog(){
 				.append($('<td>').append($('<input type="checkbox" name="logCheck" value="'+ buyLog.payLogNo +'">')))
 				.appendTo('#list_body');
 				}
-				if(count == 0){
-			    	$('<tr>')
-			    	.append( $('<td colspan="6">').text('선물 내역이 없습니다!'))
-			    	.appendTo('#list_body');
-			  	}
+				
 			});
+			if(count == 0){
+		    	$('<tr>')
+		    	.append( $('<td colspan="6">').text('선물 내역이 없습니다!'))
+		    	.appendTo('#list_body');
+		  	}
 			$('#logCountDiv').append('선물 결제건 ' + count +'개');
-			$('<tr>')
-		       .append($('<td id="paging" colspan="6"></td>'))
-		       .appendTo('#list_foot');
-		       
-		       
-		       $('#paging').empty();
-				var pageUtil = resData.pageUtil
-				var paging = '';
-				// 이전 블록
-				if(pageUtil.beginPage != 1){
-					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.beginPage - 1) +'">◀</span>';
-				}
-				for(let p = pageUtil.beginPage; p <= pageUtil.endPage; p++){
-					if(p == $('#page').val()){
-						paging += '<strong>' + p + '</strong>';
-					} else {
-						paging += '<span class="enable_findLink" data-page="'+ p +'">' + p + '</span>';
-					}
-				}
-				// 다음블록
-				if(pageUtil.endPage != pageUtil.totalPage){
-					paging += '<span class="enable_findLink" data-page="'+ (pageUtil.endPage + 1) +'">▶</span>';
-				}
-				
-				$('#paging').append(paging);
-				
 				
 		}
 		
@@ -383,8 +302,6 @@ function fn_userLogSelect(){
 					</thead>
 					<tbody id="list_body" >
 					</tbody>
-					<tfoot id="list_foot" >
-					</tfoot>
 				</table>
 			</div>
 		</div>

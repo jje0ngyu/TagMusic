@@ -83,7 +83,8 @@ public class BoardServiceImpl implements BoardService {
 		MultipartFile multipartFile = multipartRequest.getFile("file");
 			
 		
-		String path = File.separator + "summernoteImage";
+		//String path = File.separator + "summernoteImage";
+		String path = myFileUtil.getSummernotePath();
 				
 		
 		String filesystem = myFileUtil.getFilename(multipartFile.getOriginalFilename());
@@ -200,7 +201,8 @@ public class BoardServiceImpl implements BoardService {
 		if(summernoteImageList != null && summernoteImageList.isEmpty() == false) {
 			for(SummernoteImageDTO summernoteImage : summernoteImageList) {
 				if(board.getBoardContent().contains(summernoteImage.getFilesystem()) == false) {
-					File file = new File(File.separator + "summernoteImage", summernoteImage.getFilesystem());
+					//File file = new File(File.separator + "summernoteImage", summernoteImage.getFilesystem());
+					File file = new File(myFileUtil.getSummernotePath(), summernoteImage.getFilesystem());
 					if(file.exists()) {
 						file.delete();  
 					}
@@ -295,7 +297,8 @@ public class BoardServiceImpl implements BoardService {
 				
 				if(summernoteImageList != null && summernoteImageList.isEmpty() == false) {
 					for(SummernoteImageDTO summernoteImage : summernoteImageList) {
-						File file = new File(File.separator + "summernoteImage", summernoteImage.getFilesystem());
+						//File file = new File(File.separator + "summernoteImage", summernoteImage.getFilesystem());
+						File file = new File(myFileUtil.getSummernotePath(), summernoteImage.getFilesystem());
 						if(file.exists()) {
 							file.delete();
 						}
