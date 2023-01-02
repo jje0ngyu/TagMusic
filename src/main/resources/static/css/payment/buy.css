@@ -91,7 +91,7 @@ ul, ol {
 	position: relative;
 	margin: auto;
 	width: 100%;
-	max-width: 940px;
+	max-width: 1000px;
 }
 
 /* 이용권 종류 box */
@@ -112,20 +112,23 @@ ul, ol {
 	display: flex;
 	align-items: center;
 	width:100%;
+	height: 100%;
 }
 .pass_name {
+	text-align: center;
 	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 100px;
+	width:230px;
+	height: 180px;
 	padding: 40px 30px;
 	font-size: 24px;
 	font-weight: 700;
 	color: #fbfbfb;
 	background: linear-gradient(#37486b, 50%, #20325A);
 /*	border: 1px solid #bdc2ce;*/
-	border-radius: 100px;
+	border-radius: 160px;
 }
 .pass_name:hover {
 	cursor: pointer;
@@ -178,4 +181,67 @@ ul, ol {
 	font-weight: 600;
 	font-size: 21px;
 }
-	
+
+.container_gift {
+	position: relative;
+	z-index: 110;
+	width: 520px;
+	height: autuo;
+	background-color: #fdfdfd;
+	margin: 200px auto;
+	padding: 30px 0;
+	border-radius: 10px;	
+}
+
+.gift_box {
+	position: relative;
+	margin: auto;
+	padding-top: 20px;
+	width: 430px;
+	text-align: center;
+}
+.gift_title {
+	font-size: 20px;
+	font-weight: 700;
+	margin: 10px;
+}
+.flex_gift {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.gift_info_box {
+	margin: 10px;
+	padding: 0 15px;
+	width: 100%;
+	height: 50px;
+	border: 1px solid #bec2ce;
+}
+.gift_msg {
+	margin: 5px;
+	text-align: left;
+	font-size: 14px;
+	color: #bdc2ce;
+}
+#getRecipientEmail {
+	font-size: 16px;
+	width: 100%;
+	height: 100%;
+	border: none;
+	outline: none;
+}
+
+#recipientInfoBox {
+	padding: 10px;
+	font-size: 18px;
+	font-weight: 600;
+	color: indianred;
+}
+
+#gift_close, #send_gift, #gift_submit, #gift_cancle{
+	width: 90px;
+	height: 40px;
+}
+#gift_close:hover, #gift_cancle:hover {
+	background-color: indianred;
+}

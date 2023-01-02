@@ -30,7 +30,7 @@
 			fn_popllarMusic_POP();		// 구현 : 인기음악 장르_팝 리스트바
 			fn_popllarMusic_Trot();		// 구현 : 인기음악 장르_트로트 리스트바
 			fn_popllarMusic_Rock();		// 구현 : 인기음악 장르_락 리스트바
-			
+			iframe_click();
 		});
 		
 		// 전역변수
@@ -77,9 +77,9 @@
 								
 								// # 구현 : 썸네일 가져오기
 								if(music.hasThumbNail == 1) {
-									text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+									text = '<img class="item_image" src="/tune/display/image?musicNo=' + music.musicNo + '" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 								} else if(music.hasThumbNail == 0) {
-									text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+									text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 								}
 								
 							    $('<div class="main_item">')
@@ -143,9 +143,9 @@
 						
 						// # 구현 : 썸네일 가져오기
 						if(music.hasThumbNail == 1) {
-							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+							text = '<img class="item_image" src="/tune/display/image?musicNo=' + music.musicNo + '" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						} else if(music.hasThumbNail == 0) {
-							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						}
 						
 					    $('<div class="main_item_r">')
@@ -226,9 +226,9 @@
 						
 						// # 구현 : 썸네일 가져오기
 						if(music.hasThumbNail == 1) {
-							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+							text = '<img class="item_image" src="/tune/display/image?musicNo=' + music.musicNo + '" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						} else if(music.hasThumbNail == 0) {
-							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						}
 						
 					    $('<div class="main_item_p">')
@@ -307,9 +307,9 @@
 						
 						// # 구현 : 썸네일 가져오기
 						if(music.hasThumbNail == 1) {
-							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+							text = '<img class="item_image" src="/tune/display/image?musicNo=' + music.musicNo + '" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						} else if(music.hasThumbNail == 0) {
-							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						}
 						
 					    $('<div class="main_item_p">')
@@ -368,9 +368,9 @@
 						
 						// # 구현 : 썸네일 가져오기
 						if(music.hasThumbNail == 1) {
-							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+							text = '<img class="item_image" src="/tune/display/image?musicNo=' + music.musicNo + '" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						} else if(music.hasThumbNail == 0) {
-							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						}
 						
 					    $('<div class="main_item_p">')
@@ -416,9 +416,9 @@
 						
 						// # 구현 : 썸네일 가져오기
 						if(music.hasThumbNail == 1) {
-							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+							text = '<img class="item_image" src="/tune/display/image?musicNo=' + music.musicNo + '" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						} else if(music.hasThumbNail == 0) {
-							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						}
 						
 					    $('<div class="main_item_p">')
@@ -466,9 +466,9 @@
 						
 						// # 구현 : 썸네일 가져오기
 						if(music.hasThumbNail == 1) {
-							text = '<img class="item_image" src="/music/thumbnail?musicNo=' + music.musicNo + '" width="169px" height="169px">';
+							text = '<img class="item_image" src="/tune/display/image?musicNo=' + music.musicNo + '" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						} else if(music.hasThumbNail == 0) {
-							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px">';
+							text = '<img class="item_image" src="/images/defaultImage.png" width="169px" height="169px" data-musno="'+music.musicNo+'">';
 						}
 						
 					    $('<div class="main_item_p">')
@@ -477,7 +477,7 @@
 					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
 					   .appendTo( $(content) );
 					}); 
-		
+					 
 					 $('.main_musicLike_body').append( $(content) );
 					
 					}
@@ -493,19 +493,19 @@
 			
 			$(document).on('click', '.item_image', function() {
 				
-				musicNo = $(this).val();
+				musicNo = $(this).data('musno');
 				
 				window.parent.location.href="/tune/iframe?musicNo=" + musicNo;
 			});
 			
 			$(document).on('click', '.item_title', function() {
 				
-				window.parent.location.href="매핑"
+				window.parent.location.href="/tune/iframe?musicNo=" + musicNo;
 			});
 			
 			$(document).on('click', '.item_artist', function() {
 				
-				window.parent.location.href="매핑"
+				window.parent.location.href="/tune/iframe?musicNo=" + musicNo;
 			});
 			
 			

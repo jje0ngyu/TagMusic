@@ -1,6 +1,5 @@
 package com.gdu.tagmusic.controller;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gdu.tagmusic.domain.MusicCommentDTO;
-import com.gdu.tagmusic.domain.MusicDTO;
 import com.gdu.tagmusic.service.TuneService;
 
 @Controller

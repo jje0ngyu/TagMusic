@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.tagmusic.domain.SleepUserDTO;
@@ -33,7 +34,7 @@ public interface UserService {
 	public void join(HttpServletRequest request, HttpServletResponse response);
 	
 	// 회원 정보 수정
-	public Map<String, Object> getImage(HttpServletRequest request);
+	public ResponseEntity<byte[]> getImage(String email);
 	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response);
 	public void modifyArtist(HttpServletRequest request, HttpServletResponse response);
 	public void modifyName(HttpServletRequest request, HttpServletResponse response);

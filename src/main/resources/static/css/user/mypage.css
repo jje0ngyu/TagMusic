@@ -164,16 +164,44 @@ body {
 }
 
 /* mypage_프로필 사진 수정 화면 */
-.profile_image_box {
+.profile_image_controller {
 	position: relative;
 	width: 420px;
 	z-index: 101;
-	background-color: green;
-	margin: 100px auto 0;
+	background-color: #fdfdfd;
+	margin: 120px auto 100px;
 	text-align: center;
-	color: white;
+	color: #1f1f1f;
+	border-radius: 10px;
+	padding: 30px;
+}
+.profile_title {
+	padding: 20px;
+	font-size: 20px;
+	font-weight: 600;
+}
+.profile_image {
+	width: 300px;
+}
+.profile_file {
+	display: flex;
+	justify-content: center;
+	margin: 10px;
+	text-align: center;
 }
 
+#profileImagefile {
+	margin: 10px 0 20px;
+}
+
+.btn_small {
+	width: 120px;
+	height: 40px;
+	border-radius: 30px;
+	border: none;
+	background-color: #bdc2ce;
+	margin: 10px;
+}
 /* myinfo ---------------------------------------------------------------- */
 .info_controller {
 	position: relative;
@@ -338,9 +366,17 @@ body {
 /* 로그아웃 버튼 (user 전역 공통) */
 .logout_box:hover, .cancel:hover {
 	background-color: #FF5361;
+	color: #fdfdfd;
+	font-weight: 600;
 }
 .correct:hover {
 	background-color: green;
+	color: #fdfdfd;
+}
+.change:hover {
+	background: #37486b;
+	color:#fdfdfd;
+	font-weight: 600;
 }
 
 /* 탈퇴 페이지 */

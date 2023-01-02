@@ -3,9 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>Tag Music > 네이버 로그인</title>
-<link rel="stylesheet" th:href="@{/css/naverJoin.css}">
+<link rel="stylesheet" th:href="@{/css/user/header.css}" />
+<link rel="stylesheet" th:href="@{/css/user/join.css}" />
+<link rel="stylesheet" th:href="@{/css/user/naverJoin.css}" />
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script th:src="@{/js/moment-with-locales.js}"></script>
+<script th:src="@{/js/user/agree.js}"></script>
 <script>
 	
 	$(function(){
@@ -64,7 +67,7 @@
 </script>
 </head>
 <body>
-
+	<div th:replace="~{layout/loginHeader.html::loginFragment}"></div>
 	<div class="naver_join_controllers">
 		<div class="naver_join_contents">
 		
@@ -78,13 +81,15 @@
 				<!-- 이름(프로필에 포함-2) -->
 				<div>
 					<div>
-						<label for="name">이름*</label>
+						<label for="name" class="info_title">이름*</label>
 					</div>
-					<input type="text" name="name" id="name" th:value="${profile.name}">
+					<div class="info_input">
+						<input type="text" name="name" id="name" th:value="${profile.name}">
+					</div>
 				</div>
 				<!-- 성별(프로필에 포함-3) -->
 				<div>
-					<span>성별*</span>
+					<span class="info_title">성별*</span>
 					<input type="radio" name="gender" id="none" value="NO" checked="checked">
 					<label for="none">선택 안함</label>
 					<input type="radio" name="gender" id="male" value="M">
@@ -97,34 +102,38 @@
 				</div>
 				<!-- 휴대전화(프로필에 포함-4) -->
 				<div>
-					<label for="mobile">휴대전화*</label>
+					<label for="mobile" class="info_title">휴대전화*</label>
 				</div>
-				<div>
+				<div class="info_input">
 					<input type="text" name="mobile" id="mobile" th:value="${profile.mobile}">
 				</div>
 				<!-- 생년월일(프로필에 포함-5) -->
-				<div class="input_15">
+				<div>
 					<div>
-						<label for="birthyear">생년월일*</label>
+						<label for="birthyear" class="info_title">생년월일*</label>
 					</div>
-					<input type="text" name="birthyear" id="birthyear" th:value="${profile.birthyear}">년
-					<input type="text" name="birthmonth" id="birthmonth" th:value="${profile.birthday.substring(0,2)}">월
-					<input type="text" name="birthdate" id="birthdate" th:value="${profile.birthday.substring(2)}">일
+					<div class="birth_flex">
+						<div class="select_box_year"><input type="text" name="birthyear" id="birthyear" class="select_box_year"th:value="|${profile.birthyear}|"></div>
+						<div class="select_box"><input type="text" name="birthmonth" id="birthmonth" class="select_box" th:value="|${profile.birthday.substring(0,2)}|"></div>
+						<div class="select_box"><input type="text" name="birthdate" id="birthdate" class="select_box" th:value="|${profile.birthday.substring(2)}|"></div>
+					</div>
 				</div>
 				<!-- 이메일(프로필에 포함-6) -->
 				<div>
 					<div>
-						<label for="email">이메일*</label>
+						<label for="email" class="info_title">이메일*</label>
 					</div>
-					<input type="text" name="email" id="email" th:value="${profile.email}">
-					<input type="button" value="중복체크" id="btn_check">
-					<span id="msg_email"></span>
+					<div class="info_input">
+						<input type="text" name="email" id="email" th:value="${profile.email}">
+						<input type="button" value="중복체크" id="btn_check">
+					</div>
+					<div id="msg_email"></div>
 				</div>
 				
 				
 				
 				<!-- 약관 -->
-				<div>
+				<div style="margin-bottom:10px;">
 					<input type="checkbox" id="check_all" class="blind">
 					<label for="check_all" class="lbl_all">모두 동의</label>
 				</div>

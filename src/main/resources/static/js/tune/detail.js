@@ -137,6 +137,7 @@ function fn_commentList(){
 			// 화면에 댓글 목록 뿌리기
 			$('#comment_list').empty();
 			$.each(resData.commentList, function(i, comment){
+				var email = $('#email').val();
 				var div = '';
 					div += '<div class="comment_bottom_comment">';
 						// 코맨트 리스트 상단 (닉네임, 작성일)
@@ -149,7 +150,7 @@ function fn_commentList(){
 						div += '<div class="comment_bottom_content">';
 						div += comment.commentContent;
 						// 작성자만 삭제할 수 있도록 if 처리
-						if ('${session.loginUser}' != null && comment.email == $('#email')) {
+						if (email != null && email == comment.email) {
 						div += '<input type="button" value="삭제" class="btn_comment_remove" data-comment_no="' + comment.commentNo + '">';
 						}
 						div += '</div>';

@@ -170,7 +170,8 @@ function fn_remainingDay(){
 						<img th:src="@{/images/bell_navy.png}" class="bell_img">
 					</div>
 					<div class="profile_image_area">
-						<img class="profile_image" th:src="${session.loginUser.profileImage}">
+						<img th:if="${session.loginUser.profileImage == '1'}" id="profile_image" class="profile_image" th:src="@{/user/info/getImage(email=${session.loginUser.email})}" style="border-radius:100px;">				
+						<img th:if="${session.loginUser.profileImage != '1'}" id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}">
 					</div>
 					<script>
 						$('.profile_image').click(function(){

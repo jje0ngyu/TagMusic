@@ -3,16 +3,6 @@
 /* 공통영역 (header.html을 포함한 모든 html에 적용) */
 
 /* 클래스 초기화  */
-html, body, section, article, div, a, input, ul, li, input {
-	margin: 0px;
-	padding: 0px;
-	background-color: inherit;
-	color: inherit;
-}
-a {
-	text-decoration: none;
-}
-
 .blind {
 	display: none;
 }
@@ -23,13 +13,19 @@ a {
 	width: 600px;
 	background-color: #fdfdfd;
 	box-shadow: 0 1px 10px 0 #37486b;
-	margin: auto;
+	margin: 40px auto;
 	border-radius: 10px;
 }
 .naver_join_contents {
 	padding: 30px 60px;
+	border-radius: 10px;
 }
 
+.right {
+	text-align: right;
+	color: #bdc2ce;
+	padding: 10px 0;
+}
 .btn {
 	width: 40%;
 	height: 40px;
@@ -41,29 +37,23 @@ a {
 .btn:hover {
 	cursor: pointer;
 }
-#btn_join:hover {
-	background-color: green;
-}
-#btn_cancel:hover {
-	background-color: red;
-}
+
 .join_bottom_controller {
 	display: flex;
 	justify-content: center;
 }
-
-input[type=text] {
-	width: 70%;
-	height: 30px;
-	margin: 5px 0 20px;
-	font-size: 16px;
-	border:none;
-	border: 1px solid #bdc2ce;
-	border-bottom: 4px solid #37486b;
-	outline: none;
-	margin-left: 10px;
-	background-color: #fdfdfd;
+#btn_join {
+	border-radius: 30px;
 }
-.input_15 input[type=text] {
-	width: 15%;
+#btn_join:hover {
+	background-color: green;
+	color: #fdfdfd;
+}
+#btn_cancel:hover {
+	background-color: red;
+	color: #fdfdfd;
+}
+#msg_email {
+	color: indianred;
+	margin-bottom: 20px;
 }

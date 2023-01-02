@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.tagmusic.domain.BoardDTO;
 import com.gdu.tagmusic.domain.SummernoteImageDTO;
+import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.AlarmMapper;
 import com.gdu.tagmusic.mapper.BoardMapper;
 import com.gdu.tagmusic.util.MyFileUtil;
@@ -140,14 +141,20 @@ public class BoardServiceImpl implements BoardService {
 		
 		out.println("<script>");
 		if(result > 0) {
-			Map<String, Object> map = new HashMap<>();
-			map.put("title", "공지");
-			map.put("email", "gongji@web.com");
-			
-			map.put("content", "<a href='/board/list'><b>공지사항</b>을 확인해주세요</a>");
-			int inserAlarm = alarmMapper.insertAlarm(map);
-			if(inserAlarm == 1) {
+			List<UserDTO> user = alarmMapper.selectAllUserEmail();
+			for(int i = 0; i < user.size(); i++) {
+				
+				Map<String, Object> map = new HashMap<>();
+				map.put("title", "공지");
+				map.put("email", user.get(i).getEmail());
+				
+				map.put("content", "<a href='/board/list'><b>공지사항</b>을 확인해주세요</a>");
+				int inserAlarm = alarmMapper.insertAlarm(map);
+				if(inserAlarm == 1) {
+				}
 			}
+			
+			
 			
 			String[] summernoteImageNames = request.getParameterValues("summernoteImageNames");
 			

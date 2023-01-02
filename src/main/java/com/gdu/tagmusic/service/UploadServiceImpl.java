@@ -76,7 +76,7 @@ public class UploadServiceImpl implements UploadService {
 		model.addAttribute("totalRecord", totalRecord);
 		model.addAttribute("uploadList", uploadMapper.selectUploadListByMap(map));
 		model.addAttribute("beginNo", totalRecord - (page - 1) * pageUtil.getRecordPerPage());
-		model.addAttribute("paging", pageUtil.getPaging(request.getContextPath() + "/upload/list"));
+		model.addAttribute("paging", pageUtil.getPaging("/upload/list"));
 		model.addAttribute("recordPerPage", recordPerPage);
 		
 	}
@@ -166,7 +166,7 @@ public class UploadServiceImpl implements UploadService {
 			if(uploadResult > 0 && attachResult == files.size()) {
 				out.println("<script>");
 				out.println("alert('업로드 되었습니다.');");
-				out.println("location.href='" + multipartRequest.getContextPath() + "/upload/list'");
+				out.println("location.href='/upload/list'");
 				out.println("</script>");
 			} else {
 				out.println("<script>");
@@ -413,7 +413,7 @@ public class UploadServiceImpl implements UploadService {
 			if(uploadResult > 0 && attachResult == files.size()) {
 				out.println("<script>");
 				out.println("alert('수정 되었습니다.');");
-				out.println("location.href='" + multipartRequest.getContextPath() + "/upload/detail?uploadNo=" + uploadNo + "'");
+				out.println("location.href='/upload/detail?uploadNo=" + uploadNo + "'");
 				out.println("</script>");
 			} else {
 				out.println("<script>");
@@ -496,7 +496,7 @@ public class UploadServiceImpl implements UploadService {
 			if(result > 0) {
 				out.println("<script>");
 				out.println("alert('삭제 되었습니다.');");
-				out.println("location.href='" + multipartRequest.getContextPath() + "/upload/list'");
+				out.println("location.href='/upload/list'");
 				out.println("</script>");
 			} else {
 				out.println("<script>");

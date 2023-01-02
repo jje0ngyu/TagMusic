@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.security.SecureRandom;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -22,8 +23,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -37,7 +42,6 @@ import com.gdu.tagmusic.util.JavaMailUtil;
 import com.gdu.tagmusic.util.MyFileUtil;
 import com.gdu.tagmusic.util.SecurityUtil;
 
-import java.util.List;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -152,9 +156,12 @@ public class UserServiceImpl implements UserService {
 		String apiURL = null;
 		
 		try {
+			String requestURL = request.getRequestURL().toString();
+			String requestURI = request.getRequestURI();
+			String host = requestURL.substring(0, requestURL.indexOf(requestURI));
 			
 			String clientId = "mtNSZZEJIiSUesKY51WB";
-			String redirectURI = URLEncoder.encode("http://localhost:9090/user/naver/login", "UTF-8");  // 네이버 로그인 Callback URL에 작성한 주소 입력 
+			String redirectURI = URLEncoder.encode(host + "/user/naver/login", "UTF-8");  // 네이버 로그인 Callback URL에 작성되어 있어야 함
 			SecureRandom random = new SecureRandom();
 			String state = new BigInteger(130, random).toString();
 			
@@ -332,6 +339,7 @@ public class UserServiceImpl implements UserService {
 		String location = request.getParameter("location");
 		String promotion = request.getParameter("promotion");
 		
+		System.out.println("birthyear" + birthyear);
 		// 일부 파라미터는 DB에 넣을 수 있도록 가공
 		name = securityUtil.preventXSS(name);
 		String birthday = birthmonth + birthdate;
@@ -574,25 +582,47 @@ public class UserServiceImpl implements UserService {
 	
 	// 회원정보 수정 - 프로필 이미지 가져오기
 	@Override
-	public Map<String, Object> getImage(HttpServletRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<byte[]> getImage(String email) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("email", email);
+		System.out.println("이미지");
+		ProfileImageDTO profile = userMapper.selectImageByEmail(map);
+		System.out.println("소환");
+		ResponseEntity<byte[]> result = null;
+		
+		File imgFile = new File(profile.getProfileImagePath(), profile.getProfileImageFilesystem());
+		
+		try {
+			if(profile.getHasThumbNail() == 1) {
+				HttpHeaders headers = new HttpHeaders();
+				headers.add("Content-Type", Files.probeContentType(imgFile.toPath()));
+				File image = new File(profile.getProfileImagePath(), profile.getProfileImageFilesystem());
+				result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(image), null, HttpStatus.OK);
+				System.out.println("성공");
+			}
+			System.out.println("가긴하냐");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("어떡하냐");
+		return result;
 	}
 	
 	// 회원정보 수정 - 이미지 변경
 	@Override
 	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
-		/*
-		HttpSession session = multipartRequest.getSession(); String email =
-		((UserDTO)session.getAttribute("loginUser")).getEmail();
-		 */
 		String email = multipartRequest.getParameter("email");
 		
+		String imgOrigin = "";
+		String imgFilesystem = "";
+		String imgPath = "";
+		int hasThumbnail = 0;
 		// 첨부된 파일 목록
-		MultipartFile imageFile = multipartRequest.getFile("profileImagefile");  // <input type="file" name="file">
+		MultipartFile imgFile = multipartRequest.getFile("profileImagefile");
 		// 첨부 결과
 		int attachResult;
-		if(imageFile.getSize() == 0) {  // 첨부가 없는 경우 (files 리스트에 [MultipartFile[field="files", filename=, contentType=application/octet-stream, size=0]] 이렇게 저장되어 있어서 files.size()가 1이다.
+		if(imgFile.getSize() == 0) {  // 첨부가 없는 경우 (files 리스트에 [MultipartFile[field="files", filename=, contentType=application/octet-stream, size=0]] 이렇게 저장되어 있어서 files.size()가 1이다.
 			attachResult = 1;
 		} else {
 			attachResult = 0;
@@ -600,66 +630,61 @@ public class UserServiceImpl implements UserService {
 		try {
 			
 			// 첨부가 있는지 점검
-			if(imageFile != null && imageFile.isEmpty() == false) {  // 둘 다 필요함
-				
+			if(imgFile != null && imgFile.isEmpty() == false) {  // 둘 다 필요함
+				hasThumbnail = 1;
 				// 원래 이름
-				String origin = imageFile.getOriginalFilename();
-				origin = origin.substring(origin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
+				imgOrigin = imgFile.getOriginalFilename();
+				imgOrigin = imgOrigin.substring(imgOrigin.lastIndexOf("\\") + 1); // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
 				
 				// 저장할 이름
-				String filesystem = myFileUtil.getFilename(origin);
+				imgFilesystem = myFileUtil.getFilename(imgOrigin);
 				
 				// 저장할 경로
-				String ImagePath = myFileUtil.getTodayPath();
+				imgPath = myFileUtil.getTodayPath();
 				
 				// 저장할 경로 만들기
-				File dir = new File(ImagePath);
+				File dir = new File(imgPath);
 				if(dir.exists() == false) {
 					dir.mkdirs();
-				}
-				
-				// 첨부할 File 객체
-				File file = new File(dir, filesystem);
-				
-				// 첨부파일 서버에 저장(업로드 진행)
-				imageFile.transferTo(file);
-
-				// ProfileImageDTO 생성
-				ProfileImageDTO profile = ProfileImageDTO.builder()
-						.profileImagePath(ImagePath)
-						.profileImageOrigin(origin)
-						.profileImageFilesystem(filesystem)
-						.email(email)
-						.build();
-				
-				// 첨부파일의 Content-Type 확인
-				String contentType = Files.probeContentType(file.toPath());  // 이미지의 Content-Type(image/jpeg, image/png, image/gif)
-
-				// DB에 AttachDTO 저장
-				attachResult += userMapper.insertImage(profile);
-				
-				ProfileImageDTO profileImage = ProfileImageDTO.builder()
-						.profileImagePath(ImagePath)
-						.profileImageFilesystem(filesystem)
-						.email(email)
-						.build();
-				int result = userMapper.updateImagePath(profileImage);
-				
-				response.setContentType("text/html; charset=UTF-8");
-				PrintWriter out = response.getWriter();
-				if(result > 0) {
-					// 조회 조건으로 사용할 Map
-					Map<String, Object> map = new HashMap<String, Object>();
-					map.put("email", email);
-					// session에 올라간 정보를 수정된 내용으로 업데이트
-					multipartRequest.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
-					
-					out.println("<script>");
-					out.println("alert('사진이 변경되었습니다.');");
-					out.println("location.href='/';");
-					out.println("</script>");
-				}
 			}
+				
+			// 첨부할 File 객체
+			File file = new File(dir, imgFilesystem);
+			
+			// 이미지 첨부파일 서버에 저장(업로드 진행)
+			imgFile.transferTo(file);
+			}
+			
+			// UserDTO 생성
+			ProfileImageDTO profile = ProfileImageDTO.builder()
+					.email(email)
+					.profileImageOrigin(imgOrigin)
+					.profileImageFilesystem(imgFilesystem)
+					.profileImagePath(imgPath)
+					.hasThumbNail(hasThumbnail)
+					.build();
+				
+			Map<String, Object> map = new HashMap<>();
+			map.put("email", email);
+			ProfileImageDTO checkImage = userMapper.selectImageByEmail(map);
+			int insertSuccess = 0;
+			if ( checkImage != null) {
+				insertSuccess = userMapper.updateImage(profile);
+			} else {
+				insertSuccess = userMapper.insertImage(profile);
+			}
+
+			// 회원 정보 변경
+			UserDTO user = UserDTO.builder()
+					.profileImage("1")
+					.email(email)
+					.build();
+			userMapper.updateUser(user);
+			// 세션 정보 업데이트
+			multipartRequest.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
+			System.out.println( "이미지 저장 세션저장" +userMapper.selectUserByMap(map));
+			Map<String, Object> result = new HashMap<>();
+			result.put("result", insertSuccess);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -842,10 +867,6 @@ public class UserServiceImpl implements UserService {
 			map.put("content",txt);
 			alarmMapper.insertAlarm(map);
 		}
-		
-	
-
-		
 		
 	}
 	

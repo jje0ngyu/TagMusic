@@ -97,8 +97,8 @@
 			<form id="frm_upload" method="post">
 				<input type="hidden" name="uploadNo" th:value="${upload.uploadNo}">
 				<input type="button" value="목록" id="btn_upload_list" class="btn"> 			
-				<input type="button" value="삭제" id="btn_upload_remove" class="btn"> 			
-				<input type="button" value="편집" id="btn_upload_edit" class="btn"> 			
+				<input th:if="${session.loginUser != null && session.loginUser.userNo == 1}" type="button" value="삭제" id="btn_upload_remove" class="btn"> 			
+				<input th:if="${session.loginUser != null && session.loginUser.userNo == 1}" type="button" value="편집" id="btn_upload_edit" class="btn"> 			
 			</form>
 		</div>
 	</div> <!--board_controller-->

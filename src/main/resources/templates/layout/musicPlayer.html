@@ -46,16 +46,8 @@
 				</div>
 				<script>
 					$('#next').click(function(){
-						 window.addEventListener('message', function(e) {
-						  console.log('parent message');
-						  console.log(e.data); // { childData : 'test data' }
-						  console.log("e.origin : " + e.origin); //http://123.com(자식창 도메인)
-						 
-						  if(e.data.childData === 'test data'){
-							// ...처리 로직 (부모창 함수 호출)
-						  }
-						});
-						alert('dmㅠㅠ' + nextMusicNo);
+						location.href='/tune/iframe?musicNo=' + (musicNo + 1);
+					});
 						/*
 						if(musicNo ==24) {
 							alert('다음 곡이 없습니다.');
@@ -63,7 +55,6 @@
 						} else {
 							location.href='/tune/iframe?musicNo=' + (musicNo + 1);
 						}*/
-					})
 				</script>
 				<div class="left_controll" >
 					<span class="current_time"></span>
@@ -133,7 +124,6 @@
 		// 보여지는 부분들
 		function fn_hiding() {
 			$('#hide_detail').click(function(){
-				alert('클릭!!!!');
 				window.parent.location.href="/";
 			});
 		}

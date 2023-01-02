@@ -3,96 +3,9 @@
 <head th:replace="~{layout/header::head('Tag Music > 결제이력')}"></head>
 <meta charset="UTF-8">
 <title></title>
-<link rel="stylesheet" th:href="@{/css/payment.css}">
-<style>
-	nav{overflow:hidden;height:80px;}
-	#nav3 {
-	  width: 100%;
-	  height: 15%;
-	  position: relative;
-	  text-align: center;
-	}
-	#nav3>a {
-	  line-height: 80px;
-	  display: block;
-	  font-size: 30px;
-	  font-weight: 900;
-	  position: absolute;
-	}
-	#nav3>select {
-	  height: 30px;
-	  background-color: #1b2035;
-	  color: #fff;
-	  position: absolute;
-	  transform: translateY(-15px);
-	  border: 2px solid #fff;
-	  border-radius: 30px;
-	}
-	.payContent {
- 		position: relative;
- 		width: 1200px;
-	}
-	#buyPageDiv{
-		margin: 10px auto;
-		padding: 50px;
-		position: relative;
-    	width: 100%;
-    	background-color: #ECECEC;
-    	
-	}
-	.pass_box {
-		width: 420px;
-		margin: auto;
-	}
-	.pass_name {
-		position: relative;
-		display: inline-block;
-	}
-	.pass_btn {
-		position: relative;
-		display: inline-block;
-	}
-	
-	/* 선물 box */
-	.blind {
-		display: none;
-	}
-	.backlayer {
-		position: absolute;
-		top: 0;
-		left: 0;
-		background-color: rgba(0,0,0,0.7);
-		z-index: 100;
-		width: 100%;
-		height:100%;
-	}
-	.gift_session {
-		position: absolute;
-		top: 0;
-		left: 0;
-		background-color: rgba(0,255,130,0);
-		width: 100%;
-		height:100%;
-	}
-	.container_gift {
-		position: relative;
-		z-index: 110;
-		width: 420px;
-		height: 300px;
-		background-color: #00FF80;
-		margin: 200px auto;
-	}
-	.gift_box {
-		position: relative;
-		margin: auto;
-		padding-top: 40px;
-		width: 350px;
-		background-color: #00FF80;
-		text-align: center;
-	}
-	
-	
-</style>
+<link rel="stylesheet" th:href="@{/css/payment/buy.css}">
+<link rel="stylesheet" th:href="@{/css/payment/log.css}">
+
 <!-- static 폴더 이후의 위치를 적으면 된다. -->
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
@@ -132,7 +45,7 @@ function fn_userLog(){
 		    	.append($('<th>').text("결제날짜(시간)"))
 		    	.append($('<th>').text("결제방식"))
 		    	.append($('<th>').text("결제가격"))
-		    	.append($('<th>').append('<input type="button" value="결제이력삭제" class="btn_logRemove">'))
+		    	.append($('<th>').append('<input type="button" value="선택 삭제" id="btn_logRemove" class="btn_logRemove">'))
 		    	.appendTo('#list_head');
 		    if(resData.logList.length == 0){
 		    	$('<tr>')
@@ -206,7 +119,7 @@ function fn_userBuyLog(){
 		    	.append($('<th>').text("결제날짜(시간)"))
 		    	.append($('<th>').text("결제방식"))
 		    	.append($('<th>').text("결제가격"))
-		    	.append($('<th>').append('<input type="button" value="결제이력삭제" class="btn_logRemove">'))
+		    	.append($('<th>').append('<input type="button" value="선택 삭제" id="btn_logRemove" class="btn_logRemove">'))
 		    	.appendTo('#list_head');
 		    
 		    var count = 0;
@@ -287,7 +200,7 @@ function fn_userGiftLog(){
 		    	.append($('<th>').text("결제날짜(시간)"))
 		    	.append($('<th>').text("결제방식"))
 		    	.append($('<th>').text("결제가격"))
-		    	.append($('<th>').append('<input type="button" value="결제이력삭제" class="btn_logRemove">'))
+		    	.append($('<th>').append('<input type="button" value="선택 삭제" id="btn_logRemove" class="btn_logRemove">'))
 		    	.appendTo('#list_head');
 		    if(resData.logList.length == 0){
 		    	$('<tr>')
@@ -402,7 +315,7 @@ function fn_userLogSelect(){
 	
 	<article class="pay_controllers">
 		<div class="article_contain">
-			<h1 class="payTitle" th:text="|${session.loginUser.name} 님의 결제이력|"></h1>
+			<div class="payTitle" th:text="|${session.loginUser.name} 님의 결제이력|"></div>
 			<form id="frm_search">
 				<nav id="nav3" class="tab_box_basic">
 					<ul class="top_pay_controller">
@@ -463,9 +376,9 @@ function fn_userLogSelect(){
 				<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
 				<input type="hidden" class="isUser" th:data-user="true">
 			</div> 
-			<div id="buyPageDiv" >
+			<div id="buyPageDiv">
 				<div id="logCountDiv"></div>
-				<table border="1" style="text-align:center">
+				<table class="payment_table" style="text-align:center;">
 					<thead id="list_head" >
 					</thead>
 					<tbody id="list_body" >

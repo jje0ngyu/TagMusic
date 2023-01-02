@@ -82,30 +82,28 @@
 			(#{artist}, #{pw}, #{name}, #{gender}, #{email}, #{mobile}, #{birthyear}, #{birthday}, NULL, NULL, NULL, NULL, NULL, #{agreeCode}, #{snsType}, NOW(), NOW(), NOW(), NULL, NULL)
 	</insert>
 	
-	
-	
-	<!-- 프로필 이미지 -->
-	<select id="selectProfileImage" parameterType="String" resultType="String">
-		SELECT PROFILE_IMAGE
-		  FROM USERS
-		 WHERE EMAIL = #{email}
-	</select>
-	
 	<!-- 프로필 이미지 변경 -->
 	<insert id="insertImage" parameterType="ProfileImageDTO">
 		INSERT INTO PROFILEIMAGE
-			(PROFILEIMAGE_PATH, PROFILEIMAGE_ORIGIN, PROFILEIMAGE_FILESYSTEM, EMAIL)
+			(PROFILEIMAGE_PATH, PROFILEIMAGE_ORIGIN, PROFILEIMAGE_FILESYSTEM, HAS_THUMBNAIL, EMAIL)
 		VALUES
-			(#{profileImagePath}, #{profileImageOrigin}, #{profileImageFilesystem}, #{email})
+			(#{profileImagePath}, #{profileImageOrigin}, #{profileImageFilesystem}, #{hasThumbNail}, #{email})
 	</insert>
 	
-	<!-- 콘캣 오류 발생 가능성 높음! -->
-	<!-- 프로필 경로 수정 -->
-	<update id="updateImagePath" parameterType="ProfileImageDTO">
-		UPDATE USERS
-		   SET PROFILE_IMAGE = CONCAT(#{profileImagePath},\),#{profileImageFilesystem})
+	<!-- 프로필 변경하기 -->
+	<update id="updateImage" parameterType="ProfileImageDTO">
+		UPDATE PROFILEIMAGE
+		   SET PROFILEIMAGE_PATH = #{profileImagePath},
+		   	   PROFILEIMAGE_ORIGIN = #{profileImageOrigin},
+		   	   PROFILEIMAGE_FILESYSTEM = #{profileImageFilesystem}
 		 WHERE EMAIL = #{email}
 	</update>
+	
+	<select id="selectImageByEmail" resultType="ProfileImageDTO" parameterType="map">
+		SELECT PROFILEIMAGE_No, PROFILEIMAGE_PATH, PROFILEIMAGE_ORIGIN, PROFILEIMAGE_FILESYSTEM, HAS_THUMBNAIL, EMAIL
+		  FROM PROFILEIMAGE
+		 WHERE EMAIL = #{email}
+	</select>
 	
 	
 	<!-- 회원정보수정 -->
@@ -118,6 +116,7 @@
 			<if test="birthyear != null">BIRTHYEAR = #{birthyear},</if>
 			<if test="birthday != null">BIRTHDAY = #{birthday},</if>
 			<if test="mobile != null">MOBILE = #{mobile},</if>
+			<if test="profileImage != null">PROFILE_IMAGE = #{profileImage},</if>
 			<if test="postcode != null">POSTCODE = #{postcode},</if>
 			<if test="roadAddress != null">ROAD_ADDRESS = #{roadAddress},</if>
 			<if test="jibunAddress != null">JIBUN_ADDRESS = #{jibunAddress},</if>

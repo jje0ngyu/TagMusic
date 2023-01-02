@@ -7,6 +7,7 @@
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 <script>
 	$(function(){
+		//fn_displayImage();
 		fn_popupProfileImage();
 		fn_changeImage();
 		fn_closePopup();
@@ -14,13 +15,17 @@
 		// 페이지 이동
 		fn_myinfo();		 // 개인정보관리
 		fn_paymentHistory(); // 결제이력
+		fn_manageUser();	 // 관리자 - 유저관리
+		fn_notice();		 // 관리자 - 공지사항
+		fn_faq();			 // 관리자 - 자주 하는 질문
 	});
 	// 이미지 노출
+	/*
 	function fn_displayImage(){
 		$.ajax({
 			type: 'post',
 			url : '/user/info/getImage',
-			data: 'email=${session.loginUser.email}',
+			dataType: 'json',
 			success: function(resData){
 				console.log(resData.imagePath)
 				$('#profileImage').attr('src',resData.iamgePath);
@@ -29,12 +34,12 @@
 				console.log('에러떴다');
 			}
 		}); // ajax
-	}
+	} */
 	// 이미지 변경 모달팝업
 	function fn_popupProfileImage(){
 		$('#profile_image').click(function(){
 			$('.box_backlayer').removeClass('blind');
-			$('.profile_image_box').removeClass('blind');
+			$('.profile_image_controller').removeClass('blind');
 		});
 	}
 
@@ -49,20 +54,16 @@
 				processData: false,
    				contentType: false,
 				success: function(resData){
-					console.log('성공');
-				},
-				error: function(){
-					console.log('에러');
+					console.log('이미지 변경 성공');
 				}
 			})
 		});
 	}
 	// 팝업창 닫기
 	function fn_closePopup(){
-		
-		$('.box_backlayer').click(function(){
+		$('#profile_cancel').click(function(){
 			$('.box_backlayer').addClass('blind');
-			$('.profile_image_box').addClass('blind');
+			$('.profile_image_controller').addClass('blind');
 		});
 	}
 	
@@ -76,6 +77,21 @@
 	function fn_paymentHistory(){
 		$('#mypaymentHistory').click(function(){
 			$('#submit_history').submit();
+		});
+	}
+	function fn_manageUser(){
+		$('#manageUser').click(function(){
+			location.href="/admin/user/control";
+		});
+	}
+	function fn_notice(){
+		$('.notice').click(function(){
+			location.href="/board/list";
+		});
+	}
+	function fn_faq(){
+		$('.faq').click(function(){
+			location.href="/upload/list";
 		});
 	}
 </script>
@@ -92,7 +108,8 @@
 		<!-- 마이페이지 - top -->
 		<div class="mypage_top_controller flex_cloumn">
 			<div class="mypage_bix_box mypage_profile_box">
-				<img id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">				
+				<img th:if="${session.loginUser.profileImage == '1'}" id="profile_image" class="profile_image" th:src="@{/user/info/getImage(email=${session.loginUser.email})}" style="width:80px; border-radius:200px;">				
+				<img th:if="${session.loginUser.profileImage != '1'}" id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">				
 				<div class="flex_cloumn">
 					<div class="artist_title" th:text="|${session.loginUser.artist}님 안녕하세요.|"></div>
 					<div class="artist_msg" th:text="${session.loginUser.email}"></div>
@@ -120,32 +137,54 @@
 					});
 				</script>
 			</div>
-			<div id="mypaymentHistory" class="mypage_small_box mypage_box ">
+			
+			<div th:if="${session.loginUser.userNo != 1}" id="mypaymentHistory" class="mypage_small_box mypage_box ">
 				<div class="flex_cloumn">
 					<div class="box_title">결제이력</div>
 					<div class="box_msg">태그뮤직에 보유한 이용권/선물<br/>
-						내역을 확인하고관리합니다.</div>
+						내역을 확인하고 관리합니다.</div>
 				</div>
 				<form th:action="@{/payment/history}" method="post" id="submit_history">
 		           <input type="hidden" name="userName" th:value="${session.loginUser.name}">
 		        </form>
 			</div>
+			<div th:if="${session.loginUser.userNo == 1}" id="manageUser" class="mypage_small_box mypage_box ">
+				<div class="flex_cloumn">
+					<div class="box_title">회원관리</div>
+					<div class="box_msg">태그뮤직에 가입한 회원<br/>
+						정보를 확인하고 관리합니다.</div>
+				</div>
+			</div>
 		</div>
 		<!-- 마이페이지 - bottom -->
 		<div class="mypage_bottom_controller">
 			
-			<div class="mypage_small_box mypage_box">
+			<div th:if="${session.loginUser.userNo != 1}" class="mypage_small_box mypage_box">
 				<div class="flex_cloumn">
 					<div class="box_title">내가 쓴 글</div>
 					<div class="box_msg">태그뮤직에 작성한<br/>
 						게시글 수</div>
 				</div>
 			</div>
-			<div class="mypage_small_box mypage_box">
+			<div th:if="${session.loginUser.userNo == 1}" class="notice mypage_small_box mypage_box">
+				<div class="flex_cloumn">
+					<div class="box_title">공지사항</div>
+					<div class="box_msg">고객센터의 공지사항으로<br/>
+						바로 이동합니다.</div>
+				</div>
+			</div>
+			<div th:if="${session.loginUser.userNo != 1}"  class="mypage_small_box mypage_box">
 				<div class="flex_cloumn">
 					<div class="box_title">내가 쓴 댓글</div>
 					<div class="box_msg">태그뮤직에 작성한<br/>
 						댓글 수</div>
+				</div>
+			</div>
+			<div th:if="${session.loginUser.userNo == 1}"  class="faq mypage_small_box mypage_box">
+				<div class="flex_cloumn">
+					<div class="box_title">자주 하는 질문</div>
+					<div class="box_msg">고객센터의 자주 하는 질문으로<br/>
+						바로 이동합니다.</div>
 				</div>
 			</div>
 			<div class="mypage_small_box mypage_box" id="customerService">
@@ -164,30 +203,23 @@
 	</div>
 	
 	<!-- 프로필 이미지 변경 -->
-	<div class="box_backlayer blind"></div>
-	<div class="profile_image_box blind">
-		<div>
-			프로필 이미지 변경
-		</div>
-		<div>
-			<img id="profileImage">프로필 이미지 위치
-			<img class="profile_image" th:src="${session.loginUser.profileImage}">
-			   <form id="frm_progileImage" th:action="@{/user/info/modifyImage}" method="post" enctype="multipart/form-data">
-				   <input type="text" name="email" th:value="${session.loginUser.email}">
-			       <div>
-				       <input type="file" name="profileImagefile" id="profileImagefile">
-				   </div>
-			       <div>
-				       <input type="button" value="취소">
-				       <button>변경하기</button>
-				   </div>
-			   </form>
-		</div>
-		<div>
-			
+	<div class="box_backlayer blind">
+		<div class="profile_image_controller blind">
+			<div class="profile_title">프로필 이미지</div>
+			<img th:if="${session.loginUser.profileImage == '1'}" id="profile_image" class="profile_image" th:src="@{/user/info/getImage(email=${session.loginUser.email})}" style="width:80px; border-radius:200px;">				
+			<img th:if="${session.loginUser.profileImage != '1'}" id="profile_image" class="profile_image" th:src="${session.loginUser.profileImage}" style="width:80px">
+			<form id="frm_progileImage" th:action="@{/user/info/modifyImage}" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="email" id="email" th:value="${session.loginUser.email}">
+			    <div class="profile_file">
+					<input type="file" name="profileImagefile" id="profileImagefile">
+				</div>
+			    <div class="profile_bottom_controller">
+				    <input type="button" value="취소" id="profile_cancel" class="btn_small cancel">
+				    <button class="btn_small change">변경하기</button>
+				</div>
+			</form>
 			
 		</div>
-		
 	</div>
 </body>
 </html>
