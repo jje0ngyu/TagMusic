@@ -336,6 +336,7 @@ public class UserServiceImpl implements UserService {
 		String location = request.getParameter("location");
 		String promotion = request.getParameter("promotion");
 		
+		System.out.println("birthyear" + birthyear);
 		// 일부 파라미터는 DB에 넣을 수 있도록 가공
 		name = securityUtil.preventXSS(name);
 		String birthday = birthmonth + birthdate;

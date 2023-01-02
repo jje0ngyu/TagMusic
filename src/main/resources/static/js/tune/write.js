@@ -2,7 +2,7 @@ $(function(){
 	
 	// 서브밋 (필수항목 체크)
 	fn_add();
-	
+	fn_back();
 	fn_albumCheck();
 	fn_titleCheck();
 	fn_musicCheck();
@@ -43,7 +43,11 @@ function fn_add(){
 		alert('음원을 등록합니다.');
 	}); // submit
 }
-
+function fn_back(){
+	$('#btn_cancel').click(function(){
+		location.href='/user/mypage';
+	});
+}
 function fn_albumCheck(){
 	$('#musicAlbum').keyup(function(){
 		let albumValue = $(this).val();
