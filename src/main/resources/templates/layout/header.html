@@ -23,6 +23,7 @@
 
 	$(document).ready(function() {
 		
+		
 		fn_totalSearch();	// 구현 : 전체검색 + 기능 : 빈칸검색방지
 		fn_musicRanking();  // 구현 : 랭킹(좋아요수 + 댓글수)
 	});
@@ -44,6 +45,8 @@
 	// 구현 : 랭킹
 	function fn_musicRanking() {
 		
+		var index;
+		
 		$.ajax({
 				type: 'get',
 				url: '/music/ranking',
@@ -53,11 +56,13 @@
 						
 					$.each(resData.rankingList, function(index, rank) {
 						
-						$('<li class="ranking_li">').append('<a class="ranking_link" id="ranking_link" href="/music/detail?musicNo=' + rank.musicNo + '">'+ (index + 1) + '&nbsp;&nbsp;&nbsp;' + rank.musicTitle + '&nbsp;&nbsp;&nbsp;' + rank.userDTO.artist + '</a>')
+						$('<li class="ranking_li">').append('<a class="ranking_link" id="ranking_link" href="/tune/inframe?musicNo=' + rank.musicNo + '">'+ (index + 1) + '&nbsp;&nbsp;&nbsp;' + rank.musicTitle + '&nbsp;&nbsp;&nbsp;' + rank.userDTO.artist + '</a>')
 						.appendTo('#ranking_ol');
 					});
+					
 				}
-		});		
+		});	
+		
 	}
 	
 
