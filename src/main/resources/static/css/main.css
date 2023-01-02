@@ -362,7 +362,8 @@ a {
 }
 
 .bar_header_menu:hover {
-		background-color: #37486b;
+	background-color: #efefef;
+	color: #323232;
 	cursor: pointer;
 	animation: fadein-btn3 0.5s;
 	}

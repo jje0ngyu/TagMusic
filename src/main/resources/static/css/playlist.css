@@ -559,6 +559,15 @@
 	color: #323232;
 }
 
+#listName {
+	padding: 5px;
+	outline: none;
+	border-radius: 3px;
+	color: #323232;
+	background-color: #fefefe;
+	font-weight: 900;
+}
+
 .createPlaylist_btn_area {
 	
 	display: flex;
