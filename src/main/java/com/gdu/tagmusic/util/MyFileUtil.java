@@ -69,14 +69,14 @@ public class MyFileUtil {
 	}
 	
 	// 임시 경로
-		public String getTempPath() {
-			return "/storage" + sep + "temp";
-		}
-		
-		// 써머노트 이미지 경로
-		public String getSummernotePath() {
-			return "/storage" + sep + "summernote";
-		}
+	public String getTempPath() {
+		return "storage" + sep + "temp";
+	}
+	
+	// 써머노트 이미지 경로
+	public String getSummernotePath() {
+		return "storage" + sep + "summernote";
+	}
 	
 	// 1~9 => 01~09
 	public String makeZero(int n) {

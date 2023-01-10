@@ -87,7 +87,6 @@
 		  FROM PAYMENT_LOG
 		 WHERE PAY_LOG_EMAIL = #{email}
 		 ORDER BY PAY_LOG_NO DESC
-		 LIMIT #{begin}, #{recordPerPage}
 	</select>
 	
 	<!-- 결제 이력 삭제  -->

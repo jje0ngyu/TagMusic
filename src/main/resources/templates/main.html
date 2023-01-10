@@ -71,8 +71,8 @@
 								
 							    $('<div class="main_item">')
 							   .append(text)
-							   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-							   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+							   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+							   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 							   .appendTo( $(content) );
 							}); 
 				
@@ -132,8 +132,8 @@
 						
 					    $('<div class="main_item_r">')
 					   .append(text)
-					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 					   .appendTo( $(content) );
 					}); 
 		
@@ -198,8 +198,8 @@
 						
 					    $('<div class="main_item_p">')
 					   .append(text)
-					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 					   .appendTo( $(content) );
 					}); 
 		
@@ -217,7 +217,6 @@
 		function fn_popllarMusic_Total() {	// # 인기리스트 : 전체버튼
 			
 			$('#bar_genre_total').click(function () {
-				 $('#page_popular').val('1');
 				fn_popularMusic();
 			});
 		}
@@ -250,16 +249,19 @@
 						
 					    $('<div class="main_item_p">')
 					   .append(text)
-					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.musicTitle + '</a>')
-					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + '">' + music.userDTO.artist + '</a>')
+					   .append('<a class="item_title" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.musicTitle + '</a>')
+					   .append('<a class="item_artist" href="tune/iframe?musicNo=' + music.musicNo + ' data-musno="'+music.musicNo+'">' + music.userDTO.artist + '</a>')
 					   .appendTo( $(content) );
 					}); 
+		
 					 $('.main_musicLike_body').append( $(content) );
-					}
-				});		
-			});
-		}
-
+					
+					
+				}
+			});		
+		});
+	}
+	
 		
 		function iframe_click() {	// 구현 : 음악플레이 아이프레임
 			
@@ -271,10 +273,15 @@
 			});
 			
 			$(document).on('click', '.item_title', function() {
+				
+				musicNo = $(this).data('musno');
 				window.parent.location.href="/tune/iframe?musicNo=" + musicNo;
 			});
 			
 			$(document).on('click', '.item_artist', function() {
+
+				
+				musicNo = $(this).data('musno');
 				window.parent.location.href="/tune/iframe?musicNo=" + musicNo;
 			});		
 		}
