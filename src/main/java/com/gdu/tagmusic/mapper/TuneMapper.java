@@ -21,6 +21,12 @@ public interface TuneMapper {
 	// 음원 다운로드
 	public int updateDownloadCnt(int musicNo);
 	
+	// 작성한 음원 목록
+	public List<MusicDTO> selectMusicsByEmail (String email);
+	public int selectCntLikeByMusicNo (int musicNo);
+	public int selectCntCommentByMusicNo (int musicNo);
+	public int deleteMusic(int musicNo);
+	
 	// 댓글
 	public int selectCommentCount(int musicNo);
 	public List<MusicCommentDTO> selectComment(Map<String, Object> map);

@@ -142,9 +142,8 @@ public class UserController {
 	// 마이페이지 - 프로필 사진 수정
 	@ResponseBody
 	@PostMapping("/user/info/modifyImage")
-	public String modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
+	public void modifyImage(MultipartHttpServletRequest multipartRequest, HttpServletResponse response) {
 		userService.modifyImage(multipartRequest, response);
-		return "redirect:/user/mypage";
 	}
 
 	// 마이페이지 - 개인정보 수정

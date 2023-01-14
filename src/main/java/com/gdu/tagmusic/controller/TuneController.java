@@ -41,6 +41,32 @@ public class TuneController {
 		return "redirect:/tune/iframe";
 	}
 	
+	// 내가 쓴 글 관리 - 페이지 이동
+	@GetMapping("/tune/list")
+	public String requiredLogin_musicManagement (HttpServletRequest request) {
+		return "tune/list";
+	}
+	
+	// 내가 쓴 글 관리 - 음원 목록 불러오기
+	@ResponseBody
+	@GetMapping(value="/tune/musicList", produces="application/json; charset=UTF-8")
+	public Map<String, Object> getTuneList (HttpServletRequest request) {
+		return tuneService.getMusics(request);
+	}
+	
+	// 내가 쓴 글 관리 - 음원 수정
+	@PostMapping("/tune/musicEdit")
+	public String editTune (@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo) {
+		return "/tune/edit"; 
+	}
+	
+	// 내가 쓴 글 관리 - 음원 삭제
+	@ResponseBody
+	@PostMapping("/tune/musicRemove")
+	public void removeTune (int musicNo) {
+		tuneService.removeMusic(musicNo);
+	}
+	
 	// 음원 - iframe
 	@GetMapping("/tune/iframe")
 	public String musicPlayer(@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, HttpServletRequest request, Model model) {
