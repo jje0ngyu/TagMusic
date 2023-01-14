@@ -3,12 +3,15 @@ package com.gdu.tagmusic.service;
 import java.io.File;
 import java.net.URLEncoder;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -22,6 +25,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.tagmusic.domain.MusicCommentDTO;
 import com.gdu.tagmusic.domain.MusicDTO;
+import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.TuneMapper;
 import com.gdu.tagmusic.util.MyFileUtil;
 import com.gdu.tagmusic.util.PageUtil;
@@ -206,6 +210,7 @@ public class TuneServiceImpl implements TuneService {
 		return result;
 	}
 	
+	// 음원 다운로드
 	@Override
 	public ResponseEntity<Resource> download(String userAgent, int musicNo) {
 		// 다운로드 할 첨부 파일의 정보(경로, 이름)
@@ -252,6 +257,41 @@ public class TuneServiceImpl implements TuneService {
 		return new ResponseEntity<Resource>(resource, header, HttpStatus.OK);
 	
 	}
+	
+	// 내가 쓴 글 목록
+	@Override
+	public Map<String, Object> getMusics(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		
+		// 비밀번호 일치하는지 확인
+		String email = ((UserDTO)session.getAttribute("loginUser")).getEmail();
+		List<MusicDTO> musics = tuneMapper.selectMusicsByEmail(email);
+		Map<String, Object> result = new HashMap<String, Object>();
+		if(musics.size() == 0) {
+			result.put("musics", 0);
+		} else {
+			result.put("musics", musics);
+			int [] iarray = new int[musics.size()];
+			int [] jarray = new int[musics.size()];
+				
+			for(int i = 0; i < musics.size(); i++) {
+				int musicNo = musics.get(i).getMusicNo();
+				iarray[i] = tuneMapper.selectCntLikeByMusicNo(musicNo); 
+				jarray[i] = tuneMapper.selectCntCommentByMusicNo(musicNo);
+			}
+			result.put("like", iarray);
+			result.put("comment", jarray);
+			
+			
+		}
+		return result;
+	}
+	// 내가 쓴 글 목록 - 음원 삭제
+	@Override
+	public void removeMusic(int musicNo) {
+		tuneMapper.deleteMusic(musicNo);
+	}
+	
 	
 	// 트랙 - 리스트
 	@Override

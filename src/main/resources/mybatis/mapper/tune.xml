@@ -25,6 +25,13 @@
 		<result column="MUSIC_PATH" property="musicPath"/>
 		<result column="HAS_THUMBNAIL" property="hasThumbNail"/>
 		<collection resultMap="UserMap" property="userDTO"></collection>
+		<collection resultMap="MusicLikeMap" property="musicLikeDTO"></collection>
+	</resultMap>
+	
+	<resultMap id="MusicLikeMap" type="MusicLikeDTO">
+		<result column="LIKE_NO" property="likeNo"/>
+		<result column="EMAIL" property="email"/>
+		<result column="MUSIC_NO" property="musicNo"/>
 	</resultMap>
 	
 	<resultMap id="MusicCommentMap" type="MusicCommentDTO">
@@ -84,6 +91,34 @@
 		          FROM MUSIC
 		         WHERE EMAIL = #{email}) A
 	</select>
+	
+	<!-- 내가 작성한 음원 불러오기 -->
+	<select id="selectMusicsByEmail" parameterType="String" resultMap="MusicMap">
+		SELECT MUSIC_NO, M.EMAIL, MUSIC_TITLE, MUSIC_CONTENT, MUSIC_ALBUM, MUSIC_GENRE, IP, IMG_ORIGIN, IMG_FILESYSTEM, MUSIC_ORIGIN, MUSIC_FILESYSTEM, DOWNLOAD_CNT, IMG_PATH, MUSIC_PATH, HAS_THUMBNAIL, MUSIC_UPLOAD_DATE, MUSIC_MODIFY_DATE, U.ARTIST
+     	  FROM MUSIC M INNER JOIN USERS U
+    	    ON U.EMAIL = M.EMAIL
+    	 WHERE M.EMAIL = #{email}
+    	 ORDER BY MUSIC_NO DESC
+	</select>
+	<!-- 내가 작성한 음원 : 좋아요 개수 -->
+	<select id="selectCntLikeByMusicNo" parameterType="int" resultType="int">
+		SELECT COUNT(MUSIC_NO)
+ 		  FROM MUSIC_LIKE
+ 		 WHERE MUSIC_NO = #{musicNo}
+	</select>
+	<!-- 내가 작성한 음원 : 댓글 개수 -->
+	<select id="selectCntCommentByMusicNo" parameterType="int" resultType="int">
+		SELECT COUNT(MUSIC_NO)
+ 		  FROM MUSIC_COMMENT
+ 		 WHERE MUSIC_NO = #{musicNo}
+	</select>
+	
+	<!-- 내가 작성한 음원 : 음원 삭제 -->
+	<delete id="deleteMusic" parameterType="int">
+		DELETE FROM MUSIC
+		 WHERE MUSIC_NO = #{musicNo}
+	</delete>
+	
 	
 	<!-- 음원 다운로드 - 다운 횟수 증가 -->
 	<update id="updateDownloadCnt" parameterType="int">

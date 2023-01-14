@@ -15,6 +15,8 @@
 		// 페이지 이동
 		fn_myinfo();		 // 개인정보관리
 		fn_paymentHistory(); // 결제이력
+		fn_tuneList();		 // 내가 쓴 글
+		fn_manageMusic();	 // 관리자 - 음원관리
 		fn_manageUser();	 // 관리자 - 유저관리
 		fn_notice();		 // 관리자 - 공지사항
 		fn_faq();			 // 관리자 - 자주 하는 질문
@@ -52,10 +54,7 @@
 				url : '/user/info/modifyImage',
 				data: $('#frm_progileImage').serialize(),
 				processData: false,
-   				contentType: false,
-				success: function(resData){
-					console.log('이미지 변경 성공');
-				}
+   				contentType: false
 			})
 		});
 	}
@@ -79,11 +78,23 @@
 			$('#submit_history').submit();
 		});
 	}
+	function fn_tuneList() {
+		$('#tuneList').click(function(){
+			location.href="/tune/list";
+		})
+	}
 	function fn_manageUser(){
 		$('#manageUser').click(function(){
 			location.href="/admin/user/control";
 		});
 	}
+	
+	function fn_manageMusic(){
+		$('#manageMusic').click(function(){
+			location.href="/tune/list";
+		})	
+	}
+	
 	function fn_notice(){
 		$('.notice').click(function(){
 			location.href="/board/list";
@@ -148,18 +159,18 @@
 		           <input type="hidden" name="userName" th:value="${session.loginUser.name}">
 		        </form>
 			</div>
-			<div th:if="${session.loginUser.userNo == 1}" id="manageUser" class="mypage_small_box mypage_box ">
+			<div th:if="${session.loginUser.userNo == 1}" id="manageMusic" class="mypage_small_box mypage_box ">
 				<div class="flex_cloumn">
-					<div class="box_title">회원관리</div>
-					<div class="box_msg">태그뮤직에 가입한 회원<br/>
-						정보를 확인하고 관리합니다.</div>
+					<div class="box_title">음원관리</div>
+					<div class="box_msg">태그뮤직에 등록된 음원 정보를<br/>
+						확인하고 수정/삭제 관리합니다.</div>
 				</div>
 			</div>
 		</div>
 		<!-- 마이페이지 - bottom -->
 		<div class="mypage_bottom_controller">
 			
-			<div th:if="${session.loginUser.userNo != 1}" class="mypage_small_box mypage_box">
+			<div th:if="${session.loginUser.userNo != 1}" id="tuneList" class="mypage_small_box mypage_box">
 				<div class="flex_cloumn">
 					<div class="box_title">내가 쓴 글</div>
 					<div class="box_msg">태그뮤직에 작성한<br/>
@@ -180,11 +191,11 @@
 						댓글 수</div>
 				</div>
 			</div>
-			<div th:if="${session.loginUser.userNo == 1}"  class="faq mypage_small_box mypage_box">
+			<div th:if="${session.loginUser.userNo == 1}" id="manageUser"  class="mypage_small_box mypage_box">
 				<div class="flex_cloumn">
-					<div class="box_title">자주 하는 질문</div>
-					<div class="box_msg">고객센터의 자주 하는 질문으로<br/>
-						바로 이동합니다.</div>
+					<div class="box_title">회원관리</div>
+					<div class="box_msg">태그뮤직에 가입한 회원<br/>
+						정보를 확인합니다.</div>
 				</div>
 			</div>
 			<div class="mypage_small_box mypage_box" id="customerService">

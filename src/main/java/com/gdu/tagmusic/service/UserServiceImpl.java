@@ -585,9 +585,7 @@ public class UserServiceImpl implements UserService {
 	public ResponseEntity<byte[]> getImage(String email) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("email", email);
-		System.out.println("이미지");
 		ProfileImageDTO profile = userMapper.selectImageByEmail(map);
-		System.out.println("소환");
 		ResponseEntity<byte[]> result = null;
 		
 		File imgFile = new File(profile.getProfileImagePath(), profile.getProfileImageFilesystem());
@@ -598,14 +596,11 @@ public class UserServiceImpl implements UserService {
 				headers.add("Content-Type", Files.probeContentType(imgFile.toPath()));
 				File image = new File(profile.getProfileImagePath(), profile.getProfileImageFilesystem());
 				result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(image), null, HttpStatus.OK);
-				System.out.println("성공");
 			}
-			System.out.println("가긴하냐");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		System.out.println("어떡하냐");
 		return result;
 	}
 	
@@ -682,10 +677,14 @@ public class UserServiceImpl implements UserService {
 			userMapper.updateUser(user);
 			// 세션 정보 업데이트
 			multipartRequest.getSession().setAttribute("loginUser", userMapper.selectUserByMap(map));
-			System.out.println( "이미지 저장 세션저장" +userMapper.selectUserByMap(map));
-			Map<String, Object> result = new HashMap<>();
-			result.put("result", insertSuccess);
 			
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("location.href='/user/mypage';");
+			out.println("</script>");
+			
+			out.close();			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

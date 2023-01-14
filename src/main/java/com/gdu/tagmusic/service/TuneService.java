@@ -25,6 +25,10 @@ public interface TuneService {
 	// 음원 다운로드
 	public ResponseEntity<Resource> download(String userAgent, int musicNo);
 	
+	// 내가 쓴 글 목록
+	public Map<String, Object> getMusics(HttpServletRequest request);
+	public void removeMusic(int musicNo);
+	
 	// 트랙
 	public Map<String, Object> getTrack();
 	public Map<String, Object> getRandomTrack();
