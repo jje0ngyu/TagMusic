@@ -16,7 +16,7 @@ public class PwScheduler {
 	
 	// 매일 새벽 1시	@Scheduled(cron="0 0 1 * * *")
 	//@Scheduled(cron="0 0 0 * * *")
-	@Scheduled(cron="0 0/5 * * * *")
+	@Scheduled(cron="0 0 4 * * *")
 	public void execute() {
 		userService.pwHandle();
 	}

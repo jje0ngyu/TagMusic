@@ -47,6 +47,9 @@
 		margin: 0 20px;
 		border-radius: 10px;
 	}
+	.image_box:hover {
+		cursor: pointer;
+	}
 	.music_info {
 		margin: 0 20px;
 		width: 300px;
@@ -90,6 +93,7 @@
 <script>
 	$(function(){
 		fn_musicList();
+		fn_detail();
 		fn_edit();
 		fn_remove();
 	})
@@ -108,10 +112,15 @@
 				} else {
 					$.each(resData.musics, function(i, music) {
 						txt += '<div class="music_controller" style="display:flex">';
-							txt += '<div class="image_box" style="background-image:url(/tune/display/image?musicNo=' + music.musicNo + ')"></div>';
-							txt += '<div class="music_info flex_cloumn">';
-								txt += '<div>음원명 : ' + music.musicTitle + '</div>';
-								txt += '<div>앨범명 : ' + music.musicAlbum + '</div>';
+							txt += '<div class="flex">';
+								txt += '<div class="image_box" data-music_no="' + music.musicNo + '" style="background-image:url(/tune/display/image?musicNo=' + music.musicNo + ')"></div>';
+								txt += '<div class="music_info flex_cloumn">';
+									txt += '<div>음원명 : ' + music.musicTitle + '</div>';
+									txt += '<div>앨범명 : ' + music.musicAlbum + '</div>';
+									if ($('#userNo').val() == 1) {
+										txt += '<div>작성자 : ' + music.userDTO.artist + '</div>';
+									}
+								txt += '</div>';
 							txt += '</div>';
 							txt += '<div class="reaction_box">';
 								txt += '<div class="flex"><img src="/images/like.png" style="width:24px;"><span class="count_like">'+resData.like[i]+'</span></div>';
@@ -119,7 +128,7 @@
 							txt += '</div>';
 							txt += '<div class="date_box flex">' + moment(music.musicUploadDate).format('YYYY-MM-DD A h:mm') + '</div>';
 							txt += '<form class="btn_box flex" method="post" action="/tune/musicEdit">';
-								txt += '<input type="text" class="musicNo" name="musicNo" value="' + music.musicNo + '">';
+								txt += '<input type="hidden" class="musicNo" name="musicNo" value="' + music.musicNo + '">';
 								txt += '<input type="button" class="btn edit" value="수정">';
 								txt += '<input type="button" class="btn remove" value="삭제" data-music_no="' + music.musicNo + '">';
 							txt += '</form>';
@@ -129,6 +138,13 @@
 				$('.music_list_box').append(txt);
 			}
 		})
+	}
+	
+	// 음원 이동
+	function fn_detail(){
+		$(document).on('click', '.image_box', function(){
+			window.parent.location.href="/tune/iframe?musicNo=" + $(this).data('music_no');
+		});
 	}
 	
 	// 음원 수정
@@ -159,11 +175,14 @@
 <body>
 	<nav th:replace="~{layout/mypageNav.html::mypageFragment}"></nav>
 	<div class="mypage_controller">
-	
-		<div class="music_title">내가 등록한 음원 목록</div>
+		<input type="hidden" id="userNo" th:value="${session.loginUser.userNo}">
+		<div th:if="${session.loginUser.userNo != 1}" class="music_title">내가 등록한 음원 목록</div>
+		<div th:if="${session.loginUser.userNo == 1}" class="music_title">등록된 모든 음원 목록</div>
 		<div class="flex music_controller_title">
-			<div style="width:100px;">이미지</div>
-			<div style="width:320px;">음원 정보</div>
+			<div class="flex">
+				<div style="width:100px;">이미지</div>
+				<div style="width:360px;">음원 정보</div>
+			</div>
 			<div style="width:100px;">반응</div>
 			<div style="width:170px;">작성일</div>
 			<div style="width:180px;">글 관리</div>
