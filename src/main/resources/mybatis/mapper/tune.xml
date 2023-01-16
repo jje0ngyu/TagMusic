@@ -85,7 +85,7 @@
 	</insert>
 	
 	<!-- 음원 작성 후 상세보기로 이동할 MUSIC_NO 출력 -->
-	<select id="selectMaxmMsicNoByEmail" parameterType="String" resultType="int">
+	<select id="selectMaxMsicNoByEmail" parameterType="String" resultType="int">
 		SELECT MAX(A.MUSIC_NO)
   		  FROM (SELECT EMAIL, MUSIC_NO
 		          FROM MUSIC
@@ -115,8 +115,28 @@
  		 WHERE MUSIC_NO = #{musicNo}
 	</select>
 	
+	<!-- 내가 작성한 음원 : 음원 수정 -->
+	<update id="updateMusicByNo" parameterType="MusicDTO">
+		UPDATE MUSIC
+		<set>
+			<if test="musicTitle != null">MUSIC_TITLE = #{musicTitle},</if>
+			<if test="musicContent != null">MUSIC_CONTENT = #{musicContent},</if>
+			<if test="musicAlbum != null">MUSIC_ALBUM = #{musicAlbum},</if>
+			<if test="musicGenre != null">MUSIC_GENRE = #{musicGenre},</if>
+			<if test="ip != null">IP = #{ip},</if>
+			<if test="imgOrigin != null">IMG_ORIGIN = #{imgOrigin},</if>
+			<if test="imgFilesystem != null">IMG_FILESYSTEM = #{imgFilesystem},</if>
+			<if test="musicOrigin != null">MUSIC_ORIGIN = #{musicOrigin},</if>
+			<if test="musicFilesystem != null">MUSIC_FILESYSTEM = #{musicFilesystem},</if>
+			<if test="imgPath != null">IMG_PATH = #{imgPath},</if>
+			<if test="musicPath != null">MUSIC_PATH = #{musicPath},</if>
+			MUSIC_MODIFY_DATE = NOW()
+		</set>
+		WHERE MUSIC_NO = #{musicNo}
+	</update>
+	
 	<!-- 내가 작성한 음원 : 음원 삭제 -->
-	<delete id="deleteMusic" parameterType="int">
+	<delete id="deleteMusicByNo" parameterType="int">
 		DELETE FROM MUSIC
 		 WHERE MUSIC_NO = #{musicNo}
 	</delete>

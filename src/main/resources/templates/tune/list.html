@@ -127,7 +127,7 @@
 								txt += '<div class="flex"><i class="fa-solid fa-comment-dots"></i><span class="count_comment">' + resData.comment[i] + '</span></div>';
 							txt += '</div>';
 							txt += '<div class="date_box flex">' + moment(music.musicUploadDate).format('YYYY-MM-DD A h:mm') + '</div>';
-							txt += '<form class="btn_box flex" method="post" action="/tune/musicEdit">';
+							txt += '<form class="btn_box flex" method="get" action="/tune/musicEdit">';
 								txt += '<input type="hidden" class="musicNo" name="musicNo" value="' + music.musicNo + '">';
 								txt += '<input type="button" class="btn edit" value="수정">';
 								txt += '<input type="button" class="btn remove" value="삭제" data-music_no="' + music.musicNo + '">';
@@ -150,7 +150,7 @@
 	// 음원 수정
 	function fn_edit(){
 		$(document).on('click', '.edit', function(){
-			$('.btn_box').submit();
+			 $(this).closest('.btn_box').submit();
 		});
 	}
 	

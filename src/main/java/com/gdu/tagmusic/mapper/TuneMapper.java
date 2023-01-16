@@ -16,7 +16,7 @@ public interface TuneMapper {
 	
 	// 음원 등록
 	public int insertMusic (MusicDTO music);
-	public int selectMaxmMsicNoByEmail (String email);
+	public int selectMaxMsicNoByEmail (String email);
 	
 	// 음원 다운로드
 	public int updateDownloadCnt(int musicNo);
@@ -25,7 +25,8 @@ public interface TuneMapper {
 	public List<MusicDTO> selectMusicsByEmail (String email);
 	public int selectCntLikeByMusicNo (int musicNo);
 	public int selectCntCommentByMusicNo (int musicNo);
-	public int deleteMusic(int musicNo);
+	public int updateMusicByNo(MusicDTO musicNo);
+	public int deleteMusicByNo(int musicNo);
 	
 	// 댓글
 	public int selectCommentCount(int musicNo);

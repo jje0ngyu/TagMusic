@@ -83,7 +83,7 @@
 							<div class="comment_middle_comment">
 								<input th:if="${session.loginUser != null}" type="hidden" name="email" id="email" th:value="${session.loginUser.email}">
 								<input type="hidden" id="musicNo" name="musicNo" th:value="${music.musicNo}">	
-								<input th:if="${session.loginUser == null}" type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성하려면 로그인 해 주세요.">
+								<input th:if="${session.loginUser == null}" type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성하려면 로그인 해 주세요." readonly>
 								<input th:if="${session.loginUser != null}" type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성해주세요.">
 							</div>
 							<div class="comment_middle_btn">
@@ -96,7 +96,6 @@
 					<div id="comment_list"></div>
 					<div id="paging"></div>
 				</div>
-				
 				
 				<!-- 음원 다운로드 -->
 				<div class="blind">

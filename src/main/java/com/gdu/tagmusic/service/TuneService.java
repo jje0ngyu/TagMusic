@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.gdu.tagmusic.domain.MusicCommentDTO;
@@ -27,6 +28,8 @@ public interface TuneService {
 	
 	// 내가 쓴 글 목록
 	public Map<String, Object> getMusics(HttpServletRequest request);
+	public void editMusic(int musicNo, Model model);
+	public void changeMusic(MultipartHttpServletRequest request, HttpServletResponse response);
 	public void removeMusic(int musicNo);
 	
 	// 트랙

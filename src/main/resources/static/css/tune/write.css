@@ -62,7 +62,7 @@ html, body, div, input, a, form, textarea {
 }
 
 
-#btn_add, #btn_cancel {
+#btn_add, #btn_cancel, #btn_edit {
 	width: 130px;
 	height: 50px;
 	margin: 10px;
@@ -70,9 +70,9 @@ html, body, div, input, a, form, textarea {
 	border-radius: 300px;
 	background-color: #bdc2de;
 }
-#btn_add:hover {
+#btn_add:hover, #btn_edit:hover {
 	color: #fdfdfd;
-	background-color: green;
+	background-color: #37486b;
 }
 #btn_cancel:hover {
 	color: #fdfdfd;

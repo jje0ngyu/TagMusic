@@ -2,20 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>태그뮤직 > 음원 수정</title>
 <link rel="stylesheet" th:href="@{/css/layout.css}">
 <link rel="stylesheet" th:href="@{/css/tune/write.css}">
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<script th:src="@{/js/tune/write.js}"></script>
+<script th:src="@{/js/tune/edit.js}"></script>
 </head>
 
 <body>
 	<div th:replace="~{layout/header.html::header_layout}"></div>
 	<div th:replace="~{layout/side.html::side_layout}"></div>
 	<div class="tune_controller">
-		<form id="frm_upload" th:action="@{/tune/upload}" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="email" th:value="${session.loginUser.email}">
-			<input type="hidden" name="artist" th:value="${session.loginUser.artist}" readonly>
+		<form id="frm_music" th:action="@{/tune/musicChange}" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="musicNo" th:value="${music.musicNo}">
 			<div class="write_controller">
 				<div>
 					<h1>음원 등록</h1>
@@ -26,7 +25,7 @@
 							앨범 이름*
 						</div>
 						<div class="music_input">
-							<input type="text" id="musicAlbum" name="musicAlbum">
+							<input type="text" id="musicAlbum" name="musicAlbum" th:value="${music.musicAlbum}">
 						</div>
 					</div>
 					<div class="flex">
@@ -34,7 +33,7 @@
 							음원 이름*
 						</div>
 						<div class="music_input">
-							<input type="text" id="musicTitle" name="musicTitle">
+							<input type="text" id="musicTitle" name="musicTitle" th:value="${music.musicTitle}">
 						</div>
 					</div>
 					<div class="flex">
@@ -50,31 +49,31 @@
 							장르*
 						</div>
 						<div class="music_input">
-							<input type="text" id="musicGenre" name="musicGenre">
+							<input type="text" id="musicGenre" name="musicGenre" th:value="${music.musicGenre}">
 						</div>
 					</div>
-				</div>
-				<div class="write_bottom_controller">
 					<div class="flex">
 						<div class="write_title">
-							앨범이미지
+							앨범이미지*
 						</div>
 						<div class="albumImg">
 							<input type="file" name="image" id="albumImg">
 						</div>
 					</div>
+				</div>
+				<div class="write_bottom_controller">
 					<div class="flex" style="height: 500px;">
 						<div class="write_title">
 							가사				
 						</div>
 						<div class="music_input">
-							<textarea id="musicContent" name="musicContent" placeholder="가사" style="height: 100%; resize: none;"></textarea>
+							<textarea id="musicContent" name="musicContent" th:text="${music.musicContent}" placeholder="가사" style="height: 100%; resize: none;"></textarea>
 						</div>
 					</div>
 				</div>
 				<div class="btn_area">
 					<input type="button" id="btn_cancel" value="취소">
-					<input type="submit" id="btn_add" value="등록하기">
+					<input type="submit" id="btn_edit" value="수정하기">
 				</div>
 			</div>
 		</form>

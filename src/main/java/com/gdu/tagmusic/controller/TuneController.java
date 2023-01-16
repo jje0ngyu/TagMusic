@@ -54,10 +54,20 @@ public class TuneController {
 		return tuneService.getMusics(request);
 	}
 	
-	// 내가 쓴 글 관리 - 음원 수정
-	@PostMapping("/tune/musicEdit")
-	public String editTune (@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo) {
+	// 내가 쓴 글 관리 - 음원 수정 (음원 정보 가져오기)
+	@GetMapping("/tune/musicEdit")
+	public String editTune (@RequestParam(value="musicNo", required=false, defaultValue="0") int musicNo, Model model) {
+		model.addAttribute("music", tuneService.getMusicByNo(musicNo));
 		return "/tune/edit"; 
+	}
+	// 내가 쓴 글 관리 - 음원 수정 (음원 정보 수정하기)
+	@PostMapping("/tune/musicChange")
+	public String changeTune (MultipartHttpServletRequest request, HttpServletResponse response, RedirectAttributes redirect) {
+		tuneService.changeMusic(request, response);
+		
+		int musicNo = Integer.parseInt(request.getParameter("musicNo"));
+		redirect.addAttribute("musicNo", musicNo);
+		return "redirect:/tune/iframe";
 	}
 	
 	// 내가 쓴 글 관리 - 음원 삭제

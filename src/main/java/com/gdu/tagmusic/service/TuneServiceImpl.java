@@ -3,7 +3,6 @@ package com.gdu.tagmusic.service;
 import java.io.File;
 import java.net.URLEncoder;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -28,7 +28,6 @@ import com.gdu.tagmusic.domain.MusicDTO;
 import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.TuneMapper;
 import com.gdu.tagmusic.util.MyFileUtil;
-import com.gdu.tagmusic.util.PageUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -145,7 +144,7 @@ public class TuneServiceImpl implements TuneService {
 			Map<String, Object> result = new HashMap<>();
 			int insertSuccess = tuneMapper.insertMusic(music);
 			if(insertSuccess >= 1) {
-				musicNo = tuneMapper.selectMaxmMsicNoByEmail(email);
+				musicNo = tuneMapper.selectMaxMsicNoByEmail(email);
 			}
 			result.put("result", insertSuccess);
 			
@@ -156,7 +155,6 @@ public class TuneServiceImpl implements TuneService {
 		return musicNo;
 		
 	}
-	
 	
 	// 음원 상세보기
 	@Override
@@ -286,10 +284,120 @@ public class TuneServiceImpl implements TuneService {
 		}
 		return result;
 	}
+	
+	// 내가 쓴 글 목록 - 음원 수정 (음원 정보 가져오기)
+	@Override
+	public void editMusic(int musicNo, Model model) {
+		model.addAttribute("music", tuneMapper.selectMusicByNo(musicNo));
+	}
+	
+	// 내가 쓴 글 목록 - 음원 수정 (음원 정보 수정하기)
+	@Override
+	public void changeMusic(MultipartHttpServletRequest request, HttpServletResponse response) {
+		// 파라미터
+		int musicNo = Integer.parseInt(request.getParameter("musicNo"));  	// 음원번호
+		String musicAlbum = request.getParameter("musicAlbum"); 	 		// 앨범이름
+		String musicTitle = request.getParameter("musicTitle");		 		// 음원이름
+		String musicGenre = request.getParameter("musicGenre");		 		// 음원장르
+		String musicContent = request.getParameter("musicContent");			// 음원가사및내용
+		
+		Optional<String> opt = Optional.ofNullable(request.getHeader("X-Forwarded-For"));
+		String ip = opt.orElse(request.getRemoteAddr());
+		
+		String imgOrigin = null;
+		String imgFilesystem = null;
+		String imgPath = null;
+		String musicOrigin = null;
+		String musicFilesystem = null;
+		String musicPath = null;
+		int hasThumbnail = 0;
+		// 첨부된 파일 목록
+		// 이미지
+		MultipartFile imgFile= request.getFile("image");  // <input type="file" name="image">
+		// 음악파일
+		MultipartFile musicFile= request.getFile("music");  // <input type="file" name="music">
+				
+		try {
+			
+			// 이미지 - 첨부가 있는지 점검
+			if(imgFile != null && imgFile.isEmpty() == false) {  // 둘 다 필요함
+				hasThumbnail = 1;
+				// 원래 이름
+				imgOrigin = imgFile.getOriginalFilename();
+				imgOrigin = imgOrigin.substring(imgOrigin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
+				
+				// 저장할 이름
+				imgFilesystem = myFileUtil.getFilename(imgOrigin);
+				
+				// 저장할 경로
+				imgPath = myFileUtil.getTodayPath();
+				
+				// 저장할 경로 만들기
+				File dir = new File(imgPath);
+				if(dir.exists() == false) {
+					dir.mkdirs();
+				}
+			// 첨부할 File 객체
+			File file = new File(dir, imgFilesystem);
+			
+			// 이미지 첨부파일 서버에 저장(업로드 진행)
+			imgFile.transferTo(file);
+			}
+
+			// 음악파일 - 첨부가 있는지 점검
+			if(musicFile != null && musicFile.isEmpty() == false) {  // 둘 다 필요함
+				
+				// 원래 이름
+				musicOrigin = musicFile.getOriginalFilename();
+				musicOrigin = musicOrigin.substring(musicOrigin.lastIndexOf("\\") + 1);  // IE는 origin에 전체 경로가 붙어서 파일명만 사용해야 함
+				
+				// 저장할 이름
+				musicFilesystem = myFileUtil.getFilename(musicOrigin);
+				
+				// 저장할 경로
+				musicPath = myFileUtil.getTodayPath();
+				
+				// 저장할 경로 만들기
+				File dir = new File(musicPath);
+				if(dir.exists() == false) {
+					dir.mkdirs();
+				}	
+			// 첨부할 File 객체
+			File file = new File(dir, musicFilesystem);
+			
+			// 음악 첨부파일 서버에 저장(업로드 진행)
+			musicFile.transferTo(file);
+			
+			}
+			
+			// DB로 보낼 MusicDTO 만들기
+			MusicDTO music = MusicDTO.builder()
+					.musicNo(musicNo)
+					.musicAlbum(musicAlbum)
+					.musicContent(musicContent)
+					.musicTitle(musicTitle)
+					.musicGenre(musicGenre)
+					.imgOrigin(imgOrigin)
+					.imgFilesystem(imgFilesystem)
+					.imgPath(imgPath)
+					.musicOrigin(musicOrigin)
+					.musicFilesystem(musicFilesystem)
+					.musicPath(musicPath)
+					.ip(ip)
+					.hasThumbNail(hasThumbnail)
+					.build();
+			System.out.println("music : " + music);
+			tuneMapper.updateMusicByNo(music);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	// 내가 쓴 글 목록 - 음원 삭제
 	@Override
 	public void removeMusic(int musicNo) {
-		tuneMapper.deleteMusic(musicNo);
+		tuneMapper.deleteMusicByNo(musicNo);
 	}
 	
 	
