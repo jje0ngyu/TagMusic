@@ -5,6 +5,7 @@
 
 <title>Tag Music > 상세보기</title>
 <link rel="stylesheet" th:href="@{/css/musicPlayer.css}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
 </head>
 <body>
@@ -63,13 +64,22 @@
 			
 			<!-- 중앙 (음원 정보) -->
 			<div class="center_controlls">
-				<div class="album_image">
-					<img th:src="@{/tune/display/image(musicNo=${music.musicNo})}" id="iframe_album_image" style="height: 68px;">
+				<div class="album_image" id="iframe_album_image" th:style="|background-image:url(@{/tune/display/image(musicNo=${music.musicNo})});|">
 				</div>
 				<div class="music_info">
 					<div class="iframe_msg_title" th:text="${music.musicTitle}"></div>
 					<div class="iframe_msg_content" th:text="|${music.userDTO.artist} - ${music.musicAlbum}|"></div>
 				</div>
+				<div class="music_like">
+					<i id="like" class="fa-regular fa-heart"></i>
+				</div>
+				<script>
+					$('.music_like').click(function(){
+						$('#like').toggleClass("fa-regular");
+						$('#like').toggleClass("fa-solid");
+					});
+					
+				</script>
 				<div>
 					<img class="btn_side img_dot" th:src="@{/images/dot.png}">
 				</div>
