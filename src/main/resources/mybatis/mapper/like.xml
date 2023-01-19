@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gdu.tagmusic.mapper.LikeMapper">
+
+	<!-- 해당 게시글에 좋아요를 눌렀는지 확인 -->
+	<select id="selectUserLike" parameterType="Map" resultType="int">
+		SELECT COUNT(MUSIC_NO)
+		  FROM MUSIC_LIKE
+		 WHERE MUSIC_NO = #{musicNo}
+		   AND EMAIL = #{email}
+	</select>
+	
+	<!-- 좋아요 추가 -->
+	<insert id="insertLike" parameterType="Map">
+		INSERT INTO MUSIC_LIKE
+			(EMAIL, MUSIC_NO)
+		VALUES
+			(#{email}, #{musicNo})
+	</insert>
+	<delete id="deleteLike" parameterType="Map">
+		DELETE FROM MUSIC_LIKE
+		 WHERE EMAIL = #{email}
+		   AND MUSIC_NO = #{musicNo}
+	</delete>
+</mapper>

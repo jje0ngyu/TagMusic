@@ -15,6 +15,8 @@
 	<!-- 음원 재생 바(bar) -->
 	<footer class="music_play_bar">
 		<input type="hidden" id="musicNo" th:value="${music.musicNo}">
+		<input type="hidden" id="musicEmail" th:value="${music.email}">
+		<input th:if="${session.loginUser != null}" type="hidden" id="email" th:value="${session.loginUser.email}">
 		<div>
 			<audio controls="controls" controlsList="nodownload" id="iframe_audio" class="iframe_audio blind">
 				<source th:src="@{/tune/display/music(musicNo=${music.musicNo})}" type="audio/mp3" />
@@ -74,11 +76,74 @@
 					<i id="like" class="fa-regular fa-heart"></i>
 				</div>
 				<script>
-					$('.music_like').click(function(){
-						$('#like').toggleClass("fa-regular");
-						$('#like').toggleClass("fa-solid");
+					$(function(){
+						fn_checkLike();
+						fn_pressLike();
 					});
 					
+					/* 좋아요 눌렀는지 확인 */
+					function fn_checkLike(){
+						$.ajax({
+							type: 'get',
+							url : '/like/check',
+							data: 'email=' + $('#email').val() + '&musicNo=' + $('#musicNo').val(),
+							dataType: 'json',
+							success : function(resData){
+								if (resData.count != 0) {
+									$('#like').removeClass("fa-regular");
+									$('#like').addClass("fa-solid");
+								}
+							}
+						})
+					}
+					
+					/* 좋아요 눌렀을 때 (좋아요/취소) */
+					function fn_like(){
+						$.ajax({
+							type: 'get',
+							url : '/like/mark',
+							data: 'email=' + $('#email').val() + '&musicNo=' + $('#musicNo').val(),
+							dataType: 'json',
+							success : function(resData){
+								alert('좋아요 검색 완료!');
+								$('#like').toggleClass("fa-regular");
+								$('#like').toggleClass("fa-solid");
+							}
+						});
+					};
+					
+					function fn_pressLike(){
+						$('.music_like').click(function(){
+							$.ajax({
+								type: 'post',
+								url: '/payment/isPassHave',
+								dataType: 'json',
+								success: function(resData){
+								    if(resData.isNotLogin == 'loginPlz'){
+										if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
+											location.href="/user/login/form";
+										} else {
+											return;
+										}
+									}
+									if(resData.result == 0){
+										if(confirm('이용권이 없는 회원입니다. 이용권을 구매하시겠습니까?')){
+											location.href='/payment/buy';
+										} else {
+											event.defaultPrevented();
+										}
+									} else {
+										if($('#email').val() == $('#musicEmail').val()) {
+											alert('본인의 게시글에는 "좋아요"를 누를 수 없습니다.');											
+										} else {
+											fn_like();
+										}
+									}
+								}
+							});
+						});
+					}
+
 				</script>
 				<div>
 					<img class="btn_side img_dot" th:src="@{/images/dot.png}">
