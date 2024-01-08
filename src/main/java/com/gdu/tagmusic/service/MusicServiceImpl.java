@@ -27,6 +27,7 @@ import com.gdu.tagmusic.domain.UserDTO;
 import com.gdu.tagmusic.mapper.MusicMapper;
 import com.gdu.tagmusic.util.PageUtil;
 
+import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -42,17 +43,24 @@ public class MusicServiceImpl implements MusicService {
 	// 1) music 테이블에 저장된 모든 음악데이터 조회
 	@Override
 	public Map<String, Object> selectUpdatedMusic4(HttpServletRequest request) {
-
+		System.out.println("start >>>> selectUpdatedMusic4");
 		// 1. 파라미터 : page
-		Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
-		int page = Integer.parseInt(opt.orElse("1"));
-		// - 한 페이지(바)당 4개를 보여줄 것
-
-		// 2. 페이징 처리
-		int recordPerPage = 5;
-		int totalRecordCnt = musicMapper.selectMusicCnt();
-
-		pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
+		String pPage = request.getParameter("page");
+		int page = 1;
+		System.out.println("page:"+page);
+		if (pPage != null && pPage != "") {
+			Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+			page = Integer.parseInt(opt.orElse("1"));
+		}
+			System.out.println("page done");
+			// - 한 페이지(바)당 4개를 보여줄 것
+	
+			// 2. 페이징 처리
+			int recordPerPage = 5;
+			int totalRecordCnt = musicMapper.selectMusicCnt();
+	
+			pageUtil.setPageUtil(page, recordPerPage, totalRecordCnt);
+		
 
 		// 3. 음악리스트 조회
 		// - users 테이블, active_log 테이블과 조인하여 해당 게시글의 artist를 조회해온다

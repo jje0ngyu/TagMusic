@@ -71,7 +71,7 @@ function fn_musicCheck(){
 		if(musicValue != null && musicValue != '') {
 			let other = musicValue.split('.').pop().toLowerCase();
         	//아래 확장자가 있는지 체크
-       	 	if(other != 'mp3' && other != 'mp4' && other != 'org') {
+       	 	if(other != 'mp3' && other != 'mp4' && other != 'org' && other != 'wav') {
           		alert('지원하지 않는 파일 형식입니다.');
           		$(this).val('');
           		return;

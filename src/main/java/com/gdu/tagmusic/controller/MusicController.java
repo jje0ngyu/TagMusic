@@ -32,7 +32,9 @@ public class MusicController {
 
 	@ResponseBody
 	@GetMapping(value="/music/list/updated", produces="application/json")
-	public Map<String, Object> updatedMusic(HttpServletRequest request) {	
+	public Map<String, Object> updatedMusic(HttpServletRequest request) {
+		System.out.println("updatedMusic >>> request:"+request);
+		System.out.println("/music/list/updated");
 		return musicService.selectUpdatedMusic4(request);
 		
 	}

@@ -11,96 +11,97 @@
 
 </head>
 <body>
-	<div th:replace="~{layout/header.html::header_layout}"></div>
-	<div th:replace="~{layout/side.html::side_layout}"></div>
-	
-	<div class="tune_container">
-		<div class="tune_content">
-			<div class="tune_main_panel">
-				<img th:src="@{/tune/display/image(musicNo=${music.musicNo})}" name="image" class="tune_album_img">
-			</div>
-			<div class="tune_side_panel">
-				<div class="tune_tab">
-					<div class="tune_tab_content tab_next_track border_bottom_solid_white">
-						다음 트랙
+	<div th:replace="~{layout/header.html::header}"></div>
+	<div class="container">
+		<div th:replace="~{layout/side.html::side_layout}"></div>
+		<div class="tune_container">
+			<div class="tune_content">
+				<div class="tune_main_panel">
+					<img th:src="@{/tune/display/image(musicNo=${music.musicNo})}" name="image" class="tune_album_img">
+				</div>
+				<div class="tune_side_panel">
+					<div class="tune_tab">
+						<div class="tune_tab_content tab_next_track border_bottom_solid_white">
+							다음 트랙
+						</div>
+						<script>
+							function fn_nextTrack(){
+								$(document).on('change','.tune_next_track_box',function(){
+									var nextMusicNo = $('#0').val();
+								});
+							}
+						</script>
+						<div class="tune_tab_content tab_lyrics">
+							가사
+						</div>
+						<div class="tune_tab_content tab_comment">
+							댓글
+						</div>
 					</div>
-					<script>
-						function fn_nextTrack(){
-							$(document).on('change','.tune_next_track_box',function(){
-								var nextMusicNo = $('#0').val();
+					<!-- 트랙 -->
+					<div class="tune_next_track_box">
+						<script>
+							$.ajax({
+								type: 'get',
+								url : '/tune/track',
+								dataType: 'json',
+								success : function(resData) {
+									var txt = '';
+									if(resData.musicList != 0) {
+										$.each(resData.musicList, function(i, music){
+											txt += '<div class="music_track_box">';
+												txt += '<input type="hidden" class="musicNo" name="musicNo" data-music="' + music.musicNo +  '">';
+												txt += '<div class="music_img" style="background-image:url(/tune/display/image?musicNo=' + music.musicNo + ')"></div>';
+												txt += '<div class="music_info">';
+													txt += '<div style="font-weight:600">' + music.musicTitle + '</div>';
+													txt += '<div style="font-size:14px color: #bdc2ce">' + music.userDTO.artist + '</div>';
+												txt += '</div>';
+											txt += '</div>'
+										});
+										$('.tune_next_track_box').append(txt);
+									}
+								},
 							});
-						}
-					</script>
-					<div class="tune_tab_content tab_lyrics">
-						가사
+							
+						</script>
 					</div>
-					<div class="tune_tab_content tab_comment">
-						댓글
+					<!-- 가사 -->
+					<div class="tune_lyrics_box blind">
+						<textarea th:if="${music.musicContent} != ''" class="tune_lyrics" th:text="${music.musicContent}" readonly></textarea>
+						<textarea th:if="${music.musicContent} == ''" class="tune_lyrics" readonly>등록된 가사가 없습니다.</textarea>
 					</div>
-				</div>
-				<!-- 트랙 -->
-				<div class="tune_next_track_box">
-					<script>
-						$.ajax({
-							type: 'get',
-							url : '/tune/track',
-							dataType: 'json',
-							success : function(resData) {
-								var txt = '';
-								if(resData.musicList != 0) {
-									$.each(resData.musicList, function(i, music){
-										txt += '<div class="music_track_box">';
-											txt += '<input type="hidden" class="musicNo" name="musicNo" data-music="' + music.musicNo +  '">';
-											txt += '<div class="music_img" style="background-image:url(/tune/display/image?musicNo=' + music.musicNo + ')"></div>';
-											txt += '<div class="music_info">';
-												txt += '<div style="font-weight:600">' + music.musicTitle + '</div>';
-												txt += '<div style="font-size:14px color: #bdc2ce">' + music.userDTO.artist + '</div>';
-											txt += '</div>';
-										txt += '</div>'
-									});
-									$('.tune_next_track_box').append(txt);
-								}
-							},
-						});
-						
-					</script>
-				</div>
-				<!-- 가사 -->
-				<div class="tune_lyrics_box blind">
-					<textarea th:if="${music.musicContent} != ''" class="tune_lyrics" th:text="${music.musicContent}" readonly></textarea>
-					<textarea th:if="${music.musicContent} == ''" class="tune_lyrics" readonly>등록된 가사가 없습니다.</textarea>
-				</div>
-				
-				<!-- 댓글 -->
-				<div class="tune_comment_box blind">
-					<!--댓글 TOP-->
-					<div class="comment_top">댓글<span id="comment_count"></span>개</div>
-					<!--댓글 MIDDLE-->
-					<div class="comment_middle">
-						<form id="frm_comment">
-							<div class="comment_middle_comment">
-								<input th:if="${session.loginUser != null}" type="hidden" name="email" id="email" th:value="${session.loginUser.email}">
-								<input type="hidden" id="musicNo" name="musicNo" th:value="${music.musicNo}">	
-								<input th:if="${session.loginUser == null}" type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성하려면 로그인 해 주세요." readonly>
-								<input th:if="${session.loginUser != null}" type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성해주세요.">
-							</div>
-							<div class="comment_middle_btn">
-								<input type="reset" value="취소" id="btn_cancel_comment">
-								<input type="button" value="댓글" id="btn_add_comment">
-							</div>
-						</form>
+					
+					<!-- 댓글 -->
+					<div class="tune_comment_box blind">
+						<!--댓글 TOP-->
+						<div class="comment_top">댓글<span id="comment_count"></span>개</div>
+						<!--댓글 MIDDLE-->
+						<div class="comment_middle">
+							<form id="frm_comment">
+								<div class="comment_middle_comment">
+									<input th:if="${session.loginUser != null}" type="hidden" name="email" id="email" th:value="${session.loginUser.email}">
+									<input type="hidden" id="musicNo" name="musicNo" th:value="${music.musicNo}">	
+									<input th:if="${session.loginUser == null}" type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성하려면 로그인 해 주세요." readonly>
+									<input th:if="${session.loginUser != null}" type="text" name="commentContent" id="commentContent" placeholder="댓글을 작성해주세요.">
+								</div>
+								<div class="comment_middle_btn">
+									<input type="reset" value="취소" id="btn_cancel_comment">
+									<input type="button" value="댓글" id="btn_add_comment">
+								</div>
+							</form>
+						</div>
+						<!--댓글 BOTTOM-->
+						<div id="comment_list"></div>
+						<div id="paging"></div>
 					</div>
-					<!--댓글 BOTTOM-->
-					<div id="comment_list"></div>
-					<div id="paging"></div>
-				</div>
-				
-				<!-- 음원 다운로드 -->
-				<div class="blind">
-					<a th:href="@{/tune/download(musicNo=${music.musicNo})}">음원 다운로드 하기</a>
+					
+					<!-- 음원 다운로드 -->
+					<div class="blind">
+						<a th:href="@{/tune/download(musicNo=${music.musicNo})}">음원 다운로드 하기</a>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> //container
 </body>
 </html>

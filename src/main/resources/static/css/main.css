@@ -1,41 +1,12 @@
 @charset "UTF-8";
 
-/* main 페이지 전체
-width는 1250px, 80퍼센트면 1000px;
- */
- 
- /* a링크처리 */
- 
-
-body {
-	
-	height: 1400px;
-	overflow-x: hidden;
-	background-color: #fbfbfb;
-	
-}
  
  .main_container{
- 
- 
-
  	width: 100%;
  	/* margin : auto : 내용 영역을 페이지 가운데로 정렬하기 위해 사용됨  */
- 	padding-left : 240px;
- 	background-color: #fbfbfb;
-}
- 
-.main {
-	
-	margin: 65px auto;
-	
+ 	margin: 65px auto;
 	background-color: #fbfbfb;
-	width : 1650px;
-	height: 1100px;
 	padding: 30px;
-	
-
-	
 }
 
 a {
@@ -291,13 +262,6 @@ a {
 	text-align: left;
 	
 }
-
- .container{
- 	margin-left: 250px;
- 	margin-top: 50px;
- 	width: 100%;
- 	padding-right : 350px;
- }
  
  
  /* 바 상단텍스트  */
