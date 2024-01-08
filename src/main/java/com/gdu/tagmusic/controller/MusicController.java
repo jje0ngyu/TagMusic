@@ -19,12 +19,6 @@ public class MusicController {
 
 	@Autowired
 	private  MusicService musicService;
-	
-	// # page : main 페이지 이동
-	@GetMapping("/")
-	public String index() {
-		return "main";
-	}
 
 	// [main페이지]
 	// # 구현 : 최신리스트바 	===============================================
