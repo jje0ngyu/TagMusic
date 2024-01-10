@@ -1,38 +1,6 @@
 @charset "UTF-8";
 
-	/* 공통영역 (header.html을 포함한 모든 html에 적용) */
-
-	/* 클래스 초기화  */
-	html, body, section, article, div, a, input, ul, li, input, ol, span {
-		box-sizing: border-box;
-		margin: 0px;
-		padding: 0px;
-		background-color: inherit;
-		color: inherit;
-	}
-	a {
-		text-decoration: none;
-	}
-	input[type=button] {
-		background-color:#bdc2ce;
-		border: none;
-		border-radius: 30px;
-	}
-	input[type=button]:hover {
-		background-color: #20325A;
-		color: #fdfdfd;
-		border: none;
-		cursor: pointer;
-	}
-	
-	/* ================================== */
-	/*
-	레이아웃(헤더)
-	 : 헤더영역 레이아웃 설정
-	 : 상단 레이아웃 모든 기능을 감싸는 영역
-	   flex와 space-between으로 모든 상단 레이아웃 기능을 수평정렬
-	*/
-	.header {
+.header {
 	height : 70px;
 	background: linear-gradient(#ffffff, 2%,#fdfdfd);
 	box-shadow: 0 1px 10px 0 #37486b;
@@ -42,8 +10,11 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	}
+}
+
 	
+	/* ================================== */
+
 	/* 헤더_왼쪽 (로고) */
 	.header_left_area {
 		display: flex;
@@ -352,11 +323,7 @@
 		top : 2px;
 	}
 	
-	.footer {
-		color : #474545;
-		padding : 16px;
-		text-align: center;
-	}
+
 	
 	
 	

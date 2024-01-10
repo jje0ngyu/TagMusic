@@ -1,0 +1,27 @@
+.blind {
+  display: none;
+}
+
+.flex {
+	display: flex;
+}
+
+.flex-col {
+	flex-direction: column;
+}
+
+.grow {
+	flex-grow: 1;
+}
+
+input[type=button] {
+	background-color:#bdc2ce;
+	border: none;
+	border-radius: 30px;
+}
+input[type=button]:hover {
+	background-color: #20325A;
+	color: #fdfdfd;
+	border: none;
+	cursor: pointer;
+}

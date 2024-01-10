@@ -1,0 +1,11 @@
+html, body, section, article, div, a, input, ul, li, input, ol, span {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  background-color: inherit;
+  color: inherit;
+}
+
+a {
+  text-decoration: none;
+}
