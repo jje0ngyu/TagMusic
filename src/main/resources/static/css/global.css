@@ -7,13 +7,15 @@
 }
 
 .flex-col {
+	display: flex;
 	flex-direction: column;
+	flex: 1;
 }
 
-.grow {
-	flex-grow: 1;
+.main {
+	background-color: fuchsia;
+	flex:1;
 }
-
 input[type=button] {
 	background-color:#bdc2ce;
 	border: none;
