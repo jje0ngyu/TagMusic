@@ -1,3 +1,7 @@
+html, body {
+	height: 100%;
+}
+
 .blind {
   display: none;
 }
@@ -6,16 +10,22 @@
 	display: flex;
 }
 
+.flex_center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .flex-col {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
 }
 
-.main {
-	background-color: fuchsia;
-	flex:1;
+.hover:hover {
+	cursor: pointer;
 }
+
 input[type=button] {
 	background-color:#bdc2ce;
 	border: none;
@@ -26,4 +36,54 @@ input[type=button]:hover {
 	color: #fdfdfd;
 	border: none;
 	cursor: pointer;
+}
+
+.main {
+	flex:1;
+}
+
+.section {
+	padding: 42px 80px;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.title {
+	font-size: 32px;
+	font-weight: 700;
+	color: #37486b;
+}
+
+/* 페이지 상단 */
+.tab_container {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	width: 100%;
+	height: 60px;
+	
+	font-weight: 600;
+	color: #bdc2ce;
+	
+	margin: 20px 0;
+}
+
+.tab_box {
+	display: flex;
+	flex: 1;
+	height: 100%;
+	align-items: center;
+	justify-content: center;
+}
+
+.tab_box:hover {
+	cursor: pointer;
+	color: #fdfdfd;
+	background-color: #20325A;
+}
+.tab_click {
+	color: #20325A;
+	border-top: 2px solid #37486b;
+	border-bottom: 2px solid #37486b;
 }

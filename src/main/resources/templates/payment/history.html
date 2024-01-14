@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragments/layout}">
+
+  <head>
+    <title>결제이력</title>
+    <!-- 개별 파일에 사용될 css/js 선언 -->
+    <link rel="stylesheet" th:href="@{/css/payment/buy.css}">
+	<link rel="stylesheet" th:href="@{/css/payment/history.css}">
+    <link th:href="@{/css/fragments/nav.css}" rel="stylesheet">
+    <script th:src="@{/js/fragments/nav.js}"></script>
+    <script th:src="@{/js/payment/history.js}"></script>
+  </head>
+
+  <body layout:fragment="content" class="flex-col">
+    <!-- code -->
+	<main class="flex main">
+    	<nav th:replace="fragments/nav::navFragment"></nav>
+	    <section class="section">
+	    	<div class="title" th:text="|${session.loginUser.name}님의 결제이력|"></div>
+	
+
+		<div class="article_contain">
+			
+			<form id="frm_search">
+				<ul class="tab_container">
+					<li class="tab_box tab_click" id="pass_log">전체 결제이력</li>
+					<li class="tab_box" id="purchased_pass">구매한 이력</li>
+					<li class="tab_box"  id="gifted_pass">선물한 이력</li>
+				</ul>
+					<select id="column" name="column" class="blind">
+				    	<option value=""></option>
+				    	<option value="BUY">구매한</option>
+				    	<option value="GIFT">선물한</option>
+    				</select>
+				
+			</form>
+			<input type="hidden" id="isUser" th:data-user="${session}">
+			<div th:if="${session.loginUser != null}">
+				<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
+				<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
+				<input type="hidden" id="userMobile" th:data-mobile="${session.loginUser.mobile}">
+				<input type="hidden" id="userAddr1" th:data-addr="${session.loginUser.roadAddress}">
+				<input type="hidden" id="userAddr2" th:data-addr="${session.loginUser.jibunAddress}">
+				<input type="hidden" id="userAddr3" th:data-addr="${session.loginUser.detailAddress}">
+				<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
+				<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
+				<input type="hidden" class="isUser" th:data-user="true">
+			</div> 
+			<div id="buyPageDiv">
+				<div id="logCountDiv"></div>
+				<table class="payment_table" style="text-align:center;">
+					<thead id="list_head" >
+					</thead>
+					<tbody id="list_body" >
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	<form action="/user/login/form" id="frm_login"></form>
+	<input type="hidden" id="page" value="1">
+	    </section>
+	</main>
+
+  </body>
+</html>

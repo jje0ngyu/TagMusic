@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="navFragment" class="nav">
+    <!-- 멜론 마이페이지 참고사항, 추후 변경할 예정 -->
+
+      <div class="nav_items">
+        <a class="menus_link" th:href="@{/}"
+          ><img
+            alt="o"
+            th:src="@{/images/musical-note.png}"
+            style="width: 15px"
+          />홈</a
+        >
+      </div>
+      <div class="nav_items">
+        <a th:href="@{/music/move/playlist}"
+          ><img
+            alt="o"
+            th:src="@{/images/add-list.png}"
+            style="width: 15px"
+          />플레이리스트</a
+        >
+      </div>
+      <div class="nav_items">
+        <a th:href="@{/music/move/musicLike}"
+          ><img
+            alt="o"
+            th:src="@{/images/heart-solid.png}"
+            style="width: 15px"
+          />좋아요</a
+        >
+      </div>
+      <div class="nav_items">
+        <a th:href="@{/music/move/musicLastly}"
+          ><img
+            alt="o"
+            th:src="@{/images/recent.png}"
+            style="width: 15px"
+          />최근들은</a
+        >
+      </div>
+      <div class="nav_items">
+        <a th:href="@{/music/move/musicMany}"
+          ><img
+            alt="o"
+            th:src="@{/images/fire.png}"
+            style="width: 18px"
+          />많이들은</a
+        >
+      </div>
+
+      <div class="nav_items">
+        <img alt="o" th:src="@{/images/ticket.png}" style="width: 18px" /><a
+          th:href="@{/payment/buy}"
+          >이용권</a
+        >
+      </div>
+      <div class="nav_items">
+        <img alt="o" th:src="@{/images/headphones.png}" style="width: 18px" /><a
+          th:href="@{/board/list}"
+          >고객센터</a
+        >
+      </div>
+    </div>
+    <form th:action="@{/payment/history}" method="post" id="submit_history">
+      <input
+        type="hidden"
+        name="userName"
+        th:value="${session.loginUser.name}"
+      />
+    </form>
+
+</html>

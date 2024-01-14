@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
   <div th:fragment="headerFragment" class="header">
     <!-- 헤더 왼쪽 -->
     <div class="header_left_area">
@@ -9,113 +8,112 @@
       </a>
     </div>
 
-    <div class="header_search_area">
-      <input
-        type="text"
-        id="query"
-        name="query"
-        placeholder="검색"
-        class="header_search"
-      />
-      <!-- * 검색시 page 파라미터 디폴트값-->
-      <input type="hidden" id="layout_page" value="1" />
-      <img
-        th:src="@{/images/magnifying-glass-solid.svg}"
-        class="header_search_btn"
-        id="totalSearch"
-      />
-    </div>
-
     <!-- 헤더 중앙 -->
     <div class="header_center_area">
+      <div class="header_search_area">
+        <input
+          type="text"
+          id="query"
+          name="query"
+          placeholder="검색"
+          class="header_search"
+        />
+        <!-- * 검색시 page 파라미터 디폴트값-->
+        <input type="hidden" id="layout_page" value="1" />
+        <img
+          th:src="@{/images/magnifying-glass-solid.svg}"
+          class="header_search_btn"
+          id="totalSearch"
+        />
+      </div>
       <div class="header_rank">
         <ol class="ranking_ol" id="ranking_ol"></ol>
       </div>
     </div>
-  </div>
 
-  <!-- 헤더 오른쪽 -->
-  <div class="header_right_area">
-    <div class="unuser_area" th:if="${session.loginUser == null}">
-      <a id="linkLogin" th:href="@{/user/login/form}">로그인</a>
-    </div>
-    <div class="user_area" th:if="${session.loginUser != null}">
-      <div class="bell_area">
-        <img th:src="@{/images/bell_navy.png}" class="bell_img" />
+    <!-- 헤더 오른쪽 -->
+    <div class="header_right_area">
+      <div class="unuser_area" th:if="${session.loginUser == null}">
+        <a id="linkLogin" th:href="@{/user/login/form}">로그인</a>
       </div>
-      <div class="profile_image_area">
-        <img
-          th:if="${session.loginUser.profileImage == '1'}"
-          id="profile_image"
-          class="profile_image"
-          th:src="@{/user/info/getImage(email=${session.loginUser.email})}"
-          style="border-radius: 100px"
-        />
-        <img
-          th:if="${session.loginUser.profileImage != '1'}"
-          id="profile_image"
-          class="profile_image"
-          th:src="${session.loginUser.profileImage}"
-        />
-      </div>
-      <script>
-        $(".profile_image").click(function () {
-          $(".profile_box").toggleClass("blind");
-        });
-      </script>
-      <!-- 알림 아이콘 클릭시 팝업 창 -->
-      <div class="header_alarm_controller blind">
-        <input
-          type="hidden"
-          id="userEmail"
-          th:data-email="${session.loginUser.email}"
-        />
+      <div class="user_area" th:if="${session.loginUser != null}">
 
-        <div class="alarm_top_controller">
-          <div id="btn_all_read">알림 삭제</div>
-        </div>
-        <div class="alarm_middle_controller">
-          <!-- 알람들어가는곳 -->
-        </div>
-      </div>
-      <!-- 프로필 사진 클릭시 팝업 창 -->
-      <div class="header_right_bottom_controller">
-        <div class="profile_box blind">
-          <div class="profile_artist">
-            <span th:text="${session.loginUser.artist}"></span> 님
-          </div>
-          <div><span th:text="${session.loginUser.email}"></span></div>
-          <div>
-            <div>
-              <span id="remainingDay"></span>
-            </div>
-            <div>
-              <span id="dDay"></span>
-            </div>
-          </div>
-          <div>
-            <input
-              type="button"
-              value="TagMusic 계정관리"
-              id="account_manage"
-              class="account_manage"
-            />
-            <input
-              type="button"
-              value="로그아웃"
-              id="btn_logout"
-              class="btn_logout"
-            />
-          </div>
+          <img th:src="@{/images/bell_navy.png}" class="bell_img" />
+
+
+          <img
+            th:if="${session.loginUser.profileImage == '1'}"
+            id="profile_image"
+            class="profile_image hover"
+            th:src="@{/user/info/getImage(email=${session.loginUser.email})}"
+            style="border-radius: 100px"
+          />
+          <img
+            th:if="${session.loginUser.profileImage != '1'}"
+            id="profile_image"
+            class="profile_image hover"
+            th:src="${session.loginUser.profileImage}"
+          />
+
+        <script>
+          $(".profile_image").click(function () {
+            $(".profile_box").toggleClass("blind");
+          });
+        </script>
+        <!-- 알림 아이콘 클릭시 팝업 창 -->
+        <div class="header_alarm_controller blind">
           <input
             type="hidden"
             id="userEmail"
             th:data-email="${session.loginUser.email}"
           />
+
+          <div class="alarm_top_controller">
+            <div id="btn_all_read">알림 삭제</div>
+          </div>
+          <div class="alarm_middle_controller">
+            <!-- 알람들어가는곳 -->
+          </div>
         </div>
+        <!-- 프로필 사진 클릭시 팝업 창 -->
+        <div class="header_right_bottom_controller">
+          <div class="profile_box blind">
+            <div class="profile_artist">
+              <span th:text="${session.loginUser.artist}"></span> 님
+            </div>
+            <div><span th:text="${session.loginUser.email}"></span></div>
+            <div>
+              <div>
+                <span id="remainingDay"></span>
+              </div>
+              <div>
+                <span id="dDay"></span>
+              </div>
+            </div>
+            <div>
+              <input
+                type="button"
+                value="TagMusic 계정관리"
+                id="account_manage"
+                class="account_manage"
+              />
+              <input
+                type="button"
+                value="로그아웃"
+                id="btn_logout"
+                class="btn_logout"
+              />
+            </div>
+            <input
+              type="hidden"
+              id="userEmail"
+              th:data-email="${session.loginUser.email}"
+            />
+          </div>
+        </div>
+        <!-- 프로필 사진 창-->
       </div>
-      <!-- 프로필 사진 창-->
+      <!--로그인 유저 창-->
     </div>
-    <!--로그인 유저 창-->
   </div>
 </html>

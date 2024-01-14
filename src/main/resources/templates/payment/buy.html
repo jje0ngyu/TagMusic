@@ -343,8 +343,8 @@ function fn_presentTicket(e){
 	<div th:replace="~{layout/header.html::header}"></div>
 	<div th:replace="~{layout/side.html::side_layout}"></div>
 	<article class="pay_controllers">
-		<div class="article_contain">
-				<div class="payTitle">태그뮤직 이용권 구매</div>
+
+				<div class="title">태그뮤직 이용권 구매</div>
 				<div class="payContent">
 					<nav id="nav3" class="tab_box_basic">
 						<ul class="top_pay_controller">
@@ -492,7 +492,7 @@ function fn_presentTicket(e){
 				</div>
 				
 				<span th:utext="${loginUser}"></span>
-		</div>
+
 	</article>
 	<form action="/user/login/form" id="frm_login"></form>
 	

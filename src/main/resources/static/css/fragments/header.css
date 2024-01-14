@@ -1,7 +1,6 @@
 @charset "UTF-8";
 
 .header {
-	height : 70px;
 	background: linear-gradient(#ffffff, 2%,#fdfdfd);
 	box-shadow: 0 1px 10px 0 #37486b;
 	z-index: 2;
@@ -10,329 +9,237 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	
+	padding : 14px 20px;
+}
+
+/* ==================================
+	header
+ ==================================== */
+.header_left_area {
+	display: flex;
+	align-items: center;
+	width: 240px;
+	height: 100%;
+}
+
+.header_center_area {
+	display: flex;
+ }
+ 
+.header_right_area {
+	background-color : orange;
+	display: flex;
+	justify-content: right;
+	align-items: center;
+}
+
+/* ==================================
+	header_laft
+ ==================================== */
+.tagmusic_logo {
+	width: 240px;
+}
+
+
+/* 레이아웃(헤더) : 상단 레이아웃중 검색과 랭킹 기능을 묶은 영역
+- header_left_menu : flex 정렬로 인해 랭킹이 페이지 가운데로 이동하므로, 
+검색과 같은 블록 내에 위치시켜서 좌측으로 배치시키기 위해 사용하였다
+  */
+.header_left_menu {
+	display : flex;
+	width: 900px;
+	height: 120px;
+}
+
+/* ==================================
+	header_center
+ ==================================== */
+/* 레이아웃(헤더) : 검색 + 버튼 영역
+- flex : 검색영역과 버튼을 붙이기 위해 사용하였다
+- 감싼이유 : 검색영역과 버튼을 감싸는 css를 꾸미기위해(ex 유튜브)
+ */
+.header_search_area {
+	background-color: #d5d5d5;
+	position: relative;
+	justify-content: space-between;
+	width: 50%;
+  		min-width: 200px;
+	height: 42px;
+	line-height: 40px;
+	border-radius: 25px;
+	top: 2px;
+}
+
+.header_search {
+	position: absolute;
+	border: none;
+	width: 70%;
+	height: 25px;
+	font-weight: 600;
+	font-size: 17px;
+	color: #443E36;
+	left : 25px;
+	top: 8px;
+	outline: none;
+}
+
+.header_search_btn {
+	position: absolute;
+	display: inline-block;
+	right: 19px;
+    top: 13px;
+    width: 16px;
 }
 
 	
-	/* ================================== */
+/* 레이아웃(헤더) : 랭킹 영역 */
+.header_rank {
 
-	/* 헤더_왼쪽 (로고) */
-	.header_left_area {
-		display: flex;
-		align-items: center;
-		width: 240px;
-		height: 100%;
-		margin-left: 30px;
-	}
-	.tagmusic_logo {
-		width: 240px;
-	}
-	
-	/* 레이아웃(헤더) : 상단 레이아웃중 검색과 랭킹 기능을 묶은 영역
-	- header_left_menu : flex 정렬로 인해 랭킹이 페이지 가운데로 이동하므로, 
-	검색과 같은 블록 내에 위치시켜서 좌측으로 배치시키기 위해 사용하였다
-	  */
-	.header_left_menu {
-		display : flex;
-		width: 900px;
-		height: 120px;
-	}
-	
-	
-	/* 헤더_중앙 (검색, 실시간차트) */
-	.header_center_area {
-		margin-left : 100px;
-		display: flex;
-		width: 55%;
-	 }
-	/* 레이아웃(헤더) : 검색 + 버튼 영역
-	- flex : 검색영역과 버튼을 붙이기 위해 사용하였다
-	- 감싼이유 : 검색영역과 버튼을 감싸는 css를 꾸미기위해(ex 유튜브)
-	 */
-	.header_search_area {
-		background-color: #d5d5d5;
-		position: relative;
-		justify-content: space-between;
-		width: 50%;
-   		min-width: 200px;
-		height: 42px;
-		line-height: 40px;
-		border-radius: 25px;
-		top: 2px;
-	}
-	
-	.header_search {
-		position: absolute;
-		border: none;
-		width: 70%;
-		height: 25px;
-		font-weight: 600;
-		font-size: 17px;
-		color: #443E36;
-		left : 25px;
-		top: 8px;
-		outline: none;
-	}
-	
-	.header_search_btn {
-		position: absolute;
-		display: inline-block;
-		right: 19px;
-	    top: 13px;
-	    width: 16px;
-	}
-	
-		
-	/* 레이아웃(헤더) : 랭킹 영역 */
-	.header_rank {
+min-width: 200px;
+background-color: #eeeeee;
+border-radius: 14px;
+height: 40px;
+line-height: 30px;
+border: 1px solid #aaaaaa;
 
-	min-width: 200px;
-	background-color: #eeeeee;
-	border-radius: 14px;
+font-size: 14px;
+color: #323232;
+text-align: left;
+padding: 5px 20px;
+position: relative;
+
+}
+
+/* ==================================
+	header_right
+ ==================================== */
+/* 비회원 */
+.unuser_area {
+	color: #fdfdfd;
+	background: linear-gradient(#37486b, 50%, #20325A);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 40px;	
 	height: 40px;
-	margin: 3px 40px;
-	line-height: 30px;
-	border: 1px solid #aaaaaa;
-	
-	font-size: 14px;
-	color: #323232;
-	text-align: left;
-	padding: 5px 20px;
-	position: relative;
+	font-size: 10px;
+	border : none;
+	border-radius: 45px;
+}
 
+@keyframes login_animation {
+	0% {
+		margin-top: 0;
 	}
-	
-	/* 헤더_오른쪽 (로그인) */
-	.header_right_area {
-		display: flex;
-		justify-content: right;
-		align-items: center;
-		margin-right: 30px;
-		width: 70px;	
-		height: 70px;
+	50% {
+		margin-top: 15px;
 	}
-	/* 비회원 */
-	.unuser_area {
-		color: #fdfdfd;
-		background: linear-gradient(#37486b, 50%, #20325A);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 40px;	
-		height: 40px;
-		font-size: 10px;
-		border : none;
-		border-radius: 45px;
+	100% {
+		margin-top: 0;
 	}
-	
-	@keyframes login_animation {
-		0% {
-			margin-top: 0;
-		}
-		50% {
-			margin-top: 15px;
-		}
-		100% {
-			margin-top: 0;
-		}
-	}
-	.unuser_area:hover {
-		font-weight: 600;
-		animation: login_animation 1.2s ease-in-out infinite;
-	}
-	
-	/* 회원 */
-	.user_area {
-		color: #fdfdfd;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		width: 120px;
-		height: 60px;
-	}
-
-	.bell_area {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 50px;
-		height: 50px;
-		margin-right: 20px;
-	}
-	.bell_img {
-		width: 30px;
-	}
-	
-	.profile_image_area {
-		width: 60px;
-		height: 60px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.profile_image {
-		width: 40px;
-		height: 40px;
-	}
-	@keyframes profile_animation {
-		0% {
-			width: 60px;
-			height: 60px;
-		}
-		50% {
-			width: 50px;
-			height: 50px;
-		}
-		100% {
-			width: 60px;
-			height: 60px;
-		}
-	}
-	.profile_image:hover {
-		border: 4px solid rgb(255, 255, 255);
-		border-radius: 30px;
-		cursor: pointer;
-		animation: profile_animation 1s ease-in-out infinite;
-	/*	animation-name: profile_animation;
-		animation-duration: 1s;
-		animation-timing-function: ease-in-out;	
-		animation-iteration-count: infinite;	
-	*/}
-	
-	/* 프로필 팝업창 */
-	.header_right_bottom_controller {
-		position: fixed;
-		top: 80px;
-		right: 0;
-		padding-top: 10px;
-		margin-right: 30px;
-	}
-	.profile_box {
-		padding: 20px 10px 30px;
-		border-radius: 10px;
-		width: 300px;
-		background-color: #37486b;
-		text-align: center;
-		line-height: 30px;
-		color: #bdc2ce;
-		box-shadow: 0px 1px 3px 0px #1f1f1f;
-	}
-	.profile_artist {
-		color: #fdfdfd;
-		font-weight: 700;
-		font-size: 16px;
-	}
-	.profile_box  input[type=button] {
-		font-size: 14px;
-		border-radius: 20px;
-		margin: 30px 5px 0;
-		height: 30px;
-		color: #1f1f1f;
-		padding: 0 10px;
-		background-color: #f8f9fa;
-	}
-	.profile_box  input[type=button]:hover {
-		box-shadow: 0 3px 10px -3px #1f1f1f;
-		color: #fdfdfd;
-	}
-	
-	#account_manage:hover{
-		color: #1f1f1f;
-		background-color: #FFD654;
-	}
-	.profile_box  #btn_logout:hover {
-		color: #1f1f1f;
-		background-color: #FF5361;
-	}
-	
-
-	.container {
-	display : flex;
-	
-	
-	}
-	
-	/* 레이아웃(사이드) : 좌측 레이아웃 설정
-	- 좌측 레이아웃 설정을 통해 우측의 컨텐츠 영역과 분리하기위한 클래스
-	 */
-	.menu {
-	background-color : #fdfdfd;
-	min-width : 220px;
-	height : 100%;
-	z-index: 1;
-	box-shadow: 0.05px 0px 4px 0 #37486b;
-	}
-	
-	
-	/* 레이아웃(사이드) : 좌측 최상단 로고영역 */
-	.menu_logo {
-	padding-top : 10px;
-	}
-	
-	
-	/* 레이아웃(사이드) : 좌측 레이아웃 모든 기능을 감싸는 영역
-	- 범위 : 홈, 플레이리스트, 좋아요, 많이들은 최근들은, 이용권, 고객센터 포함 
-	 */
-	.menu_body {
-	margin-bottom: 170px;
-	}
-
-	
-	/* 레이아웃(사이드) : 각각 좌측 레이아웃의 기능들(- 홈, 플레이리스트, 좋아요, 많이들은 최근들은, 이용권, 고객센터) 
-	- 용도 : 각 기능들 간의 거리를 벌리기 위해 사용
-	*/
-	
-	.body_menus {
-	padding : 10px 0;
-	height: 50px;
-	line-height: 25px;
-	padding: 10px 5px;
-	/* border-bottom : 1px solid rgb(189, 189, 189); */
-	font-size: 16px;
+}
+.unuser_area:hover {
 	font-weight: 600;
-	color: #474545;
-	transition: all 0.25s ease-in-out;
-	}
-	
-	.body_menus:hover {
-		box-shadow: 0 8px 18px rgba(0, 0, 0, 0.19), 0 4px 4px rgba(0, 0, 0, 0.23);
-	/* background-color: #bbbbbb; */
-		
-	}
-	
-	.body_menus:nth-of-type(4) {
-	
-	border-top: none;
-	
-	}
-	
-	.body_menus:nth-of-type(5) {
-	
-	
-	margin-bottom: 50px;
-	}
-	
-	/* 정은지 추가 
-		
-		사이드바영역의 이모티콘과 각 옆의 글씨 사이를 벌리는 css 속성
-	 */
-	 
-	 
-	.menu_body img{
-		margin:0px 20px;
-		position: relative;
-		top : 2px;
-	}
-	
+	animation: login_animation 1.2s ease-in-out infinite;
+}
 
+/* 회원 */
+.user_area {
+	color: #fdfdfd;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.bell_img {
+	width: 30px;
+}
+.bell_img:hover {
+	cursor: pointer;
+}
+
+.profile_image {
+	width: 40px;
+	height: 40px;
+}
+
+/* 프로필 팝업창 */
+.header_right_bottom_controller {
+	position: fixed;
+	top: 80px;
+	right: 0;
+	padding-top: 10px;
+	margin-right: 30px;
+}
+.profile_box {
+	padding: 20px 10px 30px;
+	border-radius: 10px;
+	width: 300px;
+	background-color: #37486b;
+	text-align: center;
+	line-height: 30px;
+	color: #bdc2ce;
+	box-shadow: 0px 1px 3px 0px #1f1f1f;
+}
+.profile_artist {
+	color: #fdfdfd;
+	font-weight: 700;
+	font-size: 16px;
+}
+.profile_box  input[type=button] {
+	font-size: 14px;
+	border-radius: 20px;
+	margin: 30px 5px 0;
+	height: 30px;
+	color: #1f1f1f;
+	padding: 0 10px;
+	background-color: #f8f9fa;
+}
+.profile_box  input[type=button]:hover {
+	box-shadow: 0 3px 10px -3px #1f1f1f;
+	color: #fdfdfd;
+}
+
+#account_manage:hover{
+	color: #1f1f1f;
+	background-color: #FFD654;
+}
+.profile_box  #btn_logout:hover {
+	color: #1f1f1f;
+	background-color: #FF5361;
+}
+
+
+.container {
+display : flex;
+
+
+}
+
+
+/* 정은지 추가 
 	
-	
-	
-	
-	/* 내용(최상위) : 레이아웃이 아닌 모든 영역 
-	- ** 모든 컨텐츠는 해당 태그 아래에서 작성하면된다 **
-	- 1250, 900 일반적인 노트북 화면 사이즈
-	
-	*/
+	사이드바영역의 이모티콘과 각 옆의 글씨 사이를 벌리는 css 속성
+ */
+ 
+ 
+.menu_body img{
+	margin:0px 20px;
+	position: relative;
+	top : 2px;
+}
+
+
+
+
+
+
+/* 내용(최상위) : 레이아웃이 아닌 모든 영역 
+- ** 모든 컨텐츠는 해당 태그 아래에서 작성하면된다 **
+- 1250, 900 일반적인 노트북 화면 사이즈
+
+*/
 .content {
 	margin-left: 200px;
     margin-top: 50px;

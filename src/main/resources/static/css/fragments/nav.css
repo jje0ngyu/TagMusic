@@ -1,0 +1,53 @@
+.nav {
+	padding : 38px 0px;
+	width:220px;
+	border-right: 1px solid #37486b;
+}
+
+.text_box {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	font-size: 18px;
+	
+}
+/* mypageNav 현재 위치 */
+.text_box_click {
+	color: #37486b;
+	font-weight: 700;
+	background-color: rgb(243, 243, 243);
+}
+.text_box:hover {
+	background-color: rgb(55, 72, 107);
+	color: #fdfdfd;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+
+/* 레이아웃(사이드) : 각각 좌측 레이아웃의 기능들(- 홈, 플레이리스트, 좋아요, 많이들은 최근들은, 이용권, 고객센터) 
+- 용도 : 각 기능들 간의 거리를 벌리기 위해 사용
+*/
+
+.nav_items {
+	line-height: 25px;
+	padding: 10px 24px;
+	/* border-bottom : 1px solid rgb(189, 189, 189); */
+	font-size: 16px;
+	font-weight: 600;
+	color: #474545;
+	transition: all 0.25s ease-in-out;
+	}
+
+.nav_items:hover {
+	/*color: #fdfdfd;
+	background-color: rgb(55, 72, 107);*/
+	box-shadow: 0px -4px 4px rgba(55, 72, 107, 0.19), 0 4px 4px rgba(55, 72, 107, 0.23);
+}
+
+
+.nav_items:nth-of-type(5) {
+
+
+margin-bottom: 50px;
+}

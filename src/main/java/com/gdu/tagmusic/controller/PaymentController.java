@@ -59,7 +59,7 @@ public class PaymentController {
 	
 	@PostMapping("/payment/history")
 	public String payLog() {
-		return "payment/log";
+		return "payment/history";
 	}
 	
 	@ResponseBody

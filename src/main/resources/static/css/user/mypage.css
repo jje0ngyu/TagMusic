@@ -1,21 +1,5 @@
 @charset "UTF-8";
 
-/* 클래스 초기화 - layout.css와 동일 */
-html, body, section, article, div, a, input, ul, li, input {
-	margin: 0px;
-	padding: 0px;
-	background-color: inherit;
-	color: inherit;
-	text-decoration: none;
-}
-body {
-	width: 100%;
-	background-color: #f8f9fa;
-	
-}
-.blind {
-	display: none;
-}
 /* 공통 */
 .box_title {
 	font-size: 20px;
@@ -47,10 +31,6 @@ body {
 }
 @media (min-width: 800px) {
 	/* mypageNav */
-	.nav_top {
-		margin-bottom: 60px;
-		text-align: center;
-	}
 	nav {
 		z-index: 1;
 		position: fixed;
@@ -66,45 +46,12 @@ body {
 		top: 0;
 		left: 0;
 	}
-	.nav_textBox_controller {
-		display: flex;
-		flex-direction: column;
-		align-items: center;		
-	}
-	.text_box {
-		display: flex;
-		align-items: center;
-		width: 100%;
-		height: 60px;
-		font-size: 18px;
-		
-	}
-	/* mypageNav 현재 위치 */
-	.text_box_click {
-		color: #37486b;
-		font-weight: 700;
-		background-color: rgb(243, 243, 243);
-	}
-	.text_box:hover {
-		background-color: #37486b;
-		color: #fdfdfd;
-		font-weight: 700;
-		cursor: pointer;
-	}
 	
 	.mypageNav_text {
 		padding: 30px;
 	}
 
 	/* mypage */
-	.mypage_controller {
-		position: relative;
-		top: 0;
-		left: 0;
-		margin-left: 250px;
-		padding: 60px 50px 0 40px;
-		min-width: 1000px;
-	}
 	.mypage_top_controller, .mypage_middle_controller, .mypage_bottom_controller {
 		display: flex;
 		margin: 10px 0;
@@ -127,6 +74,9 @@ body {
 }
 
 /* mypage */
+.mypage_profileImage {
+	width: 160px;
+}
 .mypage_box {
 	display: flex;
 	align-items: center;
@@ -148,11 +98,6 @@ body {
 	font-weight: 600;
 }
 
-.mypage_title {
-	font-size: 32px;
-	font-weight: 700;
-	margin-bottom: 20px;
-}
 .artist_title {
 	font-size: 24px;
 	font-weight: 700;
@@ -180,9 +125,6 @@ body {
 	padding: 20px;
 	font-size: 20px;
 	font-weight: 600;
-}
-.profile_image {
-	width: 300px;
 }
 .profile_file {
 	display: flex;

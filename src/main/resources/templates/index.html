@@ -7,13 +7,15 @@
   <head>
     <title>Tag Music</title>
     <!-- 개별 파일에 사용될 css/js 선언 -->
+    <link th:href="@{/css/fragments/nav.css}" rel="stylesheet">
+    <script th:src="@{/js/fragments/nav.js}"></script>
   </head>
 
   <body layout:fragment="content" class="flex-col">
     <!-- code -->
-	<main class="flex main ">
-    	<nav> nav</nav>
-	    <section class="">
+	<main class="flex main">
+    	<nav th:replace="fragments/nav::navFragment"></nav>
+	    <section class="section">
 	    	section
 	    </section>
 	</main>

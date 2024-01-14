@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+  <div th:fragment="navFragment" class="nav">
+    <!-- 멜론 마이페이지 참고사항, 추후 변경할 예정 -->
+
+    <div id="mypageHome" class="text_box text_box_click">
+      <span class="mypageNav_text">내 정보 홈</span>
+    </div>
+    <div id="info" class="text_box">
+      <span class="mypageNav_text">개인정보 관리</span>
+    </div>
+    <div id="addMusic" class="text_box">
+      <span class="mypageNav_text">음원 등록</span>
+    </div>
+    <div
+      th:if="${session.loginUser.userNo != 1}"
+      id="paymentHistory"
+      class="text_box"
+    >
+      <span class="mypageNav_text">결제이력</span>
+    </div>
+    <div
+      th:if="${session.loginUser.userNo == 1}"
+      id="userManagement"
+      class="text_box"
+    >
+      <span class="mypageNav_text">회원관리</span>
+    </div>
+    <div th:if="${session.loginUser.userNo == 1}" class="notice text_box">
+      <span class="mypageNav_text">공지사항</span>
+    </div>
+    <div th:if="${session.loginUser.userNo == 1}" class="faq text_box">
+      <span class="mypageNav_text">자주 하는 질문</span>
+    </div>
+    <div id="chat" class="text_box">
+      <span class="mypageNav_text">1:1문의</span>
+    </div>
+    <div class="text_box logout_box">
+      <span class="mypageNav_text">로그아웃</span>
+    </div>
+
+    <form th:action="@{/payment/history}" method="post" id="submit_history">
+      <input
+        type="hidden"
+        name="userName"
+        th:value="${session.loginUser.name}"
+      />
+    </form>
+  </div>
+</html>

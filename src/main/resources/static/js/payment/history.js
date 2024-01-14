@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{layout/header::head('Tag Music > 결제이력')}"></head>
-<meta charset="UTF-8">
-<title></title>
-<link rel="stylesheet" th:href="@{/css/payment/buy.css}">
-<link rel="stylesheet" th:href="@{/css/payment/log.css}">
 
-<!-- static 폴더 이후의 위치를 적으면 된다. -->
-<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
-<script th:inline="javascript">
 $(document).ready(function(){
 	var userName = $('#userName').data('name');
 	//fn_userLog();
@@ -21,6 +8,24 @@ $(document).ready(function(){
 	} else {
 		fn_isNotUser();
 	}
+	
+	$('#pass_log').click(function(){
+		fn_userLog();
+		$('.tab_payment').removeClass('tab_box_click');
+		$(this).addClass('tab_box_click');
+	})
+	
+	$('#purchased_pass').click(function(){
+		fn_userBuyLog();
+		$('.tab_payment').removeClass('tab_box_click');
+		$(this).addClass('tab_box_click');
+	})
+	
+	$('#gifted_pass').click(function(){
+		fn_userGiftLog();
+		$('.tab_payment').removeClass('tab_box_click');
+		$(this).addClass('tab_box_click');
+	})
 	
  });
 function fn_userLog(){
@@ -225,89 +230,3 @@ function fn_userLogSelect(){
 		$("#column").val("GIFT").prop("selected", true);
 	});
 }
-</script>
-</head>
-<body>
-	
-	<div th:replace="~{layout/header.html::header}"></div>
-	<div th:replace="~{layout/side.html::side_layout}"></div>
-	
-	<article class="pay_controllers">
-		<div class="article_contain">
-			<div class="payTitle" th:text="|${session.loginUser.name} 님의 결제이력|"></div>
-			<form id="frm_search">
-				<nav id="nav3" class="tab_box_basic">
-					<ul class="top_pay_controller">
-						<li id="pass_log" class="tab_payment tab_box_click">
-							전체 결제이력
-							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
-							<script>
-								$('#pass_log').click(function(){
-									fn_userLog();
-									$('.tab_payment').removeClass('tab_box_click');
-									$(this).addClass('tab_box_click');
-								})
-							</script>
-						</li>
-						<li id="purchased_pass" class="tab_payment">
-							구매한 이력
-							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
-							<script>
-								$('#purchased_pass').click(function(){
-									fn_userBuyLog();
-									$('.tab_payment').removeClass('tab_box_click');
-									$(this).addClass('tab_box_click');
-								})
-							</script>
-						</li>
-						<li id="gifted_pass" class="tab_payment">
-							선물한 이력
-							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
-							<script>
-								$('#gifted_pass').click(function(){
-									fn_userGiftLog();
-									$('.tab_payment').removeClass('tab_box_click');
-									$(this).addClass('tab_box_click');
-								})
-							</script>
-						</li>
-					</ul>
-				</nav>
-					<select id="column" name="column" class="blind">
-				    	<option value=""></option>
-				    	<option value="BUY">구매한</option>
-				    	<option value="GIFT">선물한</option>
-    				</select>
-				<script>
-					
-				</script>
-				
-			</form>
-			<input type="hidden" id="isUser" th:data-user="${session}">
-			<div th:if="${session.loginUser != null}">
-				<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
-				<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
-				<input type="hidden" id="userMobile" th:data-mobile="${session.loginUser.mobile}">
-				<input type="hidden" id="userAddr1" th:data-addr="${session.loginUser.roadAddress}">
-				<input type="hidden" id="userAddr2" th:data-addr="${session.loginUser.jibunAddress}">
-				<input type="hidden" id="userAddr3" th:data-addr="${session.loginUser.detailAddress}">
-				<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
-				<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
-				<input type="hidden" class="isUser" th:data-user="true">
-			</div> 
-			<div id="buyPageDiv">
-				<div id="logCountDiv"></div>
-				<table class="payment_table" style="text-align:center;">
-					<thead id="list_head" >
-					</thead>
-					<tbody id="list_body" >
-					</tbody>
-				</table>
-			</div>
-		</div>
-	</article>
-	<form action="/user/login/form" id="frm_login"></form>
-	<input type="hidden" id="page" value="1">
-	
-</body>
-</html>

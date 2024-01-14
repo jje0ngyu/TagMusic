@@ -1,4 +1,6 @@
-html, body, section, article, div, a, input, ul, li, input, ol, span {
+html, body, section, article,
+h1, h2, h3, h4, h5, h6, div, 
+a, input, ul, li, input, ol, span {
   box-sizing: border-box;
   margin: 0px;
   padding: 0px;
