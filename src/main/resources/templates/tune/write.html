@@ -1,94 +1,102 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragments/layout}"
+>
   <head>
-    <meta charset="UTF-8" />
     <title>음원등록</title>
+    <!-- 개별 파일에 사용될 css/js 선언 -->
+    <link th:href="@{/css/fragments/nav.css}" rel="stylesheet" />
+    <script th:src="@{/js/fragments/nav.js}"></script>
+
     <link rel="stylesheet" th:href="@{/css/layout.css}" />
     <link rel="stylesheet" th:href="@{/css/tune/write.css}" />
     <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
     <script th:src="@{/js/tune/write.js}"></script>
   </head>
 
-  <body>
-    <header th:replace="~{layout/header.html::header}"></header>
-		<div class="container">
+  <body layout:fragment="content" class="flex-col">
+    <!-- code -->
+    <main class="flex main">
+      <nav th:replace="fragments/nav::navFragment"></nav>
+      <section class="section">
+          <div class="tune_controller">
+            <form
+              id="frm_upload"
+              th:action="@{/tune/upload}"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <input
+                type="hidden"
+                name="email"
+                th:value="${session.loginUser.email}"
+              />
+              <input
+                type="hidden"
+                name="artist"
+                th:value="${session.loginUser.artist}"
+                readonly
+              />
 
+                <div>
+                  <h1>음원 등록</h1>
+                </div>
+                <div class="write_top_controller">
+                  <div class="flex">
+                    <div class="write_title">앨범 이름*</div>
+                    <div class="music_input">
+                      <input type="text" id="musicAlbum" name="musicAlbum" />
+                    </div>
+                  </div>
+                  <div class="flex">
+                    <div class="write_title">음원 이름*</div>
+                    <div class="music_input">
+                      <input type="text" id="musicTitle" name="musicTitle" />
+                    </div>
+                  </div>
+                  <div class="flex">
+                    <div class="write_title">음원 등록*</div>
+                    <div>
+                      <input type="file" id="music" name="music" />
+                    </div>
+                  </div>
+                  <div class="flex">
+                    <div class="write_title">장르*</div>
+                    <div class="music_input">
+                      <input type="text" id="musicGenre" name="musicGenre" />
+                    </div>
+                  </div>
+                </div>
+                <div class="write_bottom_controller">
+                  <div class="flex">
+                    <div class="write_title">앨범이미지</div>
+                    <div class="albumImg">
+                      <input type="file" name="image" id="albumImg" />
+                    </div>
+                  </div>
+                  <div class="flex" style="height: 500px">
+                    <div class="write_title">가사</div>
+                    <div class="music_input">
+                      <textarea
+                        id="musicContent"
+                        name="musicContent"
+                        placeholder="가사"
+                        style="height: 100%; resize: none"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="btn_area">
+                  <input type="button" id="btn_cancel" value="취소" />
+                  <input type="submit" id="btn_add" value="등록하기" />
+                </div>
 
-    <div th:replace="~{layout/side.html::side_layout}"></div>
-    <div class="tune_controller">
-      <form
-        id="frm_upload"
-        th:action="@{/tune/upload}"
-        method="post"
-        enctype="multipart/form-data"
-      >
-        <input
-          type="hidden"
-          name="email"
-          th:value="${session.loginUser.email}"
-        />
-        <input
-          type="hidden"
-          name="artist"
-          th:value="${session.loginUser.artist}"
-          readonly
-        />
-        <div class="write_controller">
-          <div>
-            <h1>음원 등록</h1>
+            </form>
           </div>
-          <div class="write_top_controller">
-            <div class="flex">
-              <div class="write_title">앨범 이름*</div>
-              <div class="music_input">
-                <input type="text" id="musicAlbum" name="musicAlbum" />
-              </div>
-            </div>
-            <div class="flex">
-              <div class="write_title">음원 이름*</div>
-              <div class="music_input">
-                <input type="text" id="musicTitle" name="musicTitle" />
-              </div>
-            </div>
-            <div class="flex">
-              <div class="write_title">음원 등록*</div>
-              <div>
-                <input type="file" id="music" name="music" />
-              </div>
-            </div>
-            <div class="flex">
-              <div class="write_title">장르*</div>
-              <div class="music_input">
-                <input type="text" id="musicGenre" name="musicGenre" />
-              </div>
-            </div>
-          </div>
-          <div class="write_bottom_controller">
-            <div class="flex">
-              <div class="write_title">앨범이미지</div>
-              <div class="albumImg">
-                <input type="file" name="image" id="albumImg" />
-              </div>
-            </div>
-            <div class="flex" style="height: 500px">
-              <div class="write_title">가사</div>
-              <div class="music_input">
-                <textarea
-                  id="musicContent"
-                  name="musicContent"
-                  placeholder="가사"
-                  style="height: 100%; resize: none"
-                ></textarea>
-              </div>
-            </div>
-          </div>
-          <div class="btn_area">
-            <input type="button" id="btn_cancel" value="취소" />
-            <input type="submit" id="btn_add" value="등록하기" />
-          </div>
-        </div>
-      </form>
-    </div>
-		</div>
+      </section>
+    </main>
   </body>
 </html>

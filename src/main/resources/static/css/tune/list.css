@@ -1,0 +1,81 @@
+.flex {
+	display: flex;
+	align-items: center;
+	margin: 0 5px;
+}
+.flex_cloumn {
+	justify-content: space-evenly;
+	margin: 10px 0;
+}
+.music_title {
+	font-size: 32px;
+	font-weight: 600;
+	padding-bottom: 50px;
+}
+.music_list_box {
+	padding: 0 0 80px 0;
+}
+.music_controller_title {
+	margin: 0;
+	padding:20px; justify-content: space-between; text-align: center;
+	color: #fdfdfd;
+	font-size:16px;
+	font-weight: bold;
+	background-color: #37486b;
+}
+.music_controller {
+	display : flex;
+	justify-content: space-between;
+	padding: 10px;
+	border-top: 1px solid #bdc2ce;
+}
+
+.image_box {
+	width: 80px;
+	min-width: 80px;
+	height: 80px;
+	background-size: cover;
+	background-position: center;
+	margin: 0 20px;
+	border-radius: 10px;
+}
+.image_box:hover {
+	cursor: pointer;
+}
+.music_info {
+	margin: 0 20px;
+	width: 300px;
+}
+.reaction_box {
+	width: 100px;
+}
+.count_like, .count_comment {
+	margin: 7px 14px;
+	font-size: 18px;
+}
+.date_box {
+	width: 170px;
+}
+.btn_box {
+	width: 160px;
+	padding: 0 10px;
+}
+.btn {
+	width:50px;
+	height: 30px;
+	color: #fdfdfd;
+	border-radius: 20px;
+	background-color: #bdc2ce;
+}
+.edit:hover {
+	background-color: #37486b;
+	cursor: pointer;
+}
+.remove:hover {
+	background-color: indianred;
+	cursor: pointer;
+}
+i {
+	font-size: 22px;
+	color: #37486b;
+}

@@ -114,9 +114,4 @@ html, body, div, input, a, form, textarea {
 		margin-top: 100px;
 		margin-left: 240px;
 	}
-	.write_controller {
-		max-width: 90%;
-		margin: 140px 10% 0 20px;
-		padding-left: 30px;
-	}
 }

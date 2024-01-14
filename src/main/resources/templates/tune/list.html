@@ -1,181 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>Tag Music > 음원관리</title>
-<link rel="stylesheet" th:href="@{/css/user/mypage.css}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<style>
-	.flex {
-		display: flex;
-		align-items: center;
-		margin: 0 5px;
-	}
-	.flex_cloumn {
-		justify-content: space-evenly;
-		margin: 10px 0;
-	}
-	.music_title {
-		font-size: 32px;
-		font-weight: 600;
-		padding-bottom: 50px;
-	}
-	.music_list_box {
-		padding: 0 0 80px 0;
-	}
-	.music_controller_title {
-		margin: 0;
-		padding:20px; justify-content: space-between; text-align: center;
-		color: #fdfdfd;
-		font-size:16px;
-		font-weight: bold;
-		background-color: #37486b;
-	}
-	.music_controller {
-		display : flex;
-		justify-content: space-between;
-		padding: 10px;
-		border-top: 1px solid #bdc2ce;
-	}
+<html lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragments/layout}">
 
-	.image_box {
-		width: 80px;
-		min-width: 80px;
-		height: 80px;
-		background-size: cover;
-		background-position: center;
-		margin: 0 20px;
-		border-radius: 10px;
-	}
-	.image_box:hover {
-		cursor: pointer;
-	}
-	.music_info {
-		margin: 0 20px;
-		width: 300px;
-	}
-	.reaction_box {
-		width: 100px;
-	}
-	.count_like, .count_comment {
-		margin: 7px 14px;
-		font-size: 18px;
-	}
-	.date_box {
-		width: 170px;
-	}
-	.btn_box {
-		width: 160px;
-		padding: 0 10px;
-	}
-	.btn {
-		width:50px;
-		height: 30px;
-		color: #fdfdfd;
-		border-radius: 20px;
-		background-color: #bdc2ce;
-	}
-	.edit:hover {
-		background-color: #37486b;
-		cursor: pointer;
-	}
-	.remove:hover {
-		background-color: indianred;
-		cursor: pointer;
-	}
-	i {
-		font-size: 22px;
-		color: #37486b;
-	}
-</style>
-<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<script th:src="@{/js/moment-with-locales.js}"></script>
-<script>
-	$(function(){
-		fn_musicList();
-		fn_detail();
-		fn_edit();
-		fn_remove();
-	})
-	
-	function fn_musicList(){
-		// 음원 목록 불러오기
-		$.ajax({
-			type: 'get',
-			url : '/tune/musicList',
-			dataType: 'json',
-			success : function(resData){
-				var txt = '';
-				moment.locale('ko');
-				if (resData.musics == 0) {
-					txt += '<div>등록한 글이 없습니다.</div>';
-				} else {
-					$.each(resData.musics, function(i, music) {
-						txt += '<div class="music_controller" style="display:flex">';
-							txt += '<div class="flex">';
-								txt += '<div class="image_box" data-music_no="' + music.musicNo + '" style="background-image:url(/tune/display/image?musicNo=' + music.musicNo + ')"></div>';
-								txt += '<div class="music_info flex_cloumn">';
-									txt += '<div>음원명 : ' + music.musicTitle + '</div>';
-									txt += '<div>앨범명 : ' + music.musicAlbum + '</div>';
-									if ($('#userNo').val() == 1) {
-										txt += '<div>작성자 : ' + music.userDTO.artist + '</div>';
-									}
-								txt += '</div>';
-							txt += '</div>';
-							txt += '<div class="reaction_box">';
-								txt += '<div class="flex"><img src="/images/like.png" style="width:24px;"><span class="count_like">'+resData.like[i]+'</span></div>';
-								txt += '<div class="flex"><i class="fa-solid fa-comment-dots"></i><span class="count_comment">' + resData.comment[i] + '</span></div>';
-							txt += '</div>';
-							txt += '<div class="date_box flex">' + moment(music.musicUploadDate).format('YYYY-MM-DD A h:mm') + '</div>';
-							txt += '<form class="btn_box flex" method="get" action="/tune/musicEdit">';
-								txt += '<input type="hidden" class="musicNo" name="musicNo" value="' + music.musicNo + '">';
-								txt += '<input type="button" class="btn edit" value="수정">';
-								txt += '<input type="button" class="btn remove" value="삭제" data-music_no="' + music.musicNo + '">';
-							txt += '</form>';
-						txt += '</div>';
-					});
-				}
-				$('.music_list_box').append(txt);
-			}
-		})
-	}
-	
-	// 음원 이동
-	function fn_detail(){
-		$(document).on('click', '.image_box', function(){
-			window.parent.location.href="/tune/iframe?musicNo=" + $(this).data('music_no');
-		});
-	}
-	
-	// 음원 수정
-	function fn_edit(){
-		$(document).on('click', '.edit', function(){
-			 $(this).closest('.btn_box').submit();
-		});
-	}
-	
-	// 음원 삭제
-	function fn_remove(){
-		$(document).on('click', '.remove', function(){
-			$.ajax({
-				type: 'post',
-				url : '/tune/musicRemove',
-				data: 'musicNo=' + $(this).data('music_no'),
-				dataType: 'text',
-				success : function(){
-					$('.music_list_box').text('');
-					alert('음악이 삭제되었습니다.');
-					fn_musicList();
-				}
-			})
-		});
-	}
-</script>
-</head>
-<body>
-	<nav th:replace="~{layout/mypageNav.html::mypageFragment}"></nav>
-	<div class="mypage_controller">
-		<input type="hidden" id="userNo" th:value="${session.loginUser.userNo}">
+  <head>
+    <title>음원관리</title>
+    <!-- 개별 파일에 사용될 css/js 선언 -->
+    <link th:href="@{/css/fragments/nav.css}" rel="stylesheet">
+    <script th:src="@{/js/fragments/nav.js}"></script>
+    
+    <link rel="stylesheet" th:href="@{/css/user/mypage.css}">
+    <link rel="stylesheet" th:href="@{/css/tune/list.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+    <script th:src="@{/js/tune/list.js}"></script>
+  
+  </head>
+
+  <body layout:fragment="content" class="flex-col">
+    <!-- code -->
+	<main class="flex main">
+    	<nav th:replace="fragments/nav::navFragment"></nav>
+	    <section class="section">
+	    			<input type="hidden" id="userNo" th:value="${session.loginUser.userNo}">
 		<div th:if="${session.loginUser.userNo != 1}" class="music_title">내가 등록한 음원 목록</div>
 		<div th:if="${session.loginUser.userNo == 1}" class="music_title">등록된 모든 음원 목록</div>
 		<div class="flex music_controller_title">
@@ -188,8 +35,8 @@
 			<div style="width:180px;">글 관리</div>
 		</div>
 		<div class="music_list_box"></div>
-	
-	</div>
+	    </section>
+	</main>
 
-</body>
+  </body>
 </html>

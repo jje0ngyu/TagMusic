@@ -15,7 +15,7 @@
 	<div class="tune_controller">
 		<form id="frm_music" th:action="@{/tune/musicChange}" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="musicNo" th:value="${music.musicNo}">
-			<div class="write_controller">
+
 				<div>
 					<h1>음원 등록</h1>
 				</div>
@@ -75,7 +75,7 @@
 					<input type="button" id="btn_cancel" value="취소">
 					<input type="submit" id="btn_edit" value="수정하기">
 				</div>
-			</div>
+
 		</form>
 	</div>
 </body>

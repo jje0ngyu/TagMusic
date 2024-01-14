@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragments/layout}">
+
+  <head>
+    <title>이용권</title>
+    <!-- 개별 파일에 사용될 css -->
+    <link th:href="@{/css/fragments/nav.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/payment/membership.css}">
+    <!-- 개별 파일에 사용될 js -->
+    <script th:src="@{/js/fragments/nav.js}"></script>
+    <script th:src="@{/js/payment/membership.js}"></script>
+    <script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+  </head>
+
+  <body layout:fragment="content" class="flex-col">
+    <!-- code -->
+	<main class="flex main">
+    	<nav th:replace="fragments/nav::navFragment"></nav>
+	    <section class="section">
+
+				<div class="title">태그뮤직 이용권 구매</div>
+				<div class="payContent">
+					<nav id="nav3" class="tab_box_basic">
+						<ul class="top_pay_controller">
+							<li id="payBEST" class="tab_payment tab_box_click">
+								BEST
+							</li>
+							<!-- 아래 스크립트 작성자 : 유정  coment"수정해도 됩니다!"-->
+							<li id="payAllList" class="tab_payment">
+								전체 이용권
+							</li>
+							<li id="passGiftList"class="tab_payment">
+								이용권 선물
+							</li>
+							<li id="useCoupon" class="tab_payment">
+								쿠폰 등록
+							</li>
+						</ul>
+					</nav>
+
+					
+					<input type="hidden" id="isUser" th:data-user="${session}">
+					<div th:if="${session.loginUser != null}">
+						<input type="hidden" id="userName" th:data-name="${session.loginUser.name}">
+						<input type="hidden" id="userEmail" th:data-email="${session.loginUser.email}">
+						<input type="hidden" id="userMobile" th:data-mobile="${session.loginUser.mobile}">
+						<input type="hidden" id="userAddr1" th:data-addr="${session.loginUser.roadAddress}">
+						<input type="hidden" id="userAddr2" th:data-addr="${session.loginUser.jibunAddress}">
+						<input type="hidden" id="userAddr3" th:data-addr="${session.loginUser.detailAddress}">
+						<input type="hidden" id="userAddr4" th:data-addr="${session.loginUser.extraAddress}">
+						<input type="hidden" id="postcode" th:data-postcode="${session.loginUser.postcode}">
+						<input type="hidden" class="isUser" th:data-user="true">
+					</div>
+					<!-- 패스 -->
+					<!-- <div>
+						<input type="button" id="isPassHave" value="티켓가지고있어?" onclick="isPassHave();">
+					</div>
+					<script>
+					function isPassHave(){
+						$.ajax({
+							type: 'post',
+							url: '/payment/isPassHave',
+							dataType: 'json',
+							success: function(resData){
+								console.log(resData.isNotLogin);
+								if(resData.result == 0){
+									if(confirm('이용권이 없는 회원입니다. 이용권을 구매하러 가시겠습니까?')){
+										location.href="/payment/membership";
+									}
+								}
+								if(resData.isNotLogin == 'loginPlz'){
+									if(confirm('로그인이 안된 유저입니다 로그인 하시겠습니까?')){
+										location.href="/user/login/form";
+									}
+								}
+							}
+						});
+					}
+					</script> -->
+					 <div id="buyPageDiv"></div>
+				</div>
+				
+				<span th:utext="${loginUser}"></span>
+
+	<form action="/user/login/form" id="frm_login"></form>
+	
+	<!-- 이용권 선물 클릭시 팝업 창 -->
+	<div class="backlayer blind">
+		<div class="gift_session blind">
+			<div class="container_gift">
+				<div class="gift_box">
+					<div>
+						<div>
+							<span id="remainingDay"></span>
+						</div>
+						<div>
+							<span id="dDay"></span>
+						</div>
+					</div>
+					<div class=gift_title>누구에게 선물하시겠습니까?</div>
+					<!-- /*<input type="button" id="setRecipientInfo" value="보내기">*/ -->
+					<div class="flex_gift">
+						<div class="gift_info_box">
+							<input type="text" id="getRecipientEmail" placeholder="선물받을 사람의 이메일을 입력해주세요.">
+						</div>
+						<input type="button" id="send_gift" value="보내기">
+					</div>
+					<div class="gift_msg">* 해당 이용권은 선물하는 즉시 바로 적용되는 상품입니다.</div>
+					<div class="gift_bottom_controller">
+						<div id="recipientInfoBox">
+						</div>
+						<input type="button" id="gift_close" value="닫기">
+					</div>
+					<br>
+					<div class="gift_box_div blind">
+						<input type="button" id="gift_cancle" value="취소">				
+						<input type="button" id="gift_submit" value="전송" data-artist="" data-if="1" onclick="fn_presentTicket(this)">	
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	    </section>
+	</main>
+
+  </body>
+</html>

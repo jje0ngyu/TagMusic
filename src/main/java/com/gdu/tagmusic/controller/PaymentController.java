@@ -1,6 +1,5 @@
 package com.gdu.tagmusic.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +21,9 @@ public class PaymentController {
 	@Autowired
 	private PaymentService paymentService;
 	
-	@GetMapping("/payment/buy")
+	@GetMapping("/payment/membership")
 	public String payMain() {
-		return "payment/buy";
+		return "payment/membership";
 	}
 	
 	@ResponseBody

@@ -1,22 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" th:href="@{/css/user/mypage.css}">
-<link rel="stylesheet" th:href="@{/css/user/switch.css}">
-<script th:src="@{/js/jquery-3.6.1.min.js}"></script>
-<script th:src="@{/js/user/myinfo.js}"></script>
-</head>
+<html lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{fragments/layout}">
 
-<body>
-	<nav th:replace="~{layout/mypageNav.html::mypageFragment}"></nav>
-	
-	<div class="mypage_controller">
-		<div class="mypage_title">
-			개인정보 관리
-		</div>
-			<span>태그뮤직에 등록된 개인정보 정보를 확인할 수 있습니다. 최신 정보로 관리해주세요.</span>
+  <head>
+    <title>개인정보</title>
+    <!-- 개별 파일에 사용될 css/js 선언 -->
+    <link th:href="@{/css/fragments/nav.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/user/mypage.css}">
+	<link rel="stylesheet" th:href="@{/css/user/switch.css}">
+    
+    <script th:src="@{/js/fragments/nav.js}"></script>
+    <script th:src="@{/js/user/myinfo.js}"></script>
+  </head>
+
+  <body layout:fragment="content" class="flex-col">
+    <!-- code -->
+	<main class="flex main">
+    	<nav th:replace="fragments/nav::navFragment"></nav>
+	    <section class="section">
+
+		<div class="title">개인정보 관리</div>
+		<span>태그뮤직에 등록된 개인정보 정보를 확인할 수 있습니다. 최신 정보로 관리해주세요.</span>
 		<form id="frm_modifyUser" method="post">
 			<input type="hidden" name="email" th:value="${session.loginUser.email}">
 			<div class="info_controller">
@@ -204,11 +210,12 @@
 					</div>
 				</div>
 			</div>
-		</div>
 		</form>
 		<form action="/user/retire/goodbye" id="frm_goodbye">
 			
 		</form>
-	</div>
-</body>
+	    </section>
+	</main>
+
+  </body>
 </html>
