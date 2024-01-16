@@ -1,17 +1,5 @@
 @charset "UTF-8";
 
-/* 공통영역 (header.html을 포함한 모든 html에 적용) */
-
-/* 클래스 초기화  */
-html, body, section, article, div, a, input, ul, li, input, h1 {
-	margin: 0px;
-	padding: 0px;
-	background-color: inherit;
-	color: inherit;
-}
-a {
-	text-decoration: none;
-}
 input[type=button] {
 	background-color: #bdc2ce;
 	border: none;
@@ -21,11 +9,11 @@ input[type=button] {
 	display: none;
 }
 
-header {
-	background: linear-gradient(#ffffff, 2%,#fdfdfd);
-	box-shadow: 0 1px 10px 0 #37486b;
-	z-index: 2;;
+#frm_login {
+	margin: 16% auto;
+	border-radius: 10px;
 }
+
 .hover:hover {
 	cursor: pointer;
 }
@@ -121,14 +109,7 @@ header {
 	justify-content: space-between;
 	margin: 15px 30px 5px;
 }
-.backgroung_layer {
-	position: absolute;
-	display: inline-block;
-	width: 100%;
-	height: 100%;
-	z-index: -1;
-	background-color:#f8f9fa;
-}
+
 
 .login_title {
 	color: #1f1f1f;

@@ -34,7 +34,7 @@
     <!-- 헤더 오른쪽 -->
     <div class="header_right_area">
       <div class="unuser_area" th:if="${session.loginUser == null}">
-        <a id="linkLogin" th:href="@{/user/login/form}">로그인</a>
+        <a id="linkLogin" th:href="@{/login/form}">로그인</a>
       </div>
       <div class="user_area" th:if="${session.loginUser != null}">
 
